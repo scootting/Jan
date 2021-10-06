@@ -62,7 +62,10 @@ import HistoryTransactions from './views/treasure/HistoryTransactions'          
 //clientes 
 import LoginClient from './views/clients/Login'
 import DashboardClient from './views/clients/Dashboard'
-//import { component } from 'vue/types/umd'
+
+import addNotification from './views/certificates/addNotification'
+import AddSolvency from './views/certificates/AddSolvency'
+import editTransactionDocuments from './views/certificates/editTransactionDocuments'
 
 // Routes
 const router = new VueRouter({
@@ -145,6 +148,12 @@ const router = new VueRouter({
                 { path: 'documentqr/:id', name: 'selectactivebydocument' , component: SelectActiveByDocument },
 
                 { path: 'addgraduatecertificate', name: 'addgraduatecertificate' , component: AddGraduateCertificate },
+
+                //enlaces para la administracion de los certificados de no deuda, solvencias
+                { path: 'addnotification', name: 'addnotification', component: addNotification }, // agregar la convocatoria para un certificado de no deuda
+                { path: 'addsolvency', name: 'addsolvency', component: AddSolvency }, // agregar solvencia para tramite
+                { path: 'edittransactiondocuments', name: 'edittransactiondocuments', component: editTransactionDocuments }, //editar el estado de un documento
+
 
                 //enlaces para la administracion de paginas de tesoreria
                 { path: 'solvency', name: 'solvency', component: Solvency }, // solvencias
