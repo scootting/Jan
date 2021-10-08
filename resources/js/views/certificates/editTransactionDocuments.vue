@@ -130,23 +130,9 @@ export default {
   },
   mounted() {
     let app = this;
-    axios
-      .post("/api/persons", {
-        descripcion: app.writtenTextParameter,
-      })
-      .then((response) => {
-        app.loading = false;
-        app.people = response.data.data;
-        app.pagination = response.data;
-      })
-      .catch((error) => {
-        this.error = error;
-        this.$notify.error({
-          title: "Error",
-          message: this.error.message,
-        });
-      });
+    initSearchDocumentByDescription();
   },
+  
   methods: {
 
     getDataPageSelected(page) {
