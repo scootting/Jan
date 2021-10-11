@@ -88,7 +88,7 @@
               slot-scope="scope"
               v-model="data[scope.$index].est_act"
               value-key="desc"
-              placeholder="desterminar estado"
+              placeholder="determinar estado"
             >
               <el-option
                 v-for="item in estados"

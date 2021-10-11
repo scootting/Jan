@@ -45,7 +45,8 @@ class FixedAssetController extends Controller
     {
         $lista = $request->get('lista');
         $lista = implode(',', $lista);
-        $nreport = 'FixedAssetsQr';
+        //$nreport = 'FixedAssetsQr';
+        $nreport = 'FixedAssetsQr_A4';
         $controls = array('p_lista' => $lista);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
