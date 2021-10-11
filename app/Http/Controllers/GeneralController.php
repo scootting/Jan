@@ -129,4 +129,20 @@ class GeneralController extends Controller
         return json_encode($data);
     } 
 
+    public function getNewCodDocument()
+    {
+        $data = General::getNewCodDocument();
+        return json_encode($data);
+    }
+    public function saveNewCall(Request $request)
+    {
+        //dd($request);
+        $cod_con = $request->codigo;
+        $glosa = $request->descripcion;
+        $fec_pre = $request->date1;
+        $ges = '2021';
+        $data = General::saveNewCall($cod_con, $glosa, $fec_pre,$ges);
+        return json_encode($data);
+    }
+
 }

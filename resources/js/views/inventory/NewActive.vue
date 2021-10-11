@@ -338,7 +338,7 @@ export default {
         .then((data) => {
           this.$notify.success({
             title: "Activo registrado exitosamente!",
-            message: "Se realizó el registro del al Activo exitosamente",
+            message: "Se realizó el registro del Activo exitosamente",
             duration: 3000,
           });
           this.$router.push({

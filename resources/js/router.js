@@ -62,6 +62,8 @@ import HistoryTransactions from './views/treasure/HistoryTransactions'          
 //clientes 
 import LoginClient from './views/clients/Login'
 import DashboardClient from './views/clients/Dashboard'
+
+import NuevaConvocatoria from './views/NewCall'
 //import { component } from 'vue/types/umd'
 
 // Routes
@@ -155,6 +157,7 @@ const router = new VueRouter({
                 { path: 'documentsfixedassets', name: 'documentsfixedassets', component: DocumentsFixedAssets }, //lista de documentos de entrega activos fijos
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
+                { path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
             ],
             meta: {
                 requiresAuth: true,
