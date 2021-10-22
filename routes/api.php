@@ -98,6 +98,10 @@ Route::group([
     //** Guardar nueva convocatoria */
     Route::get('newCall/nro','GeneralController@getNewCodDocument');
     Route::post('newCall/save','GeneralController@saveNewCall');
+
+    Route::post('documents', 'DocumentController@getDocumentsByOffice');
+
+
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
     Route::post('getDataOfStudentById', 'TreasureController@getDataOfStudentById');

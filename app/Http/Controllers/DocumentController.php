@@ -51,8 +51,22 @@ class DocumentController extends Controller
         return $data;
     }
 
-
-
-
-
+    // *** - obtener los documentos por oficina  de los usuarios correspondiente - ***
+    // *** - parametros [] - ***
+    public static function getDocumentsByOffice(Request $request){
+        $descripcion = $request->get('description');
+        $soa = $request->get('soa');
+        $gestion = $request->get('year');
+        $data = Document::getDocumentsByOffice($descripcion, $soa, $gestion);
+        $page = ($request->get('page')? $request->get('page'): 1);
+        $perPage = 10;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/persons')]
+        );
+        return json_encode($paginate);
+    }
 }
