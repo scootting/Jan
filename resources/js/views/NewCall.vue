@@ -13,30 +13,15 @@
       <div>
         <el-form ref="form" :model="form" label-width="120px">
           <el-form-item label="Codigo" prop="codigo">
-            <el-input
-                disabled
-                type="text"
-                v-model="form.codigo"
-              ></el-input>
+            <el-input disabled type="text" v-model="form.codigo"></el-input>
           </el-form-item>
           <el-form-item label="Descripcion">
             <el-input type="textarea" v-model="form.descripcion"></el-input>
           </el-form-item>
-
           <el-form-item label="Documento PDF">
-            <el-upload
-              class="upload-demo"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              multiple
-              :limit="3"
-              :on-exceed="handleExceed"
-              :file-list="fileList"
-            >
-              <el-button size="small" type="primary"
-                >Clic para subir archivo</el-button
-              >
-            </el-upload>
+            <br /><br />
+             <pdf-load :info="dataSource" @on-success="onLoadPdf"/>
+            <br />
           </el-form-item>
           <el-form-item label="Valido hasta:">
             <el-col :span="11">
@@ -48,7 +33,6 @@
               ></el-date-picker>
             </el-col>
           </el-form-item>
-
           <el-form-item>
             <el-button type="primary" @click="saveCall">Guardar</el-button>
             <el-button>Cancelar</el-button>
@@ -58,10 +42,11 @@
     </el-card>
   </div>
 </template>
-
 <script>
+import pdfLoad from "./components/pdfLoad.vue";
 export default {
   name: "nuevaConvocatoria",
+ components: { pdfLoad },
   data() {
     return {
       nro: null,
@@ -69,8 +54,7 @@ export default {
         codigo: "",
         descripcion: "",
         date1: "",
-        fileList: [
-        ]
+        path: "",
       },
     };
   },
@@ -80,10 +64,13 @@ export default {
     );
     this.getNumero();
   },
-  computed:{
-      getNroDoc(){
+  computed: {
+    getNroDoc() {
       return this.nro;
-    }
+    },
+    dataSource: function () {
+      return this.form;
+    },
   },
   methods: {
     test() {
@@ -100,6 +87,13 @@ export default {
           console.log(err);
         });
     },
+     handleRemove(file, fileList) {
+      console.log(file, fileList);
+      this.fileList = FileList;
+    },
+    onLoadPdf(resp) {
+      this.form.path = resp.path;
+    },
     saveCall() {
       axios
         .post("/api/newCall/save", this.form)
@@ -114,22 +108,8 @@ export default {
           console.log(err);
         });
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    },
-    handlePreview(file) {
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(
-        `El límite es 3, haz seleccionado ${
-          files.length
-        } archivos esta vez, añade hasta ${files.length + fileList.length}`
-      );
-    },
   },
 };
 </script>
-
 <style>
 </style>

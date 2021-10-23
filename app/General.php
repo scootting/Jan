@@ -118,11 +118,11 @@ class General extends Model
         $cad = '0000' . $newId;
         return substr($cad, strlen($cad) - 4);
     }
-    public static function saveNewCall($cod_con, $glosa, $fec_pre,$ges)
+    public static function saveNewCall($cod_con, $glosa, $fec_pre,$ges,$path)
     {
         $cod_con = self::getNewCodDocument();
         $id_doc = 'NDEU';
-        $date = Date('d-m-Y');
+        $date = Date('d-m-Y H:i:s');
         $valido = true;
         $query = " insert into 
         bdoc.des_doc
@@ -133,7 +133,8 @@ class General extends Model
                 valido,
                 fec_pre,
                 fec_cre,
-                ges
+                ges,
+                ruta
                 )
                 values
                  (
@@ -143,7 +144,8 @@ class General extends Model
                 '" . $valido . "',
                 '" . $fec_pre . "',
                 '" . $date . "',
-                '" . $ges . "'
+                '" . $ges . "',
+                '" . $path . "'
                 );";
         $data = collect(DB::select(DB::raw($query)));
         return ['data' => $data, 'cod_con' => $cod_con];

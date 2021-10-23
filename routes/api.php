@@ -33,6 +33,7 @@ Route::group([
     // *** - Almacenar - ***
     Route::post('person', 'GeneralController@storePerson');
     Route::get('person/{id}', 'GeneralController@getPersonById');
+    Route::post('doc/upload', 'GeneralController@uploadPDF');
 
 
     // *** - rutas para crear, editar, mostrar, buscar a los usuarios del sistema - ***

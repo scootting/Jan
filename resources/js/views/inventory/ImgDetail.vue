@@ -1,5 +1,5 @@
 <template>
-  <div  style="margin-top: 15px 0" class="grid-content bg-purple">
+  <div style="margin-top: 15px 0" class="grid-content bg-purple">
     <el-card class="box-card">
       <el-row>
         <el-col :span="24">
@@ -19,21 +19,25 @@
           </el-form>
         </el-col>
       </el-row>
-      <br><br>
-      <load-imgs :info="dataSource" :default-values="data" @change="onChangeImgs"/> 
-      <br>
-      <!-- <uploader :csrf="csrfToken" :info="dataSource"></uploader> -->
-      <el-button type="primary" size="mini" plain @click="saveImage">Guardar Imagenes</el-button>
-      <el-button type="danger" size="mini" plain @click="returnPage">Atras</el-button>
+      <br /><br />
+      <load-imgs
+        :info="dataSource"
+        :default-values="data"
+        @change="onChangeImgs"
+      />
+      <br />
+      <el-button type="primary" size="mini" plain @click="saveImage"
+        >Guardar Imagenes</el-button
+      >
+      <el-button type="danger" size="mini" plain @click="returnPage"
+        >Atras</el-button
+      >
     </el-card>
-    
-    
   </div>
 </template>
  
 <script>
-//import Uploader from '../components/uploader.vue';
-import LoadImgs from './components/ImagenDetail/loadImgs.vue';
+import LoadImgs from "./components/ImagenDetail/loadImgs.vue";
 export default {
   name: "ImgDetail",
   components: {
@@ -45,9 +49,9 @@ export default {
       messages: {},
       gestion: this.$store.state.user.gestion,
       image: {},
-      no_doc:this.$route.params.no_cod,
+      no_doc: this.$route.params.no_cod,
       data: {
-        cod_act: '',
+        cod_act: "",
       },
     };
   },
@@ -56,7 +60,7 @@ export default {
     var app = this;
     this.id = this.$route.params.id;
     //recuperar
-  	this.getData();
+    this.getData();
     this.no_doc = this.$route.params.no_cod;
     axios
       .get("/api/reasignacion/edit/" + this.id)
@@ -78,21 +82,21 @@ export default {
     },
   },
   methods: {
-    getData(){
+    //traer la imagen desde path
+    getData() {
       axios
-        .get("/api/inventory2/image/"+this.id)
+        .get("/api/inventory2/image/" + this.id)
         .then((data) => {
-          if(data.data[0] != undefined)
-            this.data = data.data[0];
+          if (data.data[0] != undefined) this.data = data.data[0];
         })
         .catch((err) => {
           console.log(err);
         });
     },
-    onChangeImgs(imgs){
-      this.data = {...this.data, ...imgs};
+    onChangeImgs(imgs) {
+      this.data = { ...this.data, ...imgs };
     },
-    saveImage(){
+    saveImage() {
       axios
         .post("/api/inventory2/saveImage", this.data)
         .then((data) => {
@@ -106,15 +110,15 @@ export default {
           console.log(err);
         });
     },
-    returnPage(no_doc){
+    returnPage(no_doc) {
       this.$router.push({
         name: "inventory2detail",
         params: {
-          no_doc:this.$route.params.no_cod,
-        }
+          no_doc: this.$route.params.no_cod,
+        },
       });
     },
-  }
+  },
 };
 </script>
 

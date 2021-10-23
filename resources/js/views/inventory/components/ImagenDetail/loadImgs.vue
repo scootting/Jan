@@ -21,7 +21,6 @@
               background-color:#C6DFF6;
               color:black;"
           >NO ENCONTRADO
-            
           </div>
         </div>
         <!-- <el-image
@@ -50,7 +49,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import imageLoad from "./imageLoad.vue";
 export default {
@@ -117,6 +115,5 @@ export default {
   },
 };
 </script>
-
 <style>
 </style>
