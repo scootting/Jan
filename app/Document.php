@@ -33,7 +33,7 @@ class Document extends Model
     public static function CheckGraduateCertficate($nro_doc, $ci_auth, $gestion){
 
         $query = "UPDATE bdoc.cer_dia SET ci_auth = '".$ci_auth."',est_doc = 'Verificado'".
-                 "WHERE nro_doc='848' AND gestion ='2021'"
+                 "WHERE nro_doc='848' AND gestion ='2021'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;         
     }
@@ -44,6 +44,12 @@ class Document extends Model
         $query = "SELECT id, cod_val, des_dip, act_dip, fec_cre, usr_cre,".
                  "(SELECT v.pre_uni FROM val.valores v WHERE v.cod_val = b.cod_val) AS imp_val".
                  "FROM bdoc.val_mat b WHERE b.act_dip = TRUE";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    public static function getDocumentsByOffice($descripcion, $soa, $gestion){
+        //select * from bdoc.ff_buscar_documentos_soa('', '00000012', '2021')
+        $query = "select * from bdoc.ff_buscar_documentos_soa('', '00000012', '2021')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

@@ -140,7 +140,9 @@ export default {
       app.loading = true;
       axios
         .post("/api/documents", {
-          descripcion: app.writtenTextParameter,
+          description: app.writtenTextParameter,
+          soa: app.writtenTextParameter,
+          year: app.writtenTextParameter,
           page: page,
         })
         .then((response) => {
@@ -173,11 +175,14 @@ export default {
       app.loading = true;
       axios
         .post("/api/documents", {
-          descripcion: app.writtenTextParameter,
+          description: app.writtenTextParameter,
+          soa: app.writtenTextParameter,
+          year: app.writtenTextParameter,
         })
         .then((response) => {
           app.loading = false;
           app.documents = response.data.data;
+          console.log(response);
           app.pagination = response.data;
         })
         .catch((error) => {
