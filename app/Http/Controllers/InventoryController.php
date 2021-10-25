@@ -434,6 +434,7 @@ class InventoryController extends Controller
     //funcion cargar imagenes de activos para nuevo inventario
     public function uploadImage(Request $request)
     {
+        //dd($request);
         $dataSource = $request->get('datasource');
         $arrayData = json_decode($dataSource, true);
         $ofc_cod = $arrayData['ofc_cod'];

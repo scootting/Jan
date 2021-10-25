@@ -141,8 +141,30 @@ class GeneralController extends Controller
         $glosa = $request->descripcion;
         $fec_pre = $request->date1;
         $ges = '2021';
-        $data = General::saveNewCall($cod_con, $glosa, $fec_pre,$ges);
+        $path = $request->path;
+        $data = General::saveNewCall($cod_con, $glosa, $fec_pre,$ges,$path);
         return json_encode($data);
+    }
+
+    public function uploadPDF(Request $request)
+    {
+        //dd($request);
+        $dataSource = $request->get('datasource');
+        $arrayData = json_decode($dataSource, true);
+        //dd($arrayData);
+        $codigo = $arrayData['codigo'];
+        if ($request->hasFile('file')) 
+        {
+            $file = $request->file('file');
+            $file_name = $file->getClientOriginalName();
+            $path = 'public/convocatorias/' . strval($codigo);
+            $file->storeAs($path, $file_name);
+        } 
+        else 
+        {
+            return response()->json(['error' => 'File not exist!']);
+        }
+        return response()->json(['success' => 'Cargo exitoso.', 'path' => '/' . 'storage/convocatorias' . '/' . $file_name]);
     }
 
 }
