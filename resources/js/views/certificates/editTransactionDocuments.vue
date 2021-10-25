@@ -44,6 +44,7 @@
             width="280"
           ></el-table-column>
           <el-table-column prop="zip" label="Operacion" width="120">
+            <!--
             <el-select v-model="value" placeholder="operacion">
               <el-option
                 v-for="item in options"
@@ -52,7 +53,7 @@
                 :value="item.value"
               >
               </el-option>
-            </el-select>
+            </el-select>-->
           </el-table-column>
           <el-table-column align="right" width="220">
             <template slot-scope="scope">
@@ -109,8 +110,7 @@ export default {
       messages: {},
       people: [],
       documents: [],
-      options: [],
-/*
+      //options: [],
       options: [
         {
           value: "Aprobado",
@@ -120,7 +120,7 @@ export default {
           value: "Observado",
           label: "Observado",
         },
-      ],*/
+      ],
       pagination: {
         page: 1,
       },
@@ -130,7 +130,7 @@ export default {
   },
   mounted() {
     let app = this;
-    initSearchDocumentByDescription();
+    app.initSearchDocumentByDescription();
   },
   
   methods: {
@@ -160,6 +160,7 @@ export default {
         name: "addperson",
       });
     },
+
     initEditStateDocument(index, row) {
       console.log(index, row);
       let personal = row.personal;
