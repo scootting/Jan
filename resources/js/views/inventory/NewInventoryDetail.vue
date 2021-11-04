@@ -140,13 +140,13 @@
             <el-form label-width="180px" :inline="true" size="small">
               <el-form-item
                 size="small"
-                label="Encargado de inventario actual:"
+                label="Entregado por:"
               >
                 <el-select
                   class="enc-select"
                   v-model="NewInvent.per_inv"
                   multiple
-                  placeholder="Seleccione encargado de inventario actual"
+                  placeholder="Seleccione Entregado por"
                   style="width: 250px"
                   maxlength="30"
                 >
@@ -167,7 +167,23 @@
                   >Buscar</el-button
                 >
               </el-form-item>
-              <el-form-item size="small" label="Nuevo Encargado:">
+              <el-form-item size="small" label="Cargo:">
+                <el-select
+                v-model="NewInvent.car_per"
+                value-key="id"
+                placeholder="Determinar Cargo"
+              >
+                <el-option
+                  v-for="item in cargos1"
+                  :key="item.id"
+                  :label="item.descripcion"
+                  :value="item.id"
+                >
+                </el-option>
+              </el-select>
+              </el-form-item>
+              <br><br> 
+              <el-form-item size="small" label="Recibido por:">
                 <el-select
                   class="enc-select"
                   v-model="NewInvent.new_per"
@@ -193,23 +209,8 @@
                   >Buscar</el-button
                 >
               </el-form-item>
-              <br><br>
-              <el-form-item size="small" label="Cargo de encargado:">
-                <el-select
-                v-model="NewInvent.car_per"
-                value-key="id"
-                placeholder="Determinar Cargo"
-              >
-                <el-option
-                  v-for="item in cargos1"
-                  :key="item.id"
-                  :label="item.descripcion"
-                  :value="item.id"
-                >
-                </el-option>
-              </el-select>
-              </el-form-item>
-              <el-form-item size="small" label="Cargo de nuevo encargado:">
+              
+              <el-form-item size="small" label="Cargo:">
                 <el-select
                 v-model="NewInvent.new_car_per"
                 value-key="id"
