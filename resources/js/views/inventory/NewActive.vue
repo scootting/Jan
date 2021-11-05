@@ -56,7 +56,7 @@
         <hr style="color: gray" />
         <br />
         <el-row type="flex" justify="space-between">
-          <el-col :span="7">
+          <el-col :span="11">
             <el-form-item size="mini" label="Cantidad:" prop="cantidad">
               <el-input-number
                 v-model="newActive.cantidad"
@@ -212,14 +212,14 @@ export default {
       newActive: {
         nro_doc: "",
         car_cod: "",
-        oficina: "",
         des: "",
         des_det: "",
         estado: "",
         partida: "",
         contable: "",
         cantidad: "1",
-        cargo: "",
+        med:"PIEZA",
+        cod_ant:"0",
         cod_soa: this.$route.params.soa,
         sub_ofc_cod: "",
         ci_resp: "",
@@ -370,10 +370,10 @@ export default {
       axios
         .post("/api/newactive/save", this.newActive)
         .then((data) => {
+          location.reload();
           this.$notify.success({
             title: "Activo registrado exitosamente!",
-            message: "Se realizó el registro del Activo exitosamente",
-            duration: 3000,
+            duration: 5000,
           });
         })
         .catch((err) => {

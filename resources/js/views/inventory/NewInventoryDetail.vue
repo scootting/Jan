@@ -122,9 +122,7 @@
                   <el-option
                     v-for="(item, index) in encargados"
                     :key="index"
-                    :label="
-                      item.nro_dip + '-' + item.paterno + ' ' + item.nombres
-                    "
+                    :label="item.nro_dip + '-' + item.paterno + ' ' + item.nombres"
                     :value="item.nro_dip"
                   >
                   </el-option>
@@ -138,51 +136,65 @@
               </el-form-item>
             </el-form>
             <el-form label-width="180px" :inline="true" size="small">
-              <el-form-item
-                size="small"
-                label="Entregado por:"
-              >
-                <el-select
-                  class="enc-select"
+              <el-form-item size="small" label="Entregado por:">
+                <el-input
                   v-model="NewInvent.per_inv"
-                  multiple
-                  placeholder="Seleccione Entregado por"
-                  style="width: 250px"
-                  maxlength="30"
+                  size="mini"
+                  type="text"
+                  class="input-with-select"
+                  ><el-button
+                    slot="append"
+                    icon="el-icon-search"
+                    @click="getEntregadoPor(NewInvent.per_inv)"
+                  ></el-button
+                ></el-input>
+              </el-form-item>
+              <el-form-item size="mini" label="NOMBRE:">
+                <el-input
+                  :value="entregadoPor"
+                  disabled
+                  placeholder="NOMBRE DE RESPONSABLE"
+                  size="mini"
+                  readonly
+                  style="width: 100%"
+                />
+              </el-form-item>
+              <el-form-item size="small" label="Cargo:">
+                <el-select
+                  v-model="NewInvent.car_per"
+                  value-key="id"
+                  placeholder="Determinar Cargo"
                 >
                   <el-option
-                    v-for="(item, index) in per_inv"
-                    :key="index"
-                    :label="
-                      item.nro_dip + '-' + item.paterno + ' ' + item.nombres
-                    "
+                    v-for="item in cargos1"
+                    :key="item.id"
+                    :label="item.descripcion"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <br /><br />
+              <el-form-item  size="small" label="Recibido por:">
+                <el-select
+                  v-model="NewInvent.new_per"
+                  placeholder="Busque un carnet"
+                  :loading="searchNewPerLoading"
+                  clearable
+                  filterable
+                  remote
+                  :remote-method="getNewPer"
+                >
+                  <el-option
+                    v-for="item in searchNewPer"
+                    :key="item.nro_dip"
+                    :label="item.paterno + ' ' + item.nombres"
                     :value="item.nro_dip"
                   >
                   </el-option>
                 </el-select>
-                <el-button
-                  type="primary"
-                  size="mini"
-                  @click="showDialogPerInv = true"
-                  >Buscar</el-button
-                >
               </el-form-item>
-              <el-form-item size="small" label="Cargo:">
-                <el-select
-                v-model="NewInvent.car_per"
-                value-key="id"
-                placeholder="Determinar Cargo"
-              >
-                <el-option
-                  v-for="item in cargos1"
-                  :key="item.id"
-                  :label="item.descripcion"
-                  :value="item.id"
-                >
-                </el-option>
-              </el-select>
-              </el-form-item>
-              <br><br> 
+              <!-- <br>
               <el-form-item size="small" label="Recibido por:">
                 <el-select
                   class="enc-select"
@@ -208,34 +220,33 @@
                   @click="showDialogNewPer = true"
                   >Buscar</el-button
                 >
-              </el-form-item>
-              
+              </el-form-item> -->
               <el-form-item size="small" label="Cargo:">
                 <el-select
-                v-model="NewInvent.new_car_per"
-                value-key="id"
-                placeholder="Determinar Cargo"
-              >
-                <el-option
-                  v-for="item in cargos1"
-                  :key="item.id"
-                  :label="item.descripcion"
-                  :value="item.id"
+                  v-model="NewInvent.new_car_per"
+                  value-key="id"
+                  placeholder="Determinar Cargo"
                 >
-                </el-option>
-              </el-select>
+                  <el-option
+                    v-for="item in cargos1"
+                    :key="item.id"
+                    :label="item.descripcion"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
               </el-form-item>
-              <br>
+              <br />
               <el-form-item>
                 <el-checkbox v-model="VoBo"
                   >Visto bueno por autoridad Superior</el-checkbox
                 >
               </el-form-item>
-              <br>
+              <br />
               <el-form-item size="small" label="Superior:">
                 <el-select
                   class="enc-select"
-                  v-model="NewInvent.new_per"
+                  v-model="NewInvent.sup"
                   multiple
                   placeholder="Seleccione Superior"
                   style="width: 250px"
@@ -256,12 +267,31 @@
                   :disabled="VoBo == false"
                   type="primary"
                   size="mini"
-                  @click="showDialogNewPer = true"
+                  @click="showDialogEncargado = true"
                   >Buscar</el-button
                 >
               </el-form-item>
-              <br><br><br>
-              <el-form-item style="margin: 10px; text-align: right; float: right"  size="small">
+              <el-form-item size="small" label="Cargo:">
+                <el-select
+                  v-model="NewInvent.car_per_sup"
+                  value-key="id"
+                  placeholder="Determinar Cargo"
+                  :disabled="VoBo == false"
+                >
+                  <el-option
+                    v-for="item in cargos1"
+                    :key="item.id"
+                    :label="item.descripcion"
+                    :value="item.id"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <br /><br /><br />
+              <el-form-item
+                style="margin: 10px; text-align: right; float: right"
+                size="small"
+              >
                 <el-button type="primary" size="mini" @click="saveInventory"
                   >Guardar información</el-button
                 >
@@ -302,66 +332,6 @@
         <el-button type="primary" @click="onConfirmDialog">CONFIRMAR</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      title="Buscar Persona a Cargo de inventario"
-      :visible.sync="showDialogPerInv"
-      width="30%"
-      @close="showDialogPerInv = false"
-    >
-      <el-select
-        v-model="selectPerInv"
-        placeholder="Busque un carnet"
-        :loading="searchPerInvLoading"
-        clearable
-        filterable
-        remote
-        :remote-method="getPerInv"
-      >
-        <el-option
-          v-for="item in searchPerInv"
-          :key="item.nro_dip"
-          :label="item.paterno + ' ' + item.nombres"
-          :value="item.nro_dip"
-        >
-        </el-option>
-      </el-select>
-      <span slot="footer">
-        <el-button @click="onCancelDialogPerInv">Cancel</el-button>
-        <el-button type="primary" @click="onConfirmDialogPerInv"
-          >CONFIRMAR</el-button
-        >
-      </span>
-    </el-dialog>
-    <el-dialog
-      title="Buscar Nuevo encargadp"
-      :visible.sync="showDialogNewPer"
-      width="30%"
-      @close="showDialogNewPer = false"
-    >
-      <el-select
-        v-model="selectNewPer"
-        placeholder="Busque un carnet"
-        :loading="searchNewPerLoading"
-        clearable
-        filterable
-        remote
-        :remote-method="getNewPer"
-      >
-        <el-option
-          v-for="item in searchNewPer"
-          :key="item.nro_dip"
-          :label="item.paterno + ' ' + item.nombres"
-          :value="item.nro_dip"
-        >
-        </el-option>
-      </el-select>
-      <span slot="footer">
-        <el-button @click="onCancelDialogNewPer">Cancel</el-button>
-        <el-button type="primary" @click="onConfirmDialogNewPer"
-          >CONFIRMAR</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -394,7 +364,11 @@ export default {
         cargos: [],
         nombres: "",
         per_inv: "",
-        new_per: "",
+        sup:"",
+        new_per: null,
+        nombres1: "",
+        materno1: "",
+        paterno1: "",
       },
       No_Doc: null,
       subUnidades: [],
@@ -405,10 +379,10 @@ export default {
       per_inv: [],
       new_per: [],
       VoBo: false,
-      cargos1:[],
-
+      cargos1: [],
+      recibido:null,
       searchEncargados: [],
-      searchPerInv: [],
+      searchPerInv: {},
       searchNewPer: [],
 
       selectPerInv: null,
@@ -425,7 +399,6 @@ export default {
       responsablesLoading: false,
 
       showDialogEncargado: false,
-      showDialogPerInv: false,
       showDialogNewPer: false,
 
       guardado: false,
@@ -463,7 +436,7 @@ export default {
       })
       .catch((err) => {});
   },
-  mounted(){
+  mounted() {
     this.getCargos();
   },
   computed: {
@@ -500,7 +473,17 @@ export default {
         this.responsables.materno
       );
     },
+    entregadoPor() {
+      return (
+        this.NewInvent.nombres1 +
+        " " +
+        this.NewInvent.paterno1 +
+        " " +
+        this.NewInvent.materno1
+      );
+    },
   },
+  
   methods: {
     getCargos() {
       axios
@@ -625,21 +608,37 @@ export default {
           console.log(err);
         });
     },
-    getPerInv(nro_dip) {
-      this.searchPerInvLoading = true;
+    getEntregadoPor(nro_dip) {
       axios
         .get("/api/inventory2/encargados", {
           params: { nro_dip: nro_dip },
         })
         .then((data) => {
-          this.searchPerInvLoading = false;
           this.searchPerInv = Object.values(data.data.data);
+          this.NewInvent.nombres1 = this.searchPerInv[0].nombres;
+          this.NewInvent.paterno1 = this.searchPerInv[0].paterno;
+          this.NewInvent.materno1 = this.searchPerInv[0].materno;
           console.log(data);
         })
         .catch((err) => {
           console.log(err);
         });
     },
+    // getPerInv(nro_dip) {
+    //   this.searchPerInvLoading = true;
+    //   axios
+    //     .get("/api/inventory2/encargados", {
+    //       params: { nro_dip: nro_dip },
+    //     })
+    //     .then((data) => {
+    //       this.searchPerInvLoading = false;
+    //       this.searchPerInv = Object.values(data.data.data);
+    //       console.log(data);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
     getNewPer(nro_dip) {
       this.searchNewPerLoading = true;
       axios
@@ -708,10 +707,6 @@ export default {
       this.selectEncargado = null;
       this.showDialogEncargado = false;
     },
-    onCancelDialogPerInv() {
-      this.selectPerInv = null;
-      this.showDialogPerInv = false;
-    },
     onCancelDialogNewPer() {
       this.selectNewPer = null;
       this.showDialogNewPer = false;
@@ -733,24 +728,6 @@ export default {
       this.encargados.push(addEncargado);
       this.selectEncargado = null;
       this.showDialogEncargado = false;
-    },
-    onConfirmDialogPerInv() {
-      if (!this.selectPerInv) {
-        this.$message({
-          message: "NO selecciono ningun encargado",
-          type: "warning",
-          showClose: true,
-          duaration: 5000,
-        });
-        return;
-      }
-      let addPerInv = this.searchPerInv.filter((e) => {
-        return e.nro_dip === this.selectPerInv;
-      })[0];
-      this.NewInvent.per_inv.push(addPerInv.nro_dip);
-      this.per_inv.push(addPerInv);
-      this.selectPerInv = null;
-      this.showDialogPerInv = false;
     },
     onConfirmDialogNewPer() {
       if (!this.selectNewPer) {
