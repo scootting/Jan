@@ -35,17 +35,14 @@
       <div>
         <el-table v-loading="loading" :data="documents" style="width: 100%">
           <el-table-column prop="tag_doc" label="documento"></el-table-column>
-          <el-table-column prop="des_doc" label="descripcion"></el-table-column>
-          <el-table-column prop="ci_per" label="persona"></el-table-column>
-          <el-table-column prop="des_per" label="descripcion"></el-table-column>
-          <el-table-column
-            prop="est_sol"
-            label="estado"
-            width="280"
-          ></el-table-column>
-          <el-table-column prop="zip" label="Operacion" width="120">
-            <!--
-            <el-select v-model="value" placeholder="operacion">
+          <el-table-column prop="est_doc" label="estado"></el-table-column>
+          <el-table-column prop="ci_per" label="ci"></el-table-column>
+          <el-table-column prop="des_per" label="descripcion" width="280"></el-table-column>
+          <!--<el-table-column prop="zip" label="Operacion" width="120">
+          </el-table-column>-->
+          <el-table-column prop="des_per" label="operaciones" width="620">
+            <template slot-scope="scope">
+            <el-select v-model="value" placeholder="operacion" size="mini">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -53,23 +50,20 @@
                 :value="item.value"
               >
               </el-option>
-            </el-select>-->
-          </el-table-column>
-          <el-table-column align="right" width="220">
-            <template slot-scope="scope">
-              <el-button
-                @click="initShowHistoryDocument(scope.$index, scope.row)"
-                type="danger"
-                plain
-                size="mini"
-                >Seguimiento</el-button
-              >
+            </el-select>
               <el-button
                 @click="initEditStateDocument(scope.$index, scope.row)"
                 type="primary"
                 size="mini"
                 plain
                 >Guardar</el-button
+              >
+              <el-button
+                @click="initShowHistoryDocument(scope.$index, scope.row)"
+                type="danger"
+                plain
+                size="mini"
+                >Seguimiento</el-button
               >
               <el-button
                 @click="initPrintReportDocument(scope.$index, scope.row)"
