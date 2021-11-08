@@ -330,10 +330,14 @@ class Inventory extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-    public static function saveNewActive($cod_soa, $des, $des_det, $par_cod,$cod_con,$car_cod, $estado, $sub_ofc_cod, $ci_resp,$nro_doc,$idc,$imp_act,$des_act,$gestion)
+    public static function saveNewActive($cod_soa, $des, $des_det, $par_cod,$cod_con,$car_cod, 
+    $estado, $sub_ofc_cod, $ci_resp,$nro_doc,$idc,$imp_act,$des_act,$gestion,$uni_med,$cod_ant,$cod_nue)
     {
         $query = "select * 
-        from inv.multi_guardar_activo('" . $cod_soa . "', '" . $des . "','" . $des_det . "','" . $par_cod . "','" . $cod_con . "','" . $car_cod . "','" . $estado . "','" . $sub_ofc_cod . "','" . $ci_resp . "','".$nro_doc."','".$idc."','".$imp_act."','".$des_act."','".$gestion."')";
+        from inv.multi_guardar_activo('" . $cod_soa . "', '" . $des . "','" . $des_det . "','" . $par_cod . "',
+        '" . $cod_con . "','" . $car_cod . "','" . $estado . "','" . $sub_ofc_cod . "','" . $ci_resp . "',
+        '".$nro_doc."','".$idc."','".$imp_act."','".$des_act."','".$gestion."','".$uni_med."','".$cod_ant."',
+        '".$cod_nue."')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

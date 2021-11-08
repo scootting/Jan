@@ -308,8 +308,12 @@ class InventoryController extends Controller
         $imp_act = '2';
         $des_act = '1';
         $gestion = '2021';
+        $uni_med = $request->med;
+        $cod_ant = $request->cod_ant;
+        $cod_nue = "0";
         //dd($cod_soa, $des, $des_det, $par_cod,$cod_con,$car_cod, $estado, $sub_ofc_cod, $ci_resp,$nro_doc,$idc,$imp_act,$des_act,$gestion);
-        $data = Inventory::saveNewActive($cod_soa, $des, $des_det, $par_cod,$cod_con,$car_cod, $estado, $sub_ofc_cod, $ci_resp,$nro_doc,$idc,$imp_act,$des_act,$gestion);
+        $data = Inventory::saveNewActive($cod_soa, $des, $des_det, $par_cod,$cod_con,$car_cod,
+        $estado, $sub_ofc_cod, $ci_resp,$nro_doc,$idc,$imp_act,$des_act,$gestion,$uni_med,$cod_ant,$cod_nue);
         return json_encode($data);
     }
     public function saveChangeDocInventory(Request $request)
@@ -549,7 +553,7 @@ class InventoryController extends Controller
     {
         $no_doc = $request->get('no_doc');
         $ofc_cod = $request->get('ofc_cod');
-        $sub = $request->get('sub_ofc_cod');
+        //$sub = $request->get('sub_ofc_cod');
         $jasper = new JasperPHP;
         $input = public_path() . '/reports/inventarioDetalleTrue.jrxml';
         $jasper->compile($input)->execute();
@@ -559,7 +563,7 @@ class InventoryController extends Controller
             $input,
             false, //$output,
             array('pdf', 'rtf'), // Formatos de salida del reporte
-            array('p_no_doc' => $no_doc,'p_unidad' => $ofc_cod,'p_subUnidad' => $sub),//array('php_version' => phpversion()),// Parámetros del reporte
+            array('p_no_doc' => $no_doc,'p_unidad' => $ofc_cod),//array('php_version' => phpversion()),// Parámetros del reporte
             array(
                 'driver' => 'postgres',
                 'username' => 'postgres',
@@ -578,7 +582,7 @@ class InventoryController extends Controller
     {
         $no_doc = $request->get('no_doc');
         $ofc_cod = $request->get('ofc_cod');
-        $sub = $request->get('sub_ofc_cod');
+        //$sub = $request->get('sub_ofc_cod');
         $jasper = new JasperPHP;
         $input = public_path() . '/reports/inventarioDetalleFalse.jrxml';
         $jasper->compile($input)->execute();
@@ -588,7 +592,7 @@ class InventoryController extends Controller
             $input,
             false, //$output,
             array('pdf', 'rtf'), // Formatos de salida del reporte
-            array('p_no_doc' => $no_doc,'p_unidad' => $ofc_cod,'p_sub_ofc_cod' => $sub),//array('php_version' => phpversion()),// Parámetros del reporte
+            array('p_no_doc' => $no_doc,'p_unidad' => $ofc_cod),//array('php_version' => phpversion()),// Parámetros del reporte
             array(
                 'driver' => 'postgres',
                 'username' => 'postgres',

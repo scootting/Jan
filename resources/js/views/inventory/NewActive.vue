@@ -56,12 +56,19 @@
         <hr style="color: gray" />
         <br />
         <el-row type="flex" justify="space-between">
-          <el-col :span="12">
+          <el-col :span="11">
             <el-form-item size="mini" label="Cantidad:" prop="cantidad">
-              <el-input-number v-model="newActive.cantidad" size="mini" label="Cantidad"
-                :min="1" :max="10000000" :step="1" :controls="true" controls-position="both" >
+              <el-input-number
+                v-model="newActive.cantidad"
+                size="mini"
+                label="Cantidad"
+                :min="1"
+                :max="10000000"
+                :step="1"
+                :controls="true"
+                controls-position="both"
+              >
               </el-input-number>
-              
             </el-form-item>
             <el-form-item size="mini" label="SubUnidad:" prop="sub_ofc_cod">
               <el-select
@@ -92,6 +99,9 @@
                 </el-option>
               </el-select>
             </el-form-item>
+             <el-form-item size="mini" label="Unidad de Medida:" prop="med">
+              <el-input type="text" v-model="newActive.med"></el-input>
+            </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item size="mini" label="Nro de documento:" prop="nro_doc">
@@ -101,7 +111,14 @@
                 v-model="newActive.nro_doc"
               ></el-input>
             </el-form-item>
-            <el-form-item size="mini" label="Seleccionar Partida:" prop="partida">
+            <el-form-item size="mini" label="Codigo antiguo:" prop="cod_ant">
+              <el-input type="text" v-model="newActive.cod_ant"></el-input>
+            </el-form-item>
+            <el-form-item
+              size="mini"
+              label="Seleccionar Partida:"
+              prop="partida"
+            >
               <el-select
                 v-model="newActive.partida"
                 value-key="par_cod"
@@ -116,7 +133,11 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item size="mini" label="Seleccionar Partida Contable:" prop="contable">
+            <el-form-item
+              size="mini"
+              label="Seleccionar Partida Contable:"
+              prop="contable"
+            >
               <el-select
                 v-model="newActive.contable"
                 value-key="con_cod"
@@ -131,9 +152,7 @@
                 </el-option>
               </el-select>
             </el-form-item>
-
           </el-col>
-          
         </el-row>
         <hr style="color: gray" />
         <br />
@@ -162,6 +181,7 @@
           <el-button size="mini" type="primary" plain @click="saveAsset"
             >Registrar activo</el-button
           >
+          <el-button size="mini" type="primary" plain @click="Return">Terminar</el-button>
           <el-button size="mini" type="danger" plain @click="Exit"
             >Cancelar</el-button
           >
@@ -181,25 +201,25 @@ export default {
     return {
       gestion: this.$store.state.user.gestion,
       estados: [],
-      partidas:[],
-      contable:[],
+      partidas: [],
+      contable: [],
       unidades: [],
       subUnidades: [],
       cargos: [],
-      nro:null,
+      nro: null,
       searchEncargado: {},
       exampleDes: "des 1|des 2|des 3",
       newActive: {
-        nro_doc:'',
+        nro_doc: "",
         car_cod: "",
-        oficina:"",
         des: "",
         des_det: "",
         estado: "",
-        partida:"",
-        contable:"",
-        cantidad:"1",
-        cargo: "",
+        partida: "",
+        contable: "",
+        cantidad: "1",
+        med:"PIEZA",
+        cod_ant:"0",
         cod_soa: this.$route.params.soa,
         sub_ofc_cod: "",
         ci_resp: "",
@@ -211,9 +231,7 @@ export default {
     };
   },
   mounted() {
-    console.log(
-      "mensaje de recuperacion de datos desde Crear de activos "
-    );
+    console.log("mensaje de recuperacion de datos desde Crear de activos ");
     this.getEstados();
     this.getCargos();
     this.getSubUnidades();
@@ -223,11 +241,17 @@ export default {
   },
   computed: {
     getNombre() {
-      return this.newActive.nombres + " " + this.newActive.paterno + " " + this.newActive.materno;
+      return (
+        this.newActive.nombres +
+        " " +
+        this.newActive.paterno +
+        " " +
+        this.newActive.materno
+      );
     },
-    getNroDoc(){
+    getNroDoc() {
       return this.nro + "/98";
-    }
+    },
   },
   methods: {
     test() {
@@ -244,6 +268,16 @@ export default {
       this.$notify.info({
         title: "Creación de activo cancelado",
         message: "No se registro ningún activo nuevo",
+        duration: 3000,
+      });
+      this.$router.push({
+        name: "createactive",
+      });
+    },
+    Return() {
+      this.$notify.info({
+        title: "Inserciones Terminadas",
+        message: "Retornar a lista de unidades",
         duration: 3000,
       });
       this.$router.push({
@@ -285,7 +319,7 @@ export default {
         .get("/api/activo/nro/")
         .then((data) => {
           this.nro = data.data[0].numero;
-          this.newActive.nro_doc = data.data[0].numero +"/98"
+          this.newActive.nro_doc = data.data[0].numero + "/98";
         })
         .catch((err) => {
           console.log(err);
@@ -296,7 +330,7 @@ export default {
       this.subUnidadesLoading = true;
       let cod_soa = this.$route.params.soa;
       axios
-        .get("/api/inventory/sub_offices/"+ this.$route.params.soa)
+        .get("/api/inventory/sub_offices/" + this.$route.params.soa)
         .then((data) => {
           this.subUnidadesLoading = false;
           this.subUnidades = data.data;
@@ -336,13 +370,10 @@ export default {
       axios
         .post("/api/newactive/save", this.newActive)
         .then((data) => {
+          location.reload();
           this.$notify.success({
             title: "Activo registrado exitosamente!",
-            message: "Se realizó el registro del Activo exitosamente",
-            duration: 3000,
-          });
-          this.$router.push({
-            name: "createactive",
+            duration: 5000,
           });
         })
         .catch((err) => {
