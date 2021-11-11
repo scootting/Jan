@@ -562,37 +562,7 @@ class InventoryController extends Controller
         return $report;
     }
 
-    public function inventarioTrue1(Request $request)
-    {
-        //dd($request);
-        $no_doc = $request->get('no_doc');
-        $ofc_cod = $request->get('ofc_cod');
-        //dd($no_doc ,$ofc_cod);
-        //$sub = $request->get('sub_ofc_cod');
-        $jasper = new JasperPHP;
-        $input = public_path() . '/reports/inventarioDetalleTrue.jrxml';
-        $jasper->compile($input)->execute();
-        $input = public_path() . '/reports/inventarioDetalleTrue.jasper'; //ReportValuesQr
-        $output = public_path() . '/reports';
-        $jasper->process(
-            $input,
-            false, //$output,
-            array('pdf', 'rtf'), // Formatos de salida del reporte
-            array('p_no_doc' => $no_doc,'p_unidad' => $ofc_cod),//array('php_version' => phpversion()),// Parámetros del reporte
-            array(
-                'driver' => 'postgres',
-                'username' => 'postgres',
-                'password' => '123456',
-                'host' => '192.168.25.54',
-                'database' => 'daf',
-                'port' => '5432',
-            )  
-        )->execute();
-        $pathToFile = public_path() . '/reports/inventarioDetalleTrue.pdf';
-        $filename = 'inventarioDetalleTrue.pdf';
-        $headers = ['Content-Type' => 'application/pdf'];
-        return response()->download($pathToFile, $filename, $headers);
-    }
+   
     public function inventarioFalse(Request $request)
     {
         $no_doc = $request->get('no_doc');
