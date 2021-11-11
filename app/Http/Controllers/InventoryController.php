@@ -524,6 +524,7 @@ class InventoryController extends Controller
     }
     public function informeGeneral(Request $request)
     {
+        //dd($request);
         $no_doc = $request->no_doc;
         $jasper = new JasperPHP;
         $input = public_path() . '/reports/inventarioGeneral.jrxml';
@@ -532,7 +533,7 @@ class InventoryController extends Controller
         $output = public_path() . '/reports';
         $jasper->process(
             $input,
-            false, //$output,
+            $output,
             array('pdf', 'rtf'), // Formatos de salida del reporte
             array('no_doc' => $no_doc),//array('php_version' => phpversion()),// Parámetros del reporte
             array(
@@ -565,6 +566,7 @@ class InventoryController extends Controller
    
     public function inventarioFalse(Request $request)
     {
+        //dd($request);
         $no_doc = $request->get('no_doc');
         $ofc_cod = $request->get('ofc_cod');
         //$sub = $request->get('sub_ofc_cod');

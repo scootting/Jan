@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="inventarioDetalleFalse" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="91408117-dd75-4e07-9e3d-9277c81667e5">
-	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="Oficial_Daf"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DAF"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="268"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="722"/>
 	<parameter name="p_unidad" class="java.lang.String"/>
 	<parameter name="p_no_doc" class="java.lang.String"/>
-	<parameter name="p_sub_ofc_cod" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[select d.obs_est,d.validacion,a.act_des,a.act_des_det,a.nro_doc,a.par_cod
 ,a.ofc_cod,a.sub_ofc_cod,a.act_imp , a.act_can ,a.act_uni_med,
@@ -27,7 +28,6 @@ ON d.id_act = a.id
 AND d.nro_doc_inv like  $P{p_no_doc} 
 AND a.ofc_cod like   $P{p_unidad} 
 AND d.validacion = false
-AND CAST(a.sub_ofc_cod AS text) IN (SELECT unnest(string_to_array( '1' , ',')) AS sub_ofc_cod)
 order by a.sub_ofc_cod, a.par_cod]]>
 	</queryString>
 	<field name="obs_est" class="java.lang.String">
@@ -254,10 +254,6 @@ order by a.sub_ofc_cod, a.par_cod]]>
 				</textElement>
 				<text><![CDATA[SIAF]]></text>
 			</staticText>
-			<image>
-				<reportElement x="-10" y="0" width="50" height="50" uuid="544a1981-b967-40ae-a956-52e11fb2d962"/>
-				<imageExpression><![CDATA["F:/UATF.png"]]></imageExpression>
-			</image>
 		</band>
 	</title>
 	<detail>
