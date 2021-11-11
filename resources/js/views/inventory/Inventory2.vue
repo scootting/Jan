@@ -182,25 +182,20 @@ export default {
         });
     },
     generateReportTrue(no_cod) {
-      
         axios({
           url: "/api/inventoryReportTrue/",
           params:{
             no_doc:no_cod.no_cod,
             ofc_cod:no_cod.ofc_cod,
-            sub_ofc_cod:no_cod.sub_ofc_cod,
           },
           method: "GET",
           responseType: "arraybuffer",
         }).then((response) => {
-          console.log(response.data);
-          console.log("1");
           let blob = new Blob([response.data], {
             type: "application/pdf",
           });
           let link = document.createElement("a");
           link.href = window.URL.createObjectURL(blob);
-          console.log(blob);
           let url = window.URL.createObjectURL(blob);
           window.open(url);
         });

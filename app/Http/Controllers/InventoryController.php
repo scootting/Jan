@@ -549,10 +549,25 @@ class InventoryController extends Controller
         $headers = ['Content-Type' => 'application/pdf'];
         return response()->download($pathToFile, $filename, $headers);
     }
+    
     public function inventarioTrue(Request $request)
     {
+        //dd($request);
         $no_doc = $request->get('no_doc');
         $ofc_cod = $request->get('ofc_cod');
+        //$nreport = 'FixedAssetsQr';
+        $nreport = 'DetalleInventarioTrue';
+        $controls = array('p_unidad' => $ofc_cod,'p_no_doc' =>$no_doc);
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+
+    public function inventarioTrue1(Request $request)
+    {
+        //dd($request);
+        $no_doc = $request->get('no_doc');
+        $ofc_cod = $request->get('ofc_cod');
+        //dd($no_doc ,$ofc_cod);
         //$sub = $request->get('sub_ofc_cod');
         $jasper = new JasperPHP;
         $input = public_path() . '/reports/inventarioDetalleTrue.jrxml';
