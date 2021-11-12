@@ -557,7 +557,7 @@ class InventoryController extends Controller
         $no_doc = $request->get('no_doc');
         $ofc_cod = $request->get('ofc_cod');
         //$nreport = 'FixedAssetsQr';
-        $nreport = 'DetalleInventarioTrue';
+        $nreport = 'detailinvetorytrue';
         $controls = array('p_unidad' => $ofc_cod,'p_no_doc' =>$no_doc);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
