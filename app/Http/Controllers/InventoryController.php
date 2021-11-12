@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Inventory;
-use App\Libraries\JSRClient;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Libraries\JSRClient;
 use JasperPHP\JasperPHP as JasperPHP;
 
 class InventoryController extends Controller
@@ -557,7 +557,8 @@ class InventoryController extends Controller
         $no_doc = $request->get('no_doc');
         $ofc_cod = $request->get('ofc_cod');
         //$nreport = 'FixedAssetsQr';
-        $nreport = 'DetalleInventarioTrue';
+        $nreport = 'DetailInventoryTrue';
+        \Log::info("nro_doc ". $no_doc."ofc_cod".$ofc_cod);
         $controls = array('p_unidad' => $ofc_cod,'p_no_doc' =>$no_doc);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
