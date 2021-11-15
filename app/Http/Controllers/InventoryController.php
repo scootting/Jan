@@ -246,7 +246,8 @@ class InventoryController extends Controller
         $ofc_cod = $request->ofc_cod;
         $sub_ofc_cod = $request->sub_ofc_cod;
         $gestion = '2021';
-        $data = Inventory::saveActivesToNewInventory($no_doc,$ofc_cod,$sub_ofc_cod,$gestion);
+        $validacion = 'false';
+        $data = Inventory::saveActivesToNewInventory($no_doc,$ofc_cod,$sub_ofc_cod,$gestion,$validacion);
         return json_encode($data);
     }
     public function SearchActivo(Request $request)
@@ -413,7 +414,8 @@ class InventoryController extends Controller
     }
     public function saveActiveInDetailDoc(Request $request)
     {
-       if ($request->has('id_detalle')) {
+        //dd($request);
+        if ($request->has('id_detalle')) {
         $id = $request->id_detalle;
     } else {
         $id = -1;

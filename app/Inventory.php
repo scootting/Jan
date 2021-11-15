@@ -358,18 +358,18 @@ class Inventory extends Model
         return $data;
     }
     //Insertar activos cuando se registra un nuevo inventario
-    public static function saveActivesToNewInventory($no_doc, $ofc_cod, $sub_ofc_cod, $gestion)
+    public static function saveActivesToNewInventory($no_doc, $ofc_cod, $sub_ofc_cod, $gestion,$validacion)
     {
         $arrString = "(";
         foreach ($sub_ofc_cod as $k => $su)
             $arrString = $arrString . ($k > 0 ? ',' : '') . $su;
         $arrString = $arrString . ")";
-        $query = "insert into inv.detalle_doc_act (cod_ges,id_act,id_des,nro_doc_inv) 
-        (select '" . $gestion . "',vd.id,vd.per_tab,
+        $query = "insert into inv.detalle_doc_act (cod_ges,validacion,id_act,id_des,nro_doc_inv) 
+        (select '" . $gestion . "','". $validacion ."',vd.id,vd.per_tab,
         (select no_cod from inv.doc_inv   where ofc_cod = '" . $ofc_cod . "' and no_cod = '" . $no_doc . "') nro_cod_inv
         from act.vv_act_detallado vd 
         where vd.ofc_cod = '" . $ofc_cod . "' 
-        )";
+    )";
         //$query = "select * from inv.insert_by_no_doc ( '".$no_doc."','".$ofc_cod."','".$sub_ofc_cod."','". $gestion ."' )";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
