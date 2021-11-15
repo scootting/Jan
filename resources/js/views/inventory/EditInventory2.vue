@@ -59,9 +59,9 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="Cargo" size="small">
+            <!-- <el-form-item label="Cargo" size="small">
               <el-select
-                v-model="editForm.car_cod_resp"
+                v-model="editForm.per_inv_car"
                 filterable
                 remote
                 multiple
@@ -82,10 +82,10 @@
                 >
                 </el-option>
               </el-select>
-            </el-form-item>
-            <el-form-item label="Responsable" size="small">
+            </el-form-item> -->
+            <!-- <el-form-item label="Responsable:" size="small">
               <el-select
-                v-model="editForm.ci_res"
+                v-model="editForm.per_inv"
                 filterable
                 remote
                 multiple
@@ -105,7 +105,7 @@
                 >
                 </el-option>
               </el-select>
-            </el-form-item> 
+            </el-form-item>  -->
           </el-form>
         </el-row>
       </div>
@@ -287,55 +287,55 @@ export default {
           console.log(err);
         });
     },
-    getCargosResp(cod_soa, subUnidades, actualizar) {
-      this.cargosLoading = true;
-      this.subUnidadesLoading = true;
-      axios
-        .get("/api/inventory2/cargos", {
-          params: {
-            cod_soa: cod_soa,
-            sub_unidades: subUnidades,
-          },
-        })
-        .then((data) => {
-          this.cargosLoading = false;
-          this.subUnidadesLoading = false;
-          this.cargos = data.data;
-          if(actualizar)
-            this.editForm.car_cod_resp = this.cargos.map((car) => car.id);
-          this.getResponsables(this.editForm.ofc_cod, this.editForm.car_cod_resp,actualizar);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
-    getResponsables(cod_soa, cargos,actualizar) {
-      this.cargosLoading = true;
-      this.responsablesLoading = true;
-      axios
-        .get("/api/inventory2/responsables", {
-          params: {
-            cod_soa: cod_soa,
-            cargos: cargos,
-          },
-        })
-        .then((data) => {
-          this.cargosLoading = false;
-          this.responsablesLoading = false;
-          this.responsables = data.data;
-          this.responsables = this.responsables.map(r=>{
-            r.nro_dip = r.nro_dip.trim();
-            return r;
-          })
-          if(actualizar)
-            this.editForm.ci_res = this.responsables.map(
-              (resp) => resp.nro_dip
-            );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    // getCargosResp(cod_soa, subUnidades, actualizar) {
+    //   this.cargosLoading = true;
+    //   this.subUnidadesLoading = true;
+    //   axios
+    //     .get("/api/inventory2/cargos", {
+    //       params: {
+    //         cod_soa: cod_soa,
+    //         sub_unidades: subUnidades,
+    //       },
+    //     })
+    //     .then((data) => {
+    //       this.cargosLoading = false;
+    //       this.subUnidadesLoading = false;
+    //       this.cargos = data.data;
+    //       if(actualizar)
+    //         this.editForm.per_inv_car = this.cargos.map((car) => car.id);
+    //       this.getResponsables(this.editForm.ofc_cod, this.editForm.per_inv_car,actualizar);
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
+    // getResponsables(cod_soa, cargos,actualizar) {
+    //   this.cargosLoading = true;
+    //   this.responsablesLoading = true;
+    //   axios
+    //     .get("/api/inventory2/responsables", {
+    //       params: {
+    //         cod_soa: cod_soa,
+    //         //cargos: cargos,
+    //       },
+    //     })
+    //     .then((data) => {
+    //       this.cargosLoading = false;
+    //       this.responsablesLoading = false;
+    //       this.responsables = data.data;
+    //       this.responsables = this.responsables.map(r=>{
+    //         r.nro_dip = r.nro_dip.trim();
+    //         return r;
+    //       })
+    //       if(actualizar)
+    //         this.editForm.per_inv = this.responsables.map(
+    //           (resp) => resp.nro_dip
+    //         );
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
     getEncargados(nro_dip,cb = false) {
       this.searchEncargadoLoading = true;
       axios

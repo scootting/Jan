@@ -35,7 +35,7 @@
               >{{ cargos.descripcion }}</el-tag
             >
           </el-form-item>
-          <el-form-item label="Encargados:">
+          <el-form-item label="Encargado:">
             <el-tag
               v-for="encargado in EditInvent.encargados"
               :key="encargado.nro_dip"
@@ -136,7 +136,6 @@ export default {
       //encargados = los que haran el inventario ,  responsables = a quienes se asigna los activos
       EditInvent: {
         date: "",
-        no_doc: "",
         no_doc: "",
         res_enc: [],
         car_cod: [],
