@@ -185,9 +185,11 @@ class InventoryController extends Controller
     }
     public function getResponsables(Request $request)
     {
+        //dd($request);
         $unidad = ($request->get('unidad') ? $request->get('unidad') : '');
         $cargos = ($request->get('cargos') ? $request->get('cargos') : []);
-        $data = Inventory::getResponsables($unidad, $cargos);
+        $sub_unidades = ($request->get('sub_uni') ? $request->get('sub_uni') : []);
+        $data = Inventory::getResponsables($unidad, $cargos,$sub_unidades);
         return json_encode($data);
     }
     //esto es para inventarios (normal) que ya se tiene listado.
@@ -214,7 +216,6 @@ class InventoryController extends Controller
     }
     public function saveNewInventory(Request $request)
     {
-        //dd($request);
         $no_doc = $request->no_doc;
         $res_enc = $request->encargados;
         $car_cod_enc = [];
@@ -224,15 +225,23 @@ class InventoryController extends Controller
         $car_cod = $car_cod_enc;
         $ofc_cod = $request->unidad;
         $sub_ofc_cod = $request->subUnidades;
-        $car_cod_resp = $request->cargos;
-        $ci_res = $request->responsables;
+        //$car_cod_resp = $request->cargos;
+        //$ci_res = $request->responsables;
         $estado = 'ELABORADO';
         $gestion = '2021'; // $request->gestion;
-        $data = Inventory::saveNewInventory($no_doc, $res_enc, $car_cod, $ofc_cod, $sub_ofc_cod, $car_cod_resp, $ci_res, $estado, $gestion);
+        $entregado = $request->per_inv;
+        $en_car = $request->car_per;
+        $recibido = $request->new_per;
+        $re_car = $request->new_car_per;
+        $superior = $request->get('sup') ? $request->get('sup') : ['0'];
+        $sup_car = $request->get('car_per_sup') ? $request->get('car_per_sup') : '0';
+        $data = Inventory::saveNewInventory($no_doc, $res_enc, $car_cod, $ofc_cod, 
+        $sub_ofc_cod,$estado, $gestion,$entregado, $en_car,$recibido,$re_car,$superior,$sup_car);
         return json_encode($data);
     }
     public function saveDatasDetail(Request $request)
     {
+        //dd($request);
         $no_doc = $request->no_doc;
         $ofc_cod = $request->ofc_cod;
         $sub_ofc_cod = $request->sub_ofc_cod;
@@ -553,16 +562,15 @@ class InventoryController extends Controller
     
     public function inventarioTrue(Request $request)
     {
-        //dd($request);
-        $no_doc = $request->get('no_doc');
-        $ofc_cod = $request->get('ofc_cod');
-        //$nreport = 'FixedAssetsQr';
-
-        $nreport = 'detailinvetorytrue';
-
-        $controls = array('p_unidad' => $ofc_cod,'p_no_doc' =>$no_doc);
-        $report = JSRClient::GetReportWithParameters($nreport, $controls);
-        return $report;
+       //dd($request);
+       $no_doc = $request->get('no_doc');
+       $ofc_cod = $request->get('ofc_cod');
+       //$nreport = 'FixedAssetsQr';
+       $nreport = 'DetailInventoryTrue';
+       \Log::info("nro_doc ". $no_doc."ofc_cod".$ofc_cod);
+       $controls = array('p_unidad' => $ofc_cod,'p_no_doc' =>$no_doc);
+       $report = JSRClient::GetReportWithParameters($nreport, $controls);
+       return $report;
     }
 
    

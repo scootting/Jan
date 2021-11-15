@@ -141,20 +141,27 @@ class Inventory extends Model
     }
 
     //obtener los responsables que realizaran el nuevo inventario
-    public static function getResponsables($unidad, $cargos)
+    public static function getResponsables($unidad, $cargos,$sub_unidades)
     {
         $arrString = "(";
         foreach ($cargos as $k => $cargo)
             $arrString = $arrString . ($k > 0 ? ',' : '') . $cargo;
         $arrString = $arrString . ')';
+        $arrString2 = "(";
+        foreach ($sub_unidades as $y => $sub_unidad)
+            $arrString2 = $arrString2 .($y > 0 ? ',' : '') . $sub_unidad;
+        $arrString2 = $arrString2 . ')';
         $query = "select public.personas.nro_dip,public.personas.nombres,
-        public.personas.paterno,public.personas.materno 
-        from inv.activos,public.personas,inv.cargos
-        where inv.activos.ofc_cod like '%" . $unidad . "%'and
-        public.personas.nro_dip = inv.activos.ci_resp
-        and inv.activos.car_cod = inv.cargos.id
-        " . (count($cargos) > 0 ? "and inv.cargos.id in "
-            . $arrString : "") . "
+                  public.personas.paterno,public.personas.materno 
+                    from inv.activos,public.personas,inv.cargos,inv.sub_oficinas
+                        where inv.activos.ofc_cod like '%" . $unidad . "%'
+                        and public.personas.nro_dip = inv.activos.ci_resp
+                        and inv.activos.car_cod = inv.cargos.id
+                            " . (count($cargos) > 0 ? "and inv.cargos.id in "
+                            . $arrString : "") . "
+                        and inv.activos.sub_ofc_cod = inv.sub_oficinas.id 
+                        " . (count($sub_unidades) > 0 ? "and inv.sub_oficinas.id in "
+                        . $arrString2 : "") . "
         group by public.personas.nro_dip,public.personas.nombres,
         public.personas.paterno,public.personas.materno";
         $data = collect(DB::select(DB::raw($query)));
@@ -198,7 +205,8 @@ class Inventory extends Model
         return substr($cad, strlen($cad) - 6);
     }
     //guardar datos del nuevo inventario
-    public static function saveNewInventory($no_doc, $res_enc, $car_cod, $ofc_cod, $sub_ofc_cod, $car_cod_resp, $ci_res, $estado, $gestion)
+    public static function saveNewInventory($no_doc, $res_enc, $car_cod, $ofc_cod, 
+    $sub_ofc_cod,$estado, $gestion,$entregado, $en_car,$recibido,$re_car,$superior,$sup_car)
     {
         $no_doc = self::getNewCodInv();
         //$n = static::saveActivesToNewInventory($no_doc);
@@ -211,11 +219,15 @@ class Inventory extends Model
                 car_cod,
                 ofc_cod,
                 sub_ofc_cod,
-                car_cod_resp,
-                ci_res,
                 fec_cre,
                 estado,
-                gestion
+                gestion,
+                per_inv,
+                new_per_inv,
+                per_inv_car,
+                new_per_car,
+                car_per_sup,
+                per_sup
                 )
                 values
                  (
@@ -224,11 +236,15 @@ class Inventory extends Model
                 '" . str_replace(']', '}', str_replace('[', '{', json_encode($car_cod))) . "',
                 '" . $ofc_cod . "',
                 '" . str_replace(']', '}', str_replace('[', '{', json_encode($sub_ofc_cod))) . "',
-                '" . str_replace(']', '}', str_replace('[', '{', json_encode($car_cod_resp))) . "',
-                '" . str_replace(']', '}', str_replace('[', '{', json_encode($ci_res))) . "',
                 '" . $date . "',
                 '" . $estado . "',
-                '" . $gestion . "'
+                '" . $gestion . "',
+                '" . $entregado . "',
+                '" . $recibido . "',
+                '" . $en_car . "',
+                '" . $re_car . "',
+                '" . $sup_car . "',
+                '" . str_replace(']', '}', str_replace('[', '{', json_encode($superior))) . "'
                 );";
         $data = collect(DB::select(DB::raw($query)));
         return ['data' => $data, 'no_doc' => $no_doc];
