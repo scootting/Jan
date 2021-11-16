@@ -44,13 +44,17 @@ class FixedAssetController extends Controller
     public function getReportSelectedFixedAssets(Request $request)
     {
         $lista = $request->get('lista');
+        $nreport = $request->get('reporte');
+
         $lista = implode(',', $lista);
-        //$nreport = 'FixedAssetsQr';
-        $nreport = 'FixedAssetsQr_A4';
+        //$nreport = 'FixedAssetsQr_A4';
         $controls = array('p_lista' => $lista);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
+
+
+
 
     public function getReportSelectedFixedAssets2(Request $request)
     {

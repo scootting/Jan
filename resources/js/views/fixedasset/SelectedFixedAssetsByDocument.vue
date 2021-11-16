@@ -3,14 +3,22 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>activos fijos para el documento: {{ nro_doc }}</span>
-        <el-button
-          style="text-align: right; float: right"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          @click="initPrintSelectedFixedAssets"
-          >imprimir</el-button
-        >
+        <el-button-group style="text-align: right; float: right">
+          <el-button
+            size="small"
+            type="primary"
+            icon="el-icon-printer"
+            @click="initPrintSelectedFixedAssets"
+            >imprimir</el-button
+          >
+          <el-button
+            size="small"
+            type="default"
+            icon="el-icon-tickets"
+            @click="initPrintSelectedFixedAssetsv2"
+            >imprimir</el-button
+          >
+        </el-button-group>
       </div>
       <br />
       <div>
@@ -82,6 +90,7 @@ export default {
           url: "/api/reportSelectedFixedAssets/",
           params: {
             lista: list,
+            reporte: "FixedAssetsQr_A4",
           },
           method: "GET",
           responseType: "arraybuffer",
@@ -97,6 +106,36 @@ export default {
         //link.href = window.URL.createObjectURL(blob);
         //link.download = "test.pdf";
         //link.click();
+      } else {
+        alert("debe seleccionar por lo menos un elemento");
+      }
+    },
+
+    initPrintSelectedFixedAssetsv2() {
+      let list = [];
+
+      for (var item in this.selectedFixedAssets) {
+        list.push(this.selectedFixedAssets[item]["codigo"]);
+      }
+      console.log(list);
+      if (list.length != 0) {
+        axios({
+          url: "/api/reportSelectedFixedAssets/",
+          params: {
+            lista: list,
+            reporte: "FixedAssetsQr_A2",
+          },
+          method: "GET",
+          responseType: "arraybuffer",
+        }).then((response) => {
+          let blob = new Blob([response.data], {
+            type: "application/pdf",
+          });
+          let link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
+          let url = window.URL.createObjectURL(blob);
+          window.open(url);
+        });
       } else {
         alert("debe seleccionar por lo menos un elemento");
       }
