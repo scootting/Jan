@@ -536,30 +536,11 @@ class InventoryController extends Controller
     public function informeGeneral(Request $request)
     {
         //dd($request);
-        $no_doc = $request->no_doc;
-        $jasper = new JasperPHP;
-        $input = public_path() . '/reports/inventarioGeneral.jrxml';
-        $jasper->compile($input)->execute();
-        $input = public_path() . '/reports/inventarioGeneral.jasper'; //ReportValuesQr
-        $output = public_path() . '/reports';
-        $jasper->process(
-            $input,
-            $output,
-            array('pdf', 'rtf'), // Formatos de salida del reporte
-            array('no_doc' => $no_doc),//array('php_version' => phpversion()),// Parámetros del reporte
-            array(
-                'driver' => 'postgres',
-                'username' => 'postgres',
-                'password' => '123456',
-                'host' => '192.168.25.54',
-                'database' => 'daf',
-                'port' => '5432',
-            )  
-        )->execute();
-        $pathToFile = public_path() . '/reports/inventarioGeneral.pdf';
-        $filename = 'inventarioGeneral.pdf';
-        $headers = ['Content-Type' => 'application/pdf'];
-        return response()->download($pathToFile, $filename, $headers);
+       $no_doc = $request->get('no_doc');
+       $nreport = 'InventoryGeneral';
+       $controls = array('no_doc' =>$no_doc);
+       $report = JSRClient::GetReportWithParameters($nreport, $controls);
+       return $report;
     }
     
     public function inventarioTrue(Request $request)
@@ -567,9 +548,7 @@ class InventoryController extends Controller
        //dd($request);
        $no_doc = $request->get('no_doc');
        $ofc_cod = $request->get('ofc_cod');
-       //$nreport = 'FixedAssetsQr';
        $nreport = 'DetailInventoryTrue';
-       \Log::info("nro_doc ". $no_doc."ofc_cod".$ofc_cod);
        $controls = array('p_unidad' => $ofc_cod,'p_no_doc' =>$no_doc);
        $report = JSRClient::GetReportWithParameters($nreport, $controls);
        return $report;
