@@ -540,7 +540,7 @@ class InventoryController extends Controller
         $controls = array('p_no_doc' =>$no_doc);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
- 
+        //cambios en el servidor 
     }
     
     public function inventarioTrue(Request $request)

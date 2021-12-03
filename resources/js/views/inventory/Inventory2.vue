@@ -22,16 +22,16 @@
       <br />
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column label="Nro Doc">
+          <el-table-column width="150" label="No.">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.no_cod }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="ofc_cod" label="Codigo SOA"> </el-table-column>
-          <el-table-column prop="descripcion" width="250" label="Unidad"></el-table-column>
-          <el-table-column label="Estado">
+          <el-table-column prop="ofc_cod" width="100" label="Cat. prog."> </el-table-column>
+          <el-table-column prop="descripcion" width="450" label="descripcion categoria programatica"></el-table-column>
+          <el-table-column width="100" label="Estado">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.estado }}</el-tag>
@@ -43,7 +43,7 @@
               <el-button
                 :disabled="data[scope.$index].verificado == true"
                 @click="editInventory(scope.$index, scope.row)"
-                type="primary"
+                type="success"
                 plain
                 size="mini"
                 >Editar</el-button
@@ -51,14 +51,14 @@
               <el-button
                 :disabled="data[scope.$index].verificado == true"
                 @click="listActive(scope.row.id)"
-                type="primary"
+                type="success"
                 plain
                 size="mini"
                 >Ver lista </el-button
               >
             </template>
           </el-table-column>
-          <el-table-column align="right-center" width="450" label="Informe">
+          <el-table-column align="right-center" width="250" label="Informe">
             <template slot-scope="scope">
               <el-button
                 :disabled="data[scope.$index].verificado == false"
@@ -74,15 +74,7 @@
                 type="primary"
                 plain
                 size="mini"
-                >VERIFICADOS</el-button
-              >
-              <el-button
-                :disabled="data[scope.$index].verificado == false"
-                @click="generateReportFalse(scope.row)"
-                type="primary"
-                plain
-                size="mini"
-                >NO VERIFICADOS</el-button
+                >Detallado</el-button
               >
             </template>
           </el-table-column>
@@ -199,32 +191,7 @@ export default {
           let url = window.URL.createObjectURL(blob);
           window.open(url);
         });
-    },
-    generateReportFalse(no_cod) {
-      
-        axios({
-          url: "/api/inventoryReportFalse/",
-          params:{
-            no_doc:no_cod.no_cod,
-            ofc_cod:no_cod.ofc_cod,
-            sub_ofc_cod:no_cod.sub_ofc_cod,
-          },
-          method: "GET",
-          responseType: "arraybuffer",
-        }).then((response) => {
-          console.log(response.data);
-          console.log("1");
-          let blob = new Blob([response.data], {
-            type: "application/pdf",
-          });
-          let link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          console.log(blob);
-          let url = window.URL.createObjectURL(blob);
-          window.open(url);
-        });
-    },
-    
+    },    
     test() {
       alert("bienvenido al modulo");
     },
