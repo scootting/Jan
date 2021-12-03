@@ -53,9 +53,6 @@ class FixedAssetController extends Controller
         return $report;
     }
 
-
-
-
     public function getReportSelectedFixedAssets2(Request $request)
     {
         $nreport = 'valores';
