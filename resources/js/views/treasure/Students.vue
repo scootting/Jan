@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>dia de venta: {{ day }}</span>
+        <span>dia de venta de valores no. {{ day }}</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="test"
           >ayuda</el-button
         >
@@ -17,7 +17,7 @@
             slot="append"
             icon="el-icon-search"
             @click="initGetDataOfStudent"
-          ></el-button>
+          >Buscar</el-button>
         </el-input>
       </div>
       <br />
@@ -119,8 +119,8 @@ export default {
       });
   },
   methods: {
-    test() {
-      alert("bienvenido al modulo");
+    test(){
+      alert("presiono el foco");
     },
     //Guardar la informacion necesaria para los alumnos nuevos
     saveTransaction() {
@@ -136,14 +136,6 @@ export default {
           marker: "registrar",
         })
         .then(function (response) {
-          app.$alert(
-            "se ha creado el registro de los valores del estudiante",
-            "mensaje del sistema",
-            {
-              confirmButtonText: "OK",
-              callback: (action) => {},
-            }
-          );
           //alert("se ha creado el registro de los valores del estudiante");
         })
         .catch(function (response) {
@@ -176,35 +168,32 @@ export default {
             })
             .catch((error) => {
               this.error = error.response.data;
-              this.$notify.error({
-                title: "error",
-                message: this.error.message,
-              });
+              this.$alert(this.error.message, 'Gestor de errores', {
+                dangerouslyUseHTMLString: true
+              });              
             });
         })
         .catch((error) => {
           this.error = error.response.data;
-          this.$notify.error({
-            title: "Error",
-            message: this.error.message,
-          });
+          this.$alert(this.error.message, 'Gestor de errores', {
+              dangerouslyUseHTMLString: true
+          });              
         });
     },
+    ///api/reports/
     printTransactions() {
       var app = this;
-      app.ci_per = app.postulations.nro_dip;
+      app.ci_per = app.postulations.nro_dip; 
       axios({
-        url:
-          "/api/reports/" +
-          app.day +
-          "/" +
-          app.ci_per +
-          "/" +
-          app.user.gestion +
-          "/" +
-          app.user.usuario,
+        url: "/api/reports/",
+        params: {
+          id_dia: app.day,   
+          ci_per: app.ci_per,
+          gestion: app.user.gestion,
+          usr_cre: app.user.usuario,
+        },
         method: "GET",
-        responseType: "blob",
+        responseType: "arraybuffer",
       }).then((response) => {
         let blob = new Blob([response.data], {
           type: "application/pdf",

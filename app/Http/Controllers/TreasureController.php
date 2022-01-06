@@ -6,6 +6,7 @@ use App\Treasure;
 use Illuminate\Http\Request;
 use JasperPHP\JasperPHP as JasperPHP;
 use Illuminate\Support\Collection;
+use App\Libraries\JSRClient;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -44,69 +45,38 @@ class TreasureController extends Controller
     }
 
     //reportes usando Jasper
-    public function getReportValuesQr($id_dia, $ci_per, $gestion, $usr_cre)
+    public function getReportValuesQr(Request $request)
     {        
+        $id_dia = $request->get('id_dia');
+        $ci_per = $request->get('ci_per');
+        $gestion = $request->get('gestion');
+        $usr_cre = $request->get('usr_cre');
+        $nreport = 'test_1';
+        \Log::info('ENTRA ACA LIONEL: ');
         \Log::info('estos son datos: '. $id_dia.' '.trim($ci_per).' '.$gestion.' '.trim($usr_cre));
-        $jasper = new JasperPHP;
-        $input = public_path() . '/reports/test.jrxml';
-        $jasper->compile($input)->execute();
-
-        $input = public_path() . '/reports/test.jasper'; //ReportValuesQr
-        $output = public_path() . '/reports';
-        $jasper->process(
-            $input,
-            false, //$output,
-            array('pdf'),//array('pdf', 'rtf'), // Formatos de salida del reporte
-            array(
-                'p_id_dia' => $id_dia, 
-                'p_ci_per' => $ci_per, 
-                'p_gestion' => $gestion, 
-                'p_usr_cre' => $usr_cre
-                ),//array('php_version' => phpversion()),// Parámetros del reporte
-            array(
-                'driver' => 'postgres',
-                'username' => 'postgres',
-                'password' => '123456',
-                'host' => '192.168.25.54',
-                'database' => 'daf',
-                'port' => '5432',
-            )  
-        )->execute();
-
-        $pathToFile = public_path() . '/reports/test.pdf';
-        $filename = 'test.pdf';
-        $headers = ['Content-Type' => 'application/pdf'];
-        return response()->download($pathToFile, $filename, $headers);
+        $controls = array(
+            'p_id_dia' => $id_dia, 
+            'p_ci_per' => trim($ci_per), 
+            'p_gestion' => $gestion, 
+            'p_usr_cre' => trim($usr_cre)
+            );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
     }
 
-    public function getReportDetailStudents($id){
-        $jasper = new JasperPHP;
-        $input = public_path() . '/reports/testDetail.jrxml';
-        $jasper->compile($input)->execute();
-
-        $input = public_path() . '/reports/testDetail.jasper'; //ReportValuesQr
-        $output = public_path() . '/reports';
-        $jasper->process(
-            $input,
-            false, //$output,
-            array('pdf'),//array('pdf', 'rtf'), // Formatos de salida del reporte
-            array(
-                'p_id' => $id, 
-                ),
-            array(
-                'driver' => 'postgres',
-                'username' => 'postgres',
-                'password' => '123456',
-                'host' => '192.168.25.54',
-                'database' => 'daf',
-                'port' => '5432',
-            )  
-        )->execute();
-
-        $pathToFile = public_path() . '/reports/testDetail.pdf';
-        $filename = 'testDetail.pdf';
-        $headers = ['Content-Type' => 'application/pdf'];
-        return response()->download($pathToFile, $filename, $headers);
+    public function getReportDetailStudents(Request $request){
+        $id_dia = $request->get('id_dia');
+        $gestion = $request->get('gestion');
+        $usr_cre = $request->get('usr_cre');
+        \Log::info('estos son datos para el reporte general: '. $id_dia.' '.$gestion.' '.trim($usr_cre));
+        $nreport = 'test_details_1';
+        $controls = array(
+            'p_id_dia' => $id_dia, 
+            'p_gestion' => $gestion, 
+            'p_usr_cre' => trim($usr_cre)
+            );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
 
     }
 
@@ -126,9 +96,11 @@ class TreasureController extends Controller
         $paterno = strtoupper($dataPostulations['paterno']);
         $materno = strtoupper($dataPostulations['materno']);
 
+        /*
         $idx = Treasure::getIdTransactionsByYear($gestion);
         $idx = $idx[0]->{'ff_id_tramite'};
         $nro_com = str_pad($idx, 6, "0", STR_PAD_LEFT);
+        */
         $tip_tra = '10';
 
         if ($paterno != "")
@@ -146,7 +118,7 @@ class TreasureController extends Controller
                 $marker = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion); 
                 $id_tran = $marker[0]->{'id_tran'};
             }
-            $data = Treasure::addProcedureByStudents($id_dia, $id_tran, $nro_com, $cod_val, $ci_per, $des_per, $idx, $gestion, $imp_val); 
+            //$data = Treasure::addProcedureByStudents($id_dia, $id_tran, $nro_com, $cod_val, $ci_per, $des_per, $idx, $gestion, $imp_val); 
             $id_tran = 0;
         }
         //return json_encode($data);
@@ -170,6 +142,10 @@ class TreasureController extends Controller
         );
         return json_encode($paginate);
     }
+
+
+
+
 
     public function getSaleOfDayById(Request $request){
         $id = $request->get('id');// '' cadena vacia

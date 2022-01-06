@@ -2,7 +2,8 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>estudiantes nuevos</span>
+        <span>venta de valores para estudiantes nuevos</span>
+        <!--
         <el-button
           style="text-align: right; float: right"
           size="small"
@@ -10,7 +11,7 @@
           icon="el-icon-plus"
           @click="initAddDay"
           >nuevo dia</el-button
-        >
+        >-->
       </div>
       <!--
       <div style="margin-top: 15px">
@@ -26,31 +27,31 @@
       -->
       <div>
         <el-table v-loading="loading" :data="days" style="width: 100%">
-          <el-table-column prop="id_dia" label="dia" width="100">
+          <el-table-column prop="id_dia" label="dia" :min-width="100">
             <template slot-scope="scope">
-              <el-tag size="medium" type="danger">{{ scope.row.id_dia }}</el-tag>
+              <el-tag size="medium" type="primary">{{ scope.row.id_dia }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="fec_tra" label="fecha" width="100"></el-table-column>
-          <el-table-column prop="glosa" label="glosa" width="650"></el-table-column>
+          <el-table-column prop="fec_tra" label="fecha" :min-width="100">
+            <template slot-scope="scope">
+              <el-tag size="medium" type="info">{{ scope.row.fec_tra }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>
           <!--
           <el-table-column prop="importe" label="importe" width="100"></el-table-column>
           -->
-          <el-table-column align="right" width="320">
+          <el-table-column align="right" :min-width="320">
             <template slot-scope="scope">
               <el-button
-                @click="initDetailStudents(scope.$index, scope.row)"
-                type="primary"
-                size="mini"
-                plain
-                >detalle del dia</el-button
+                @click="initSaleStudents(scope.$index, scope.row)"                
+                size="mini"  type="warning"
+                >realizar venta de valores</el-button
               >
               <el-button
-                @click="initSaleStudents(scope.$index, scope.row)"
-                type="danger"
-                plain
-                size="mini"
-                >realizar venta</el-button
+                @click="initDetailStudents(scope.$index, scope.row)"
+                size="mini"  type="primary"
+                >detalle de venta del dia</el-button
               >
             </template>
           </el-table-column>
@@ -93,6 +94,7 @@ export default {
       .then((response) => {
         app.loading = false;
         app.days = response.data.data;
+        console.log(app.days);
         app.pagination = response.data;
       })
       .catch((error) => {
@@ -131,11 +133,17 @@ export default {
     },
 
     initDetailStudents(index, row) {
+      var app = this;
       let id = row.id_dia;
       axios({
-        url: "/api/reportDetailStudents/" + id,
+        url: "/api/reportDetailStudents/",
+        params: {
+          id_dia: id,   
+          gestion: app.user.gestion,
+          usr_cre: app.user.usuario,
+        },
         method: "GET",
-        responseType: "blob",
+        responseType: "arraybuffer",
       }).then((response) => {
         let blob = new Blob([response.data], {
           type: "application/pdf",
@@ -145,11 +153,9 @@ export default {
         let url = window.URL.createObjectURL(blob);
         window.open(url);
       });
-      alert("llegamos");
     },
     initSaleStudents(index, row) {
       let id = row.id_dia;
-      //alert(id);
       this.$router.push({
         name: "students",
         params: {

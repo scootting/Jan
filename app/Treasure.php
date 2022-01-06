@@ -22,8 +22,8 @@ class Treasure extends Model
     //  * {description: descripcion del tramite}      
     //  * {year: gestion}      
     public static function getValuesProcedure($description, $year){
-        //select * from trap.ff_valores_tramite('EXCELENCIA', '2020')
-        $query = "select * from trap.ff_valores_tramite('".$description."','".$year."')";
+        //select * from trap.ff_valores_tramite_nuevos('EXCELENCIA', '2020')
+        $query = "select * from trap.ff_valores_tramite_nuevos('".$description."','".$year."')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }  

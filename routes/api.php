@@ -103,15 +103,24 @@ Route::group([
     Route::post('documents', 'DocumentController@getDocumentsByOffice');
 
 
+
+
+
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
     Route::post('getDataOfStudentById', 'TreasureController@getDataOfStudentById');
     // *** - Buscar los valores pertenecientes a un tramite - ***
     Route::post('valuesprocedure', 'TreasureController@getValuesProcedure');
+
+
+
+
+
     // *** - Obtener el reporte correspondiente a los valores vendidos para alumnos nuevos - ***
-    Route::get('reports/{id_dia}/{ci_per}/{gestion}/{usr_cre}', 'TreasureController@getReportValuesQr');
+    Route::get('reports/', 'TreasureController@getReportValuesQr');
     // *** - Obtener el reporte correspondiente a los valores vendidos para alumnos nuevos por dia - ***
-    Route::get('reportDetailStudents/{id}', 'TreasureController@getReportDetailStudents');
+    Route::get('reportDetailStudents/', 'TreasureController@getReportDetailStudents');
+
     // *** - Almacenar - ***
     Route::post('storeTransactionsByStudents', 'TreasureController@storeTransactionsByStudents');
     // *** - Obtener los dias para la venta de valores de un usuario - ***
