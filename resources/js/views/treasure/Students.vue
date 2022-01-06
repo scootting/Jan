@@ -136,6 +136,9 @@ export default {
           marker: "registrar",
         })
         .then(function (response) {
+              this.$alert("Se ha registrado correctamente a la persona", 'Gestor de mensajes', {
+                dangerouslyUseHTMLString: true
+              });              
           //alert("se ha creado el registro de los valores del estudiante");
         })
         .catch(function (response) {
