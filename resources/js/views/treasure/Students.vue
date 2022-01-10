@@ -136,14 +136,13 @@ export default {
           marker: "registrar",
         })
         .then(function (response) {
-              this.$alert("Se ha registrado correctamente a la persona", 'Gestor de mensajes', {
+              app.$alert("Se ha registrado correctamente a la persona", 'Gestor de mensajes', {
                 dangerouslyUseHTMLString: true
               });              
-          //alert("se ha creado el registro de los valores del estudiante");
         })
-        .catch(function (response) {
-          console.log(response);
-          alert("no se puede crear el registro de los valores del estudiante");
+        .catch(function (error) {
+          this.error = error.response.data;
+          alert(this.error.message);
         });
     },
 
@@ -171,14 +170,14 @@ export default {
             })
             .catch((error) => {
               this.error = error.response.data;
-              this.$alert(this.error.message, 'Gestor de errores', {
+              app.$alert(this.error.message, 'Gestor de errores', {
                 dangerouslyUseHTMLString: true
               });              
             });
         })
         .catch((error) => {
           this.error = error.response.data;
-          this.$alert(this.error.message, 'Gestor de errores', {
+          app.$alert(this.error.message, 'Gestor de errores', {
               dangerouslyUseHTMLString: true
           });              
         });

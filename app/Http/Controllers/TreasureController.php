@@ -69,7 +69,8 @@ class TreasureController extends Controller
         $gestion = $request->get('gestion');
         $usr_cre = $request->get('usr_cre');
         \Log::info('estos son datos para el reporte general: '. $id_dia.' '.$gestion.' '.trim($usr_cre));
-        $nreport = 'test_details_1';
+        $nreport = 'test_general_1';
+        //$nreport = 'test_details_1';
         $controls = array(
             'p_id_dia' => $id_dia, 
             'p_gestion' => $gestion, 
@@ -95,6 +96,7 @@ class TreasureController extends Controller
         $nombres = strtoupper($dataPostulations['nombres']);
         $paterno = strtoupper($dataPostulations['paterno']);
         $materno = strtoupper($dataPostulations['materno']);
+        $des_tra = strtoupper($dataPostulations['modalidad']);
 
         /*
         $idx = Treasure::getIdTransactionsByYear($gestion);
@@ -118,10 +120,10 @@ class TreasureController extends Controller
                 $marker = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion); 
                 $id_tran = $marker[0]->{'id_tran'};
             }
-            //$data = Treasure::addProcedureByStudents($id_dia, $id_tran, $nro_com, $cod_val, $ci_per, $des_per, $idx, $gestion, $imp_val); 
+            $data = Treasure::addProcedureByStudents($id_dia, $id_tran, -1, $cod_val, $ci_per, $des_per, -1, $gestion, $des_tra, $pre_uni); 
             $id_tran = 0;
         }
-        //return json_encode($data);
+        return json_encode($marker);
     }
 
     public function getSaleOfDaysByDescription(Request $request){

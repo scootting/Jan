@@ -79,15 +79,14 @@ class Treasure extends Model
         return $data;
     }
 
-    public static function addProcedureByStudents($id_dia, $id_tran, $nro_com, $cod_val, $ci_per, $des_per, $idx, $gestion, $imp_val){
-        //insert into trap.tram( ... ) values ( ... )
-        $query = "INSERT INTO trap.tram(id_dia, id_tran, nro_com, cod_val, ".
-                 "ci_per, des_per, idx, gestion, imp_val) VALUES ". 
-                 "('" .$id_dia. "','" .$id_tran. "','" .$nro_com. "','" .$cod_val. "','" .
-                 $ci_per. "','" .$des_per. "','" .$idx. "','" .$gestion. "','" .$imp_val. "')";
+    public static function addProcedureByStudents($id_dia, $id_tran, $nro_sol, $cod_val, $ci_per, $des_per, $idx, $gestion, $des_tra, $imp_val){
+        //insert into trap.doc( ... ) values ( ... )
+        $query = "INSERT INTO trap.doc(id_dia, id_tran, nro_sol, cod_val, ".
+                 "ci_per, des_per, idx, gestion, des_tra, imp_val) VALUES ". 
+                 "('" .$id_dia. "','" .$id_tran. "','" .$nro_sol. "','" .$cod_val. "','" .
+                 $ci_per. "','" .$des_per. "','" .$idx. "','" .$gestion. "','" .$des_tra. "','" .$imp_val. "')";
         $data = collect(DB::select(DB::raw($query))); 
         return $data;
-
     } 
 
     public static function getValueById($valor, $gestion){
