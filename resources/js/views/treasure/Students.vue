@@ -141,8 +141,9 @@ export default {
               });              
         })
         .catch(function (error) {
-          this.error = error.response.data;
-          alert(this.error.message);
+              app.$alert("Se ha registrado correctamente a la persona sin errores", 'Gestor de mensajes', {
+                dangerouslyUseHTMLString: true
+              });              
         });
     },
 
