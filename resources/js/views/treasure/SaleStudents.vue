@@ -38,12 +38,10 @@
             </template>
           </el-table-column>
           <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>
-          <!--
-          <el-table-column prop="importe" label="importe" width="100"></el-table-column>
-          -->
           <el-table-column align="right" :min-width="320">
             <template slot-scope="scope">
               <el-button
+                :disabled="days[scope.$index].estado == 'V'"
                 @click="initSaleStudents(scope.$index, scope.row)"                
                 size="mini"  type="warning"
                 >realizar venta de valores</el-button
