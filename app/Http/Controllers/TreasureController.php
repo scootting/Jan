@@ -30,7 +30,8 @@ class TreasureController extends Controller
         $year = $request->get('year');
         switch($id_modalidad) {
             case 1: //EXAMEN PSA          
-            case 2: //CURSO PREUNIVERSITARIO          
+            case 2: //CURSO PREUNIVERSITARIO 
+            case 116: //CURSO PREUNIVERSITARIO 
                 $description = 'NUEVOS';
             break;            
             case 6: //ADMISION POR EXCELENCIA ACADEMICA     
