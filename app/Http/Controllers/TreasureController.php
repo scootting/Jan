@@ -37,6 +37,7 @@ class TreasureController extends Controller
             case 42://ORIGINARIA
                 $description = 'ORIGINARIA';
             break;            
+            case 32://OLIMPIADAS
             case 6: //ADMISION POR EXCELENCIA ACADEMICA     
             case 7: //ADMISION EXTRAORDINARIA DEPORTIVA      
                 $description = 'EXCELENCIA';            
