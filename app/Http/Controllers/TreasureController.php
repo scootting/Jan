@@ -31,8 +31,11 @@ class TreasureController extends Controller
         switch($id_modalidad) {
             case 1: //EXAMEN PSA          
             case 2: //CURSO PREUNIVERSITARIO 
-            case 116: //CURSO PREUNIVERSITARIO 
+            case 116: //EXAMEN PSA ADMISION ESPECIAL
                 $description = 'NUEVOS';
+            break;
+            case 42://ORIGINARIA
+                $description = 'ORIGINARIA';
             break;            
             case 6: //ADMISION POR EXCELENCIA ACADEMICA     
             case 7: //ADMISION EXTRAORDINARIA DEPORTIVA      
