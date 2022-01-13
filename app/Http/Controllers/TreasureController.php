@@ -32,6 +32,7 @@ class TreasureController extends Controller
             case 1: //EXAMEN PSA          
             case 2: //CURSO PREUNIVERSITARIO 
             case 116: //EXAMEN PSA ADMISION ESPECIAL
+            case 5:
                 $description = 'NUEVOS';
             break;
             case 42://ORIGINARIA
