@@ -64,10 +64,10 @@
             </el-table></div
         ></el-col>
       </el-row>
-      <el-button type="success" size="small" @click="saveTransaction()"
+      <el-button type="success" size="small" @click="saveTransaction()" :disabled= "this.DisabledStore"
         >guardar</el-button
       >
-      <el-button type="primary" size="small" @click="printTransactions()"
+      <el-button type="primary" size="small" @click="printTransactions()" :disabled= "this.DisabledPrint"
         >imprimir</el-button
       >
       <el-button size="small" @click="resetTransaction()">nuevo</el-button>
@@ -81,6 +81,10 @@ export default {
   name: "",
   data() {
     return {
+      //controles de los botones
+      DisabledStore: true,
+      DisabledPrint: true,
+      //
       writtenTextParameter: "",
       user: this.$store.state.user,
       day: "",
@@ -145,6 +149,8 @@ export default {
                 dangerouslyUseHTMLString: true
               });              
         });
+        app.DisabledStore = true;
+        app.DisabledPrint = false;
     },
 
     //funcion para rescatar la informacion, modalidad de ingreso y valores del estudiante que se va a registrar
@@ -167,6 +173,7 @@ export default {
             })
             .then((response) => {
               app.valuesPostulations = response.data;
+              app.DisabledStore = false;
               /*de acuerdo a la postulacion se debe imprimir los valores*/
             })
             .catch((error) => {
@@ -208,6 +215,7 @@ export default {
       });
     },
     resetTransaction() {
+      let app = this;
       (this.writtenTextParameter = ""),
         (this.valuesPostulations = []),
         (this.postulations = {
@@ -218,6 +226,8 @@ export default {
           modalidad: "",
           id_modalidad: "",
         });
+        app.DisabledStore = true;
+        app.DisabledPrint = true;
     },
   },
 };

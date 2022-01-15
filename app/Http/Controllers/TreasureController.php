@@ -32,7 +32,7 @@ class TreasureController extends Controller
             case 1: //EXAMEN PSA          
             case 2: //CURSO PREUNIVERSITARIO 
             case 116: //EXAMEN PSA ADMISION ESPECIAL
-            case 5:
+            case 5: //INGRESO DIRECTO
                 $description = 'NUEVOS';
             break;
             case 42://ORIGINARIA
@@ -58,8 +58,6 @@ class TreasureController extends Controller
         $gestion = $request->get('gestion');
         $usr_cre = $request->get('usr_cre');
         $nreport = 'test_1';
-        \Log::info('ENTRA ACA LIONEL: ');
-        \Log::info('estos son datos: '. $id_dia.' '.trim($ci_per).' '.$gestion.' '.trim($usr_cre));
         $controls = array(
             'p_id_dia' => $id_dia, 
             'p_ci_per' => trim($ci_per), 
