@@ -35,6 +35,9 @@ class TreasureController extends Controller
             case 5: //INGRESO DIRECTO
                 $description = 'NUEVOS';
             break;
+            case 10://simultanea
+                $description = 'SIMULTANEA';
+            break;    
             case 42://ORIGINARIA
                 $description = 'ORIGINARIA';
             break;            
