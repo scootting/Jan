@@ -27,10 +27,12 @@ class TreasureController extends Controller
     //  * {year: año de los valores}    
     public function getValuesProcedure(Request $request){
         $id_modalidad = $request->get('id');
+        $ci_per = $request->get('ci_per');
         $year = $request->get('year');
         switch($id_modalidad) {
             case 1: //EXAMEN PSA          
             case 2: //CURSO PREUNIVERSITARIO 
+            case 3: //CASE 2DA PSA
             case 116: //EXAMEN PSA ADMISION ESPECIAL
             case 5: //INGRESO DIRECTO
                 $description = 'NUEVOS';
@@ -52,7 +54,11 @@ class TreasureController extends Controller
             break;            
             default:            
                 $description = 'SIN_TRAMITE';
-        }    
+        }
+        /*
+        10461608 
+        $description = 'EXCELENCIA';                        
+        */
         $data = Treasure::getValuesProcedure($description, $year);
         return json_encode($data);
     }
