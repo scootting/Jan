@@ -44,7 +44,6 @@ import CreateActive from './views/inventory/CreateActive'
 import EditActive from './views/inventory/EditActive'
 import DocumentQR from './views/inventory/DocumentQR'
 import SelectActiveByDocument from './views/inventory/SelectActiveByDocument'
-import QrPrint from './views/inventory/QrPrint'
 import NewActive from './views/inventory/NewActive'
 import ImgDetail from './views/inventory/ImgDetail'
 //activos fijos
@@ -171,11 +170,6 @@ const router = new VueRouter({
             meta: {
                 requiresAuth: true,
             }
-        },
-        {
-            path: '/QrPrint/:id',
-            name: 'qrprint',
-            component: QrPrint,
         },
         {
             path: '/404',

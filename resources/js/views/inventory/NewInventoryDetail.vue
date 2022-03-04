@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Iniciar inventario de : {{ oficina.descripcion }}</span>
+        <span>nuevo inventario para {{ oficina.descripcion }}</span>
       </div>
       <br />
       <br />
@@ -11,11 +11,11 @@
         <el-row :gutter="20">
           <el-col :span="24" :offset="0">
             <el-form label-width="180px" :inline="true" size="small">
-              <el-form-item label="Seleccion por:">
+              <el-form-item label="todo/subunidad:">
                 <el-select
-                  placeholder="Seleccionar"
+                  placeholder="Seleccione"
                   v-model="filtro.tipo"
-                  @change="onChangeSeleccionarPor()"
+                  @change="onChangeFilterTyper()"
                 >
                   <el-option
                     v-for="item in filtros"
@@ -26,37 +26,6 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <!-- <el-form-item>
-                <el-button
-                  type="primary"
-                  size="small"
-                  @click="getResponsables()"
-                  >Cargar Responsables</el-button
-                >
-              </el-form-item> -->
-              <!-- <el-form-item>
-                <el-select
-                  v-model="NewInvent.responsables"
-                  filterable
-                  remote
-                  multiple
-                  reserve-keyword
-                  placeholder="Responsables"
-                  :remote-method="getResponsables"
-                  maxlength="30"
-                  style="width: 250px"
-                  :loading="responsablesLoading"
-                  disabled
-                >
-                  <el-option
-                    v-for="(item, index) in responsables"
-                    :key="index"
-                    :label="item.nombres + item.paterno"
-                    :value="item.nro_dip"
-                  >
-                  </el-option>
-                </el-select>
-              </el-form-item> -->
             </el-form>
             <el-form label-width="180px" :inline="true" size="small">
               <el-form-item v-if="filtro.tipo != 'todo'" label="Seleccionar:">
@@ -105,8 +74,8 @@
               <el-form-item label="Fecha de creación">
                 <el-date-picker
                   v-model="NewInvent.date"
-                  type="datetime"
-                  placeholder="Selecionar Fecha"
+                  type="date"
+                  placeholder="seleccione una fecha"
                 >
                 </el-date-picker>
               </el-form-item>
@@ -359,8 +328,6 @@ export default {
       loading: false,
       user: this.$store.state.user,
       oficina: {},
-      //responsables = los que haran el inventario ,  encargados = a quienes se asigna los activos
-      //per_inv = persona que esta a cargo del inventario, new_per= nuevo encargado del inventario
       NewInvent: {
         date: "",
         unidad: "",
@@ -371,7 +338,7 @@ export default {
         nombres: "",
         per_inv: "",
         sup: [],
-        car_per_sup:null,
+        car_per_sup: null,
         new_per: null,
         nombres1: "",
         materno1: "",
@@ -424,13 +391,9 @@ export default {
           label: "TODO",
         },
         {
-          id: "subUnidad",
+          id: "sub unidad",
           label: "SUB UNIDAD",
         },
-        // {
-        //   id: "cargo",
-        //   label: "CARGO",
-        // },
       ],
     };
   },
@@ -535,7 +498,7 @@ export default {
       this.NewInvent.subUnidades = this.noRepeatSO.map((so) => so.id);
       this.NewInvent.cargos = this.noRepeatC.map((c) => c.id);
     },
-    onChangeSeleccionarPor() {
+    onChangeFilterType() {
       if (this.filtro.tipo === "todo") {
         this.selectAll();
       } else {

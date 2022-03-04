@@ -2,15 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>activos fijos</span>
-        <el-button
-          style="text-align: right; float: right"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          @click="test"
-          >imprimir</el-button
-        >
+        <span>DOCUMENTOS DE ENTREGA</span>
       </div>
       <div>
         <el-table
@@ -41,7 +33,9 @@
           <el-table-column align="right" :min-width="20">
             <template slot-scope="scope">
               <el-button
-                @click="initSelectedFixedAssetsByDocument(scope.$index, scope.row)"
+                @click="
+                  initSelectedFixedAssetsByDocument(scope.$index, scope.row)
+                "
                 type="success"
                 plain
                 size="mini"
