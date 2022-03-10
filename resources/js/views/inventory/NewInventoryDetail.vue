@@ -15,7 +15,7 @@
                 <el-select
                   placeholder="Seleccione"
                   v-model="filtro.tipo"
-                  @change="onChangeFilterTyper()"
+                  @change="onChangeFilterType()"
                 >
                   <el-option
                     v-for="item in filtros"
