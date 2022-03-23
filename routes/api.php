@@ -64,7 +64,12 @@ Route::group([
     Route::get('inventory2/encargados', 'InventoryController@getEncargados');
     Route::post('inventory2/save', 'InventoryController@saveNewInventory');
     Route::post('inventory2/saveDataDetail','InventoryController@saveDatasDetail');
-    Route::get('inventory2/{gestion}', 'InventoryController@getInventories');
+
+    //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
+    Route::post('inventory2/', 'InventoryController@getInventories');
+    //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
+    Route::get('inventoryReport/', 'InventoryController@inventoryReport');
+
     Route::get('inventory2/edit/{id}', 'InventoryController@getInventory');
     Route::post('inventory2/saveChange', 'InventoryController@saveChangeDocInventory');
     Route::get('inventory2/doc_inv/{no_cod}', 'InventoryController@showDocInventory');
@@ -93,7 +98,6 @@ Route::group([
     Route::post('selectActivebyDocument', 'InventoryController@getActivesbyDocument');
     Route::get('reportSelectedActive/', 'InventoryController@getReportSelectedActive');
     Route::get('inventoryReportGral/', 'InventoryController@informeGeneral');
-    Route::get('inventoryReportTrue/', 'InventoryController@inventarioTrue');
     Route::get('inventoryReportFalse/', 'InventoryController@inventarioFalse');
 
     //** Guardar nueva convocatoria */

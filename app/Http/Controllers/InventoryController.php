@@ -10,6 +10,102 @@ use JasperPHP\JasperPHP as JasperPHP;
 
 class InventoryController extends Controller
 {
+
+    //reportes general y detallado de activos fijos usando JasperServer
+    public function getReport(Request $request)
+    {
+        $tip_repo = $request->get('reporte');
+        $ofc_cod = $request->get('ofc_cod');
+        $tipo_filtro = $request->get('filtroTipo');
+        $valor = $request->get('filtroValor');
+        if ($tip_repo == 'general') {
+            switch ($tipo_filtro) {
+                case 'cargo':
+                    $controls = array('p_car_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'car_general_1'; //funciona
+                    break;
+                case 'subUnidad':
+                    $controls = array('p_sub_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'sub_ofc_general_1'; //funciona
+                    break;
+                    $controls = array('p_resp_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'resp_general_1'; //funciona
+                    break;
+                case 'responsable':
+                    break;
+                case 'todo':
+                    $controls = array('p_unidad' => $ofc_cod);
+                    $reportName = 'todo_general'; //funciona
+                    break;
+            }
+            $report = JSRClient::GetReportWithParameters($reportName, $controls);
+            return $report;
+        } else { //detallado
+            switch ($tipo_filtro) {
+                case 'cargo':
+                    $controls = array('p_car_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'car_detallado_1'; //funciona
+                    break;
+                case 'subUnidad':
+                    $controls = array('p_sub_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'sub_ofc_detallado_1'; //funciona
+                    break;
+                case 'responsable':
+                    $controls = array('p_resp_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'resp_detallado_1'; //funciona
+                    break;
+                case 'todo':
+                    $controls = array('p_unidad' => $ofc_cod);
+                    $reportName = 'todo_detallado_1'; //funciona
+                    break;
+            }
+            $report = JSRClient::GetReportWithParameters($reportName, $controls);
+            return $report;
+        }
+    }
+
+    //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
+    //  * {year: año , user: usuario que esta creando el inventario}
+    //
+    public function getInventories(Request $request)
+    {
+        $usuario = $request->get('user');
+        $gestion = $request->get('year');
+        //$descripcion = $request->get('description');
+        $data = Inventory::getInventories($gestion, $usuario);
+
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/inventory2')]
+        );
+        return json_encode($paginate);
+    }
+
+    //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
+    //  * {document: el numero de la solicitud year: la gestion, report: nombre del reporte}
+    //
+    public function inventoryReport(Request $request)
+    {
+        $documento = $request->get('document'); 
+        $gestion = $request->get('year');
+        $nreport = $request->get('report');
+        //Log::info($document . $gestion . $nreport);
+        $controls = array(
+            'p_documento' => $documento, 
+            'p_gestion' => $gestion, 
+            );
+
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+
+
+
     public function getOffices(Request $request, $gestion)
     {
         $descripcion = ($request->get('descripcion') ? $request->get('descripcion') : '');
@@ -79,76 +175,6 @@ class InventoryController extends Controller
             $perPage,
             $page,
             ['path' => url('api/inventory/activos/' . $cod_soa)]
-        );
-        return json_encode($paginate);
-    }
-    //reportes usando Jasper (REPORTES GENERAL Y DETALLADO)
-    public function getReport(Request $request)
-    {
-        $tip_repo = $request->get('reporte');
-        $ofc_cod = $request->get('ofc_cod');
-        $tipo_filtro = $request->get('filtroTipo');
-        $valor = $request->get('filtroValor');
-        if ($tip_repo == 'general') {
-            switch ($tipo_filtro) {
-                case 'cargo':
-                    $controls = array('p_car_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
-                    $reportName = 'car_general_1'; //funciona
-                    break;
-                case 'subUnidad':
-                    $controls = array('p_sub_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
-                    $reportName = 'sub_ofc_general_1'; //funciona
-                    break;
-                    $controls = array('p_resp_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
-                    $reportName = 'resp_general_1'; //funciona
-                    break;
-                case 'responsable':
-                    break;
-                case 'todo':
-                    $controls = array('p_unidad' => $ofc_cod);
-                    $reportName = 'todo_general'; //funciona
-                    break;
-            }
-            $report = JSRClient::GetReportWithParameters($reportName, $controls);
-            return $report;
-        } else { //detallado
-            \Log::info('llegamos aca');
-            \Log::info('tipo filtro: ' . $tipo_filtro);
-            switch ($tipo_filtro) {
-                case 'cargo':
-                    $controls = array('p_car_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
-                    $reportName = 'car_detallado_1'; //funciona
-                    break;
-                case 'subUnidad':
-                    $controls = array('p_sub_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
-                    $reportName = 'sub_ofc_detallado_1'; //funciona
-                    break;
-                case 'responsable':
-                    $controls = array('p_resp_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
-                    $reportName = 'resp_detallado_1'; //funciona
-                    break;
-                case 'todo':
-                    $controls = array('p_unidad' => $ofc_cod);
-                    $reportName = 'todo_detallado_1'; //funciona
-                    break;
-            }
-            $report = JSRClient::GetReportWithParameters($reportName, $controls);
-            return $report;
-        }
-    }
-    //OBTENER LOS INVENTARIOS CREADOS (NUEVOS) BUSCADOR
-    public function getInventories(Request $request, $gestion)
-    {
-        $descripcion = ($request->get('descripcion') ? $request->get('descripcion') : '');
-        $data = Inventory::getInventories($gestion, $descripcion);
-        $page = ($request->get('page') ? $request->get('page') : 1);
-        $perPage = 10;
-        $paginate = new LengthAwarePaginator(
-            $data->forPage($page, $perPage),
-            $data->count(),
-            $perPage,
-            $page,
-            ['path' => url('api/inventory2')]
         );
         return json_encode($paginate);
     }
@@ -505,34 +531,6 @@ class InventoryController extends Controller
         $data = Inventory::getActivesbyDocument($document);
         return json_encode($data);
     }
-    public function getReportSelectedActive(Request $request)
-    {
-        $lista = $request->lista;
-        $lista2 = implode(",", $lista);
-        $jasper = new JasperPHP;
-        $input = public_path() . '/reports/ticketActiveQR.jrxml';
-        $jasper->compile($input)->execute();
-        $input = public_path() . '/reports/ticketActiveQR.jasper'; //ReportValuesQr
-        $output = public_path() . '/reports';
-        $jasper->process(
-            $input,
-            false, //$output,
-            array('pdf', 'rtf'), // Formatos de salida del reporte
-            array('p_lista' => $lista2),//array('php_version' => phpversion()),// Parámetros del reporte
-            array(
-                'driver' => 'postgres',
-                'username' => 'postgres',
-                'password' => '123456',
-                'host' => '192.168.25.54',
-                'database' => 'daf',
-                'port' => '5432',
-            )  
-        )->execute();
-        $pathToFile = public_path() . '/reports/ticketActiveQR.pdf';
-        $filename = 'ticketActiveQR.pdf';
-        $headers = ['Content-Type' => 'application/pdf'];
-        return response()->download($pathToFile, $filename, $headers);
-    }
     public function informeGeneral(Request $request)
     {
         $no_doc = $request->get('no_doc');
@@ -543,46 +541,4 @@ class InventoryController extends Controller
         //cambios en el servidor 
     }
     
-    public function inventarioTrue(Request $request)
-    {
-       $no_doc = $request->get('no_doc');
-       $ofc_cod = $request->get('ofc_cod');
-       //$nreport = 'DetailInventoryTrue_1';
-       $nreport = 'inventarioDetalleTrue_1';
-       \Log::info("nro_doc ". $no_doc."ofc_cod".$ofc_cod);
-       $controls = array('p_unidad' => $ofc_cod,'p_no_doc' =>$no_doc);
-       $report = JSRClient::GetReportWithParameters($nreport, $controls);
-       return $report;
-    }
-
-    public function inventarioFalse(Request $request)
-    {
-        //dd($request);
-        $no_doc = $request->get('no_doc');
-        $ofc_cod = $request->get('ofc_cod');
-        //$sub = $request->get('sub_ofc_cod');
-        $jasper = new JasperPHP;
-        $input = public_path() . '/reports/inventarioDetalleFalse.jrxml';
-        $jasper->compile($input)->execute();
-        $input = public_path() . '/reports/inventarioDetalleFalse.jasper'; //ReportValuesQr
-        $output = public_path() . '/reports';
-        $jasper->process(
-            $input,
-            false, //$output,
-            array('pdf', 'rtf'), // Formatos de salida del reporte
-            array('p_no_doc' => $no_doc,'p_unidad' => $ofc_cod),//array('php_version' => phpversion()),// Parámetros del reporte
-            array(
-                'driver' => 'postgres',
-                'username' => 'postgres',
-                'password' => '123456',
-                'host' => '192.168.25.54',
-                'database' => 'daf',
-                'port' => '5432',
-            )  
-        )->execute();
-        $pathToFile = public_path() . '/reports/inventarioDetalleFalse.pdf';
-        $filename = 'inventarioDetalleFalse.pdf';
-        $headers = ['Content-Type' => 'application/pdf'];
-        return response()->download($pathToFile, $filename, $headers);
-    }
 }

@@ -74,20 +74,21 @@ class Inventory extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-    //parte de Inventarios 2 (renombrado como INVENTARIO)
-    //obtener inventarios creados y listarlos para EDITAR, VER LISTA O IMPRIMIR
-    public static function getInventories($gestion, $descripcion)
+    //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
+    //  * {year: año , user: usuario que esta creando el inventario}
+    //
+    public static function getInventories($year, $user)
     {
-        $query = "select inv.doc_inv.id, inv.doc_inv.no_cod, inv.doc_inv.ofc_cod,inv.doc_inv.sub_ofc_cod,
-        inv.oficinas.descripcion,inv.doc_inv.estado,inv.doc_inv.verificado
-        from inv.doc_inv , inv.oficinas where 
-        inv.doc_inv.gestion = " . $gestion . "
-        and inv.doc_inv.ofc_cod = inv.oficinas.cod_soa 
-        and inv.oficinas.descripcion like '%" . $descripcion . "%'
-        order by inv.doc_inv.no_cod desc";
+        $query = "select *, 
+                  (select j.descripcion from inv.oficinas j where j.cod_soa = i.ofc_cod limit 1) as ofc_des 
+                  from inv.doc_inv i 
+                  where i.gestion = '".$year."' 
+                  order by i.fec_cre desc";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+
     //obtener la unidad a la que se hará el inventario introduciendo la descripcion de la unidad o codigo soa
     public static function getUnidad($keyWord)
     {

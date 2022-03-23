@@ -134,6 +134,7 @@ const router = new VueRouter({
                 
                 { path: 'inventory', name: 'inventory', component: Inventory },
                 { path: 'inventory/:soa', name: 'inventorydetail', component: InventoryDetail },
+                // Lionel - enlace a la lista de inventarios para la gestion 
                 { path: 'inventory2', name: 'inventory2', component: Inventory2 },
                 { path: 'inventory2/:id', name: 'editinventory2', component: EditInventory2 },
                 { path: 'newinventory', name: 'newinventory', component: NewInventory },

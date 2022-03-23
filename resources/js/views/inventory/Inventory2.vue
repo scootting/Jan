@@ -29,9 +29,14 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="ofc_cod" width="100" label="Cat. prog."> </el-table-column>
-          <el-table-column prop="descripcion" width="450" label="descripcion categoria programatica"></el-table-column>
-          <el-table-column width="100" label="Estado">
+          <el-table-column prop="ofc_cod" width="100" label="Cat. prog.">
+          </el-table-column>
+          <el-table-column
+            prop="ofc_des"
+            width="350"
+            label="descripcion categoria programatica"
+          ></el-table-column>
+          <el-table-column width="150" label="Estado">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.estado }}</el-tag>
@@ -47,15 +52,15 @@
                 plain
                 size="mini"
                 >Editar</el-button
-              > 
+              >
               <el-button
                 :disabled="data[scope.$index].verificado == true"
                 @click="listActive(scope.row.id)"
                 type="success"
                 plain
                 size="mini"
-                >Ver lista </el-button
-              >
+                >Ver lista
+              </el-button>
             </template>
           </el-table-column>
           <el-table-column align="right-center" width="250" label="Informe">
@@ -69,8 +74,7 @@
                 >General</el-button
               >
               <el-button
-                :disabled="data[scope.$index].verificado == false"
-                @click="generateReportTrue(scope.row)"
+                @click="initPrintDetailsInventory(scope.row)"
                 type="primary"
                 plain
                 size="mini"
@@ -98,10 +102,10 @@ export default {
     return {
       loading: false,
       user: this.$store.state.user,
-      verificado:false,
+      verificado: false,
       messages: {},
       data: [],
-      showReportes:false,
+      showReportes: false,
       pagination: {
         page: 1,
       },
@@ -112,25 +116,51 @@ export default {
     this.getInventories();
   },
   methods: {
-    //la gestion es estatica aun. 
+    //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
     getInventories() {
       this.loading = true;
+      let app = this;
       axios
-        .get("/api/inventory2/" + 2021, {
-          params: {
-            page: this.pagination.page,
-            descripcion: this.writtenTextParameter.toUpperCase(),
-          },
+        .post("/api/inventory2", {
+          user: app.user.usuario,
+          year: app.user.gestion,
+          //descripcion: app.writtenTextParameter.toUpperCase(),
         })
-        .then((data) => {
-          this.loading = false;
-          this.data = Object.values(data.data.data);
-          this.pagination = data.data;
+        .then((response) => {
+          app.loading = false;
+          app.data = response.data.data;
+          app.pagination = response.data;
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          this.error = error;
+          this.$notify.error({
+            title: "Error",
+            message: this.error.message,
+          });
         });
     },
+    //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
+    initPrintDetailsInventory(row) {
+      axios({
+        url: "/api/inventoryReport/",
+        params: {
+          document: row.no_doc,
+          year: row.gestion,
+          report: "inventory_details_1",
+        },
+        method: "GET",
+        responseType: "arraybuffer",
+      }).then((response) => {
+        let blob = new Blob([response.data], {
+          type: "application/pdf",
+        });
+        let link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        let url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
+    },
+
 
     getOfficesPaginate(page) {
       this.pagination.page = page;
@@ -144,56 +174,34 @@ export default {
         },
       });
     },
-    listActive(no_cod){
+    listActive(no_cod) {
       this.$router.push({
         name: "inventory2detail",
         params: {
           no_cod: no_cod,
-        }
+        },
       });
     },
     generateReportGral(no_cod) {
-        axios({
-          url: "/api/inventoryReportGral/",
-          params:{
-            no_doc:no_cod.no_cod,
-          },
-          method: "GET",
-          responseType: "arraybuffer",
-        }).then((response) => {
-          console.log(response.data);
-          console.log("1");
-          let blob = new Blob([response.data], {
-            type: "application/pdf",
-          });
-          let link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          console.log(blob);
-          let url = window.URL.createObjectURL(blob);
-          window.open(url);
+      axios({
+        url: "/api/inventoryReportGral/",
+        params: {
+          no_doc: no_cod.no_cod,
+        },
+        method: "GET",
+        responseType: "arraybuffer",
+      }).then((response) => {
+        console.log(response.data);
+        console.log("1");
+        let blob = new Blob([response.data], {
+          type: "application/pdf",
         });
-    },
-    generateReportTrue(no_cod) {
-        axios({
-          url: "/api/inventoryReportTrue/",
-          params:{
-            no_doc:no_cod.no_cod,
-            ofc_cod:no_cod.ofc_cod,
-          },
-          method: "GET",
-          responseType: "arraybuffer",
-        }).then((response) => {
-          let blob = new Blob([response.data], {
-            type: "application/pdf",
-          });
-          let link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          let url = window.URL.createObjectURL(blob);
-          window.open(url);
-        });
-    },    
-    test() {
-      alert("bienvenido al modulo");
+        let link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        console.log(blob);
+        let url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
     },
   },
 };
