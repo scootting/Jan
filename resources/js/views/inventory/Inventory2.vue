@@ -55,7 +55,7 @@
               >
               <el-button
                 :disabled="data[scope.$index].verificado == true"
-                @click="listActive(scope.row.id)"
+                @click="listActivesByDocument(scope.row.no_cod)"
                 type="success"
                 plain
                 size="mini"
@@ -174,11 +174,11 @@ export default {
         },
       });
     },
-    listActive(no_cod) {
+    listActivesByDocument(document) {
       this.$router.push({
         name: "inventory2detail",
         params: {
-          no_cod: no_cod,
+          id_inventory: document,
         },
       });
     },

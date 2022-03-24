@@ -104,6 +104,48 @@ class InventoryController extends Controller
         return $report;
     }
 
+    //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
+    //  * {id_inventory: el numero del inventario year: la gestion}
+    //
+    public function getActivesByInventory(Request $request)
+    {
+        \Log::info("este es el manda: ". $request);
+
+        $inventario = $request->get('id_inventory');
+        $gestion = $request->get('year');
+        //$descripcion = $request->get('description');
+        $data = Inventory::getActivesByInventory($inventario, $gestion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 20;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getActivesByInventory')]
+        );
+        return json_encode($paginate);
+        /*
+        //dd($request);
+        $descripcion = ($request->get('descripcion')) ? $request->get('descripcion') : null;
+        $cod_soa = ($request->get('codSoa')) ? $request->get('codSoa') : null;
+        $sub_ofc_ids = ($request->get('idSubOffice')) ? $request->get('idSubOffice') : null;
+        //dd($descripcion,$ofc_id,$sub_ofc_ids);
+        $data = Inventory::SearchActive($cod_soa, $sub_ofc_ids, $descripcion);
+        $page = ($request->get('page')) ? $request->get('page') : null;
+        $perPage = 10;
+        $paginator = $data->paginate($perPage, ['*'], 'page', $page);
+        $paginate = new LengthAwarePaginator(
+            $paginator->items(),
+            $paginator->total(),
+            $perPage,
+            $page,
+            []
+        );
+        return json_encode($paginate);*/
+    }
+
+
 
 
     public function getOffices(Request $request, $gestion)
@@ -275,26 +317,6 @@ class InventoryController extends Controller
         $validacion = 'false';
         $data = Inventory::saveActivesToNewInventory($no_doc,$ofc_cod,$sub_ofc_cod,$gestion,$validacion);
         return json_encode($data);
-    }
-    public function SearchActivo(Request $request)
-    {
-        //dd($request);
-        $descripcion = ($request->get('descripcion')) ? $request->get('descripcion') : null;
-        $cod_soa = ($request->get('codSoa')) ? $request->get('codSoa') : null;
-        $sub_ofc_ids = ($request->get('idSubOffice')) ? $request->get('idSubOffice') : null;
-        //dd($descripcion,$ofc_id,$sub_ofc_ids);
-        $data = Inventory::SearchActive($cod_soa, $sub_ofc_ids, $descripcion);
-        $page = ($request->get('page')) ? $request->get('page') : null;
-        $perPage = 10;
-        $paginator = $data->paginate($perPage, ['*'], 'page', $page);
-        $paginate = new LengthAwarePaginator(
-            $paginator->items(),
-            $paginator->total(),
-            $perPage,
-            $page,
-            []
-        );
-        return json_encode($paginate);
     }
     public function getDocDetailByActivoId($id)
     {

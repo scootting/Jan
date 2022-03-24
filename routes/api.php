@@ -69,10 +69,12 @@ Route::group([
     Route::post('inventory2/', 'InventoryController@getInventories');
     //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
     Route::get('inventoryReport/', 'InventoryController@inventoryReport');
+    //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
+    Route::post('getActivesByInventory/', 'InventoryController@getActivesByInventory');
+
 
     Route::get('inventory2/edit/{id}', 'InventoryController@getInventory');
     Route::post('inventory2/saveChange', 'InventoryController@saveChangeDocInventory');
-    Route::get('inventory2/doc_inv/{no_cod}', 'InventoryController@showDocInventory');
     Route::get('inventory2/doc_detail_by_active/{id}', 'InventoryController@getDocDetailByActivoId');
     Route::get('inventory2/search/{doc_cod}', 'InventoryController@getActivesForDocInv');
     Route::post('inventory2/saveActive', 'InventoryController@saveActiveInDetailDoc');

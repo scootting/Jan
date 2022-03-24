@@ -7,6 +7,7 @@
           >Ayuda</el-button
         >
       </div>
+      <!--
       <div>
         <el-form
           v-if="doc_inv"
@@ -59,6 +60,7 @@
         </el-input>
       </div>
       <br />
+      -->
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
           <el-table-column label="Identificador" width="130">
@@ -127,8 +129,7 @@
                 @click="saveActiveInDetail(scope.$index)"
                 >VERIFICAR</el-button
               >
-              </template
-            >
+            </template>
           </el-table-column>
         </el-table>
         <el-pagination
@@ -136,7 +137,7 @@
           layout="prev, pager, next"
           :current-page="pagination.current_page"
           :total="pagination.total"
-          @current-change="getActivesPaginate"
+          @current-change="getActivesByInventory"
         ></el-pagination>
         <div>
           <el-button
@@ -215,12 +216,20 @@ export default {
   name: "DocumentoInventarioDetalle",
   data() {
     return {
+      //todo lo revisado en variables
+      user: this.$store.state.user,
       writtenTextParameter: "",
+      id_inventory: null,
+      data: [],
+      pagination: {
+        page: 1,
+      },
+
       inventario: {
         estado: "VERIFICADO",
         observaciones: "",
       },
-      control:null,
+      control: null,
       activeObs: "",
       id_activo: null,
       estados: [],
@@ -229,45 +238,67 @@ export default {
       dialogVisible: false,
       addObservacion: "SIN OBSERVACIONES",
       guardado: false,
-      doc_inv_no_cod: null,
       doc_inv: null,
       loading: false,
-      user: this.$store.state.user,
       messages: {},
-      data: [],
-      pagination: {
-        page: 1,
-      },
       index: null,
     };
   },
   mounted() {
-    this.doc_inv_no_cod = this.$route.params.no_cod;
-    this.getDocInventory();
-    this.getEstados();
+    let app = this;
+    app.id_inventory = app.$route.params.id_inventory;
+    console.log("estes es el id: " + app.id_inventory);
+    this.getActivesByInventory(app.pagination.page);
+
+    //this.getEstados();
   },
   methods: {
-    OpenObsAct(index) {
-      this.index = index;
-      this.dialogVisible = true;
-      this.activeObs = this.data[this.index].obs_est;
-    },
-    sendObs() {
-      if (this.index != null)
-        this.data[this.index].obs_est = this.activeObs;
-      this.dialogVisible = false;
-      this.index = null;
-    },
-    getDocInventory() {
+    //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
+    getActivesByInventory(page) {
+      let app = this;
+      console.log("estes es el id2: " + app.id_inventory);
+      console.log("este es la pagina: " + page);
       axios
-        .get("/api/inventory2/doc_inv/" + this.doc_inv_no_cod)
+        .post("/api/getActivesByInventory/", {
+          id_inventory: app.id_inventory,
+          year: app.user.gestion,
+          page: page,
+          //descripcion: app.writtenTextParameter.toUpperCase(),
+        })
+        .then((response) => {
+          app.loading = false;
+          app.data = Object.values(response.data.data);//response.data.data;
+          console.log(app.data);
+          app.pagination = response.data;
+        })
+        .catch((error) => {
+          this.error = error;
+          this.$notify.error({
+            title: "Error",
+            message: this.error.message,
+          });
+        });
+      /*
+      axios
+        .get("/api/inventory2/doc_inv/" + this.id_inventory)
         .then((data) => {
           this.doc_inv = data.data;
           this.getActivesSearch();
         })
         .catch((err) => {
           console.log(err);
-        });
+        });*/
+    },
+
+    OpenObsAct(index) {
+      this.index = index;
+      this.dialogVisible = true;
+      this.activeObs = this.data[this.index].obs_est;
+    },
+    sendObs() {
+      if (this.index != null) this.data[this.index].obs_est = this.activeObs;
+      this.dialogVisible = false;
+      this.index = null;
     },
     whenDontHaveDocDetail() {
       return {
@@ -325,9 +356,9 @@ export default {
       {
         axios
           .get("/api/activo/controlTrue", {
-            params:{
-            no_cod: this.doc_inv.no_cod ,
-            }
+            params: {
+              no_cod: this.doc_inv.no_cod,
+            },
           })
           .then((data) => {
             this.control = data.data[0];
@@ -337,7 +368,7 @@ export default {
           });
       }
     },
-    
+
     getActivesPaginate(page) {
       this.pagination.page = page;
       this.getActivesSearch();
@@ -397,7 +428,7 @@ export default {
         .post("/api/inventory2/verificar", {
           estado: this.inventario.estado,
           observaciones: this.inventario.observaciones,
-          verificado:true,
+          verificado: true,
           nro_cod: this.doc_inv.id,
         })
         .then((data) => {

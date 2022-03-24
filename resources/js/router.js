@@ -130,16 +130,19 @@ const router = new VueRouter({
                 { path: 'person/add', name: 'addperson', component: AddPerson },
                 { path: 'person/:id', name: 'editperson', component: EditPerson },
                 //{ path: 'person/show/:id', name: 'editperson', component: EditPerson },
-                //{ path: 'welcome', name: 'welcome', component: Welcome },
                 
-                { path: 'inventory', name: 'inventory', component: Inventory },
-                { path: 'inventory/:soa', name: 'inventorydetail', component: InventoryDetail },
+                //Modulo para administrar y gestionar inventarios de bienes de uso
                 // Lionel - enlace a la lista de inventarios para la gestion 
                 { path: 'inventory2', name: 'inventory2', component: Inventory2 },
+                // Lionel - enlace a la lista de activos de un inventario para la gestion 
+                { path: 'inventory2/:id_inventory', name: 'inventory2detail', component: Inventory2Detail },
+
+
+                { path: 'inventory', name: 'inventory', component: Inventory },
+                { path: 'inventory/:soa', name: 'inventorydetail', component: InventoryDetail },
                 { path: 'inventory2/:id', name: 'editinventory2', component: EditInventory2 },
                 { path: 'newinventory', name: 'newinventory', component: NewInventory },
                 { path: 'newinventory/:soa', name: 'newinventorydetail',component: NewInventoryDetail },
-                { path: 'inventory2detail/:no_cod', name: 'inventory2detail', component: Inventory2Detail },
                 { path: 'imgDetail/:id', name: 'imgdetail', component: ImgDetail },
                 { path: 'editnewinventory/:id', name: 'editnewinventorydetail',component: EditNewInventoryDetail },
                 { path: 'active', name: 'active', component: Active },
