@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Lista de activos para la realizacion del Inventario</span>
+        <span>Bienes de uso para el inventario</span>
         <el-button style="float: right; padding: 3px 0" type="text"
           >Ayuda</el-button
         >
@@ -63,34 +63,36 @@
       -->
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column label="Identificador" width="130">
+          <el-table-column label="codigo" width="130">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
-                <el-tag size="small">{{ scope.row.id }}</el-tag>
+                <el-tag size="small">{{ scope.row.cod_act }}</el-tag>
               </div>
             </template>
           </el-table-column>
           <el-table-column
             prop="act_des"
-            label="DESCRIPCION DE ACTIVO"
-            width="400"
+            label="descripcion"
+            width="450"
           ></el-table-column>
-          <el-table-column label="VALIDACION" width="180">
+          <el-table-column label="existencia" width="180">
             <template slot-scope="scope">
               <el-checkbox
-                :disabled="data[scope.$index].guardado == true"
+                :disabled="scope.row.guardado === true"
                 v-model="data[scope.$index].validacion"
-                label="Verificado"
+                label="verificado"
+                size="mini"
               ></el-checkbox>
             </template>
           </el-table-column>
-          <el-table-column label="ESTADO" width="150">
+          <el-table-column label="estado" width="150">
             <el-select
-              :disabled="data[scope.$index].guardado == true"
+              :disabled="scope.row.guardado === true"
               slot-scope="scope"
               v-model="data[scope.$index].est_act"
               value-key="desc"
-              placeholder="determinar estado"
+              placeholder="seleccionar estado"
+              size="mini"
             >
               <el-option
                 v-for="item in estados"
@@ -101,18 +103,28 @@
               </el-option>
             </el-select>
           </el-table-column>
-          <el-table-column label="OBSERVACIONES" width="250">
+          <el-table-column label="OBSERVACIONES" width="320">
             <input
-              :disabled="data[scope.$index].guardado == true"
+              :disabled="scope.row.guardado === true"
               type="text"
               slot-scope="scope"
               v-model="data[scope.$index].obs_est"
-              style="width: 200px"
+              style="width: 300px"
               @click="OpenObsAct(scope.$index)"
+              size="mini"
             />
           </el-table-column>
-          <el-table-column align="right-center" width="300" label="Operaciones">
+          <el-table-column align="right-center" width="150" label="guardar">
             <template slot-scope="scope">
+              <el-button
+                :disabled="scope.row.guardado === true"
+                type="success"
+                plain
+                size="mini"
+                @click="saveActiveDetail(scope.$index, scope.row)"
+                >guardar</el-button
+              >
+              <!--
               <el-button
                 :disabled="data[scope.$index].guardado == true"
                 plain
@@ -121,14 +133,7 @@
                 @click="cargarImagen(scope.$index, scope.row)"
                 >IMAGEN</el-button
               >
-              <el-button
-                :disabled="data[scope.$index].guardado == true"
-                plain
-                type="primary"
-                size="mini"
-                @click="saveActiveInDetail(scope.$index)"
-                >VERIFICAR</el-button
-              >
+              -->
             </template>
           </el-table-column>
         </el-table>
@@ -217,13 +222,14 @@ export default {
   data() {
     return {
       //todo lo revisado en variables
-      user: this.$store.state.user,
       writtenTextParameter: "",
-      id_inventory: null,
-      data: [],
+      user: this.$store.state.user, //usuario que esta manejando el sistema
+      id_inventory: null, // numero de la solicitud del inventario
+      data: [], //lista de activos fijos por inventario
       pagination: {
         page: 1,
-      },
+      }, //paginacion para los activos fijos
+      estados: [], // lista de estados disponibles por activo fijo
 
       inventario: {
         estado: "VERIFICADO",
@@ -232,7 +238,6 @@ export default {
       control: null,
       activeObs: "",
       id_activo: null,
-      estados: [],
       verificado: false,
       showObservacionInventory: false,
       dialogVisible: false,
@@ -249,8 +254,7 @@ export default {
     app.id_inventory = app.$route.params.id_inventory;
     console.log("estes es el id: " + app.id_inventory);
     this.getActivesByInventory(app.pagination.page);
-
-    //this.getEstados();
+    this.getStatesByActive();
   },
   methods: {
     //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
@@ -267,7 +271,7 @@ export default {
         })
         .then((response) => {
           app.loading = false;
-          app.data = Object.values(response.data.data);//response.data.data;
+          app.data = Object.values(response.data.data); //response.data.data;
           console.log(app.data);
           app.pagination = response.data;
         })
@@ -278,16 +282,66 @@ export default {
             message: this.error.message,
           });
         });
-      /*
+    },
+    //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
+    getStatesByActive() {
       axios
-        .get("/api/inventory2/doc_inv/" + this.id_inventory)
-        .then((data) => {
-          this.doc_inv = data.data;
-          this.getActivesSearch();
+        .get("/api/getStatesByActive/")
+        .then((response) => {
+          this.estados = response.data;
+          console.log("esto son los estados:" + this.estados);
         })
         .catch((err) => {
           console.log(err);
-        });*/
+        });
+    },
+    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
+    saveActiveDetail(index, row) {
+      {
+        var app = this;
+        console.log(index);
+        console.log(row);
+        var newActiveDetail = row;
+        axios
+          .post("/api/saveActiveDetail", {
+            activeDetail: newActiveDetail,
+            marker: "registrar",
+          })
+          .then(function (response) {
+            app.$alert(
+              "Se ha actualizado el detalle del activo fijo en el inventario",
+              "Gestor de mensajes",
+              {
+                dangerouslyUseHTMLString: true,
+              }
+            );
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+
+        /*
+        axios
+          .post("/api/inventory2/saveActive", {
+            ...this.data[index],
+            guardado: true,
+            cod_ges: this.user.gestion,
+            cod_act: this.data[index].cod_ant,
+          })
+          .then((data) => {
+            this.$notify.success({
+              title: "Cambios guardados",
+              message:
+                "Se realizo cambios al Documento de inventario seleccionado exitosamente",
+              duration: 5000,
+            });
+            this.getActivesSearch();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+          */
+      }
     },
 
     OpenObsAct(index) {
@@ -304,16 +358,6 @@ export default {
       return {
         est_act: 1,
       };
-    },
-    getEstados() {
-      axios
-        .get("/api/activo/estados/")
-        .then((data) => {
-          this.estados = data.data;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
     },
     handleClose(done) {
       this.$confirm("esta seguro que desea cerrar la ventada de observacion?")
@@ -383,29 +427,6 @@ export default {
           responsable.nombres.trim(),
         nro_dip: responsable.nro_dip,
       };
-    },
-    saveActiveInDetail(index) {
-      {
-        axios
-          .post("/api/inventory2/saveActive", {
-            ...this.data[index],
-            guardado: true,
-            cod_ges: this.user.gestion,
-            cod_act: this.data[index].cod_ant,
-          })
-          .then((data) => {
-            this.$notify.success({
-              title: "Cambios guardados",
-              message:
-                "Se realizo cambios al Documento de inventario seleccionado exitosamente",
-              duration: 5000,
-            });
-            this.getActivesSearch();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-      }
     },
     cargarImagen(index, row) {
       this.$router.push({

@@ -28,7 +28,7 @@ class Inventory extends Model
     //
     public static function getActivesByInventory($id_inventory, $year)
     {
-        \Log::info("este es el inventario: ". $id_inventory."  gestion". $year);
+        //\Log::info("este es el inventario: ". $id_inventory."  gestion". $year);
         $query = "select *,
                  (SELECT e.desc FROM inv.estado e WHERE e.id = b.est_act) AS est_des
                  FROM act.vv_act_detallado a
@@ -41,6 +41,16 @@ class Inventory extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
+    //  * {}
+    //
+    public static function getStatesByActive()
+    {
+        $query = "select * FROM inv.estado ORDER BY id";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
 
     //obtener las oficinas basandonos en la gestion y busqueda por la descripción.
     public static function getOffices($gestion, $descripcion)
@@ -422,13 +432,6 @@ class Inventory extends Model
             '" . str_replace(']', '}', str_replace('[', '{', json_encode($sub_ofc_cod))) . "',
             '" . str_replace(']', '}', str_replace('[', '{', json_encode($car_cod_resp))) . "',
             '" . str_replace(']', '}', str_replace('[', '{', json_encode($ci_res))) . "')";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-    //Obtener los datos de la tabla de estados
-    public static function getEstados()
-    {
-        $query = "select * from inv.estado";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

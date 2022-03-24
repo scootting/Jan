@@ -65,19 +65,25 @@ Route::group([
     Route::post('inventory2/save', 'InventoryController@saveNewInventory');
     Route::post('inventory2/saveDataDetail','InventoryController@saveDatasDetail');
 
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el sistema de Inventarios para Bienes de Uso
+    //  |--------------------------------------------------------------------------    
     //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
     Route::post('inventory2/', 'InventoryController@getInventories');
     //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
     Route::get('inventoryReport/', 'InventoryController@inventoryReport');
     //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
     Route::post('getActivesByInventory/', 'InventoryController@getActivesByInventory');
+    //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
+    Route::get('getStatesByActive/', 'InventoryController@getStatesByActive');
+    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.    
+    Route::post('saveActiveDetail/', 'InventoryController@saveActiveDetail');
 
 
     Route::get('inventory2/edit/{id}', 'InventoryController@getInventory');
     Route::post('inventory2/saveChange', 'InventoryController@saveChangeDocInventory');
     Route::get('inventory2/doc_detail_by_active/{id}', 'InventoryController@getDocDetailByActivoId');
     Route::get('inventory2/search/{doc_cod}', 'InventoryController@getActivesForDocInv');
-    Route::post('inventory2/saveActive', 'InventoryController@saveActiveInDetailDoc');
     Route::post('inventory2/verificar', 'InventoryController@changeStateInventory');
     Route::post('inventory2/saveImage', 'InventoryController@saveImages');
     Route::get('inventory2/image/{id}', 'InventoryController@getImagesById');
@@ -87,7 +93,6 @@ Route::group([
     Route::get('inventory2/download/upload-folder/{file}', 'InventoryController@downloadFile');
     //rutas de re asignacion de activos
     Route::get('reasignacion/', 'InventoryController@SearchActivo');
-    Route::get('activo/estados', 'InventoryController@getEstados');
     Route::get('activo/partidas', 'InventoryController@getPartidas');
     Route::get('activo/contable', 'InventoryController@getContable');
     Route::get('activo/nro','InventoryController@getlastNroDoc');
