@@ -39,6 +39,9 @@ class TreasureController extends Controller
             case 13: //TRASPASO
                 $description = 'NUEVOS';
             break;
+            case 39: //CODEMETROP
+                $description = 'CONVENIO_MEDICO';
+            break;
             case 8://profesional
                 $description = 'PROFESIONAL';
             break;

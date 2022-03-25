@@ -130,24 +130,17 @@ class InventoryController extends Controller
         return json_encode($data);
     }
     //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
-    //  * {}
+    //  * {activedetail: son los detalles efectuados al activo del inventario}
     //
     public function saveActiveDetail(Request $request)
     {
         $activeDetail = $request->get('activeDetail');
-        \Log::warning("este es la item: ". $activeDetail['act_des']);
+        \Log::warning("este es la item: " . $activeDetail['act_des']);
 
         foreach ($activeDetail as $item) {
-            \Log::warning("este es la validacion: ". $item);
+            \Log::warning("este es la validacion: " . $item);
         }
-
-        //dd($request);
         /*
-    if ($request->has('id_detalle')) {
-    $id = $request->id_detalle;
-    } else {
-    $id = -1;
-    }
     $nro_doc_inv = $request->nro_doc_inv;
     $cod_ges = $request->cod_ges;
     $cod_act = $request->cod_act;
