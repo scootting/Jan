@@ -103,7 +103,7 @@
               </el-option>
             </el-select>
           </el-table-column>
-          <el-table-column label="OBSERVACIONES" width="320">
+          <el-table-column label="observaciones" width="320">
             <input
               :disabled="scope.row.guardado === true"
               type="text"
@@ -301,13 +301,15 @@ export default {
         var app = this;
         console.log(index);
         console.log(row);
-        var newActiveDetail = row;
+        var newActiveDetail = row;//app.data[index];
         axios
           .post("/api/saveActiveDetail", {
             activeDetail: newActiveDetail,
             marker: "registrar",
           })
           .then(function (response) {
+            console.log(newActiveDetail);
+
             app.$alert(
               "Se ha actualizado el detalle del activo fijo en el inventario",
               "Gestor de mensajes",
@@ -317,7 +319,7 @@ export default {
             );
           })
           .catch(function (error) {
-              console.log(error);
+            console.log(error);
           });
 
         /*

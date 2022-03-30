@@ -135,8 +135,14 @@ class InventoryController extends Controller
     public function saveActiveDetail(Request $request)
     {
         $activeDetail = $request->get('activeDetail');
-        \Log::warning("este es la item: " . $activeDetail['act_des']);
-
+        $validation = $activeDetail['validacion'];
+        $state = $activeDetail['est_act'];
+        $observations = $activeDetail['obs_est'];
+        $store = $activeDetail['guardado'];
+        $storeText = 'Revisado';
+        \Log::warning("este es el validacion: ".$validation." estado ".$state." Ab ".$observations." estore ".$store." tesx ".$storeText);
+        $marca = $request->get('marker');
+        \Log::warning("esta es la marca: ".$marca);
         foreach ($activeDetail as $item) {
             \Log::warning("este es la validacion: " . $item);
         }
