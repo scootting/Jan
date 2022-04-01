@@ -141,10 +141,12 @@ export default {
     },
     //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
     initPrintDetailsInventory(row) {
+      console.log(row);
       axios({
         url: "/api/inventoryReport/",
         params: {
-          document: row.no_doc,
+          office: row.ofc_cod,
+          document: row.no_cod,
           year: row.gestion,
           report: "inventory_details_1",
         },
@@ -191,8 +193,6 @@ export default {
         method: "GET",
         responseType: "arraybuffer",
       }).then((response) => {
-        console.log(response.data);
-        console.log("1");
         let blob = new Blob([response.data], {
           type: "application/pdf",
         });

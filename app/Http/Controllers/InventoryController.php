@@ -90,10 +90,14 @@ class InventoryController extends Controller
     //
     public function inventoryReport(Request $request)
     {
+        \Log::info("Request: ". $request);
+        $oficina = $request->get('office');
         $documento = $request->get('document');
         $gestion = $request->get('year');
         $nreport = $request->get('report');
+
         $controls = array(
+            'p_oficina' => $oficina,
             'p_documento' => $documento,
             'p_gestion' => $gestion,
         );
