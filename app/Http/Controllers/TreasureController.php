@@ -44,9 +44,11 @@ class TreasureController extends Controller
             case 8: //profesional
                 $description = 'PROFESIONAL';
                 break;
+            case 46: //DEFENSA CIVIL
             case 10: //simultanea
                 $description = 'SIMULTANEA';
                 break;
+            case 46: //DEFENSA CIVIL
             case 9: //CAOB
             case 42: //ORIGINARIA 43
             case 43: //capacidades especiales
