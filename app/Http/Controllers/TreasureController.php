@@ -44,10 +44,12 @@ class TreasureController extends Controller
             case 8: //profesional
                 $description = 'PROFESIONAL';
                 break;
+            case 46: //DEFENSA CIVIL
+                $description = 'DEFENSA_CIVIL';
+                break;
             case 10: //simultanea
                 $description = 'SIMULTANEA';
                 break;
-            case 46: //DEFENSA CIVIL
             case 9: //CAOB
             case 42: //ORIGINARIA 43
             case 43: //capacidades especiales
@@ -63,8 +65,8 @@ class TreasureController extends Controller
         }
         /*
         10461608
-        $description = 'EXCELENCIA';
          */
+        $description = 'DEFENSA_CIVIL';
         $data = Treasure::getValuesProcedure($description, $year);
         return json_encode($data);
     }
