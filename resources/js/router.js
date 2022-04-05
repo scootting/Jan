@@ -10,6 +10,9 @@ import Dashboard from './views/Dashboard'
 import Assets from './views/FixedAssets'
 import AddNotDocument from './views/clients/AddNotDocument'
 
+//Jessica
+import Test from './views/clients/Test'
+
 //usuario
 import Users from './views/application/Users'
 import AddUser from './views/application/AddUser'
@@ -116,6 +119,8 @@ const router = new VueRouter({
             children: [
                 // UserHome will be rendered inside User's <router-view>
                 // when /user/:id is matched0
+                { path: 'test', name: 'test', component: Test },
+
                 { path: '', name: 'welcome', component: Welcome },
                 { path: 'assets', name: 'assets', component: Assets },
                 // enlaces para administrar los usuarios
