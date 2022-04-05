@@ -66,7 +66,6 @@ class TreasureController extends Controller
         /*
         10461608
          */
-        $description = 'DEFENSA_CIVIL';
         $data = Treasure::getValuesProcedure($description, $year);
         return json_encode($data);
     }
