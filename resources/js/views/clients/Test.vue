@@ -2,9 +2,14 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>pruebas de Lionel</span>
+        <span>pruebas de jessi</span>
       </div>
-      <el-input placeholder="ingrese su nombre" v-model="input"></el-input>
+      <el-input placeholder="ingrese numero" v-model="input"></el-input>
+      <div>
+          <el-button @click="test">Default</el-button>
+      </div>
+      </div>
+      <el-input placeholder="ingrese numero" v-model="input"></el-input>
       <div>
           <el-button @click="test">Default</el-button>
       </div>
