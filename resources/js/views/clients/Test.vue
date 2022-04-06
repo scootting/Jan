@@ -4,8 +4,9 @@
       <div slot="header" class="clearfix">
         <span>pruebas de Lionel</span>
       </div>
+      <el-input placeholder="ingrese su nombre" v-model="input"></el-input>
       <div>
-          <el-button>Default</el-button>
+          <el-button @click="test">Default</el-button>
       </div>
     </el-card>
   </div>
@@ -16,6 +17,7 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
+      input: '',
     };
   },
   mounted() {
@@ -23,7 +25,7 @@ export default {
   },
   methods: {
     test() {
-      alert("bienvenido al modulo");
+      alert("hola "+this.input);
     },
   },
 };
