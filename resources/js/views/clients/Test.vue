@@ -8,11 +8,6 @@
       <div>
           <el-button @click="test">Default</el-button>
       </div>
-      </div>
-      <el-input placeholder="ingrese numero" v-model="input"></el-input>
-      <div>
-          <el-button @click="test">Default</el-button>
-      </div>
     </el-card>
   </div>
 </template>
@@ -22,7 +17,7 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
-      input: '',
+      input: "",
     };
   },
   mounted() {
@@ -30,7 +25,7 @@ export default {
   },
   methods: {
     test() {
-      alert("hola "+this.input);
+      alert("hola " + this.input);
     },
   },
 };
