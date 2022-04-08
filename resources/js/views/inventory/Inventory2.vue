@@ -22,7 +22,7 @@
       <br />
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column width="150" label="No.">
+          <el-table-column width="75" label="No.">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.no_cod }}</el-tag>
@@ -33,7 +33,7 @@
           </el-table-column>
           <el-table-column
             prop="ofc_des"
-            width="350"
+            width="450"
             label="descripcion categoria programatica"
           ></el-table-column>
           <el-table-column width="150" label="Estado">
@@ -148,7 +148,7 @@ export default {
           office: row.ofc_cod,
           document: row.no_cod,
           year: row.gestion,
-          report: "inventory_details_1",
+          report: "InventoryDetails",
         },
         method: "GET",
         responseType: "arraybuffer",

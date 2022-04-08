@@ -18,7 +18,7 @@ class Inventory extends Model
                   (select j.descripcion from inv.oficinas j where j.cod_soa = i.ofc_cod limit 1) as ofc_des
                   from inv.doc_inv i
                   where i.gestion = '" . $year . "'
-                  order by i.fec_cre desc";
+                  order by i.fec_ini desc";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
