@@ -61,6 +61,9 @@ import AppendDebtors from './views/treasure/AppendDebtors'  //lista de dias de d
 import Debtors from './views/treasure/Debtors'              //deudores
 import HistoryTransactions from './views/treasure/HistoryTransactions'              //historial de transacciones
 
+import TransactionsPersonal from './views/treasure/TransactionsPersonal' 
+
+
 //clientes 
 import LoginClient from './views/clients/Login'
 import DashboardClient from './views/clients/Dashboard'
@@ -175,6 +178,9 @@ const router = new VueRouter({
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
                 { path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
+
+                // Lionel - lista de transacciones en caja realizados por cada persona
+                { path: 'transactionspersonal', name: 'transactionspersonal', component: TransactionsPersonal }, 
             ],
             meta: {
                 requiresAuth: true,
