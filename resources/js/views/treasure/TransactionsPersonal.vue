@@ -63,6 +63,8 @@
               </el-table-column>
               <el-table-column prop="id_dia" label="id" width="100">
               </el-table-column>
+              <el-table-column prop="des_tip" label="tipo" width="150">
+              </el-table-column>
               <el-table-column prop="nro_com" label="papeleta" width="100">
               </el-table-column>
               <el-table-column prop="cod_val" label="cod." width="65">
