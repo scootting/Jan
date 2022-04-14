@@ -32,7 +32,11 @@ Route::group([
     Route::get('person/add', 'GeneralController@addPerson');
     // *** - Almacenar - ***
     Route::post('person', 'GeneralController@storePerson');
+
+    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas. 
+    //  * T1. Obtiene primero la informacion de la persona
     Route::get('person/{id}', 'GeneralController@getPersonById');
+
     Route::post('doc/upload', 'GeneralController@uploadPDF');
 
 

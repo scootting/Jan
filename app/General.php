@@ -78,9 +78,10 @@ class General extends Model
         return $data;
     }
 
+    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
     public static function GetPersonByIdentityCard($identityCard)
     {
-        $query = "select * from public.ff_mostrar_persona('" . $identityCard . "')";
+        $query = "select * from public.ff_datos_persona('" . $identityCard . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

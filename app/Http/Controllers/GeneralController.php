@@ -71,12 +71,17 @@ class GeneralController extends Controller
         return json_encode($paginate);
     }
 
+    
     //  * Obtener una persona de el recurso utilizado.
     //  * {id: numero de carnet de identidad}    
+    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
+
     public function getPersonById($id){        
         $data = General::GetPersonByIdentityCard($id);
         return json_encode($data);
     } 
+
+
 
     //  * Guardas los datos de una persona en el recurso utilizado.
     public function storePerson(Request $request){
