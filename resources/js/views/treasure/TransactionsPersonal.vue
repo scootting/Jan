@@ -76,9 +76,11 @@
             </el-table></div
         ></el-col>
       </el-row>
+      <!--
       <el-button type="primary" size="small" @click="printTransactions()"
         >imprimir</el-button
       >
+      -->
     </el-card>
   </div>
 </template>
@@ -130,29 +132,7 @@ export default {
         });
       }
     },
-    ///api/reports/
     printTransactions() {
-      var app = this;
-      app.ci_per = app.postulations.nro_dip;
-      axios({
-        url: "/api/reports/",
-        params: {
-          id_dia: app.day,
-          ci_per: app.ci_per,
-          gestion: app.user.gestion,
-          usr_cre: app.user.usuario,
-        },
-        method: "GET",
-        responseType: "arraybuffer",
-      }).then((response) => {
-        let blob = new Blob([response.data], {
-          type: "application/pdf",
-        });
-        let link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        let url = window.URL.createObjectURL(blob);
-        window.open(url);
-      });
     },
   },
 };
