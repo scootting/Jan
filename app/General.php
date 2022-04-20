@@ -9,6 +9,25 @@ use App\Libraries\DynamicMenu;
 
 class General extends Model
 {
+
+    //  * S1. Obtiene la informacion de la persona con el numero de carnet
+    //  * parametros [id: numero de carnet de identidad ]    
+    public static function GetPersonByIdentityCard($identityCard)
+    {
+        $query = "select * from public.ff_datos_persona('" . $identityCard . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  * S2. Guarda los datos una nueva persona que no se encuentra registrada.
+    // *** - parametros [carnet de identidad, nombres, apellido paterno, apellido materno, sexo, fecha de nacimiento] - ***
+    public static function AddPerson($identityCard, $names, $paternal, $maternal, $sex, $birthdate)
+    {
+        $query = "select * from public.ff_registrar_persona('" . $identityCard . "', '" . $paternal . "', '" . $maternal . "', '" . $names . "','" . $sex . "', '" . $birthdate . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
     // *** - funcion para la busqueda de usuarios - ***
     // *** - parametros [username: nombre de usuario, password: clave del usuario] - ***
     public static function SearchUser($username, $password)
@@ -59,17 +78,8 @@ class General extends Model
         return $data;
     }
 
-    // *** - funcion para la creacion de personas - ***
-    // *** - parametros [carnet de identidad, nombres, apellido paterno, apellido materno, sexo, fecha de nacimiento] - ***
-    public static function AddPerson($identityCard, $names, $paternal, $maternal, $sex, $birthdate)
-    {
-        $query = "select * from public.ff_registrar_persona('" . $identityCard . "', '" . $paternal . "', '" . $maternal . "', '" . $names . "','" . $sex . "', '" . $birthdate . "')";
-        //\Log::info("REGISTRAR PARA PERSONAS: ".$query);
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
 
-    // *** - funcion para modificar informacion de las personas - ***
+    //  * S3. Actualiza la informacion de una persona que se encuentra registrada.
     // *** - parametros [carnet de identidad, nombres, apellido paterno, apellido materno, sexo, fecha de nacimiento] - ***
     public static function UpdatePerson($identityCard, $names, $paternal, $maternal, $sex, $birthdate)
     {
@@ -78,13 +88,6 @@ class General extends Model
         return $data;
     }
 
-    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
-    public static function GetPersonByIdentityCard($identityCard)
-    {
-        $query = "select * from public.ff_datos_persona('" . $identityCard . "')";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
 
 
     // *** - funcion para la busqueda de los usuarios  [db: app.users]- ***

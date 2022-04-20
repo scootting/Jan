@@ -8,6 +8,16 @@ use Illuminate\Support\Collection;
 
 class Treasure extends Model
 {
+
+    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
+    //  * {id: numero de carnet de identidad}      
+    public static function getTransactionsByPerson($id){
+        //SELECT * FROM bval.ff_transacciones_persona('6600648')
+        $query = "SELECT * FROM bval.ff_transacciones_persona('" .$id. "')";
+        $data = collect(DB::select(DB::raw($query))); 
+        return $data;
+    }
+
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad.
     //  * {id: numero de carnet de identidad}      
     //  * {year: gestion}      
@@ -92,16 +102,6 @@ class Treasure extends Model
     public static function getValueById($valor, $gestion){
         $query = "SELECT * FROM val.val_ue u INNER JOIN val.valores v ON u.cod_val = v.cod_val ".
                  "WHERE u.gestion = '" .$gestion. "' AND u.cod_val = '" .$valor. "' AND u.estado = 'S'";
-        $data = collect(DB::select(DB::raw($query))); 
-        return $data;
-    }
-
-
-    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
-    //  * {id: numero de carnet de identidad}      
-    public static function getTransactionsByPerson($id){
-        //SELECT * FROM bval.ff_transacciones_persona('6600648')
-        $query = "SELECT * FROM bval.ff_transacciones_persona('" .$id. "')";
         $data = collect(DB::select(DB::raw($query))); 
         return $data;
     }

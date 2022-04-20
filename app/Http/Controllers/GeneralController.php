@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Libraries\JWTFAuth;
-use App\Libraries\DynamicMenu;
 use App\General;
-
+use App\Libraries\DynamicMenu;
+use App\Libraries\JWTFAuth;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class GeneralController extends Controller
@@ -14,32 +13,36 @@ class GeneralController extends Controller
     //
     //
     //  * Buscar a un usuario de el recurso.
-    //  * {username: nombre de usuario, password: clave del usuario}    
-    public function searchUser(Request $request){  
+    //  * {username: nombre de usuario, password: clave del usuario}
+    public function searchUser(Request $request)
+    {
         $data = General::SearchUser($request->get('username'), $request->get('password'));
         $token = JWTFAuth::ValidateDataCredential($data);
         $response = array(
             'access_token' => $token,
-            'user' => $data
-        );        
-        return json_encode($response); 
-    } 
+            'user' => $data,
+        );
+        return json_encode($response);
+    }
 
-    //  * Quitar el registro de un usuario en el recurso.    
-    public function logoutUser(Request $request){
+    //  * Quitar el registro de un usuario en el recurso.
+    public function logoutUser(Request $request)
+    {
         return response()->json('Logged out successfully', 200);
     }
 
-    //  * Registrar un usuario en el recurso.    
-    public function storeUser(Request $request){
+    //  * Registrar un usuario en el recurso.
+    public function storeUser(Request $request)
+    {
         $usuario = $request->get('usuario');
         $personal = $usuario['personal'];
         \Log::info($personal);
         $data = General::RegisterUser($personal);
         return $data;
-    } 
-    
-    public function registerUserProfiles(Request $request){
+    }
+
+    public function registerUserProfiles(Request $request)
+    {
         $usuario = $request->get('usuario');
         $gestion = $request->get('gestion');
         $data = General::SearchUserProfiles($usuario, $gestion);
@@ -47,18 +50,20 @@ class GeneralController extends Controller
         return json_encode($profiles);
     }
 
-    public function registerUserYears(Request $request){
+    public function registerUserYears(Request $request)
+    {
         $usuario = $request->get('usuario');
         $years = General::SearchUserYears($usuario);
         return json_encode($years);
     }
 
-    public function getPersonsByDescription(Request $request){
+    public function getPersonsByDescription(Request $request)
+    {
 
-        $descripcion = strtoupper($request->get('descripcion'));// '' cadena vacia
+        $descripcion = strtoupper($request->get('descripcion')); // '' cadena vacia
         $data = General::GetPersonsByDescription($descripcion);
-        
-        $page = ($request->get('page')? $request->get('page'): 1);
+
+        $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 10;
 
         $paginate = new LengthAwarePaginator(
@@ -71,27 +76,26 @@ class GeneralController extends Controller
         return json_encode($paginate);
     }
 
-    
-    //  * Obtener una persona de el recurso utilizado.
-    //  * {id: numero de carnet de identidad}    
-    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
-
-    public function getPersonById($id){        
+    //  * S1. Obtiene la informacion de la persona con el numero de carnet
+    //  * {id: numero de carnet de identidad}
+    public function getPersonById($id)
+    {
         $data = General::GetPersonByIdentityCard($id);
         return json_encode($data);
-    } 
+    }
 
-
-
-    //  * Guardas los datos de una persona en el recurso utilizado.
-    public function storePerson(Request $request){
+    //  * S2. Guardar la informacion de una nueva persona que no se encuentra registrada.
+    //  * S3. Actualiza la informacion de una persona que se encuentra registrada.
+    //  * {persona: datos de la persona[id, nombres, apellido paterno, apellido materno, sexo, fecha de nacimiento]}
+    public function storePerson(Request $request)
+    {
         $persona = $request->get('persona');
-        $personal = $persona['personal'];
+        $personal = strtoupper($persona['nro_dip']);
         $nombres = strtoupper($persona['nombres']);
         $paterno = strtoupper($persona['paterno']);
         $materno = strtoupper($persona['materno']);
-        $sexo = strtoupper($persona['sexo']);
-        $nacimiento = $persona['nacimiento'];
+        $sexo = strtoupper($persona['id_sexo']);
+        $nacimiento = $persona['fec_nacimiento'];
 
         $marcador = $request->get('marker');
 
@@ -101,7 +105,7 @@ class GeneralController extends Controller
                 break;
             case 'editar':
                 $data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
-            break;
+                break;
             default:
                 break;
         }
@@ -109,12 +113,13 @@ class GeneralController extends Controller
     }
 
     //  * Obtener una lista de usuarios de el recurso utilizado.
-    //  * {parametro: tipo de busqueda por atributo, descripcion: descripcion de la busqueda}    
-    public function getUsersByDescription(Request $request){
-        
+    //  * {parametro: tipo de busqueda por atributo, descripcion: descripcion de la busqueda}
+    public function getUsersByDescription(Request $request)
+    {
+
         $descripcion = strtoupper($request->get('descripcion'));
-        $data = General::GetUsersByDescription($descripcion);        
-        $page = ($request->get('page')? $request->get('page'): 1);
+        $data = General::GetUsersByDescription($descripcion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 10;
 
         $paginate = new LengthAwarePaginator(
@@ -128,11 +133,12 @@ class GeneralController extends Controller
     }
 
     //  * Obtener un usuario de el recurso utilizado.
-    //  * {id: numero de carnet de identidad}    
-    public function getUserById($id){        
+    //  * {id: numero de carnet de identidad}
+    public function getUserById($id)
+    {
         $data = General::GetUserByIdentityCard($id);
         return json_encode($data);
-    } 
+    }
 
     public function getNewCodDocument()
     {
@@ -147,7 +153,7 @@ class GeneralController extends Controller
         $fec_pre = $request->date1;
         $ges = '2021';
         $path = $request->path;
-        $data = General::saveNewCall($cod_con, $glosa, $fec_pre,$ges,$path);
+        $data = General::saveNewCall($cod_con, $glosa, $fec_pre, $ges, $path);
         return json_encode($data);
     }
 
@@ -158,15 +164,12 @@ class GeneralController extends Controller
         $arrayData = json_decode($dataSource, true);
         //dd($arrayData);
         $codigo = $arrayData['codigo'];
-        if ($request->hasFile('file')) 
-        {
+        if ($request->hasFile('file')) {
             $file = $request->file('file');
             $file_name = $file->getClientOriginalName();
             $path = 'public/convocatorias/' . strval($codigo);
             $file->storeAs($path, $file_name);
-        } 
-        else 
-        {
+        } else {
             return response()->json(['error' => 'File not exist!']);
         }
         return response()->json(['success' => 'Cargo exitoso.', 'path' => '/' . 'storage/convocatorias' . '/' . $file_name]);

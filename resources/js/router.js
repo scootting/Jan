@@ -31,13 +31,16 @@ import Welcome from './views/Welcome'
 import Home from './views/Home'
 import Layout from './views/Layout'
 
+//archivos
+import Archive from './views/archive/Archive'
+
 //bienes e inventarios
 import Inventory from './views/inventory/Inventory'
 import Inventory2 from './views/inventory/Inventory2'
 import EditInventory2 from './views/inventory/EditInventory2'
 import InventoryDetail from './views/inventory/InventoryDetail'
 import NewInventory from './views/inventory/NewInventory'
-import NewInventoryDetail from './views/inventory/NewInventoryDetail' 
+import NewInventoryDetail from './views/inventory/NewInventoryDetail'
 import EditNewInventoryDetail from './views/inventory/EditNewInventoryDetail'
 import Inventory2Detail from './views/inventory/Inventory2Detail'
 import Formalities from './views/Formalities'
@@ -61,7 +64,7 @@ import AppendDebtors from './views/treasure/AppendDebtors'  //lista de dias de d
 import Debtors from './views/treasure/Debtors'              //deudores
 import HistoryTransactions from './views/treasure/HistoryTransactions'              //historial de transacciones
 
-import TransactionsPersonal from './views/treasure/TransactionsPersonal' 
+import TransactionsPersonal from './views/treasure/TransactionsPersonal'
 
 
 //clientes 
@@ -124,6 +127,19 @@ const router = new VueRouter({
                 // when /user/:id is matched0
                 { path: 'test', name: 'test', component: Test },
 
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para al Administracion General del Sistema
+                //  |--------------------------------------------------------------------------    
+                //  * S1. Obtiene la informacion de la persona con el numero de carnet
+                { path: 'person/:id', name: 'editperson', component: EditPerson },
+                //  * S2. Guardar la informacion de una nueva persona que no se encuentra registrada.
+                //  * S3. Actualiza la informacion de una persona que se encuentra registrada.
+                { path: 'person/add', name: 'addperson', component: AddPerson },
+
+                // enlaces para administrar las personas
+                { path: 'persons', name: 'persons', component: Persons },
+
+
                 { path: '', name: 'welcome', component: Welcome },
                 { path: 'assets', name: 'assets', component: Assets },
                 // enlaces para administrar los usuarios
@@ -133,12 +149,12 @@ const router = new VueRouter({
                 { path: 'user/show', name: 'showuser', component: ShowUser },
                 { path: 'user/profiles', name: 'edituserprofiles', component: EditUserProfiles },
 
-                // enlaces para administrar las personas
-                { path: 'persons', name: 'persons', component: Persons },
-                { path: 'person/add', name: 'addperson', component: AddPerson },
-                { path: 'person/:id', name: 'editperson', component: EditPerson },
-                //{ path: 'person/show/:id', name: 'editperson', component: EditPerson },
-                
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Archivos
+                //  |--------------------------------------------------------------------------    
+                //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
+                { path: 'archive', name: 'archive', component: Archive },
+
                 //Modulo para administrar y gestionar inventarios de bienes de uso
                 // Lionel - enlace a la lista de inventarios para la gestion 
                 { path: 'inventory2', name: 'inventory2', component: Inventory2 },
@@ -150,17 +166,17 @@ const router = new VueRouter({
                 { path: 'inventory/:soa', name: 'inventorydetail', component: InventoryDetail },
                 { path: 'inventory2/:id', name: 'editinventory2', component: EditInventory2 },
                 { path: 'newinventory', name: 'newinventory', component: NewInventory },
-                { path: 'newinventory/:soa', name: 'newinventorydetail',component: NewInventoryDetail },
+                { path: 'newinventory/:soa', name: 'newinventorydetail', component: NewInventoryDetail },
                 { path: 'imgDetail/:id', name: 'imgdetail', component: ImgDetail },
-                { path: 'editnewinventory/:id', name: 'editnewinventorydetail',component: EditNewInventoryDetail },
+                { path: 'editnewinventory/:id', name: 'editnewinventorydetail', component: EditNewInventoryDetail },
                 { path: 'active', name: 'active', component: Active },
                 { path: 'createactive', name: 'createactive', component: CreateActive },
                 { path: 'active/:id', name: 'editactive', component: EditActive },
-                { path: 'newactive/:soa', name: 'newactive' , component: NewActive },
-                { path: 'documentqr', name: 'documentqr' , component: DocumentQR },
-                { path: 'documentqr/:id', name: 'selectactivebydocument' , component: SelectActiveByDocument },
+                { path: 'newactive/:soa', name: 'newactive', component: NewActive },
+                { path: 'documentqr', name: 'documentqr', component: DocumentQR },
+                { path: 'documentqr/:id', name: 'selectactivebydocument', component: SelectActiveByDocument },
 
-                { path: 'addgraduatecertificate', name: 'addgraduatecertificate' , component: AddGraduateCertificate },
+                { path: 'addgraduatecertificate', name: 'addgraduatecertificate', component: AddGraduateCertificate },
 
                 //enlaces para la administracion de los certificados de no deuda, solvencias
                 { path: 'addnotification', name: 'addnotification', component: addNotification }, // agregar la convocatoria para un certificado de no deuda
@@ -179,8 +195,11 @@ const router = new VueRouter({
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
                 { path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
 
-                // Lionel - lista de transacciones en caja realizados por cada persona
-                { path: 'transactionspersonal', name: 'transactionspersonal', component: TransactionsPersonal }, 
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Tesoro
+                //  |--------------------------------------------------------------------------    
+                //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas. 
+                { path: 'transactionspersonal', name: 'transactionspersonal', component: TransactionsPersonal },
             ],
             meta: {
                 requiresAuth: true,

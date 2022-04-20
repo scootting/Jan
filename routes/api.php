@@ -1,8 +1,5 @@
 <?php
 
-use App\DeliveryDocuments;
-use App\Http\Controllers\DeliveryDocumentsController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
+ */
 
 Route::post('login', 'GeneralController@searchUser');
 
@@ -28,17 +25,8 @@ Route::group([
     // *** - rutas para crear, editar, mostrar, buscar a las personas - ***
     // *** - Buscar - ***
     Route::post('persons', 'GeneralController@getPersonsByDescription');
-    // *** - Aniadir - ***
-    Route::get('person/add', 'GeneralController@addPerson');
-    // *** - Almacenar - ***
-    Route::post('person', 'GeneralController@storePerson');
-
-    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas. 
-    //  * T1. Obtiene primero la informacion de la persona
-    Route::get('person/{id}', 'GeneralController@getPersonById');
 
     Route::post('doc/upload', 'GeneralController@uploadPDF');
-
 
     // *** - rutas para crear, editar, mostrar, buscar a los usuarios del sistema - ***
     Route::post('users', 'GeneralController@getUsersByDescription');
@@ -46,7 +34,7 @@ Route::group([
     Route::get('user/{id}', 'GeneralController@getUserById');
     /*
     Route::post('upload', 'FileController@uploadFile');
-    */
+     */
     //Listar activos por unidad
     Route::get('inventory/show/{cod_soa}', 'InventoryController@getOfficeByCodSoa');
     Route::get('inventory/sub_offices/{cod_soa}', 'InventoryController@getSubOfficesByCodSoa');
@@ -59,7 +47,7 @@ Route::group([
     Route::get('inventarioGeneral/', 'InventoryController@getReportGeneral');
     Route::get('generarReporte/', 'InventoryController@getReport');
 
-    //rutas de inventarios 2 
+    //rutas de inventarios 2
     Route::get('inventory2/unidad', 'InventoryController@getUnidad');
     Route::get('inventory2/sub_unidad', 'InventoryController@getSubUnidad');
     Route::get('inventory2/cargos', 'InventoryController@getCargos');
@@ -67,11 +55,11 @@ Route::group([
     Route::get('inventory2/responsables2', 'InventoryController@getResponsablesByUnidad');
     Route::get('inventory2/encargados', 'InventoryController@getEncargados');
     Route::post('inventory2/save', 'InventoryController@saveNewInventory');
-    Route::post('inventory2/saveDataDetail','InventoryController@saveDatasDetail');
+    Route::post('inventory2/saveDataDetail', 'InventoryController@saveDatasDetail');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el sistema de Inventarios para Bienes de Uso
-    //  |--------------------------------------------------------------------------    
+    //  |--------------------------------------------------------------------------
     //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
     Route::post('inventory2/', 'InventoryController@getInventories');
     //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
@@ -80,9 +68,8 @@ Route::group([
     Route::post('getActivesByInventory/', 'InventoryController@getActivesByInventory');
     //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
     Route::get('getStatesByActive/', 'InventoryController@getStatesByActive');
-    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.    
+    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
     Route::post('saveActiveDetail/', 'InventoryController@saveActiveDetail');
-
 
     Route::get('inventory2/edit/{id}', 'InventoryController@getInventory');
     Route::post('inventory2/saveChange', 'InventoryController@saveChangeDocInventory');
@@ -99,8 +86,8 @@ Route::group([
     Route::get('reasignacion/', 'InventoryController@SearchActivo');
     Route::get('activo/partidas', 'InventoryController@getPartidas');
     Route::get('activo/contable', 'InventoryController@getContable');
-    Route::get('activo/nro','InventoryController@getlastNroDoc');
-    Route::get('activo/controlTrue','InventoryController@controlTrue');
+    Route::get('activo/nro', 'InventoryController@getlastNroDoc');
+    Route::get('activo/controlTrue', 'InventoryController@controlTrue');
     Route::get('activo/cargos', 'InventoryController@getAllCargos');
     Route::get('reasignacion/edit/{id}', 'InventoryController@getActive');
     Route::post('reasignacion/save', 'InventoryController@saveChangeActive');
@@ -112,24 +99,31 @@ Route::group([
     Route::get('inventoryReportFalse/', 'InventoryController@inventarioFalse');
 
     //** Guardar nueva convocatoria */
-    Route::get('newCall/nro','GeneralController@getNewCodDocument');
-    Route::post('newCall/save','GeneralController@saveNewCall');
+    Route::get('newCall/nro', 'GeneralController@getNewCodDocument');
+    Route::post('newCall/save', 'GeneralController@saveNewCall');
 
     Route::post('documents', 'DocumentController@getDocumentsByOffice');
 
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para al Administracion General del Sistema
+    //  |--------------------------------------------------------------------------
+    //  * S1. Obtiene la informacion de la persona con el numero de carnet
+    Route::get('person/{id}', 'GeneralController@getPersonById');
+    //  * S2. Guardar la informacion de una nueva persona que no se encuentra registrada.
+    //  * S3. Actualiza la informacion de una persona que se encuentra registrada.
+    Route::post('person', 'GeneralController@storePerson');
 
-
-
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Tesoro
+    //  |--------------------------------------------------------------------------
+    //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
+    Route::post('getTransactionsByPerson', 'TreasureController@getTransactionsByPerson');
 
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
     Route::post('getDataOfStudentById', 'TreasureController@getDataOfStudentById');
     // *** - Buscar los valores pertenecientes a un tramite - ***
     Route::post('valuesprocedure', 'TreasureController@getValuesProcedure');
-
-
-
-
 
     // *** - Obtener el reporte correspondiente a los valores vendidos para alumnos nuevos - ***
     Route::get('reports/', 'TreasureController@getReportValuesQr');
@@ -145,8 +139,6 @@ Route::group([
     Route::post('getSaleOfDayById', 'TreasureController@getSaleOfDayById');
     Route::post('getValueById', 'TreasureController@getValueById');
 
-    // *** - Obtener las transacciones por persona por su el carnet de identidad - ***
-    Route::post('getTransactionsByPerson', 'TreasureController@getTransactionsByPerson');
     // *** - Obtener las transacciones por gestion - ***
     Route::post('getAllTransactionsByYear', 'TreasureController@getAllTransactionsByYear');
     // *** - Anula la transaccion - ***
@@ -159,4 +151,11 @@ Route::group([
     //Route::get('reportSelectedFixedAssets/{id}', 'FixedAssetController@getReportSelectedFixedAssets');
     Route::get('reportSelectedFixedAssets/', 'FixedAssetController@getReportSelectedFixedAssets');
     Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@getReportSelectedFixedAssets2');
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Archivos
+    //  |--------------------------------------------------------------------------
+    //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
+    Route::post('archive', 'GeneralController@getArchivesByDescription');
+
 });
