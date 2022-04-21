@@ -45,7 +45,7 @@
       </el-aside>
 
       <el-container>
-        <el-header style="text-align: right; background-color: #f4f3ef">
+        <el-header style="text-align: right; background-color: #62b6cb">
           <!---->
           <el-dropdown size="medium">
             <span class="el-dropdown-link">

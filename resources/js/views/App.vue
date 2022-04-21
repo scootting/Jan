@@ -8,6 +8,7 @@
 <style>
 /*
 @import url('https://fonts.googleapis.com/css?family=Chelsea+Market');
+@import url("https://fonts.googleapis.com/css?family=Ubuntu:wght@300;400;700");
 */
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:wght@300;400;700");
 
@@ -20,8 +21,9 @@ body {
   font-family: "Ubuntu", sans-serif;
   background: #f0ab00;
   background: #d8ebb5;
-  background: #faf5e4;
-  background: #f4f3ef;
+  background: #368f8b;
+  background: #62b6cb;
+
   margin: 0;
   padding: 0;
   background-size: contain;
