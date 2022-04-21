@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6" :offset="9">
           <div class="header">
-            <h2>LOGO HERE</h2>
+            <h2>Universidad Autonoma "Tomas Frias"</h2>
           </div>
           <el-card class="box-card">
             <div slot="header" class="clearfix">

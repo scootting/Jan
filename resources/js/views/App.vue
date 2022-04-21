@@ -8,17 +8,24 @@
 <style>
 /*
 @import url('https://fonts.googleapis.com/css?family=Chelsea+Market');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400&display=swap');
+*/
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400&display=swap');
+
+/*
+@import url("https://fonts.googleapis.com/css?family=Ubuntu+Condensed&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Ubuntu:wght@300;400;700");
 */
-@import url("https://fonts.googleapis.com/css?family=Ubuntu:wght@300;400;700");
-
 html,
 body {
   /*
   font-family: "Roboto Slab", serif;
   font-family: 'Chelsea Market', cursive;
+  font-family: "Ubuntu+Condensed", sans-serif;
+
   */
-  font-family: "Ubuntu", sans-serif;
+  font-family: 'Oswald', sans-serif;
+
   background: #f0ab00;
   background: #d8ebb5;
   background: #368f8b;
@@ -29,7 +36,10 @@ body {
   background-size: contain;
 }
 #app {
-  font-family: "Ubuntu", sans-serif;
+  /*
+  font-family: "Ubuntu+Condensed", sans-serif;  
+  */
+  font-family: 'Oswald', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
