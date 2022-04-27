@@ -33,7 +33,7 @@ import Layout from './views/Layout'
 
 //archivos
 import Archive from './views/archive/Archive'
-
+import ArchiveDetails from './views/archive/ArchiveDetails'
 //bienes e inventarios
 import Inventory from './views/inventory/Inventory'
 import Inventory2 from './views/inventory/Inventory2'
@@ -149,12 +149,6 @@ const router = new VueRouter({
                 { path: 'user/show', name: 'showuser', component: ShowUser },
                 { path: 'user/profiles', name: 'edituserprofiles', component: EditUserProfiles },
 
-                //  |--------------------------------------------------------------------------
-                //  | Rutas API para el Sistema de Archivos
-                //  |--------------------------------------------------------------------------    
-                //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
-                { path: 'archive', name: 'archive', component: Archive },
-
                 //Modulo para administrar y gestionar inventarios de bienes de uso
                 // Lionel - enlace a la lista de inventarios para la gestion 
                 { path: 'inventory2', name: 'inventory2', component: Inventory2 },
@@ -200,6 +194,14 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas. 
                 { path: 'transactionspersonal', name: 'transactionspersonal', component: TransactionsPersonal },
+
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Archivos
+                //  |--------------------------------------------------------------------------    
+                //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
+                { path: 'archive', name: 'archive', component: Archive },
+                { path: 'archive/:id', name: 'archivedetails', component: ArchiveDetails },
+
             ],
             meta: {
                 requiresAuth: true,

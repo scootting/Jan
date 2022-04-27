@@ -156,6 +156,9 @@ Route::group([
     //  | Rutas API para el Sistema de Archivos
     //  |--------------------------------------------------------------------------
     //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
-    Route::post('archive', 'GeneralController@getArchivesByDescription');
+    Route::post('archive', 'ArchiveController@getArchivesByDescription');
+    //  * A2. Obtiene la lista de documentos que pertenecen a un archivo
+    Route::post('getDocumentsbyArchive/', 'ArchiveController@getDocumentsbyArchive');
+
 
 });

@@ -10,12 +10,11 @@
           placeholder="INSERTE UNA DESCRIPCION"
           v-model="writtenTextParameter"
           class="input-with-select"
-          @keyup.enter.native="getOffices"
         >
           <el-button
             slot="append"
             icon="el-icon-search"
-            @click="getInventories"
+            @click="getArchives(1)"
           ></el-button>
         </el-input>
       </div>
@@ -25,16 +24,14 @@
           <el-table-column width="75" label="No.">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.no_cod }}</el-tag>
+                <el-tag size="medium">{{ scope.row.no_doc }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="ofc_cod" width="100" label="Cat. prog.">
-          </el-table-column>
           <el-table-column
-            prop="ofc_des"
+            prop="glosa"
             width="450"
-            label="descripcion categoria programatica"
+            label="descripcion del documento"
           ></el-table-column>
           <el-table-column width="150" label="Estado">
             <template slot-scope="scope">
@@ -46,40 +43,12 @@
           <el-table-column align="right-center" width="250" label="Operaciones">
             <template slot-scope="scope">
               <el-button
-                :disabled="data[scope.$index].verificado == true"
-                @click="editInventory(scope.$index, scope.row)"
+                @click="getDocumentsbyArchive(scope.row.no_doc)"
                 type="success"
                 plain
                 size="mini"
-                >Editar</el-button
-              >
-              <el-button
-                :disabled="data[scope.$index].verificado == true"
-                @click="listActivesByDocument(scope.row.no_cod)"
-                type="success"
-                plain
-                size="mini"
-                >Ver lista
+                >Ver documentos
               </el-button>
-            </template>
-          </el-table-column>
-          <el-table-column align="right-center" width="250" label="Informe">
-            <template slot-scope="scope">
-              <el-button
-                :disabled="data[scope.$index].verificado == false"
-                @click="generateReportGral(scope.row)"
-                type="primary"
-                plain
-                size="mini"
-                >General</el-button
-              >
-              <el-button
-                @click="initPrintDetailsInventory(scope.row)"
-                type="primary"
-                plain
-                size="mini"
-                >Detallado</el-button
-              >
             </template>
           </el-table-column>
         </el-table>
@@ -88,7 +57,7 @@
           layout="prev, pager, next"
           :current-page="pagination.current_page"
           :total="pagination.total"
-          @current-change="getOfficesPaginate"
+          @current-change="getArchives"
         ></el-pagination>
       </div>
     </el-card>
@@ -113,17 +82,19 @@ export default {
   },
   methods: {
     //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
-    getArchives() {
+    getArchives(page) {
       this.loading = true;
       let app = this;
       axios
-        .post("/api/getArchivesByDescription", {
+        .post("/api/archive", {
           year: app.user.gestion,
           description: app.writtenTextParameter.toUpperCase(),
+          page:page,
         })
         .then((response) => {
           app.loading = false;
-          app.data = response.data.data;
+          app.data = Object.values(response.data.data);
+          console.log(app.data);
           app.pagination = response.data;
         })
         .catch((error) => {
@@ -134,68 +105,25 @@ export default {
           });
         });
     },
-    //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
-    initPrintDetailsInventory(row) {
-      console.log(row);
-      axios({
-        url: "/api/inventoryReport/",
-        params: {
-          office: row.ofc_cod,
-          document: row.no_cod,
-          year: row.gestion,
-          report: "InventoryDetails",
-        },
-        method: "GET",
-        responseType: "arraybuffer",
-      }).then((response) => {
-        let blob = new Blob([response.data], {
-          type: "application/pdf",
-        });
-        let link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        let url = window.URL.createObjectURL(blob);
-        window.open(url);
-      });
-    },
 
-    listActivesByDocument(document) {
+    getDocumentsbyArchive(archive) {
+      let app = this;
+      console.log(archive);
       this.$router.push({
-        name: "inventory2detail",
         params: {
-          id_inventory: document,
+          name: "archivedetails",
+          id: archive,
+          year: app.user.gestion,
         },
       });
     },
 
-    getOfficesPaginate(page) {
-      this.pagination.page = page;
-      this.getInventories();
-    },
     editInventory(index, row) {
       this.$router.push({
         name: "editinventory2",
         params: {
           id: row.id,
         },
-      });
-    },
-    generateReportGral(no_cod) {
-      axios({
-        url: "/api/inventoryReportGral/",
-        params: {
-          no_doc: no_cod.no_cod,
-        },
-        method: "GET",
-        responseType: "arraybuffer",
-      }).then((response) => {
-        let blob = new Blob([response.data], {
-          type: "application/pdf",
-        });
-        let link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        console.log(blob);
-        let url = window.URL.createObjectURL(blob);
-        window.open(url);
       });
     },
   },
