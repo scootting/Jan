@@ -159,6 +159,4 @@ Route::group([
     Route::post('archive', 'ArchiveController@getArchivesByDescription');
     //  * A2. Obtiene la lista de documentos que pertenecen a un archivo
     Route::post('getDocumentsbyArchive/', 'ArchiveController@getDocumentsbyArchive');
-
-
 });

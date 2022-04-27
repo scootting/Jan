@@ -106,14 +106,11 @@ export default {
         });
     },
 
-    getDocumentsbyArchive(archive) {
-      let app = this;
-      console.log(archive);
+    getDocumentsbyArchive(id_archive) {
       this.$router.push({
+        name: "archivedetails",
         params: {
-          name: "archivedetails",
-          id: archive,
-          year: app.user.gestion,
+          id: id_archive
         },
       });
     },

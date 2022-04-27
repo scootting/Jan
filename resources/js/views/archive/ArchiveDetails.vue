@@ -11,6 +11,7 @@
         >
       </div>
       <el-row :gutter="50">
+        <!--
         <el-col :span="24"
           ><div class="grid-content bg-purple">
             <el-form
@@ -31,40 +32,121 @@
               <el-form-item label="nombres">
                 <el-input v-model="personal.nombres" disabled></el-input>
               </el-form-item>
-            </el-form></div
-        ></el-col>
+            </el-form>
+          </div></el-col
+        >
+        -->
         <el-col :span="24"
           ><div class="grid-content bg-purple">
             <el-table
-              :data="transactions"
+              :data="documentsArchive"
               border
               style="width: 100%"
               size="small"
             >
-              <el-table-column prop="fec_tra" label="fecha" width="100">
+              <el-table-column
+                prop="indice"
+                label="indice"
+                align="right"
+                width="50"
+              >
               </el-table-column>
-              <el-table-column prop="gestion" label="gestion" width="100">
+              <el-table-column
+                prop="fecha"
+                label="fecha"
+                width="100"
+                align="center"
+              >
               </el-table-column>
-              <el-table-column prop="id_dia" label="id" width="100">
+              <el-table-column
+                prop="numeral"
+                label="no. documento"
+                width="100"
+                align="right"
+              >
               </el-table-column>
-              <el-table-column prop="des_tip" label="tipo" width="150">
+              <el-table-column prop="id_tipo" label="documento" width="120">
               </el-table-column>
-              <el-table-column prop="nro_com" label="papeleta" width="100">
+              <el-table-column prop="glosa" label="descripcion" width="750">
               </el-table-column>
-              <el-table-column prop="cod_val" label="cod." width="65">
+              <el-table-column
+                align="right-center"
+                label="operaciones"
+                width="200"
+              >
+                <template slot-scope="scope">
+                  <el-button
+                    :disabled="scope.row.guardado === true"
+                    type="text"
+                    size="mini"
+                    @click="initEditDocumentOfArchive(scope.$index, scope.row)"
+                    >editar</el-button
+                  >
+                  <el-button
+                    :disabled="scope.row.guardado === true"
+                    type="text"
+                    size="mini"
+                    @click="DeleteDocumentOfArchive(scope.$index, scope.row)"
+                    >quitar</el-button
+                  >
+                </template>
               </el-table-column>
-              <el-table-column prop="des_val" label="descripcion" width="550">
-              </el-table-column>
-              <el-table-column prop="imp_val" label="Precio" align="right">
-              </el-table-column>
-            </el-table></div
-        ></el-col>
+            </el-table>
+          </div></el-col
+        >
       </el-row>
-      <!--
-      <el-button type="primary" size="small" @click="printTransactions()"
-        >imprimir</el-button
+
+      <!-- Form -->
+      <el-button type="text" @click="initAddDocumentOfArchive"
+        >Agregar nuevo documento</el-button
       >
-      -->
+
+      <el-dialog
+        title="detalle del documento"
+        :visible.sync="dialogFormVisible"
+      >
+        <el-form :model="document" label-width="220px" size="small">
+          <el-form-item label="Numero del documento">
+            <el-input v-model="document.numeral" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="fecha del registro">
+            <el-date-picker
+              type="date"
+              v-model="document.fecha"
+              placeholder="seleccione una fecha"
+              style="width: 100%"
+              format="yyyy/MM/dd"
+              value-format="yyyy-MM-dd"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="glosa o descripcion">
+            <el-input
+              type="textarea"
+              v-model="document.glosa"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <!--
+        -->
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button
+            type="primary"
+            size="small"
+            plain
+            @click="AddDocumetOfArchive"
+            >Confirmar</el-button
+          >
+          <el-button
+            type="danger"
+            size="small"
+            plain
+            @click="dialogFormVisible = false"
+            >Cancelar</el-button
+          >
+        </span>
+      </el-dialog>
+      <!-- Form -->
     </el-card>
   </div>
 </template>
@@ -77,31 +159,37 @@ export default {
       user: this.$store.state.user,
       id_archive: null,
       documentsArchive: [],
+      dialogFormVisible: false,
+      stateStore: '',
+      document: {
+        id_doc: "",
+        numeral: "",
+        indice: "",
+        glosa: "",
+        fecha: "",
+        id_tipo: null,
+        gestion: null,
+      },
     };
   },
   mounted() {
     let app = this;
     app.id_archive = app.$route.params.id;
-    getDocumentsbyArchive();
+    app.getDocumentsbyArchive();
   },
   methods: {
     test() {
       alert("test");
     },
-
     //  * A2. Obtiene la lista de documentos que pertenecen a un archivo
     async getDocumentsbyArchive() {
       let app = this;
-      let id = app.writtenTextParameter;
       try {
-        let responseTransactions = await axios.post(
-          "/api/getDocumentsbyArchive",
-          {
-            id: app.id_archive,
-            year: app.user.gestion,
-          }
-        );
-        app.documentsArchive = responseTransactions.data;
+        let response = await axios.post("/api/getDocumentsbyArchive", {
+          id: app.id_archive,
+          year: app.user.gestion,
+        });
+        app.documentsArchive = response.data;
         console.log(app.documentsArchive);
       } catch (error) {
         this.error = error.response.data;
@@ -110,7 +198,34 @@ export default {
         });
       }
     },
-    initPrintDocumentsbyArchive() {
+    initEditDocumentOfArchive(idx, row) {
+      this.document = row;
+      this.stateStore = 'editar'
+      console.log(this.document);
+      this.dialogFormVisible = true;
+    },
+    initAddDocumentOfArchive() {
+      this.document = {
+        id_doc: "",
+        numeral: "",
+        indice: "",
+        glosa: "",
+        fecha: "",
+        id_tipo: null,
+        gestion: null,
+      };
+      this.stateStore = 'añadir'
+      this.dialogFormVisible = true;
+    },
+    AddDocumetOfArchive(){
+        if(this.stateStore == 'añadir')
+            this.documentsArchive.push(this.document);
+        this.dialogFormVisible = false;
+        console.log(this.documentsArchive);
+    },
+    DeleteDocumentOfArchive(idx, row){
+        this.documentsArchive.splice(idx, 1);
+        console.log(this.documentsArchive);
     },
   },
 };

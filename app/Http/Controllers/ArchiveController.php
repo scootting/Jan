@@ -32,7 +32,7 @@ class ArchiveController extends Controller
     public function getDocumentsbyArchive(Request $request){
         $archivo = $request->get('id');
         $gestion = $request->get('year');
-        $data = Inventory::getDocumentsbyArchive($archivo, $gestion);
+        $data = Archive::getDocumentsbyArchive($archivo, $gestion);
         return json_encode($data);
     }
 }

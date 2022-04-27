@@ -29,8 +29,7 @@ class Archive extends Model
     public static function getDocumentsbyArchive($archive, $year)
     {        
         //select * from arch.det_docto where id_doc = '00000001' and gestion = '2019';
-        $query = "select * from arch.det_docto where id_doc = '" . $archive . "' and gestion = '". $year . "'";
-        \Log::info("Esta es la consulta de archivos: ".$query);
+        $query = "select * from arch.det_docto where id_doc = '" . $archive . "' and gestion = '". $year . "' order by indice asc";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
