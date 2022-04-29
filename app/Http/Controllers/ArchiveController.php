@@ -32,7 +32,15 @@ class ArchiveController extends Controller
     public function getDocumentsbyArchive(Request $request){
         $archivo = $request->get('id');
         $gestion = $request->get('year');
-        $data = Archive::getDocumentsbyArchive($archivo, $gestion);
+        $data = Archive::GetDocumentsbyArchive($archivo, $gestion);
+        return json_encode($data);
+    }
+    
+    //  * A3. Obtiene la lista de tipos de documentos que pertenecen a un archivo
+    //  * parametros {description: descripcion del tipo de documento que se necesita }     
+    public function getTypesDocument(Request $request){
+        $descripcion = $request->get('description');
+        $data = Archive::GetTypesDocument($descripcion);
         return json_encode($data);
     }
 }

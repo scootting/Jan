@@ -65,14 +65,19 @@
                 align="right"
               >
               </el-table-column>
-              <el-table-column prop="id_tipo" label="documento" width="120">
+              <el-table-column prop="descr" label="documento" width="250" align="center">
+                <template slot-scope="scope">
+                  <el-tag size="medium">{{
+                    scope.row.descr
+                  }}</el-tag>
+                </template>
               </el-table-column>
               <el-table-column prop="glosa" label="descripcion" width="750">
               </el-table-column>
               <el-table-column
                 align="right-center"
                 label="operaciones"
-                width="200"
+                width="180"
               >
                 <template slot-scope="scope">
                   <el-button
@@ -106,6 +111,22 @@
         :visible.sync="dialogFormVisible"
       >
         <el-form :model="document" label-width="220px" size="small">
+          <el-form-item label="tipo de documento">
+            <el-select
+              v-model="document.id_tipo"
+              value-key="descr"
+              size="small"
+              placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument"
+            >
+              <el-option
+                v-for="item in typesDocument"
+                :key="item.id"
+                :label="item.descr"
+                :value="item.id"
+              >
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="Numero del documento">
             <el-input v-model="document.numeral" autocomplete="off"></el-input>
           </el-form-item>
@@ -119,6 +140,7 @@
               value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
+
           <el-form-item label="glosa o descripcion">
             <el-input
               type="textarea"
@@ -159,8 +181,9 @@ export default {
       user: this.$store.state.user,
       id_archive: null,
       documentsArchive: [],
+      typesDocument: [],
       dialogFormVisible: false,
-      stateStore: '',
+      stateStore: "",
       document: {
         id_doc: "",
         numeral: "",
@@ -168,6 +191,7 @@ export default {
         glosa: "",
         fecha: "",
         id_tipo: null,
+        descr: "",
         gestion: null,
       },
     };
@@ -175,11 +199,26 @@ export default {
   mounted() {
     let app = this;
     app.id_archive = app.$route.params.id;
+    app.getTypesDocument();
     app.getDocumentsbyArchive();
   },
   methods: {
     test() {
       alert("test");
+    },
+    //  * A3. Obtiene la lista de tipos de documentos que pertenecen a un archivo
+    async getTypesDocument() {
+      let app = this;
+      try {
+        let response = await axios.post("/api/getTypesDocument", {
+          description: "Documento",
+        });
+        app.typesDocument = response.data;
+        console.log(app.typesDocument);
+        console.log(app.documentsArchive);
+      } catch (error) {
+        console.log(error);
+      }
     },
     //  * A2. Obtiene la lista de documentos que pertenecen a un archivo
     async getDocumentsbyArchive() {
@@ -198,12 +237,14 @@ export default {
         });
       }
     },
+    //  * Inicia la edicion de un documento
     initEditDocumentOfArchive(idx, row) {
       this.document = row;
-      this.stateStore = 'editar'
+      this.stateStore = "editar";
       console.log(this.document);
       this.dialogFormVisible = true;
     },
+    //  * Inicia un nuevo documento
     initAddDocumentOfArchive() {
       this.document = {
         id_doc: "",
@@ -212,21 +253,28 @@ export default {
         glosa: "",
         fecha: "",
         id_tipo: null,
+        descr: "",
         gestion: null,
       };
-      this.stateStore = 'añadir'
+      this.stateStore = "añadir";
       this.dialogFormVisible = true;
     },
-    AddDocumetOfArchive(){
-        if(this.stateStore == 'añadir')
-            this.documentsArchive.push(this.document);
-        this.dialogFormVisible = false;
-        console.log(this.documentsArchive);
+    //  * Guarda los cambios de un nuevo documento sea nuevo o uno ya existente
+    AddDocumetOfArchive() {
+      if (this.stateStore == "añadir")
+        this.documentsArchive.push(this.document);
+      this.dialogFormVisible = false;
+      console.log(this.documentsArchive);
     },
-    DeleteDocumentOfArchive(idx, row){
-        this.documentsArchive.splice(idx, 1);
-        console.log(this.documentsArchive);
+
+    //  * Quita un documento ya existente
+    DeleteDocumentOfArchive(idx, row) {
+      this.documentsArchive.splice(idx, 1);
+      console.log(this.documentsArchive);
     },
+    OnchangeTypeDocument(idx){
+        this.document.descr = this.typesDocument[idx-1].descr;
+    }
   },
 };
 </script>
@@ -256,5 +304,9 @@ export default {
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
+}
+
+.el-form .el-select {
+  width: 100%;
 }
 </style>
