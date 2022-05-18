@@ -43,4 +43,26 @@ class ArchiveController extends Controller
         $data = Archive::GetTypesDocument($descripcion);
         return json_encode($data);
     }
+
+    //  * A6. Obtiene la lista de contenedores para archivar con una breve descripcion
+    //  * parametros {description: descripcion que se esta buscando }     
+    public function getFileContainerByDescription(Request $request)
+    {
+
+        $descripcion = strtoupper($request->get('description'));
+        $data = Archive::getFileContainerByDescription($descripcion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 3;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/users')]
+        );
+        return json_encode($paginate);
+    }
+
+
+    
 }

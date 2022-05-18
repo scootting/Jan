@@ -34,6 +34,10 @@ import Layout from './views/Layout'
 //archivos
 import Archive from './views/archive/Archive'
 import ArchiveDetails from './views/archive/ArchiveDetails'
+import FileContainer from './views/archive/FileContainer'
+import FileContainerDetails from './views/archive/FileContainerDetails'
+
+
 //bienes e inventarios
 import Inventory from './views/inventory/Inventory'
 import Inventory2 from './views/inventory/Inventory2'
@@ -76,6 +80,7 @@ import NuevaConvocatoria from './views/NewCall'
 import addNotification from './views/certificates/addNotification'
 import AddSolvency from './views/certificates/AddSolvency'
 import editTransactionDocuments from './views/certificates/editTransactionDocuments'
+import { Container } from 'element-ui'
 
 // Routes
 const router = new VueRouter({
@@ -201,6 +206,8 @@ const router = new VueRouter({
                 //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
                 { path: 'archive', name: 'archive', component: Archive },
                 { path: 'archive/:id', name: 'archivedetails', component: ArchiveDetails },
+                { path: 'filecontainer', name: 'filecontainer', component: FileContainer },
+                { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
 
             ],
             meta: {

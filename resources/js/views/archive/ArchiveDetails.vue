@@ -100,12 +100,10 @@
           </div></el-col
         >
       </el-row>
-
-      <!-- Form -->
+      <!-- Form Add Document to Archive-->
       <el-button type="text" @click="initAddDocumentOfArchive"
         >Agregar nuevo documento</el-button
       >
-
       <el-dialog
         title="detalle del documento"
         :visible.sync="dialogFormVisible"
@@ -168,7 +166,12 @@
           >
         </span>
       </el-dialog>
-      <!-- Form -->
+      <!-- Form Add Document to Archive-->
+      <!-- Form Add Container to Archive-->
+      <el-button type="text" @click="initAddArchiveOfContainer"
+        >Agregar contenedor</el-button
+      >
+      <!-- Form Add Container to Archive-->
     </el-card>
   </div>
 </template>
@@ -258,6 +261,10 @@ export default {
       };
       this.stateStore = "añadir";
       this.dialogFormVisible = true;
+    },
+
+    initAddArchiveOfContainer(idx, row){
+      alert('hola como estas?');
     },
     //  * Guarda los cambios de un nuevo documento sea nuevo o uno ya existente
     AddDocumetOfArchive() {

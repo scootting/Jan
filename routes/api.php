@@ -161,4 +161,10 @@ Route::group([
     Route::post('getDocumentsbyArchive/', 'ArchiveController@getDocumentsbyArchive');
     //  * A3. Obtiene la lista de tipos de documentos que pertenecen a un archivo
     Route::post('getTypesDocument/', 'ArchiveController@getTypesDocument');
+    //  * A4. Obtiene la lista de contenedores y ubicaciones con una breve descripcion
+    Route::post('container', 'ArchiveController@getContainerByDescription');
+    //  * A5. Obtiene la lista de archivos que pertenecen a un contenedor
+    Route::post('getArchivesByContainer/', 'ArchiveController@getArchivesByContainer');
+    //  * A6. Obtiene la lista de contenedores para archivar con una breve descripcion
+    Route::post('fileContainer', 'ArchiveController@getFileContainerByDescription');
 });

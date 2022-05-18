@@ -41,11 +41,17 @@ class Archive extends Model
         return $data;
     }
 
-    // *** - funcion para la busqueda de usuarios - ***
-    // *** - parametros [username: nombre de usuario, password: clave del usuario] - ***
-    public static function SearchUser($username, $password)
+    //  * A6. Obtiene la lista de contenedores para archivar con una breve descripcion
+    //  * parametros [description: descripcion que se esta buscando ]
+    public static function getFileContainerByDescription($description)
     {
-        $query = "select * from public.ff_registrar_persona('" . $identityCard . "', '" . $paternal . "', '" . $maternal . "', '" . $names . "','" . $sex . "', '" . $birthdate . "')";
+        if ($description == '') {
+            $query = "select *, (select t.descr from arch.tipos t where t.id = c.id_tipo) as descr from arch.conte c";
+        } else {
+            $query = "select *, (select t.descr from arch.tipos t where t.id = c.id_tipo) as descr from arch.conte c where c.des_con like '%" . $description . "%'";
+        }
+
+        \Log::info("Esta es la consulta de archivos: " . $query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

@@ -42,7 +42,7 @@ class JWTFAuth
         \Log::info("Tiempo: ". $time);
         $payload = array(
             'iat'  => $time, // Tiempo que inició el token
-            'exp' => $time + (60*60), // tiempo seteado a 1 minuto para pruebas
+            'exp' => $time + (60*60*2), // tiempo seteado a 1 minuto para pruebas
             'aud' => self::Aud(),
             'data' => $data
         );
