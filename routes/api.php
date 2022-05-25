@@ -167,4 +167,6 @@ Route::group([
     Route::post('getArchivesByContainer/', 'ArchiveController@getArchivesByContainer');
     //  * A6. Obtiene la lista de contenedores para archivar con una breve descripcion
     Route::post('fileContainer', 'ArchiveController@getFileContainerByDescription');
+    //  * A7. Guardar un nuevo archivo, contenedor o ubicacion
+    Route::post('file/', 'ArchiveController@storeFileContainer');
 });

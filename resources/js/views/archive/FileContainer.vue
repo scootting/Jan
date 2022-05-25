@@ -128,7 +128,12 @@ export default {
       });
     },
     initAddFileContainer(){
-        alert("hola mundo!!!");
+      this.$router.push({
+        name: "addarchive",
+        params: {
+          type: 'Contenedor'
+        },
+      });        
     }
   },
 };

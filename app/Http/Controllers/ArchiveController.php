@@ -63,6 +63,27 @@ class ArchiveController extends Controller
         return json_encode($paginate);
     }
 
-
+    //  * A7. Obtiene la lista de contenedores para archivar con una breve descripcion
+    //  * parametros {archivo: datos del documento[descripcion, tipo]} 
+    public function storeFileContainer(Request $request)
+    {
+        $archivo = $request->get('archivo');
+        $glosa = strtoupper($archivo['glosa']);
+        $tipo = $archivo['tipo'];
+        $gestion = $archivo['gestion'];
+        $marcador = $request->get('marker');
+        \Log::info($glosa.' :glosa: '.$tipo.' :gestion: '.$gestion);
+        switch ($marcador) {
+            case 'registrar':
+                $data = Archive::SaveFileContainer($glosa, $tipo, $gestion);
+                break;
+            case 'editar':
+                //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
+                break;
+            default:
+                break;
+        }
+        return json_encode($data);
+    }
     
 }

@@ -36,6 +36,7 @@ import Archive from './views/archive/Archive'
 import ArchiveDetails from './views/archive/ArchiveDetails'
 import FileContainer from './views/archive/FileContainer'
 import FileContainerDetails from './views/archive/FileContainerDetails'
+import AddArchive from './views/archive/AddArchive'
 
 
 //bienes e inventarios
@@ -208,6 +209,7 @@ const router = new VueRouter({
                 { path: 'archive/:id', name: 'archivedetails', component: ArchiveDetails },
                 { path: 'filecontainer', name: 'filecontainer', component: FileContainer },
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
+                { path: 'addArchive/:type', name: 'addarchive', component: AddArchive },
 
             ],
             meta: {

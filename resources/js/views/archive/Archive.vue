@@ -3,7 +3,15 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>Inventario</span>
+        <span>archivos</span>
+        <el-button
+          style="text-align: right; float: right"
+          size="small"
+          type="primary"
+          icon="el-icon-plus"
+          @click="initAddArchive"
+          >nuevo archivo</el-button
+        >
       </div>
       <div style="margin-top: 15px">
         <el-input
@@ -89,7 +97,7 @@ export default {
         .post("/api/archive", {
           year: app.user.gestion,
           description: app.writtenTextParameter.toUpperCase(),
-          page:page,
+          page: page,
         })
         .then((response) => {
           app.loading = false;
@@ -110,7 +118,7 @@ export default {
       this.$router.push({
         name: "archivedetails",
         params: {
-          id: id_archive
+          id: id_archive,
         },
       });
     },
@@ -120,6 +128,14 @@ export default {
         name: "editinventory2",
         params: {
           id: row.id,
+        },
+      });
+    },
+    initAddArchive() {
+      this.$router.push({
+        name: "addarchive",
+        params: {
+          type: "Documento",
         },
       });
     },
