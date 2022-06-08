@@ -2,6 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+
+//Almancenes
+import Material from './views/store/Material'
+
 // Pages
 import NotFound from './views/NotFound'
 import Login from './views/Login'
@@ -211,6 +215,11 @@ const router = new VueRouter({
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
                 { path: 'addArchive/:type', name: 'addarchive', component: AddArchive },
 
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Almacenes
+                //  |--------------------------------------------------------------------------    
+                //  * S1. Obtiene la lista de materiales con una breve descripcion
+                { path: 'material', name: 'material', component: Material },
             ],
             meta: {
                 requiresAuth: true,

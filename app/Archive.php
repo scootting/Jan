@@ -13,9 +13,9 @@ class Archive extends Model
     public static function GetArchivesByDescription($description)
     {
         if ($description == '') {
-            $query = "select * from arch.docto d";
+            $query = "select * from arch.doc d";
         } else {
-            $query = "select * from arch.docto d where d.glosa like '%" . $description . "%'";
+            $query = "select * from arch.doc d where d.glosa like '%" . $description . "%'";
         }
 
         \Log::info("Esta es la consulta de archivos: " . $query);
