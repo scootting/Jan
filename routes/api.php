@@ -169,4 +169,7 @@ Route::group([
     Route::post('fileContainer', 'ArchiveController@getFileContainerByDescription');
     //  * A7. Guardar un nuevo archivo, contenedor o ubicacion
     Route::post('file/', 'ArchiveController@storeFileContainer');
+
+    //  * A1. Obtiene la lista de materiales con una breve descripcion
+    Route::post('material', 'StoreController@getMaterialsByDescription');
 });
