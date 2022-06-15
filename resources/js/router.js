@@ -5,6 +5,8 @@ Vue.use(VueRouter)
 
 //Almancenes
 import Material from './views/store/Material'
+import AddMaterial from './views/store/AddMaterial'
+import EditMaterial from './views/store/EditMaterial'
 
 // Pages
 import NotFound from './views/NotFound'
@@ -220,6 +222,11 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * S1. Obtiene la lista de materiales con una breve descripcion
                 { path: 'material', name: 'material', component: Material },
+                { path: 'material/add', name: 'addMaterial', component: AddMaterial },
+                { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
+        
+                
+
             ],
             meta: {
                 requiresAuth: true,

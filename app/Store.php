@@ -4,6 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Collection as Collection;
+use App\Libraries\DynamicMenu;
 
 class Store extends Model
 {
@@ -19,6 +21,12 @@ class Store extends Model
         }
 
         \Log::info("Esta es la de materiales: " . $query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    public static function AddMaterial($mat_cod, $mat_des, $mat_uni_med)
+    {
+        $query = "select * from alm.materiales('" . $mat_cod . "', '" . $mat_des . "', '" . $mat_uni_med .  "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

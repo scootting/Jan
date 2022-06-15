@@ -7,7 +7,7 @@
           size="small"
           type="primary"
           icon="el-icon-plus"
-          @click="initAddStore"
+          @click="initAddMaterial"
           >nuevo material</el-button
         >
       </div>  
@@ -131,12 +131,10 @@ export default {
         },
       });
     },
-    initAddArchive() {
+    initAddMaterial() {
       this.$router.push({
-        name: "addarchive",
-        params: {
-          type: "Documento",
-        },
+        name: "addMaterial",
+        
       });
     },
   },

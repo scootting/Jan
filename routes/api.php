@@ -172,4 +172,5 @@ Route::group([
 
     //  * A1. Obtiene la lista de materiales con una breve descripcion
     Route::post('material', 'StoreController@getMaterialsByDescription');
+    Route::post('addMaterial', 'StoreController@storeMaterial');
 });
