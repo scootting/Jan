@@ -223,6 +223,7 @@ const router = new VueRouter({
                 //  * S1. Obtiene la lista de materiales con una breve descripcion
                 { path: 'material', name: 'material', component: Material },
 <<<<<<< HEAD
+<<<<<<< HEAD
                 { path: 'material/add', name: 'addMaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
         
@@ -232,6 +233,10 @@ const router = new VueRouter({
                 { path: 'material/add', name: 'addmaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editmaterial', component: EditMaterial },
 >>>>>>> Yessica
+=======
+                { path: 'material/add', name: 'addmaterial', component: AddMaterial },
+                { path: 'material/:id', name: 'editmaterial', component: EditMaterial },
+>>>>>>> 8d9123808633b436bb0680dfe9b99f53b2bd432e
             ],
             meta: {
                 requiresAuth: true,
