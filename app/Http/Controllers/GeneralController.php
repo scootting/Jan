@@ -90,15 +90,14 @@ class GeneralController extends Controller
     public function storePerson(Request $request)
     {
         $persona = $request->get('persona');
+        \Log::info("esta es la persona registrada: ".json_encode($persona));
         $personal = strtoupper($persona['nro_dip']);
         $nombres = strtoupper($persona['nombres']);
         $paterno = strtoupper($persona['paterno']);
         $materno = strtoupper($persona['materno']);
         $sexo = strtoupper($persona['id_sexo']);
         $nacimiento = $persona['fec_nacimiento'];
-
         $marcador = $request->get('marker');
-
         switch ($marcador) {
             case 'registrar':
                 $data = General::AddPerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);

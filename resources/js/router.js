@@ -222,11 +222,16 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * S1. Obtiene la lista de materiales con una breve descripcion
                 { path: 'material', name: 'material', component: Material },
+<<<<<<< HEAD
                 { path: 'material/add', name: 'addMaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
         
                 
 
+=======
+                { path: 'material/add', name: 'addmaterial', component: AddMaterial },
+                { path: 'material/:id', name: 'editmaterial', component: EditMaterial },
+>>>>>>> Yessica
             ],
             meta: {
                 requiresAuth: true,
