@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>nueva material</span>
+        <span>nuevo material</span>
         <el-button style="float: right; padding: 3px 0" type="text"
           >ayuda</el-button
         >
@@ -29,32 +29,7 @@
               <el-form-item size="small" label="unidad">
                 <el-input size="small" v-model="material.mat_uni_med"></el-input>
               </el-form-item>
-              <el-form-item
-                size="small"
-                label="apellido materno"
-                prop="materno"
-              >
-                <el-input size="small" v-model="person.materno"></el-input>
-              </el-form-item>
-              <el-form-item
-                size="small"
-                label="fecha de nacimiento"
-                prop="nacimiento"
-              >
-                <el-date-picker
-                  size="small"
-                  type="date"
-                  placeholder="seleccione una fecha"
-                  v-model="person.fec_nacimiento"
-                  style="width: 100%"
-                ></el-date-picker>
-              </el-form-item>
-              <el-form-item size="small" label="genero">
-                <el-radio-group v-model="person.id_sexo" size="small">
-                  <el-radio-button label="M"></el-radio-button>
-                  <el-radio-button label="F"></el-radio-button>
-                </el-radio-group>
-              </el-form-item>
+
               <el-form-item>
                 <el-button
                   size="small"
@@ -138,7 +113,7 @@ export default {
   },
   mounted() {},
   methods: {
-    //  * S2. Guarda los datos una nueva persona que no se encuentra registrada.
+    //  * S2. Guarda los datos una nuev que no se encuentra registrada.
     async saveMaterial() {
       var app = this;
       var newMaterial = app.material;
@@ -161,9 +136,9 @@ export default {
     },
 
     resetMaterial() {
-      (this.materiales.mat_cod = ""),
-        (this.materiales.mat_des = ""),
-        (this.materiales.mat_uni_med = "");
+      (this.material.mat_cod = ""),
+        (this.material.mat_des = ""),
+        (this.material.mat_uni_med = "");
     },
   },
 };

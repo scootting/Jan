@@ -123,14 +123,16 @@ export default {
       });
     },
 
-    editInventory(index, row) {
+       initEditPerson(index, row) {
+      console.log(index, row);
+      let personal = row.personal;
       this.$router.push({
-        name: "editinventory2",
+        name: "EditMaterial",
         params: {
-          id: row.id,
+          id: personal.trim(),
         },
       });
-    },
+  },
     initAddMaterial() {
       this.$router.push({
         name: "addMaterial",

@@ -30,19 +30,19 @@ class StoreController extends Controller
     }
     public function storeMaterial(Request $request)
     {
-        $materiales = $request->get('materiales');
-        $mat_cod = strtoupper($materiales['mat_cod']);
-        $mat_des = strtoupper($materiales['mat_des']);
-        $mat_uni_med = strtoupper($materiales['mat_uni_med']);
+        $material = $request->get('material');
+        $mat_cod = strtoupper($material['mat_cod']);
+        $mat_des = strtoupper($material['mat_des']);
+        $mat_uni_med = strtoupper($material['mat_uni_med']);
 
         $marcador = $request->get('marker');
 
         switch ($marcador) {
             case 'registrar':
-                $data = General::AddMaterial($mat_cod, $mat_des, $mat_uni_med);
+                $data = Store::AddMaterial($mat_cod, $mat_des, $mat_uni_med);
                 break;
             case 'editar':
-                $data = General::UpdateMaterial($mat_cod, $mat_des, $mat_uni_med);
+                $data = Store::UpdateMaterial($mat_cod, $mat_des, $mat_uni_med);
                 break;
             default:
                 break;

@@ -26,7 +26,9 @@ class Store extends Model
     }
     public static function AddMaterial($mat_cod, $mat_des, $mat_uni_med)
     {
-        $query = "select * from alm.materiales('" . $mat_cod . "', '" . $mat_des . "', '" . $mat_uni_med .  "')";
+        $query = "insert into alm.materiales(mat_cod, mat_des, mat_uni_med) ".
+        "values('" . $mat_cod . "', '" . $mat_des . "', '" . $mat_uni_med .  "')";
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
