@@ -174,5 +174,7 @@ Route::group([
     Route::post('material', 'StoreController@getMaterialsByDescription');
     Route::post('addMaterial', 'StoreController@storeMaterial');
     Route::post('editMaterial', 'StoreController@storeMaterial');
+    Route::get('EditMaterial/{id}', 'StoreController@getMaterialById');
+    
     
 });

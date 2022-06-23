@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>ver materiales</span>
+        <span>editar material</span>
         <el-button style="float: right; padding: 3px 0" type="text"
           >ayuda</el-button
         >
@@ -19,7 +19,7 @@
               <el-form-item
                 size="small"
                 label="numero de identificacion"
-                prop="mat_cod"
+                prop="material"
               >
                 <el-input
                   size="small"
@@ -27,24 +27,14 @@
                   disabled
                 ></el-input>
               </el-form-item>
-              <el-form-item size="small" label="mat_cod" prop="mat_cod">
+              <el-form-item size="small" label="codigo" prop="mat_cod">
                 <el-input size="small" v-model="material.mat_cod"></el-input>
               </el-form-item>
-              <el-form-item size="small" label="mat_des">
+              <el-form-item size="small" label="descripcion">
                 <el-input size="small" v-model="material.mat_des"></el-input>
               </el-form-item>
-              <el-form-item
-                size="small"
-                label="descripcion"
-                prop="mat_des"
-              >
+              <el-form-item size="small" label="unidad">
                 <el-input size="small" v-model="material.mat_uni_med"></el-input>
-              </el-form-item>
-              <el-form-item
-                size="small"
-                label="unidad"
-                prop="mat_uni_med"
-              >
           
               </el-form-item>
             
@@ -121,7 +111,7 @@ export default {
     let app = this;
     let id = app.$route.params.id;
     try {
-      let response = await axios.get("/api/editMaterial/" + id);
+      let response = await axios.get("/api/EditMaterial/" + id);
       app.material = response.data[0];
       console.log(app.material);
     } catch (error) {

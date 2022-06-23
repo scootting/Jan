@@ -25,13 +25,9 @@
         </el-input>
       </div>
       <br />
-      <div>
+      <div>   
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column prop="mat_cod" label="mat_cod"></el-table-column>
-          <el-table-column prop="mat_des" label="descripcion"></el-table-column>
-          <el-table-column prop="mat_uni_med" label="unidad"></el-table-column>
-          
-          <el-table-column align="right" width="220">
+          <el-table-column width="75" label="No.">
             <template slot-scope="scope">
               
               <div slot="reference" class="name-wrapper">
@@ -39,6 +35,7 @@
               </div>
             </template>
           </el-table-column>
+          
           <el-table-column
             prop="mat_des"
             width="450"
@@ -55,7 +52,7 @@
             <template slot-scope="scope">
               <el-button
                @click="initEditMaterial(scope.$index, scope.row)"
-                type="primary"
+                type="success"
                 size="mini"
                 plain
                 >Ver materiales

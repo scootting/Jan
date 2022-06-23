@@ -49,4 +49,9 @@ class StoreController extends Controller
         }
         return json_encode($data);
     }
+    public function getMaterialById($id)
+    {
+        $data = Store::GetMaterialByIdentityCard($id);
+        return json_encode($data);
+    } 
 }

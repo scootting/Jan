@@ -35,10 +35,22 @@ class Store extends Model
        
     public static function EditMaterial($mat_cod, $mat_des, $mat_uni_med)
     {
-        $query = "update alm.materiales(mat_cod, mat_des, mat_uni_med) ".
-        "set('" . $mat_cod . "', '" . $mat_des . "', '" . $mat_uni_med .  "')";
+    $query = "update alm.materiales set  mat_des = '" . $mat_des . "', mat_uni_med = '" . $mat_uni_med .  "'".
+        "where mat_cod = '" . $mat_cod . "'";
+        
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    public static function GetMaterialByIdentityCard($mat_cod)
+    {
+        if ($mat_cod == '') {
+            $query = "select * from alm.materiales m ";
+        } else {
+            $query = "select * from alm.materiales m where m.mat_cod like '%" . $mat_cod . "%'";
+        }
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+   
 }
