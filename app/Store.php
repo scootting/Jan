@@ -32,4 +32,13 @@ class Store extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+       
+    public static function EditMaterial($mat_cod, $mat_des, $mat_uni_med)
+    {
+        $query = "update alm.materiales(mat_cod, mat_des, mat_uni_med) ".
+        "set('" . $mat_cod . "', '" . $mat_des . "', '" . $mat_uni_med .  "')";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }

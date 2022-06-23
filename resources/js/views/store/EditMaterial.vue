@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>editar persona</span>
+        <span>ver materiales</span>
         <el-button style="float: right; padding: 3px 0" type="text"
           >ayuda</el-button
         >
@@ -12,61 +12,51 @@
           <el-col :span="24">
             <el-form
               ref="form"
-              :model="person"
+              :model="material"
               :rules="rules"
               label-width="260px"
             >
               <el-form-item
                 size="small"
                 label="numero de identificacion"
-                prop="personal"
+                prop="mat_cod"
               >
                 <el-input
                   size="small"
-                  v-model="person.nro_dip"
+                  v-model="material.mat_cod"
                   disabled
                 ></el-input>
               </el-form-item>
-              <el-form-item size="small" label="nombres" prop="nombres">
-                <el-input size="small" v-model="person.nombres"></el-input>
+              <el-form-item size="small" label="mat_cod" prop="mat_cod">
+                <el-input size="small" v-model="material.mat_cod"></el-input>
               </el-form-item>
-              <el-form-item size="small" label="apellido paterno">
-                <el-input size="small" v-model="person.paterno"></el-input>
-              </el-form-item>
-              <el-form-item
-                size="small"
-                label="apellido materno"
-                prop="materno"
-              >
-                <el-input size="small" v-model="person.materno"></el-input>
+              <el-form-item size="small" label="mat_des">
+                <el-input size="small" v-model="material.mat_des"></el-input>
               </el-form-item>
               <el-form-item
                 size="small"
-                label="fecha de nacimiento"
-                prop="nacimiento"
+                label="descripcion"
+                prop="mat_des"
               >
-                <el-date-picker
-                  size="small"
-                  type="date"
-                  v-model="person.fec_nacimiento"
-                  style="width: 100%"
-                ></el-date-picker>
+                <el-input size="small" v-model="material.mat_uni_med"></el-input>
               </el-form-item>
-              <el-form-item size="small" label="genero">
-                <el-radio-group v-model="person.id_sexo" size="small">
-                  <el-radio-button label="M"></el-radio-button>
-                  <el-radio-button label="F"></el-radio-button>
-                </el-radio-group>
+              <el-form-item
+                size="small"
+                label="unidad"
+                prop="mat_uni_med"
+              >
+          
               </el-form-item>
+            
               <el-form-item>
                 <el-button
                   size="small"
                   type="primary"
-                  @click.prevent="savePerson"
+                  @click.prevent="saveMaterial"
                   plain
                   >Guardar</el-button
                 >
-                <el-button size="small" type="danger" @click="noPerson" plain
+                <el-button size="small" type="danger" @click="noMaterial" plain
                   >Cancelar</el-button
                 >
               </el-form-item>
@@ -80,12 +70,12 @@
 
 <script>
 export default {
-  name: "AniadirPersona",
+  name: "AniadirMaterial",
   data() {
     return {
-      person: {},
+      material: {},
       rules: {
-        nro_dip: [
+        mat_cod: [
           {
             required: true,
             message: "El campo no puede estar vacio",
@@ -98,7 +88,7 @@ export default {
             trigger: "blur",
           },
         ],
-        nombres: [
+        mat_des: [
           {
             required: true,
             message: "El campo no puede estar vacio",
@@ -111,7 +101,7 @@ export default {
             trigger: "blur",
           },
         ],
-        materno: [
+        mat_uni_med: [
           {
             required: true,
             message: "El campo no puede estar vacio",
@@ -121,13 +111,6 @@ export default {
             min: 2,
             max: 100,
             message: "el tamaño no puede ser menos de 2 o mas de 100",
-            trigger: "blur",
-          },
-        ],
-        fec_nacimiento: [
-          {
-            required: true,
-            message: "El campo no puede estar vacio",
             trigger: "blur",
           },
         ],
@@ -138,9 +121,9 @@ export default {
     let app = this;
     let id = app.$route.params.id;
     try {
-      let response = await axios.get("/api/material/" + id);
-      app.person = response.data[0];
-      console.log(app.person);
+      let response = await axios.get("/api/editMaterial/" + id);
+      app.material = response.data[0];
+      console.log(app.material);
     } catch (error) {
       this.error = error.response.data;
       app.$alert(this.error.message, "Gestor de errores", {
@@ -149,12 +132,12 @@ export default {
     }
   },
   methods: {
-    async savePerson() {
+    async saveMaterial() {
       var app = this;
-      var newPerson = app.person;
+      var newMaterial = app.material;
       try {
-        let response = await axios.post("/api/person", {
-          persona: newPerson,
+        let response = await axios.post("/api/editMaterial", {
+          material: newMaterial,
           marker: "editar",
         });
         alert("se ha creado el registro de la persona");
@@ -166,7 +149,7 @@ export default {
       }
     },
 
-    noPerson() {
+    noMaterial() {
       this.$router.push("/api");
     },
   },

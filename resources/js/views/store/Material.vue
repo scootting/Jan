@@ -27,7 +27,11 @@
       <br />
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column width="75" label="No.">
+          <el-table-column prop="mat_cod" label="mat_cod"></el-table-column>
+          <el-table-column prop="mat_des" label="descripcion"></el-table-column>
+          <el-table-column prop="mat_uni_med" label="unidad"></el-table-column>
+          
+          <el-table-column align="right" width="220">
             <template slot-scope="scope">
               
               <div slot="reference" class="name-wrapper">
@@ -50,10 +54,10 @@
             <el-table-column align="right-center" width="250" label="Operaciones">
             <template slot-scope="scope">
               <el-button
-                @click="getDocumentsbyArchive(scope.row.no_doc)"
-                type="success"
-                plain
+               @click="initEditMaterial(scope.$index, scope.row)"
+                type="primary"
                 size="mini"
+                plain
                 >Ver materiales
               </el-button>
             </template>
@@ -114,22 +118,13 @@ export default {
         });
     },
 
-    getDocumentsbyArchive(id_archive) {
-      this.$router.push({
-        name: "archivedetails",
-        params: {
-          id: id_archive,
-        },
-      });
-    },
-
-       initEditPerson(index, row) {
+       initEditMaterial(index, row) {
       console.log(index, row);
-      let personal = row.personal;
+      let mat_cod = row.mat_cod;
       this.$router.push({
-        name: "EditMaterial",
+        name: "editMaterial",
         params: {
-          id: personal.trim(),
+          id: mat_cod.trim(),
         },
       });
   },

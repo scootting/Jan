@@ -42,7 +42,7 @@ class StoreController extends Controller
                 $data = Store::AddMaterial($mat_cod, $mat_des, $mat_uni_med);
                 break;
             case 'editar':
-                $data = Store::UpdateMaterial($mat_cod, $mat_des, $mat_uni_med);
+                $data = Store::EditMaterial($mat_cod, $mat_des, $mat_uni_med);
                 break;
             default:
                 break;
