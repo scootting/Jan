@@ -53,6 +53,7 @@ class TreasureController extends Controller
             case 9: //CAOB
             case 42: //ORIGINARIA 43
             case 43: //capacidades especiales
+            case 36: //traspaso de universidades
                 $description = 'ORIGINARIA';
                 break;
             case 32: //OLIMPIADAS
