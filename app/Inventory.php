@@ -28,7 +28,7 @@ class Inventory extends Model
     //
     public static function getActivesByInventory($id_inventory, $year)
     {
-        //\Log::info("este es el inventario: ". $id_inventory."  gestion". $year);
+        \Log::info("este es el puto que sale en el detalle inventario: ". $id_inventory."  gestion". $year);
         $query = "select *,
                  (SELECT e.desc FROM inv.estado e WHERE e.id = b.est_act) AS est_des
                  FROM act.vv_act_detallado a

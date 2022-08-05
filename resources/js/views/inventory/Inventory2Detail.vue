@@ -192,7 +192,7 @@ export default {
         .then((response) => {
           app.loading = false;
           console.log(response);
-          app.data = response.data.data;//Object.values(response.data.data);
+          app.data = Object.values(response.data.data);//response.data.data;
           app.pagination = response.data;
         })
         .catch((error) => {

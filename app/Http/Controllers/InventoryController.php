@@ -114,6 +114,7 @@ class InventoryController extends Controller
         $gestion = $request->get('year');
         //$descripcion = $request->get('description');
         $data = Inventory::getActivesByInventory($inventario, $gestion);
+        \Log::info($data);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 20;
         $paginate = new LengthAwarePaginator(
