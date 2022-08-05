@@ -144,7 +144,7 @@ class InventoryController extends Controller
         $observations = $activeDetail['obs_est'];
         $store = $activeDetail['guardado'];
         $storeText = 'Revisado';
-        \Log::warning("este es el validacion: ".$validation." estado ".$state." Ab ".$observations." estore ".$store." tesx ".$storeText);
+        \Log::warning("este es el validacion: ".$validation." estado ".$state." Ab ".$observations." store ".$store." text ".$storeText);
         $marca = $request->get('marker');
         \Log::warning("esta es la marca: ".$marca);
         foreach ($activeDetail as $item) {

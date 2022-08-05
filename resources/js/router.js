@@ -224,8 +224,8 @@ const router = new VueRouter({
                 { path: 'material', name: 'material', component: Material },
                 { path: 'material/add', name: 'addMaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
-        
-                
+
+
 
             ],
             meta: {
