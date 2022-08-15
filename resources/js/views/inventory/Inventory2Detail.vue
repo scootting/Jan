@@ -181,6 +181,9 @@ export default {
   methods: {
     //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
     getActivesByInventory(page) {
+      console.log(page);
+      console.log(this.user.gestion);
+      console.log(this.id_inventory);
       let app = this;
       axios
         .post("/api/getActivesByInventory/", {
