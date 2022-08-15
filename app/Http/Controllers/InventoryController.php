@@ -113,7 +113,10 @@ class InventoryController extends Controller
         $inventario = $request->get('id_inventory');
         $gestion = $request->get('year');
         //$descripcion = $request->get('description');
+        \Log::info("este es el id del inventario: ".$inventario);
+        \Log::info("esta es la gestion: ".$gestion);
         $data = Inventory::getActivesByInventory($inventario, $gestion);
+        \Log::info("estos son los datos que necesitamos");
         \Log::info($data);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 20;
