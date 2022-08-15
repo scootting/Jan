@@ -180,11 +180,29 @@ export default {
   },
   methods: {
     //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
-    getActivesByInventory(page) {
+    async getActivesByInventory(page) {
       console.log(page);
       console.log(this.user.gestion);
       console.log(this.id_inventory);
       let app = this;
+
+      try {
+        let response = await axios.post("/api/getActivesByInventory", {
+          id_inventory: app.id_inventory,
+          year: app.user.gestion,
+          page: page,
+        });
+          app.loading = false;
+          console.log(response);
+          app.data = Object.values(response.data.data);//response.data.data;
+          app.pagination = response.data;
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
+      /*
       axios
         .post("/api/getActivesByInventory/", {
           id_inventory: app.id_inventory,
@@ -204,7 +222,7 @@ export default {
             title: "Error",
             message: this.error.message,
           });
-        });
+        });*/
     },
     //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
     getStatesByActive() {
