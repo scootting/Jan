@@ -108,6 +108,10 @@ class InventoryController extends Controller
     //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
     //  * {id_inventory: el numero del inventario year: la gestion}
     //
+    public function getActivesByInventory2(Request $request){
+        \Log::info("esta es la funcion que sirve");
+
+    }
     public function getActivesByInventory(Request $request)
     {
         $inventario = $request->get('id_inventory');
