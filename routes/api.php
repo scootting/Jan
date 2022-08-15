@@ -65,7 +65,7 @@ Route::group([
     //  * 2. Imprimir el reporte del inventario general o detallado de el recurso utilizado.
     Route::get('inventoryReport/', 'InventoryController@inventoryReport');
     //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
-    Route::post('getActivesByInventory/', 'InventoryController@getActivesByInventory2');
+    Route::post('getActivesByInventory/', 'InventoryController@getActivesByInventory');
     //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
     Route::get('getStatesByActive/', 'InventoryController@getStatesByActive');
     //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
