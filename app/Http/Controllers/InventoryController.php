@@ -69,7 +69,7 @@ class InventoryController extends Controller
     public function getInventories(Request $request)
     {
         $usuario = $request->get('user');
-        $gestion = $request->get('year');
+        $gestion = $request->get('year');        
         //$descripcion = $request->get('description');
         $data = Inventory::getInventories($gestion, $usuario);
 
@@ -129,6 +129,7 @@ class InventoryController extends Controller
         );
         return json_encode($paginate);
     }
+
     //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
     //  * {}
     //
@@ -137,6 +138,7 @@ class InventoryController extends Controller
         $data = Inventory::getStatesByActive();
         return json_encode($data);
     }
+
     //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
     //  * {activedetail: son los detalles efectuados al activo del inventario}
     //
@@ -148,11 +150,16 @@ class InventoryController extends Controller
         $observations = $activeDetail['obs_est'];
         $store = $activeDetail['guardado'];
         $storeText = 'Revisado';
-        \Log::warning("este es el validacion: ".$validation." estado ".$state." Ab ".$observations." store ".$store." text ".$storeText);
+        \Log::warning("estado del activo: ".$state);
+        \Log::warning("almacenar del activo: ".$store);
         $marca = $request->get('marker');
+        
         \Log::warning("esta es la marca: ".$marca);
         foreach ($activeDetail as $item) {
-            \Log::warning("este es la validacion: " . $item);
+            \Log::warning("activeDetail: " . $item);
+        }
+        foreach ($activeDetail as $item) {
+            \Log::warning("activeDetail2: " . $item);
         }
         /*
     $nro_doc_inv = $request->nro_doc_inv;

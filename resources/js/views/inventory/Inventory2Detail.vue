@@ -218,9 +218,11 @@ export default {
         console.log(index);
         console.log(row);
         var newActiveDetail = row;//app.data[index];
+        var newActiveDetail2 = app.data[index];
         axios
           .post("/api/saveActiveDetail", {
             activeDetail: newActiveDetail,
+            activeDetail2: newActiveDetail2,
             marker: "registrar",
           })
           .then(function (response) {
