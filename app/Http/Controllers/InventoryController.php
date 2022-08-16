@@ -70,6 +70,7 @@ class InventoryController extends Controller
     {
         $usuario = $request->get('user');
         $gestion = $request->get('year');        
+        \Log::info("esta es la pagina que usamos: ".$request->get('page'));
         //$descripcion = $request->get('description');
         $data = Inventory::getInventories($gestion, $usuario);
 
@@ -90,7 +91,6 @@ class InventoryController extends Controller
     //
     public function inventoryReport(Request $request)
     {
-        \Log::info("Request: ". $request);
         $oficina = $request->get('office');
         $documento = $request->get('document');
         $gestion = $request->get('year');
@@ -112,7 +112,6 @@ class InventoryController extends Controller
     {
         $inventario = $request->get('id_inventory');
         $gestion = $request->get('year');
-        //$descripcion = $request->get('description');
         \Log::info("este es el id del inventario: ".$inventario);
         \Log::info("esta es la gestion: ".$gestion);
         $data = Inventory::getActivesByInventory($inventario, $gestion);
