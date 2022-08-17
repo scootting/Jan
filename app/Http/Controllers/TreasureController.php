@@ -26,6 +26,7 @@ class TreasureController extends Controller
     public function getValuesProcedure(Request $request)
     {
         $id_modalidad = $request->get('id');
+        $id_modalidad = 10;
         $ci_per = $request->get('ci_per');
         $year = $request->get('year');
         switch ($id_modalidad) {
