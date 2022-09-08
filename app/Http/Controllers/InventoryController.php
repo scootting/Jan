@@ -143,6 +143,7 @@ class InventoryController extends Controller
     //
     public function saveActiveDetail(Request $request)
     {
+        /*
         $activeDetail = $request->get('activeDetail');
         $validation = $activeDetail['validacion'];
         $state = $activeDetail['est_act'];
@@ -151,13 +152,14 @@ class InventoryController extends Controller
         $storeText = 'Revisado';
         \Log::warning("estado del activo: ".$state);
         \Log::warning("almacenar del activo: ".$store);
+        */
         $marca = $request->get('marker');
         
         \Log::warning("esta es la marca: ".$marca);
         foreach ($activeDetail as $item) {
             \Log::warning("activeDetail: " . $item);
         }
-        foreach ($activeDetail as $item) {
+        foreach ($activeDetail2 as $item) {
             \Log::warning("activeDetail2: " . $item);
         }
         /*

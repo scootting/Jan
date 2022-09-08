@@ -215,10 +215,10 @@ export default {
     saveActiveDetail(index, row) {
       {
         var app = this;
-        console.log(index);
-        console.log(row);
         var newActiveDetail = row;//app.data[index];
         var newActiveDetail2 = app.data[index];
+        console.log(newActiveDetail);
+        console.log(newActiveDetail2);
         axios
           .post("/api/saveActiveDetail", {
             activeDetail: newActiveDetail,

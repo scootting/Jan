@@ -51,7 +51,6 @@ class Inventory extends Model
         return $data;
     }
 
-
     //obtener las oficinas basandonos en la gestion y busqueda por la descripción.
     public static function getOffices($gestion, $descripcion)
     {
