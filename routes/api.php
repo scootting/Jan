@@ -173,4 +173,12 @@ Route::group([
     //  * A1. Obtiene la lista de materiales con una breve descripcion
     Route::post('material', 'StoreController@getMaterialsByDescription');
     Route::post('addMaterial', 'StoreController@storeMaterial');
+
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el sistema de Presupuestos Individuales
+    //  |--------------------------------------------------------------------------
+    //  * 1. Obtener una lista de presupuestos individuales por usuario de el recurso utilizado.
+    Route::post('singlebudget/', 'SingleBudgetController@getSingleBudget');
+
 });

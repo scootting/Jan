@@ -63,6 +63,7 @@ import DocumentQR from './views/inventory/DocumentQR'
 import SelectActiveByDocument from './views/inventory/SelectActiveByDocument'
 import NewActive from './views/inventory/NewActive'
 import ImgDetail from './views/inventory/ImgDetail'
+
 //activos fijos
 import DocumentsFixedAssets from './views/fixedasset/DocumentsFixedAssets'
 import SelectedFixedAssetsByDocument from './views/fixedasset/SelectedFixedAssetsByDocument'
@@ -82,12 +83,19 @@ import TransactionsPersonal from './views/treasure/TransactionsPersonal'
 import LoginClient from './views/clients/Login'
 import DashboardClient from './views/clients/Dashboard'
 
+//presupuestos individuales
+import SinglesBudget from './views/singlebudget/SinglesBudget'
+import SingleBudgetDetail from './views/singlebudget/SingleBudgetDetail'
+import AddSingleBudget from './views/singlebudget/AddSingleBudget'
+
+
+
 import NuevaConvocatoria from './views/NewCall'
+
 //import { component } from 'vue/types/umd'
 import addNotification from './views/certificates/addNotification'
 import AddSolvency from './views/certificates/AddSolvency'
 import editTransactionDocuments from './views/certificates/editTransactionDocuments'
-import { Container } from 'element-ui'
 
 // Routes
 const router = new VueRouter({
@@ -226,7 +234,15 @@ const router = new VueRouter({
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
 
 
-
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Modulo de Presupuestos Individuales
+                //  |--------------------------------------------------------------------------    
+                //  * PIN1. Obtener una lista de los presupuestos individuales de el recurso utilizado.
+                { path: 'singlesbudget', name: 'singlesbudget', component: SinglesBudget },
+                //  * PIN(R1). Ruta para ir al modulo del presupuesto individual.
+                { path: 'singlebudgetdetail/:id_single', name: 'singlebudgetdetail', component: SingleBudgetDetail },
+                //  * PIN(R2). Ruta para ir al modulo para un nuevo presupuesto individual.
+                { path: 'singlebudget/add', name: 'addsinglebudget', component: AddSingleBudget },
             ],
             meta: {
                 requiresAuth: true,
