@@ -37,35 +37,33 @@
       <!-- Form Add Document to Archive-->
       <!-- Form Add Container to Archive-->
       <!-- Form Add Document to Archive-->
+      <h1>Este es el texto del hijo {{isMessage}}</h1>
       <el-button type="text" @click="initSearchPerson">Agregar persona</el-button>
-      <persona :centerDialogVisible="isVisible" @update-visible="update"></persona>
+      <person :centerDialogVisible="isVisible" :message="isMessage" @update-visible="update"  @update-info="update_2"></person>
     </el-card>
   </div>
 </template>
   
 <script>
-import persona from "../components/Person.vue";
+import person from "../components/Person.vue";
 export default {
   name: "",
   components: {
-    persona,
+    person,
   },
   data() {
     return {
       user: this.$store.state.user,
       documentsArchive: [],
       isVisible: false,
-
-      stateStore: "",
+      isMessage: 'Hola Mundo!!!',
       document: {
-        id_doc: "",
-        numeral: "",
-        indice: "",
-        glosa: "",
-        fecha: "",
-        id_tipo: null,
-        descr: "",
-        gestion: null,
+        nro_dip: "",
+        paterno: "",
+        materno: "",
+        nombres: "",
+        literal: "",
+        literal2:"",
       },
     };
   },
@@ -84,6 +82,33 @@ export default {
     update(isVisible) {
       this.isVisible = isVisible;
     },
+
+    update_2(isVisible, isMessage){
+      this.isVisible = isVisible;
+      this.isMessage = isMessage;
+      alert(isMessage);
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     test(){
       console.log("Ayuda!!!");
