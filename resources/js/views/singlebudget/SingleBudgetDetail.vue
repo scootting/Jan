@@ -37,9 +37,10 @@
       <!-- Form Add Document to Archive-->
       <!-- Form Add Container to Archive-->
       <!-- Form Add Document to Archive-->
-      <h1>Este es el texto del hijo {{isMessage}}</h1>
+      <h1>Este es el texto del id: {{isMessage2.id}}</h1>
+      <h2>Este es el texto de la info: {{isMessage2.info}}</h2>
       <el-button type="text" @click="initSearchPerson">Agregar persona</el-button>
-      <person :centerDialogVisible="isVisible" :message="isMessage" @update-visible="update"  @update-info="update_2"></person>
+      <person :centerDialogVisible="isVisible" :message="isMessage2" @update-visible="update"  @update-info="update_2"></person>
     </el-card>
   </div>
 </template>
@@ -57,7 +58,7 @@ export default {
       documentsArchive: [],
       isVisible: false,
       isMessage: 'Hola Mundo!!!',
-      document: {
+      isPerson: {
         nro_dip: "",
         paterno: "",
         materno: "",
@@ -65,6 +66,10 @@ export default {
         literal: "",
         literal2:"",
       },
+      isMessage2:{
+        id: "Hola",
+        info: "Mundo",
+      }
     };
   },
   mounted() {
@@ -83,10 +88,9 @@ export default {
       this.isVisible = isVisible;
     },
 
-    update_2(isVisible, isMessage){
+    update_2(isVisible, isMessage2){
       this.isVisible = isVisible;
-      this.isMessage = isMessage;
-      alert(isMessage);
+      this.isMessage = isMessage2;
     },
 
 

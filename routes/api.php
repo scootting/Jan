@@ -179,6 +179,6 @@ Route::group([
     //  | Rutas API para el sistema de Presupuestos Individuales
     //  |--------------------------------------------------------------------------
     //  * 1. Obtener una lista de presupuestos individuales por usuario de el recurso utilizado.
-    Route::post('singlebudget/', 'SingleBudgetController@getSingleBudget');
+    Route::post('singlebudget', 'SingleBudgetController@getSingleBudget');
 
 });
