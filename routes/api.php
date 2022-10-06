@@ -180,5 +180,7 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  * 1. Obtener una lista de presupuestos individuales por usuario de el recurso utilizado.
     Route::post('singlebudget', 'SingleBudgetController@getSingleBudget');
+    Route::post('getPersonsByDescription', 'GeneralController@getPersonsByDescription2');
+
 
 });
