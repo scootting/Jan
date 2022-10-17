@@ -28,7 +28,6 @@ class Inventory extends Model
     //
     public static function getActivesByInventory($id_inventory, $year)
     {
-        \Log::info("este es el puto que sale en el detalle inventario: ". $id_inventory."  gestion". $year);
         $query = "select *,
                  (SELECT e.desc FROM inv.estado e WHERE e.id = b.est_act) AS est_des
                  FROM act.vv_act_detallado a
@@ -50,6 +49,21 @@ class Inventory extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //  * I5. Guardar los detalles determinados para cada activo fijo del inventario.
+    //  * {activedetail: son los detalles efectuados al activo del inventario}
+    //
+    public static function StoreActiveDetail($inventario, $gestion, $idActive, $tableActive, $validationActive, $stateActive, $observationActive, $saveActive, $storeActive)
+    {
+        $query = "update inv.detalle_doc_act set validacion ='" . $validationActive . "',est_act ='" . $stateActive .
+            "',obs_est='" . $observationActive . "',guardado ='" . $saveActive . "',var_act='" . $storeActive .
+            "' where nro_doc_inv='" . $inventario . "' and cod_ges='" . $gestion . "' and id_act='" . $idActive . "'and id_des='" . $tableActive . "'";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
 
     //obtener las oficinas basandonos en la gestion y busqueda por la descripción.
     public static function getOffices($gestion, $descripcion)
@@ -450,13 +464,6 @@ class Inventory extends Model
     public static function getAllCargos()
     {
         $query = "select * from inv.cargos";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-    //Guardar datos de los activos en Documento Detalle
-    public static function saveActiveInDetailDoc($nro_doc_inv, $cod_ges, $cod_act, $id_act, $id_des, $est_act, $obs_est, $validacion, $guardado, $id)
-    {
-        $query = "Select * from inv.insertarActivoDocDetail('" . $nro_doc_inv . "','" . $cod_ges . "','" . $cod_act . "','" . $id_act . "','" . $id_des . "','" . $validacion . "','" . $est_act . "','" . $obs_est . "','" . $guardado . "','" . $id . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

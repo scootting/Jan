@@ -68,8 +68,8 @@ Route::group([
     Route::post('getActivesByInventory/', 'InventoryController@getActivesByInventory');
     //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
     Route::get('getStatesByActive/', 'InventoryController@getStatesByActive');
-    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
-    Route::post('saveActiveDetail/', 'InventoryController@saveActiveDetail');
+    //  * I5. Guardar los detalles determinados para cada activo fijo del inventario.
+    Route::post('storeActiveDetail/', 'InventoryController@storeActiveDetail');
 
     Route::get('inventory2/edit/{id}', 'InventoryController@getInventory');
     Route::post('inventory2/saveChange', 'InventoryController@saveChangeDocInventory');
@@ -179,8 +179,9 @@ Route::group([
     //  | Rutas API para el sistema de Presupuestos Individuales
     //  |--------------------------------------------------------------------------
     //  * 1. Obtener una lista de presupuestos individuales por usuario de el recurso utilizado.
-    Route::post('singlebudget', 'SingleBudgetController@getSingleBudget');
-    Route::post('getPersonsByDescription', 'GeneralController@getPersonsByDescription2');
+    Route::post('singlebudget/', 'SingleBudgetController@getSingleBudget');
+    //  * COM1. Obtener una lista de personas utilizando una descripcion del recurso utilizado.
+    Route::post('getPersonsByDescriptionWithPagination', 'GeneralController@getPersonsByDescriptionWithPagination');
 
 
 });

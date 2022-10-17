@@ -188,10 +188,10 @@ export default {
           year: app.user.gestion,
           page: page,
         });
-          app.loading = false;
-          console.log(response);
-          app.data = Object.values(response.data.data);//response.data.data;
-          app.pagination = response.data;
+        app.loading = false;
+        console.log(response);
+        app.data = Object.values(response.data.data);//response.data.data;
+        app.pagination = response.data;
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {
@@ -211,55 +211,29 @@ export default {
           console.log(err);
         });
     },
-    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
-    saveActiveDetail(index, row) {
-      {
-        var app = this;
-        var newActiveDetail = row;//app.data[index];
-        var newActiveDetail2 = app.data[index];
-        console.log(newActiveDetail);
-        console.log(newActiveDetail2);
-        axios
-          .post("/api/saveActiveDetail", {
-            activeDetail: newActiveDetail,
-            activeDetail2: newActiveDetail2,
-            marker: "registrar",
-          })
-          .then(function (response) {
-            console.log(newActiveDetail);
-            app.$alert(
-              "Se ha actualizado el detalle del activo fijo en el inventario",
-              "Gestor de mensajes",
-              {
-                dangerouslyUseHTMLString: true,
-              }
-            );
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-
-        /*
-        axios
-          .post("/api/inventory2/saveActive", {
-            ...this.data[index],
-            guardado: true,
-            cod_ges: this.user.gestion,
-            cod_act: this.data[index].cod_ant,
-          })
-          .then((data) => {
-            this.$notify.success({
-              title: "Cambios guardados",
-              message:
-                "Se realizo cambios al Documento de inventario seleccionado exitosamente",
-              duration: 5000,
-            });
-            this.getActivesSearch();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-          */
+    //  * I5. Guardar los detalles determinados para cada activo fijo del inventario.
+    async saveActiveDetail(index, row) {
+      let app = this;
+      var newActiveDetail = row;
+      console.log(newActiveDetail);
+      try {
+        let response = await axios.post("/api/storeActiveDetail", {
+          activeDetail: newActiveDetail,
+          id: app.id_inventory,
+          year: app.user.gestion,
+          marker: "registrar",
+        });
+        console.log(response);
+        app.$alert(
+          "Se ha actualizado el detalle del activo fijo en el inventario",
+          "Gestor de mensajes",
+          {
+            dangerouslyUseHTMLString: true,
+          },
+        );
+        app.data[index]['guardado'] = true;
+      } catch (error) {
+        console.log(error);
       }
     },
 

@@ -69,8 +69,8 @@ class InventoryController extends Controller
     public function getInventories(Request $request)
     {
         $usuario = $request->get('user');
-        $gestion = $request->get('year');        
-        \Log::info("esta es la pagina que usamos: ".$request->get('page'));
+        $gestion = $request->get('year');
+        \Log::info("esta es la pagina que usamos: " . $request->get('page'));
         //$descripcion = $request->get('description');
         $data = Inventory::getInventories($gestion, $usuario);
 
@@ -112,11 +112,7 @@ class InventoryController extends Controller
     {
         $inventario = $request->get('id_inventory');
         $gestion = $request->get('year');
-        \Log::info("este es el id del inventario: ".$inventario);
-        \Log::info("esta es la gestion: ".$gestion);
         $data = Inventory::getActivesByInventory($inventario, $gestion);
-        \Log::info("estos son los datos que necesitamos");
-        \Log::info($data);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 20;
         $paginate = new LengthAwarePaginator(
@@ -138,43 +134,29 @@ class InventoryController extends Controller
         return json_encode($data);
     }
 
-    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
+    //  * I5. Guardar los detalles determinados para cada activo fijo del inventario.
     //  * {activedetail: son los detalles efectuados al activo del inventario}
     //
-    public function saveActiveDetail(Request $request)
+    public function storeActiveDetail(Request $request)
     {
-        /*
+        $marca = $request->get('marker'); //actualizar o editar
+        $inventario = $request->get('id'); //id del inventario
+        $gestion = $request->get('year'); //gestion del inventario
+
         $activeDetail = $request->get('activeDetail');
-        $validation = $activeDetail['validacion'];
-        $state = $activeDetail['est_act'];
-        $observations = $activeDetail['obs_est'];
-        $store = $activeDetail['guardado'];
-        $storeText = 'Revisado';
-        \Log::warning("estado del activo: ".$state);
-        \Log::warning("almacenar del activo: ".$store);
-        */
-        $marca = $request->get('marker');
-        
-        \Log::warning("esta es la marca: ".$marca);
-        foreach ($activeDetail as $item) {
-            \Log::warning("activeDetail: " . $item);
-        }
-        foreach ($activeDetail2 as $item) {
-            \Log::warning("activeDetail2: " . $item);
-        }
-        /*
-    $nro_doc_inv = $request->nro_doc_inv;
-    $cod_ges = $request->cod_ges;
-    $cod_act = $request->cod_act;
-    $id_act = $request->id_act;
-    $id_des = $request->id_des;
-    $est_act = $request->est_act;
-    $obs_est = $request->obs_est;
-    $validacion = ($request->post('validacion')) ? $request->post('validacion') : 'false';
-    $guardado = $request->guardado;
-    $data = Inventory::saveActiveInDetailDoc($nro_doc_inv, $cod_ges, $cod_act, $id_act, $id_des, $est_act, $obs_est, $validacion, $guardado, $id);
-    return json_encode($data);
-     */
+
+        $idActive = $activeDetail['id_act']; //id del activo en su tabla correspondiente
+        $tableActive = $activeDetail['per_tab']; //pertenencia del activo a la tabla que corresponda
+
+        $validationActive = $activeDetail['validacion']; //existencia del activo fijo
+        $validationActive = ($validationActive != '1' ? 0 : 1);
+        $stateActive = $activeDetail['est_act']; //estado actual del activo
+        $observationActive = $activeDetail['obs_est']; //observaciones al activo
+        $saveActive = "true"; //confirmar el guardado del detalle del activo
+        $storeActive = "Verificado"; //cambiando de solicitado a verificado
+
+        $marker = Inventory::StoreActiveDetail($inventario, $gestion, $idActive, $tableActive, $validationActive, $stateActive, $observationActive, $saveActive, $storeActive);
+        return json_encode($marker);
     }
 
     public function getOffices(Request $request, $gestion)

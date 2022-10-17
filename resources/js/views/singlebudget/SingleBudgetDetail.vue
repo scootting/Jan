@@ -37,10 +37,10 @@
       <!-- Form Add Document to Archive-->
       <!-- Form Add Container to Archive-->
       <!-- Form Add Document to Archive-->
-      <h1>Este es el texto del id: {{isMessage2.id}}</h1>
-      <h2>Este es el texto de la info: {{isMessage2.info}}</h2>
+      <h1>Carnet de Identidad: {{isPerson.nro_dip}}</h1>
+      <h2>Nombres: {{isPerson.nombres}}</h2>
       <el-button type="text" @click="initSearchPerson">Agregar persona</el-button>
-      <person :centerDialogVisible="isVisible" :message="isMessage2" @update-visible="update"  @update-info="update_2"></person>
+      <person :centerDialogVisible="isVisible" :dataPerson="isPerson" @update-visible="getDataModal"  @update-info="getDataInfo"></person>
     </el-card>
   </div>
 </template>
@@ -58,6 +58,7 @@ export default {
       documentsArchive: [],
       isVisible: false,
       isMessage: 'Hola Mundo!!!',
+      dataPerson:[],
       isPerson: {
         nro_dip: "",
         paterno: "",
@@ -66,10 +67,6 @@ export default {
         literal: "",
         literal2:"",
       },
-      isMessage2:{
-        id: "Hola",
-        info: "Mundo",
-      }
     };
   },
   mounted() {
@@ -79,18 +76,17 @@ export default {
     //app.getDocumentsbyArchive();
   },
   methods: {
-
     //  * Todas las funciones para el componente persona
     initSearchPerson() {
       this.isVisible = true;
     },
-    update(isVisible) {
+    getDataModal(isVisible) {
       this.isVisible = isVisible;
     },
 
-    update_2(isVisible, isMessage2){
+    getDataInfo(isVisible, isPerson){
       this.isVisible = isVisible;
-      this.isMessage = isMessage2;
+      this.isPerson = isPerson;
     },
 
 
