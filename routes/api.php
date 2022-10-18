@@ -69,7 +69,7 @@ Route::group([
     //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
     Route::get('getStatesByActive/', 'InventoryController@getStatesByActive');
     //  * I5. Guardar los detalles determinados para cada activo fijo del inventario.
-    Route::post('storeActiveDetail', 'InventoryController@storeActiveDetail');
+    Route::post('storeActiveDetail/', 'InventoryController@storeActiveDetail');
 
     Route::get('inventory2/edit/{id}', 'InventoryController@getInventory');
     Route::post('inventory2/saveChange', 'InventoryController@saveChangeDocInventory');
