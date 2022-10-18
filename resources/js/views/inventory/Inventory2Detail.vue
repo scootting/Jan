@@ -217,7 +217,7 @@ export default {
       var newActiveDetail = row;
       console.log(newActiveDetail);
       try {
-        let response = await axios.post("/api/storeActiveDetail/", {
+        let response = await axios.post("/api/storeActiveDetail", {
           activeDetail: newActiveDetail,
           id: app.id_inventory,
           year: app.user.gestion,
