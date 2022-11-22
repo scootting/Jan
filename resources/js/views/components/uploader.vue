@@ -6,7 +6,7 @@
         accept=".dec"
         :on-success="handleSuccessFile"
         :on-remove="handleRemove"
-        :headers="{ 'X-CSRF-TOKEN': csrf }"
+        :headers="{ 'X-CSRF-TOKEN': window.axios.defaults.headers.common['X-CSRF-TOKEN'] }"
         :data="{ 'datasource': JSON.stringify(info) }"
         :show-file-list= "false"
         multiple
