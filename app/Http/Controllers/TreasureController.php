@@ -9,6 +9,15 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class TreasureController extends Controller
 {
+
+    //  * T2. Obtener una lista de las ventas en linea solicitadas durante la gestion.
+    //  * {year: año de ingreso}
+    public function getSaleInLine(Request $request)
+    {
+        $year = $request->get('year');
+        $data = Treasure::GetSaleInLine($year);
+        return json_encode($data);
+    }
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad y el año de ingreso.
     //  * {id: numero de carnet de identidad}
     //  * {year: año de ingreso}
@@ -201,7 +210,7 @@ class TreasureController extends Controller
         return json_encode($data);
     }
 
-    //  * Buscar transacciones hechas por una persona a traves de su carnet de identidad.
+    //  * T1. Buscar transacciones hechas por una persona a traves de su carnet de identidad.
     //  * {id: numero de carnet de identidad}
     public function getTransactionsByPerson(Request $request)
     {
@@ -242,12 +251,6 @@ class TreasureController extends Controller
         $year = $request->get('gestion');
         $user = $request->get('usuario'); // '' cadena vacia
         $type = $request->get('tipo');
-        \Log::info($transaccion);
-        \Log::info($id);
-        \Log::info($day);
-        \Log::info($year);
-        \Log::info($user);
-        \Log::info($type);
         $data = Treasure::CancelTransactionById($id, $day, $year, $user, $type);
         return null;
         return json_encode($data);

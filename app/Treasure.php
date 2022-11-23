@@ -18,6 +18,16 @@ class Treasure extends Model
         return $data;
     }
 
+    //  * T2. Obtener una lista de las ventas en linea solicitadas durante la gestion.
+    //  * {year: año de ingreso}
+    public static function GetSaleInLine($year){
+        //SELECT * FROM bval.ff_transacciones_persona('6600648')
+        $query = "select * from linea.solicitudes s where s.gestion = '" . $year . "' and s.tipo ='SALE' order by fec_cre desc";
+        $data = collect(DB::select(DB::raw($query))); 
+        return $data;
+    }
+
+
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad.
     //  * {id: numero de carnet de identidad}      
     //  * {year: gestion}      

@@ -13,11 +13,6 @@ import NotFound from './views/NotFound'
 import Login from './views/Login'
 import Logout from './views/Logout'
 import Dashboard from './views/Dashboard'
-import Assets from './views/FixedAssets'
-import AddNotDocument from './views/clients/AddNotDocument'
-
-//Jessica
-import Test from './views/clients/Test'
 
 //usuario
 import Users from './views/application/Users'
@@ -54,8 +49,6 @@ import NewInventory from './views/inventory/NewInventory'
 import NewInventoryDetail from './views/inventory/NewInventoryDetail'
 import EditNewInventoryDetail from './views/inventory/EditNewInventoryDetail'
 import Inventory2Detail from './views/inventory/Inventory2Detail'
-import Formalities from './views/Formalities'
-import AddTaxExemption from './views/clients/AddTaxExemption'
 import Active from './views/inventory/Active'
 import CreateActive from './views/inventory/CreateActive'
 import EditActive from './views/inventory/EditActive'
@@ -77,11 +70,9 @@ import Debtors from './views/treasure/Debtors'              //deudores
 import HistoryTransactions from './views/treasure/HistoryTransactions'              //historial de transacciones
 
 import TransactionsPersonal from './views/treasure/TransactionsPersonal'
+import SaleInLine from './views/treasure/SaleInLine'
 
 
-//clientes 
-import LoginClient from './views/clients/Login'
-import DashboardClient from './views/clients/Dashboard'
 
 //presupuestos individuales
 import SinglesBudget from './views/singlebudget/SinglesBudget'
@@ -90,7 +81,6 @@ import AddSingleBudget from './views/singlebudget/AddSingleBudget'
 
 
 
-import NuevaConvocatoria from './views/NewCall'
 
 //import { component } from 'vue/types/umd'
 import addNotification from './views/certificates/addNotification'
@@ -108,9 +98,6 @@ const router = new VueRouter({
             component: Home,
             children: [
                 { path: '', name: 'layout', component: Layout },
-                { path: '/formalities', name: 'formalities', component: Formalities },
-                { path: '/taxExemption', name: 'addTaxExemption', component: AddTaxExemption },
-                { path: '/addNotDocument', name: 'addnotdocument', component: AddNotDocument },
             ],
         },
         {
@@ -118,18 +105,6 @@ const router = new VueRouter({
             name: 'login',
             component: Login,
         },
-        {
-            path: '/client', name: 'loginclient', component: LoginClient
-        },
-        {
-            path: '/client/:id', name: 'dashboardclient', component: DashboardClient,
-            children: [
-                { path: '', name: 'welcome2', component: Welcome },
-                { path: 'nodebt', name: 'addnotdocument2', component: AddNotDocument },
-            ],
-
-        },
-
         {
             path: '/logout',
             name: 'logout',
@@ -145,7 +120,7 @@ const router = new VueRouter({
             children: [
                 // UserHome will be rendered inside User's <router-view>
                 // when /user/:id is matched0
-                { path: 'test', name: 'test', component: Test },
+                //{ path: 'test', name: 'test', component: Test },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para al Administracion General del Sistema
@@ -161,7 +136,7 @@ const router = new VueRouter({
 
 
                 { path: '', name: 'welcome', component: Welcome },
-                { path: 'assets', name: 'assets', component: Assets },
+                //{ path: 'assets', name: 'assets', component: Assets },
                 // enlaces para administrar los usuarios
                 { path: 'users', name: 'users', component: Users },
                 { path: 'user/add', name: 'adduser', component: AddUser },
@@ -207,13 +182,14 @@ const router = new VueRouter({
                 { path: 'documentsfixedassets', name: 'documentsfixedassets', component: DocumentsFixedAssets }, //lista de documentos de entrega activos fijos
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
-                { path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
+                //{ path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Tesoro
                 //  |--------------------------------------------------------------------------    
                 //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas. 
                 { path: 'transactionspersonal', name: 'transactionspersonal', component: TransactionsPersonal },
+                { path: 'saleinline', name: 'saleinline', component: SaleInLine },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Archivos
