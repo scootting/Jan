@@ -18,6 +18,30 @@ class TreasureController extends Controller
         $data = Treasure::GetSaleInLine($year);
         return json_encode($data);
     }
+
+    //  * T3. Obtener la lista de solicitudes bancarias en estado solicitado.
+    //  * {year: año de ingreso}
+    public function getSaleInLineDetail(Request $request){
+        $id = $request->get('id'); // '' cadena vacia
+        $usuario = $request->get('user');
+        $gestion = $request->get('year');
+        \Log::info("esta es la gestion: ". $gestion);
+        $data = Treasure::GetSaleInLineDetail($gestion);
+
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getDaysOfSale')]
+        );
+        return json_encode($paginate);
+
+    }
+
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad y el año de ingreso.
     //  * {id: numero de carnet de identidad}
     //  * {year: año de ingreso}

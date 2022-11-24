@@ -120,8 +120,8 @@ Route::group([
     Route::post('getTransactionsByPerson', 'TreasureController@getTransactionsByPerson');
 
     //  * T2. Obtener una lista de las ventas en linea solicitadas durante la gestion.
-    Route::post('getSaleInLine', 'TreasureController@getSaleInLine');
-
+    Route::post('getSaleInLineDetail', 'TreasureController@getSaleInLineDetail');
+    
 
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***

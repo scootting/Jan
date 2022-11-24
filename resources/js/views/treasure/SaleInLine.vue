@@ -6,22 +6,22 @@
         <el-button
           style="text-align: right; float: right"
           size="small"
-          type="primary"
-          icon="el-icon-plus"
-          @click="initAddDay"
-          >nuevo dia</el-button
+          type="success"
+          icon="el-icon-carter"
+          @click="initAddDay" plain
+          >habilitar nuevo dia</el-button
         >
       </div>
       <div>
         <el-table v-loading="loading" :data="days" style="width: 100%">
-          <el-table-column prop="id_dia" label="dia" :min-width="100">
+          <el-table-column prop="id_dia" label="dia" :min-width="80">
             <template slot-scope="scope">
               <el-tag size="medium" type="primary">{{
                 scope.row.id_dia
               }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="fec_tra" label="fecha" :min-width="100">
+          <el-table-column prop="fec_tra" label="fecha" :min-width="90">
             <template slot-scope="scope">
               <el-tag size="medium" type="info">{{ scope.row.fec_tra }}</el-tag>
             </template>
@@ -31,20 +31,20 @@
             label="glosa"
             :min-width="450"
           ></el-table-column>
-          <el-table-column align="right" :min-width="320">
+          <el-table-column align="right" :min-width="250">
             <template slot-scope="scope">
               <el-button
                 :disabled="days[scope.$index].estado == 'V'"
-                @click="initSaleStudents(scope.$index, scope.row)"
+                @click="initSaleInLineDetail(scope.$index, scope.row)"
                 size="mini"
-                type="warning"
-                >realizar venta de valores</el-button
+                type="warning" plain
+                >realizar ventas</el-button
               >
               <el-button
                 @click="initDetailStudents(scope.$index, scope.row)"
                 size="mini"
-                type="primary"
-                >detalle de venta del dia</el-button
+                type="primary" plain
+                >imprimir ventas</el-button
               >
             </template>
           </el-table-column>
@@ -85,10 +85,8 @@ export default {
     async getSaleLineDays(page) {
       let app = this;
       try {
-        //.post("/api/getSaleOfDaysByDescription", {
-//getSaleInLine
         let response = await axios.post("/api/getSaleOfDaysByDescription", {
-          description: '',
+          description: "",
           user: app.user.usuario,
           year: app.user.gestion,
           page: page,
@@ -129,10 +127,10 @@ export default {
         window.open(url);
       });
     },
-    initSaleStudents(index, row) {
+    initSaleInLineDetail(index, row) {
       let id = row.id_dia;
       this.$router.push({
-        name: "students",
+        name: "saleinlinedetail",
         params: {
           id: id,
         },

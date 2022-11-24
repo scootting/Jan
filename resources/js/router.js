@@ -71,6 +71,7 @@ import HistoryTransactions from './views/treasure/HistoryTransactions'          
 
 import TransactionsPersonal from './views/treasure/TransactionsPersonal'
 import SaleInLine from './views/treasure/SaleInLine'
+import SaleInLineDetail from './views/treasure/SaleInLineDetail'
 
 
 
@@ -190,6 +191,7 @@ const router = new VueRouter({
                 //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas. 
                 { path: 'transactionspersonal', name: 'transactionspersonal', component: TransactionsPersonal },
                 { path: 'saleinline', name: 'saleinline', component: SaleInLine },
+                { path: 'saleinline/:id', name: 'saleinlinedetail', component: SaleInLineDetail }, //alumnos nuevos
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Archivos
