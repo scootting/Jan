@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
+      
       days: [],
       pagination: {
         page: 1,

@@ -21,11 +21,12 @@ class TreasureController extends Controller
 
     //  * T3. Obtener la lista de solicitudes bancarias en estado solicitado.
     //  * {year: año de ingreso}
-    public function getSaleInLineDetail(Request $request){
+    public function getSaleInLineDetail(Request $request)
+    {
         $id = $request->get('id'); // '' cadena vacia
         $usuario = $request->get('user');
         $gestion = $request->get('year');
-        \Log::info("esta es la gestion: ". $gestion);
+        \Log::info("esta es la gestion: " . $gestion);
         $data = Treasure::GetSaleInLineDetail($gestion);
 
         $page = ($request->get('page') ? $request->get('page') : 1);
@@ -40,6 +41,18 @@ class TreasureController extends Controller
         );
         return json_encode($paginate);
 
+    }
+
+    //  * T4. Obtener el detalle de una solicitud utilizando su id.
+    //  * {request: id de la solicitud }
+    public function getDataRequestById(Request $request)
+    {
+        $id_request = $request->get('id');
+        \Log::info($id_request);
+        $data = Treasure::GetDataRequestById($id_request);
+        $detail = Treasure::GetDetailRequestById($id_request);
+        $boucher = Treasure::getBoucherRequestById($id_request);
+        return json_encode(['data' => $data, 'detail' => $detail, 'boucher' => $boucher]);
     }
 
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad y el año de ingreso.

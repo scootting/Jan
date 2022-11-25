@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>solicitudes</span>
+        <span>ventas en linea del dia: {{id}}</span>
       </div>
       <br />
       <div>
@@ -10,38 +10,18 @@
           <el-table-column prop="tipo" label="tipo"></el-table-column>
           <el-table-column prop="idc" label="id"></el-table-column>
           <el-table-column prop="ci_per" label="ci"></el-table-column>
-          <el-table-column
-            prop="des_per"
-            label="descripcion"
-            width="280"
-          ></el-table-column>
+          <el-table-column prop="des_per" label="descripcion" width="280"></el-table-column>
           <el-table-column align="right" width="220">
             <template slot-scope="scope">
-              <el-button
-                @click="initSaleBoucher(scope.$index, scope.row)"
-                type="warning"
-                size="mini"
-                plain
-                >Verificar</el-button
-              >
-              <el-button
-                @click="initEditRequest(scope.$index, scope.row)"
-                type="success"
-                plain
-                size="mini"
-              >
-                Imprimir</el-button
-              >
+              <el-button @click="initVerifyRequestSaleInLine(scope.$index, scope.row)" type="warning" size="mini" plain>Verificar
+              </el-button>
+              <el-button @click="initEditRequestSaleInLine(scope.$index, scope.row)" type="success" plain size="mini">
+                Imprimir</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          :page-size="pagination.per_page"
-          layout="prev, pager, next"
-          :current-page="pagination.current_page"
-          :total="pagination.total"
-          @current-change="getSaleInLineDetail"
-        >
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
+          :current-page="pagination.current_page" :total="pagination.total" @current-change="getSaleInLineDetail">
         </el-pagination>
       </div>
     </el-card>
@@ -54,6 +34,7 @@ export default {
   data() {
     return {
       loading: true,
+      id: this.$route.params.id,
       user: this.$store.state.user,
       requests: [],
       pagination: {
@@ -90,17 +71,17 @@ export default {
         });
       }
     },
-    initSaleBoucher(idx, row) {
+    initVerifyRequestSaleInLine(idx, row) {
       console.log(idx, row);
-      let id = row.id;
+      let app = this; 
       this.$router.push({
-        name: "boucherofrequest",
+        name: "verifysaleinlinedetail",
         params: {
-          id: id,
+          id: app.id,
+          request: row.id,
         },
       });
     },
-    initEditRequest(idx, row) {},
   },
 };
 </script>
