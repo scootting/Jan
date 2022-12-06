@@ -39,6 +39,7 @@ class Treasure extends Model
         return $data;
     }
 
+    //obtiene datos de la solicitud
     public static function GetDataRequestById($id)
     {
         $query = "select * from linea.solicitudes s where s.id = " . $id;
@@ -46,18 +47,30 @@ class Treasure extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    //obtiene los valores registrados en la solicitud
     public static function GetDetailRequestById($id)
     {
         $query = "select * from linea.valores_solicitud v where v.id_sol = " . $id;
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    //obtiene los boucher registrados en la solicitud
     public static function getBoucherRequestById($id)
     {
         $query = "select * from linea.deposito_solicitud d where d.id_sol = " . $id;
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //obtiene los documentos que corresponden al extracto bancario
+    public static function getExtractBankById($id)
+    {
+        $query = "select * from linea.extracto e where e.id_doc in (select d.boucher from linea.deposito_solicitud d " .
+                 "where d.id_sol = " . $id . ")";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
 
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad.
     //  * {id: numero de carnet de identidad}

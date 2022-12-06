@@ -10,19 +10,19 @@
                     <div class="grid-content bg-purple">
                         <p>datos de la solicitud</p>
                         <el-form ref="form" :model="this.dataRequest" label-width="200px" size="mini">
-                            <el-form-item label="tag">
-                                <el-input v-model="dataRequest.idc" disabled></el-input>
+                            <el-form-item label="numero de la solicitud">
+                                <el-input v-model="dataRequest.idc" disabled ></el-input>
                             </el-form-item>
-                            <el-form-item label="fecha">
+                            <el-form-item label="fecha de la solicitud">
                                 <el-input v-model="dataRequest.fecha" disabled></el-input>
                             </el-form-item>
-                            <el-form-item label="detalle">
+                            <el-form-item label="detalle de la solicitud">
                                 <el-input v-model="dataRequest.des_per" disabled></el-input>
                             </el-form-item>
-                            <el-form-item label="importe">
+                            <el-form-item label="importe de la solicitud">
                                 <el-input v-model="dataRequest.importe" disabled></el-input>
                             </el-form-item>
-                            <el-form-item label="estado">
+                            <el-form-item label="estado de la solicitud">
                                 <el-input v-model="dataRequest.estado" disabled></el-input>
                             </el-form-item>
                         </el-form>
@@ -51,10 +51,10 @@
                     <p></p>
                     <div class="grid-content bg-purple">
                         <p>depositos encontrados en la cuenta unica</p>
-                        <el-table v-loading="loading" :data="boucherRequest" style="width: 100%">
+                        <el-table v-loading="loading" :data="extractRequest" style="width: 100%">
                             <el-table-column prop="fecha" label="fecha"></el-table-column>
-                            <el-table-column prop="boucher" label="no. documento"></el-table-column>
-                            <el-table-column prop="imp_bou" label="importe" align="right"></el-table-column>
+                            <el-table-column prop="id_doc" label="no. documento"></el-table-column>
+                            <el-table-column prop="imp_doc" label="importe" align="right"></el-table-column>
                         </el-table>
                         <p></p>
                         <el-button @click="initVerifyRequestSaleInLine()" type="success" size="mini" plain>Verificar
@@ -82,6 +82,7 @@ export default {
             dataRequest: {},
             dataDetailRequest: [],
             boucherRequest: [],
+            extractRequest: [],
         };
     },
     mounted() {
@@ -106,6 +107,7 @@ export default {
                 app.dataRequest = response.data.data[0];
                 app.dataDetailRequest = response.data.detail;
                 app.boucherRequest = response.data.boucher;
+                app.extractRequest = response.data.extract;
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {
@@ -132,11 +134,9 @@ export default {
 .el-row {
     margin-bottom: 20px;
 }
-
 .el-col {
     border-radius: 4px;
 }
-
 .bg-purple-dark {
     background: #99a9bf;
 }
@@ -158,6 +158,13 @@ export default {
 .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
+}
+
+.el-input.is-disabled .el-input__inner {
+    background-color: #123456 !important;
+    border-color: #123456 !important;
+    color: #123456 !important;
+    cursor: not-allowed;
 }
 </style>
   

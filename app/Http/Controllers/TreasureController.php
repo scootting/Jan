@@ -52,7 +52,8 @@ class TreasureController extends Controller
         $data = Treasure::GetDataRequestById($id_request);
         $detail = Treasure::GetDetailRequestById($id_request);
         $boucher = Treasure::getBoucherRequestById($id_request);
-        return json_encode(['data' => $data, 'detail' => $detail, 'boucher' => $boucher]);
+        $extract = Treasure::getExtractBankById($id_request);
+        return json_encode(['data' => $data, 'detail' => $detail, 'boucher' => $boucher, 'extract' => $extract]);
     }
 
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad y el año de ingreso.

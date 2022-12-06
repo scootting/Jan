@@ -2,7 +2,10 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>ventas en linea del dia: {{id}}</span>
+        <span>ventas en linea del dia: {{ id }}</span>
+        <el-button size="small" type="default" icon="el-icon-plus" @click="initAllVerifyRequest"
+          style="text-align: right; float: right">
+          verificar todas las solicitudes de la venta de valores en linea</el-button>
       </div>
       <br />
       <div>
@@ -13,7 +16,8 @@
           <el-table-column prop="des_per" label="descripcion" width="280"></el-table-column>
           <el-table-column align="right" width="220">
             <template slot-scope="scope">
-              <el-button @click="initVerifyRequestSaleInLine(scope.$index, scope.row)" type="warning" size="mini" plain>Verificar
+              <el-button @click="initVerifyRequestSaleInLine(scope.$index, scope.row)" type="warning" size="mini" plain>
+                Verificar
               </el-button>
               <el-button @click="initEditRequestSaleInLine(scope.$index, scope.row)" type="success" plain size="mini">
                 Imprimir</el-button>
@@ -73,7 +77,7 @@ export default {
     },
     initVerifyRequestSaleInLine(idx, row) {
       console.log(idx, row);
-      let app = this; 
+      let app = this;
       this.$router.push({
         name: "verifysaleinlinedetail",
         params: {
@@ -82,6 +86,10 @@ export default {
         },
       });
     },
+    async initAllVerifyRequest(){
+
+
+    }
   },
 };
 </script>
