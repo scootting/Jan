@@ -38,6 +38,8 @@ import ArchiveDetails from './views/archive/ArchiveDetails'
 import FileContainer from './views/archive/FileContainer'
 import FileContainerDetails from './views/archive/FileContainerDetails'
 import AddArchive from './views/archive/AddArchive'
+import TypesArchive from './views/archive/TypesArchive'
+import AddTypeArchive from './views/archive/AddTypeArchive'
 
 
 //bienes e inventarios
@@ -204,6 +206,8 @@ const router = new VueRouter({
                 { path: 'filecontainer', name: 'filecontainer', component: FileContainer },
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
                 { path: 'addArchive/:type', name: 'addarchive', component: AddArchive },
+                { path: 'typesarchive', name: 'typesarchive', component: TypesArchive },
+                { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Almacenes
