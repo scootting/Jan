@@ -57,6 +57,14 @@ class GeneralController extends Controller
         return json_encode($years);
     }
 
+
+    public function getPersonsByDescriptionWithPagination(Request $request)
+    {
+        $description = strtoupper($request->get('description')); // '' cadena vacia
+        \Log::info("esta es la descripcion".$description);
+        $data = General::GetPersonsByDescriptionWithPagination($description);
+        return json_encode($data);
+    }
     public function getPersonsByDescription(Request $request)
     {
 

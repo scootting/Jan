@@ -153,29 +153,12 @@ export default {
       this.$router.push({ name: "login" });
     },
     initAddTaxExemption() {
-      //link.href = window.URL.createObjectURL(blob);
-      //link.download = "test.pdf";
-      //link.click();
-      this.$router.push({ name: "addTaxExemption" });
     },
     initToFormalities() {
-      this.$router.push({ name: "formalities" });
-
-      //PDF file is stored under project/public/download/info.pdf
-
-      /*
-    $file= public_path(). "/download/info.pdf";
-    $headers = array(
-              'Content-Type: application/pdf',
-            );
-    return Response::download($file, 'filename.pdf', $headers);
-      */
     },
     initToDocuments() {
-      this.$router.push({ name: "addnotdocument" });
     },
     LoginToClients() {
-      this.$router.push({ name: "loginclient" });
     },
   },
 };

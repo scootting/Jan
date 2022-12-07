@@ -13,18 +13,6 @@
           >nuevo dia</el-button
         >-->
       </div>
-      <!--
-      <div style="margin-top: 15px">
-        <el-input
-          placeholder="INSERTE UNA DESCRIPCION"
-          v-model="writtenTextParameter"
-          class="input-with-select"
-        >
-          <el-button slot="append" icon="el-icon-search" @click="test"></el-button>
-        </el-input>
-      </div>
-      <br />
-      -->
       <div>
         <el-table v-loading="loading" :data="days" style="width: 100%">
           <el-table-column prop="id_dia" label="dia" :min-width="100">

@@ -26,10 +26,7 @@ body {
   */
   font-family: 'Oswald', sans-serif;
 
-  background: #f0ab00;
-  background: #d8ebb5;
-  background: #368f8b;
-  background: #62b6cb;
+  background: #d7d9ce;
 
   margin: 0;
   padding: 0;
@@ -43,7 +40,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
-  color: #000;
+  color: #040404;
   text-transform: uppercase;
 }
 button,

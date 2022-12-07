@@ -68,8 +68,8 @@ Route::group([
     Route::post('getActivesByInventory/', 'InventoryController@getActivesByInventory');
     //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
     Route::get('getStatesByActive/', 'InventoryController@getStatesByActive');
-    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
-    Route::post('saveActiveDetail/', 'InventoryController@saveActiveDetail');
+    //  * I5. Guardar los detalles determinados para cada activo fijo del inventario.
+    Route::post('storeActiveDetail/', 'InventoryController@storeActiveDetail');
 
     Route::get('inventory2/edit/{id}', 'InventoryController@getInventory');
     Route::post('inventory2/saveChange', 'InventoryController@saveChangeDocInventory');
@@ -118,6 +118,13 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
     Route::post('getTransactionsByPerson', 'TreasureController@getTransactionsByPerson');
+
+    //  * T2. Obtener una lista de las ventas en linea solicitadas durante la gestion.
+    Route::post('getSaleInLineDetail', 'TreasureController@getSaleInLineDetail');
+
+    //  * T4. Obtener el detalle de una solicitud utilizando su id.
+    Route::post('getDataRequestById', 'TreasureController@getDataRequestById');
+    
 
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
@@ -173,8 +180,15 @@ Route::group([
     //  * A1. Obtiene la lista de materiales con una breve descripcion
     Route::post('material', 'StoreController@getMaterialsByDescription');
     Route::post('addMaterial', 'StoreController@storeMaterial');
-    Route::post('editMaterial', 'StoreController@storeMaterial');
-    Route::get('EditMaterial/{id}', 'StoreController@getMaterialById');
-    
-    
+
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el sistema de Presupuestos Individuales
+    //  |--------------------------------------------------------------------------
+    //  * 1. Obtener una lista de presupuestos individuales por usuario de el recurso utilizado.
+    Route::post('singlebudget/', 'SingleBudgetController@getSingleBudget');
+    //  * COM1. Obtener una lista de personas utilizando una descripcion del recurso utilizado.
+    Route::post('getPersonsByDescriptionWithPagination', 'GeneralController@getPersonsByDescriptionWithPagination');
+
+
 });
