@@ -64,6 +64,16 @@ class General extends Model
         return $data;
     }
 
+    public static function GetPersonsByDescriptionWithPagination($description)
+    {
+        $query = "select * from pub.ff_datos_persona('" . $description . "')";
+        \Log::info($query);
+        //$query = "select * from public.personas where paterno ='".$description."' order by paterno, materno, nombres";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
     public static function GetPersonsByDescription($description)
     {
         \Log::info("Description: " . $description);

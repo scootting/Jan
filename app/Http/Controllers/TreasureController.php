@@ -9,6 +9,53 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class TreasureController extends Controller
 {
+
+    //  * T2. Obtener una lista de las ventas en linea solicitadas durante la gestion.
+    //  * {year: año de ingreso}
+    public function getSaleInLine(Request $request)
+    {
+        $year = $request->get('year');
+        $data = Treasure::GetSaleInLine($year);
+        return json_encode($data);
+    }
+
+    //  * T3. Obtener la lista de solicitudes bancarias en estado solicitado.
+    //  * {year: año de ingreso}
+    public function getSaleInLineDetail(Request $request)
+    {
+        $id = $request->get('id'); // '' cadena vacia
+        $usuario = $request->get('user');
+        $gestion = $request->get('year');
+        \Log::info("esta es la gestion: " . $gestion);
+        $data = Treasure::GetSaleInLineDetail($gestion);
+
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getDaysOfSale')]
+        );
+        return json_encode($paginate);
+
+    }
+
+    //  * T4. Obtener el detalle de una solicitud utilizando su id.
+    //  * {request: id de la solicitud }
+    public function getDataRequestById(Request $request)
+    {
+        $id_request = $request->get('id');
+        \Log::info($id_request);
+        $data = Treasure::GetDataRequestById($id_request);
+        $detail = Treasure::GetDetailRequestById($id_request);
+        $boucher = Treasure::getBoucherRequestById($id_request);
+        $extract = Treasure::getExtractBankById($id_request);
+        return json_encode(['data' => $data, 'detail' => $detail, 'boucher' => $boucher, 'extract' => $extract]);
+    }
+
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad y el año de ingreso.
     //  * {id: numero de carnet de identidad}
     //  * {year: año de ingreso}
@@ -53,6 +100,7 @@ class TreasureController extends Controller
             case 9: //CAOB
             case 42: //ORIGINARIA 43
             case 43: //capacidades especiales
+            case 36: //traspaso de universidades
                 $description = 'ORIGINARIA';
                 break;
             case 32: //OLIMPIADAS
@@ -200,7 +248,7 @@ class TreasureController extends Controller
         return json_encode($data);
     }
 
-    //  * Buscar transacciones hechas por una persona a traves de su carnet de identidad.
+    //  * T1. Buscar transacciones hechas por una persona a traves de su carnet de identidad.
     //  * {id: numero de carnet de identidad}
     public function getTransactionsByPerson(Request $request)
     {
@@ -241,12 +289,6 @@ class TreasureController extends Controller
         $year = $request->get('gestion');
         $user = $request->get('usuario'); // '' cadena vacia
         $type = $request->get('tipo');
-        \Log::info($transaccion);
-        \Log::info($id);
-        \Log::info($day);
-        \Log::info($year);
-        \Log::info($user);
-        \Log::info($type);
         $data = Treasure::CancelTransactionById($id, $day, $year, $user, $type);
         return null;
         return json_encode($data);

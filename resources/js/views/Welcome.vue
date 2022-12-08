@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import persona from "./components/Personed";
+import persona from "./components/Person";
 import example from "./components/example.vue";
 import valorado from "./components/Valued";
 

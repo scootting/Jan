@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-aside width="260px" style="background-color: #010e1f; min-height: 100vh">
+      <el-aside width="260px" style="background-color: #08596a; min-height: 100vh">
         <!--                  
                 *** - menu dinamico usando ElementUI - ***
         -->
@@ -11,7 +11,7 @@
         <el-menu
           default-active="2"
           class="el-menu-vertical-demo"
-          background-color="#010e1f"
+          background-color="#08596a"
           text-color="#faebd7"
           active-text-color="#faebd7"
           style="border-right: 0 !important"
@@ -45,7 +45,7 @@
       </el-aside>
 
       <el-container>
-        <el-header style="text-align: right; background-color: #62b6cb">
+        <el-header style="text-align: right; background-color: #d7d9ce">
           <!---->
           <el-dropdown size="medium">
             <span class="el-dropdown-link">

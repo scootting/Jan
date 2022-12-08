@@ -13,11 +13,6 @@ import NotFound from './views/NotFound'
 import Login from './views/Login'
 import Logout from './views/Logout'
 import Dashboard from './views/Dashboard'
-import Assets from './views/FixedAssets'
-import AddNotDocument from './views/clients/AddNotDocument'
-
-//Jessica
-import Test from './views/clients/Test'
 
 //usuario
 import Users from './views/application/Users'
@@ -43,6 +38,8 @@ import ArchiveDetails from './views/archive/ArchiveDetails'
 import FileContainer from './views/archive/FileContainer'
 import FileContainerDetails from './views/archive/FileContainerDetails'
 import AddArchive from './views/archive/AddArchive'
+import TypesArchive from './views/archive/TypesArchive'
+import AddTypeArchive from './views/archive/AddTypeArchive'
 
 
 //bienes e inventarios
@@ -54,8 +51,6 @@ import NewInventory from './views/inventory/NewInventory'
 import NewInventoryDetail from './views/inventory/NewInventoryDetail'
 import EditNewInventoryDetail from './views/inventory/EditNewInventoryDetail'
 import Inventory2Detail from './views/inventory/Inventory2Detail'
-import Formalities from './views/Formalities'
-import AddTaxExemption from './views/clients/AddTaxExemption'
 import Active from './views/inventory/Active'
 import CreateActive from './views/inventory/CreateActive'
 import EditActive from './views/inventory/EditActive'
@@ -63,6 +58,7 @@ import DocumentQR from './views/inventory/DocumentQR'
 import SelectActiveByDocument from './views/inventory/SelectActiveByDocument'
 import NewActive from './views/inventory/NewActive'
 import ImgDetail from './views/inventory/ImgDetail'
+
 //activos fijos
 import DocumentsFixedAssets from './views/fixedasset/DocumentsFixedAssets'
 import SelectedFixedAssetsByDocument from './views/fixedasset/SelectedFixedAssetsByDocument'
@@ -76,18 +72,24 @@ import Debtors from './views/treasure/Debtors'              //deudores
 import HistoryTransactions from './views/treasure/HistoryTransactions'              //historial de transacciones
 
 import TransactionsPersonal from './views/treasure/TransactionsPersonal'
+import SaleInLine from './views/treasure/SaleInLine'
+import SaleInLineDetail from './views/treasure/SaleInLineDetail'
+import VerifySaleInLineDetail from './views/treasure/VerifySaleInLineDetail'
 
 
-//clientes 
-import LoginClient from './views/clients/Login'
-import DashboardClient from './views/clients/Dashboard'
 
-import NuevaConvocatoria from './views/NewCall'
+//presupuestos individuales
+import SinglesBudget from './views/singlebudget/SinglesBudget'
+import SingleBudgetDetail from './views/singlebudget/SingleBudgetDetail'
+import AddSingleBudget from './views/singlebudget/AddSingleBudget'
+
+
+
+
 //import { component } from 'vue/types/umd'
 import addNotification from './views/certificates/addNotification'
 import AddSolvency from './views/certificates/AddSolvency'
 import editTransactionDocuments from './views/certificates/editTransactionDocuments'
-import { Container } from 'element-ui'
 
 // Routes
 const router = new VueRouter({
@@ -100,9 +102,6 @@ const router = new VueRouter({
             component: Home,
             children: [
                 { path: '', name: 'layout', component: Layout },
-                { path: '/formalities', name: 'formalities', component: Formalities },
-                { path: '/taxExemption', name: 'addTaxExemption', component: AddTaxExemption },
-                { path: '/addNotDocument', name: 'addnotdocument', component: AddNotDocument },
             ],
         },
         {
@@ -110,18 +109,6 @@ const router = new VueRouter({
             name: 'login',
             component: Login,
         },
-        {
-            path: '/client', name: 'loginclient', component: LoginClient
-        },
-        {
-            path: '/client/:id', name: 'dashboardclient', component: DashboardClient,
-            children: [
-                { path: '', name: 'welcome2', component: Welcome },
-                { path: 'nodebt', name: 'addnotdocument2', component: AddNotDocument },
-            ],
-
-        },
-
         {
             path: '/logout',
             name: 'logout',
@@ -137,7 +124,7 @@ const router = new VueRouter({
             children: [
                 // UserHome will be rendered inside User's <router-view>
                 // when /user/:id is matched0
-                { path: 'test', name: 'test', component: Test },
+                //{ path: 'test', name: 'test', component: Test },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para al Administracion General del Sistema
@@ -153,7 +140,7 @@ const router = new VueRouter({
 
 
                 { path: '', name: 'welcome', component: Welcome },
-                { path: 'assets', name: 'assets', component: Assets },
+                //{ path: 'assets', name: 'assets', component: Assets },
                 // enlaces para administrar los usuarios
                 { path: 'users', name: 'users', component: Users },
                 { path: 'user/add', name: 'adduser', component: AddUser },
@@ -199,13 +186,16 @@ const router = new VueRouter({
                 { path: 'documentsfixedassets', name: 'documentsfixedassets', component: DocumentsFixedAssets }, //lista de documentos de entrega activos fijos
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
-                { path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
+                //{ path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Tesoro
                 //  |--------------------------------------------------------------------------    
                 //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas. 
                 { path: 'transactionspersonal', name: 'transactionspersonal', component: TransactionsPersonal },
+                { path: 'saleinline', name: 'saleinline', component: SaleInLine },// lista de dias disponibles para crear las solicitudes
+                { path: 'saleinline/:id', name: 'saleinlinedetail', component: SaleInLineDetail }, //lista de solicitudes por dia 
+                { path: 'saleinline/:id/:request', name: 'verifysaleinlinedetail', component: VerifySaleInLineDetail }, //lista de solicitudes por dia 
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Archivos
@@ -216,6 +206,8 @@ const router = new VueRouter({
                 { path: 'filecontainer', name: 'filecontainer', component: FileContainer },
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
                 { path: 'addArchive/:type', name: 'addarchive', component: AddArchive },
+                { path: 'typesarchive', name: 'typesarchive', component: TypesArchive },
+                { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Almacenes
@@ -224,9 +216,17 @@ const router = new VueRouter({
                 { path: 'material', name: 'material', component: Material },
                 { path: 'material/add', name: 'addMaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
-        
-                
 
+
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Modulo de Presupuestos Individuales
+                //  |--------------------------------------------------------------------------    
+                //  * PIN1. Obtener una lista de los presupuestos individuales de el recurso utilizado.
+                { path: 'singlesbudget', name: 'singlesbudget', component: SinglesBudget },
+                //  * PIN(R1). Ruta para ir al modulo del presupuesto individual.
+                { path: 'singlebudgetdetail/:id_single', name: 'singlebudgetdetail', component: SingleBudgetDetail },
+                //  * PIN(R2). Ruta para ir al modulo para un nuevo presupuesto individual.
+                { path: 'singlebudget/add', name: 'addsinglebudget', component: AddSingleBudget },
             ],
             meta: {
                 requiresAuth: true,

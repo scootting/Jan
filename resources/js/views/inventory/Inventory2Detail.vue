@@ -3,9 +3,7 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Bienes de uso para el inventario</span>
-        <el-button style="float: right; padding: 3px 0" type="text"
-          >Ayuda</el-button
-        >
+        <el-button style="float: right; padding: 3px 0" type="text">Ayuda</el-button>
       </div>
       <!--
       <div>
@@ -70,60 +68,28 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="act_des"
-            label="descripcion"
-            width="450"
-          ></el-table-column>
+          <el-table-column prop="act_des" label="descripcion" width="450"></el-table-column>
           <el-table-column label="existencia" width="180">
             <template slot-scope="scope">
-              <el-checkbox
-                :disabled="scope.row.guardado === true"
-                v-model="data[scope.$index].validacion"
-                label="verificado"
-                size="mini"
-              ></el-checkbox>
+              <el-checkbox :disabled="scope.row.guardado === true" v-model="data[scope.$index].validacion"
+                label="verificado" size="mini"></el-checkbox>
             </template>
           </el-table-column>
           <el-table-column label="estado" width="150">
-            <el-select
-              :disabled="scope.row.guardado === true"
-              slot-scope="scope"
-              v-model="data[scope.$index].est_act"
-              value-key="desc"
-              placeholder="seleccionar estado"
-              size="mini"
-            >
-              <el-option
-                v-for="item in estados"
-                :key="item.id"
-                :label="item.desc"
-                :value="item.id"
-              >
+            <el-select :disabled="scope.row.guardado === true" slot-scope="scope" v-model="data[scope.$index].est_act"
+              value-key="desc" placeholder="seleccionar estado" size="mini">
+              <el-option v-for="item in estados" :key="item.id" :label="item.desc" :value="item.id">
               </el-option>
             </el-select>
           </el-table-column>
           <el-table-column label="observaciones" width="320">
-            <input
-              :disabled="scope.row.guardado === true"
-              type="text"
-              slot-scope="scope"
-              v-model="data[scope.$index].obs_est"
-              style="width: 300px"
-              @click="OpenObsAct(scope.$index)"
-              size="mini"
-            />
+            <input :disabled="scope.row.guardado === true" type="text" slot-scope="scope"
+              v-model="data[scope.$index].obs_est" style="width: 300px" @click="OpenObsAct(scope.$index)" size="mini" />
           </el-table-column>
           <el-table-column align="right-center" width="150" label="guardar">
             <template slot-scope="scope">
-              <el-button
-                :disabled="scope.row.guardado === true"
-                type="success"
-                plain
-                size="mini"
-                @click="saveActiveDetail(scope.$index, scope.row)"
-                >guardar</el-button
-              >
+              <el-button :disabled="scope.row.guardado === true" type="success" plain size="mini"
+                @click="saveActiveDetail(scope.$index, scope.row)">guardar</el-button>
               <!--
               <el-button
                 :disabled="data[scope.$index].guardado == true"
@@ -137,74 +103,31 @@
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          :page-size="pagination.per_page"
-          layout="prev, pager, next"
-          :current-page="pagination.current_page"
-          :total="pagination.total"
-          @current-change="getActivesByInventory"
-        ></el-pagination>
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
+          :current-page="pagination.current_page" :total="pagination.total" @current-change="getActivesByInventory">
+        </el-pagination>
         <div>
-          <el-button
-            style="margin: 10px; text-align: right; float: right"
-            type="primary"
-            size="small"
-            plain
-            @click="returnPage2"
-            :disabled="verificado"
-            >VERIFICAR</el-button
-          >
-          <el-button
-            style="margin: 10px; text-align: right; float: right"
-            type="danger"
-            size="small"
-            plain
-            @click="returnPage"
-            >ATRAS</el-button
-          >
-          <el-button
-            style="margin: 10px; text-align: right; float: right"
-            type="success"
-            size="small"
-            plain
-            @click="showObservacionInventory = true"
-            >OBSERVACIONES</el-button
-          >
+          <el-button style="margin: 10px; text-align: right; float: right" type="primary" size="small" plain
+            @click="returnPage2" :disabled="verificado">VERIFICAR</el-button>
+          <el-button style="margin: 10px; text-align: right; float: right" type="danger" size="small" plain
+            @click="returnPage">ATRAS</el-button>
+          <el-button style="margin: 10px; text-align: right; float: right" type="success" size="small" plain
+            @click="showObservacionInventory = true">OBSERVACIONES</el-button>
         </div>
       </div>
     </el-card>
-    <el-dialog
-      title="Realizar observaciones del inventario"
-      :visible.sync="showObservacionInventory"
-      width="30%"
-      @close="showObservacionInventory = false"
-    >
-      <el-input
-        type="textarea"
-        :rows="2"
-        placeholder="añada una observacion del inventario"
-        v-model="inventario.observaciones"
-      >
+    <el-dialog title="Realizar observaciones del inventario" :visible.sync="showObservacionInventory" width="30%"
+      @close="showObservacionInventory = false">
+      <el-input type="textarea" :rows="2" placeholder="añada una observacion del inventario"
+        v-model="inventario.observaciones">
       </el-input>
       <span slot="footer">
         <el-button @click="onCancelDialog">CANCELAR</el-button>
-        <el-button type="primary" @click="onConfirmDialog"
-          >GUARDAR OBSERVACIONES</el-button
-        >
+        <el-button type="primary" @click="onConfirmDialog">GUARDAR OBSERVACIONES</el-button>
       </span>
     </el-dialog>
-    <el-dialog
-      title="OBSERVACIONES DEL ACTIVO"
-      :visible.sync="dialogVisible"
-      width="30%"
-      :before-close="handleClose"
-    >
-      <el-input
-        type="textarea"
-        :rows="2"
-        placeholder="INGRESE OBSERVACIÓN"
-        v-model="activeObs"
-      >
+    <el-dialog title="OBSERVACIONES DEL ACTIVO" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+      <el-input type="textarea" :rows="2" placeholder="INGRESE OBSERVACIÓN" v-model="activeObs">
       </el-input>
       <br />
       <br />
@@ -252,34 +175,29 @@ export default {
   mounted() {
     let app = this;
     app.id_inventory = app.$route.params.id_inventory;
-    console.log("estes es el id: " + app.id_inventory);
     this.getActivesByInventory(app.pagination.page);
     this.getStatesByActive();
   },
   methods: {
     //  * 3. Obtener una lista de activos fijos para el inventario utilizado.
-    getActivesByInventory(page) {
+    async getActivesByInventory(page) {
       let app = this;
-      axios
-        .post("/api/getActivesByInventory/", {
+      try {
+        let response = await axios.post("/api/getActivesByInventory", {
           id_inventory: app.id_inventory,
           year: app.user.gestion,
           page: page,
-          //descripcion: app.writtenTextParameter.toUpperCase(),
-        })
-        .then((response) => {
-          app.loading = false;
-          app.data = Object.values(response.data.data); //response.data.data;
-          console.log(app.data);
-          app.pagination = response.data;
-        })
-        .catch((error) => {
-          this.error = error;
-          this.$notify.error({
-            title: "Error",
-            message: this.error.message,
-          });
         });
+        app.loading = false;
+        console.log(response);
+        app.data = Object.values(response.data.data);//response.data.data;
+        app.pagination = response.data;
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
     },
     //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
     getStatesByActive() {
@@ -293,54 +211,29 @@ export default {
           console.log(err);
         });
     },
-    //  * 5. Guardar los detalles determinados para cada activo fijo del inventario.
-    saveActiveDetail(index, row) {
-      {
-        var app = this;
-        console.log(index);
-        console.log(row);
-        var newActiveDetail = row;//app.data[index];
-        axios
-          .post("/api/saveActiveDetail", {
-            activeDetail: newActiveDetail,
-            marker: "registrar",
-          })
-          .then(function (response) {
-            console.log(newActiveDetail);
-
-            app.$alert(
-              "Se ha actualizado el detalle del activo fijo en el inventario",
-              "Gestor de mensajes",
-              {
-                dangerouslyUseHTMLString: true,
-              }
-            );
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-
-        /*
-        axios
-          .post("/api/inventory2/saveActive", {
-            ...this.data[index],
-            guardado: true,
-            cod_ges: this.user.gestion,
-            cod_act: this.data[index].cod_ant,
-          })
-          .then((data) => {
-            this.$notify.success({
-              title: "Cambios guardados",
-              message:
-                "Se realizo cambios al Documento de inventario seleccionado exitosamente",
-              duration: 5000,
-            });
-            this.getActivesSearch();
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-          */
+    //  * I5. Guardar los detalles determinados para cada activo fijo del inventario.
+    async saveActiveDetail(index, row) {
+      let app = this;
+      var newActiveDetail = row;
+      console.log(newActiveDetail);
+      try {
+        let response = await axios.post("/api/storeActiveDetail", {
+          activeDetail: newActiveDetail,
+          id: app.id_inventory,
+          year: app.user.gestion,
+          marker: "registrar",
+        });
+        console.log(response);
+        app.$alert(
+          "Se ha actualizado el detalle del activo fijo en el inventario",
+          "Gestor de mensajes",
+          {
+            dangerouslyUseHTMLString: true,
+          },
+        );
+        app.data[index]['guardado'] = true;
+      } catch (error) {
+        console.log(error);
       }
     },
 
@@ -364,7 +257,7 @@ export default {
         .then((_) => {
           done();
         })
-        .catch((_) => {});
+        .catch((_) => { });
     },
     getActivesSearch() {
       axios

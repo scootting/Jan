@@ -3,59 +3,25 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Inventario Editado</span>
-        <input
-          style="text-align: right; float: right"
-          type="text"
-          disabled
-          v-bind:value="editForm.no_cod"
-          placeholder="Nro de documento"
-        />
+        <input style="text-align: right; float: right" type="text" disabled v-bind:value="editForm.no_cod"
+          placeholder="Nro de documento" />
       </div>
       <div class="grid-content bg-purple">
         <el-row>
           <el-form label-width="160px" :inline="true" size="small">
             <el-form-item label="Unidad " size="small">
-              <el-select
-                v-model="editForm.ofc_cod"
-                filterable
-                remote
-                reserve-keyword
-                placeholder="Seleccione una Unidad"
-                :remote-method="remoteMethod"
-                maxlength="30"
-                style="width: 250"
-                :loading="unidadLoading" 
-                disabled
-              >
-                <el-option
-                  v-for="(item, index) in unidades"
-                  :key="index"
-                  :label="item.descripcion"
-                  :value="item.cod_soa"
-                >
+              <el-select v-model="editForm.ofc_cod" filterable remote reserve-keyword
+                placeholder="Seleccione una Unidad" :remote-method="remoteMethod" maxlength="30" style="width: 250"
+                :loading="unidadLoading" disabled>
+                <el-option v-for="(item, index) in unidades" :key="index" :label="item.descripcion"
+                  :value="item.cod_soa">
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="Sub-Unidad" size="small">
-              <el-select
-                v-model="editForm.sub_ofc_cod"
-                filterable
-                remote
-                multiple
-                reserve-keyword
-                placeholder="Sub Oficina"
-                :remote-method="getSubUnidades"
-                maxlength="30"
-                style="width: 250"
-                disabled
-                
-              >
-                <el-option
-                  v-for="(item, index) in subUnidades"
-                  :key="index"
-                  :label="item.descripcion"
-                  :value="item.id"
-                >
+              <el-select v-model="editForm.sub_ofc_cod" filterable remote multiple reserve-keyword
+                placeholder="Sub Oficina" :remote-method="getSubUnidades" maxlength="30" style="width: 250" disabled>
+                <el-option v-for="(item, index) in subUnidades" :key="index" :label="item.descripcion" :value="item.id">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -110,73 +76,36 @@
         </el-row>
       </div>
       <div>
-         <el-divider content-position="left">Datos editables</el-divider>
-             <el-form  label-width="160px" :inline="false" size="small">
-               <el-form-item label="fecha de inicio" size="small">
-                 <el-date-picker
-              v-model="editForm.fec_cre"
-              type="datetime"
-              placeholder="Selecionar Fecha"
-            >
+        <el-divider content-position="left">Datos editables</el-divider>
+        <el-form label-width="160px" :inline="false" size="small">
+          <el-form-item label="fecha de inicio" size="small">
+            <el-date-picker v-model="editForm.fec_cre" type="datetime" placeholder="Selecionar Fecha">
             </el-date-picker>
-            </el-form-item>
-            <el-form-item size="small" label="Encargados">
-              <el-select
-                class="enc-select"
-                v-model="editForm.res_enc"
-                multiple
-                placeholder="Seleccione Encargados para Inventario"
-                maxlength="30"
-              >
-                <el-option
-                  v-for="(item, index) in encargados"
-                  :key="index"
-                  :label="item.paterno + ' ' + item.nombres"
-                  :value="item.nro_dip"
-                >
-                </el-option>
-              </el-select>
-              <el-button
-                type="primary"
-                size="mini"
-                @click="showDialogEncargado = true"
-                >Buscar</el-button
-              >
-            </el-form-item>
-            <el-form-item label="" size="small">
-              <el-row type="flex" justify="end">
-                <el-button type="prymary" size="default" @click="saveInventory"
-                  >Guardar Cambios</el-button
-                >
-                <el-button type="default" size="default" @click="initNewInventory"
-                  >Atras</el-button
-                >
-              </el-row>
-            </el-form-item>
-             </el-form>
+          </el-form-item>
+          <el-form-item size="small" label="Encargados">
+            <el-select class="enc-select" v-model="editForm.res_enc" multiple
+              placeholder="Seleccione Encargados para Inventario" maxlength="30">
+              <el-option v-for="(item, index) in encargados" :key="index" :label="item.paterno + ' ' + item.nombres"
+                :value="item.nro_dip">
+              </el-option>
+            </el-select>
+            <el-button type="primary" size="mini" @click="showDialogEncargado = true">Buscar</el-button>
+          </el-form-item>
+          <el-form-item label="" size="small">
+            <el-row type="flex" justify="end">
+              <el-button type="prymary" size="default" @click="saveInventory">Guardar Cambios</el-button>
+              <el-button type="default" size="default" @click="initNewInventory">Atras</el-button>
+            </el-row>
+          </el-form-item>
+        </el-form>
       </div>
     </el-card>
-    <el-dialog
-      title="Buscar Encargado"
-      :visible.sync="showDialogEncargado"
-      width="30%"
-      @close="showDialogEncargado = false"
-    >
-      <el-select
-        v-model="selectEncargado"
-        placeholder="busque un carnet"
-        :loading="searchEncargadoLoading"
-        clearable
-        filterable
-        remote
-        :remote-method="getEncargados"
-      >
-        <el-option
-          v-for="item in searchEncargados"
-          :key="item.nro_dip"
-          :label="item.paterno + ' ' + item.nombres"
-          :value="item.nro_dip"
-        >
+    <el-dialog title="Buscar Encargado" :visible.sync="showDialogEncargado" width="30%"
+      @close="showDialogEncargado = false">
+      <el-select v-model="selectEncargado" placeholder="busque un carnet" :loading="searchEncargadoLoading" clearable
+        filterable remote :remote-method="getEncargados">
+        <el-option v-for="item in searchEncargados" :key="item.nro_dip" :label="item.paterno + ' ' + item.nombres"
+          :value="item.nro_dip">
         </el-option>
       </el-select>
       <span slot="footer">
@@ -192,13 +121,13 @@ export default {
   name: "Edit_Inventory2",
   data() {
     return {
-      id:"",
+      id: "",
       editForm: {
         no_doc: "",
         res_enc: [],
         car_cod: [],
-        ofc_cod:"",
-        sub_ofc_cod:[],
+        ofc_cod: "",
+        sub_ofc_cod: [],
         ci_res: [],
         car_cod_resp: [],
         //estado: [],
@@ -224,15 +153,15 @@ export default {
       .get("/api/inventory2/edit/" + this.id)
       .then((response) => {
         this.editForm = response.data;
-        this.getSubUnidades(this.editForm.ofc_cod,false);
+        this.getSubUnidades(this.editForm.ofc_cod, false);
         this.remoteMethod(this.editForm.ofc_cod);
         this.editForm.res_enc.forEach(nd => {
-          	this.getEncargados(nd,(list)=>{
-              	list.forEach(en=>{
-                    if(en.nro_dip===nd.trim())
-                      this.encargados.push(en);
-                });
+          this.getEncargados(nd, (list) => {
+            list.forEach(en => {
+              if (en.nro_dip === nd.trim())
+                this.encargados.push(en);
             });
+          });
         });
       })
       .catch((error) => {
@@ -243,7 +172,7 @@ export default {
         });
       });
   },
-  methods: { 
+  methods: {
     remoteMethod(keyWord) {
       axios
         .get("/api/inventory2/unidad/", {
@@ -257,18 +186,18 @@ export default {
         });
     },
     onChangeUnidad(cod_soa) {
-      this.getSubUnidades(cod_soa,true);
+      this.getSubUnidades(cod_soa, true);
     },
     onChangeSubUnidades(subUnidades) {
       let cod_soa = this.editForm.ofc_cod;
-      this.getCargosResp(cod_soa, subUnidades,true); //subUnidades
+      this.getCargosResp(cod_soa, subUnidades, true); //subUnidades
       //this.getResponsables(cod_soa, cargos,true);
     },
     onChangeCargos(cargos) {
       let cod_soa = this.editForm.ofc_cod;
-      this.getResponsables(cod_soa, cargos,true);
+      this.getResponsables(cod_soa, cargos, true);
     },
-    getSubUnidades(cod_soa,actualizar) {
+    getSubUnidades(cod_soa, actualizar) {
       this.unidadesLoading = true;
       this.subUnidadesLoading = true;
       axios
@@ -279,9 +208,9 @@ export default {
           this.subUnidadesLoading = false;
           this.unidadesLoading = false;
           this.subUnidades = data.data;
-          if(actualizar)
+          if (actualizar)
             this.editForm.sub_ofc_cod = this.subUnidades.map((su) => su.id);
-          this.getCargosResp(this.editForm.ofc_cod, this.editForm.sub_ofc_cod,actualizar);
+          this.getCargosResp(this.editForm.ofc_cod, this.editForm.sub_ofc_cod, actualizar);
         })
         .catch((err) => {
           console.log(err);
@@ -336,7 +265,7 @@ export default {
     //       console.log(err);
     //     });
     // },
-    getEncargados(nro_dip,cb = false) {
+    getEncargados(nro_dip, cb = false) {
       this.searchEncargadoLoading = true;
       axios
         .get("/api/inventory2/encargados", {
@@ -345,11 +274,11 @@ export default {
         .then((data) => {
           this.searchEncargadoLoading = false;
           this.searchEncargados = Object.values(data.data.data);
-          this.searchEncargados.map(e=>{
-              e.nro_dip = e.nro_dip.trim();
-            	return e;
+          this.searchEncargados.map(e => {
+            e.nro_dip = e.nro_dip.trim();
+            return e;
           });
-          if(cb)
+          if (cb)
             cb(this.searchEncargados);
         })
         .catch((err) => {
@@ -414,13 +343,13 @@ export default {
         .post("/api/inventory2/save", this.editForm)
         .then((data) => {
           this.$notify.success({
-        title: "Cambios guardados",
-        message: "Se realizo cambios al Documento de inventario seleccionado exitosamente",
-        duration: 0,
-      });
-      this.$router.push({
-        name: "inventory2",
-      });
+            title: "Cambios guardados",
+            message: "Se realizo cambios al Documento de inventario seleccionado exitosamente",
+            duration: 0,
+          });
+          this.$router.push({
+            name: "inventory2",
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -444,30 +373,38 @@ export default {
 .el-row {
   padding-bottom: 10px;
 }
+
 .enc-select {
   width: calc(100% - 100px);
-  margin-right: 15px; 
+  margin-right: 15px;
 }
+
 .el-row {
   margin-bottom: 20px;
 }
+
 .el-col {
   border-radius: 4px;
 }
+
 .bg-purple-dark {
   background: #99a9bf;
 }
+
 .bg-purple {
   background: #d3dce6;
 }
+
 .bg-purple-light {
   background: #e5e9f2;
 }
+
 .grid-content {
   border-radius: 4px;
   padding: 15px;
   min-height: 36px;
 }
+
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
