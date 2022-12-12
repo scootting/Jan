@@ -57,7 +57,7 @@ class GeneralController extends Controller
         return json_encode($years);
     }
 
-
+    //  * COM1. Obtener una lista de personas que coinciden con la descripcion.
     public function getPersonsByDescriptionWithPagination(Request $request)
     {
         $description = strtoupper($request->get('description')); // '' cadena vacia
