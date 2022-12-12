@@ -177,6 +177,11 @@ Route::group([
     //  * A7. Guardar un nuevo archivo, contenedor o ubicacion
     Route::post('file/', 'ArchiveController@storeFileContainer');
 
+    //  * A10. Guardar un nuevo tipo de archivo 
+    Route::post('onStoreTypeArchive/', 'ArchiveController@onStoreTypeArchive');
+
+
+
     //  * A1. Obtiene la lista de materiales con una breve descripcion
     Route::post('material', 'StoreController@getMaterialsByDescription');
     Route::post('addMaterial', 'StoreController@storeMaterial');

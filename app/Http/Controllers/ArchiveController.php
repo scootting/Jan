@@ -85,5 +85,26 @@ class ArchiveController extends Controller
         }
         return json_encode($data);
     }
-    
+    //  * A10. Guardar un nuevo tipo de archivo 
+    public function onStoreTypeArchive(Request $request)
+    {
+        $archivo = $request->get('archive');
+        $codificacion = strtoupper($archivo['codification']);
+        $descripcion = $archivo['description'];
+        $tipo = $archivo['type'];
+        $marcador = 'registrar';
+        \Log::info($codificacion.' :descripcion: '.$descripcion.' :tipo: '.$tipo);
+        switch ($marcador) {
+            case 'registrar':
+                $data = Archive::OnStoreTypeArchive($codificacion, $descripcion, $tipo);
+                break;
+            case 'editar':
+                //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
+                break;
+            default:
+                break;
+        }
+        return json_encode($data);
+    }
+
 }

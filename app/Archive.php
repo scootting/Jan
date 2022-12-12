@@ -67,5 +67,11 @@ class Archive extends Model
         return $data;
     }
 
-
+    //  * A10. Guardar un nuevo tipo de archivo 
+    public static function OnStoreTypeArchive($codificacion, $descripcion, $tipo){
+        $query = "SELECT * FROM arch.ff_registrar_tipo('" . $codificacion . "','" . $descripcion . "','" . $tipo ."')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+        
+    }
 }
