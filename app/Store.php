@@ -15,15 +15,28 @@ class Store extends Model
     public static function GetMaterialsByDescription($description)
     {
         if ($description == '') {
-            $query = "select * from alm.materiales m ";
+            $query = "select * from alm.materiales m order by mat_cod asc";
         } else {
-            $query = "select * from alm.materiales m where m.mat_des like '%" . $description . "%'";
+            $query = "select * from alm.materiales m where m.mat_des like '%" . $description . "%' order by mat_cod asc";
         }
 
         \Log::info("Esta es la de materiales: " . $query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    public static function GetMovementOfMaterial($mat_cod, $gestion)
+    {
+        //select * from alm.f_alm_kar('250034', '2021')
+        //select * from alm.f_kardex_fisico_valorado('250034', '2021')
+
+        $query = "select * from alm.f_kardex_fisico_valorado('" . $mat_cod . "', '" . $gestion .  "')";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    
+
     public static function AddMaterial($mat_cod, $mat_des, $mat_uni_med)
     {
         $query = "insert into alm.materiales(mat_cod, mat_des, mat_uni_med) ".

@@ -2,9 +2,11 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>material</span>
+        <span>lista de materiales</span>
+        <!--
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
           @click="initAddMaterial">nuevo material</el-button>
+        -->
       </div>
       <div style="margin-top: 15px">
         <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
@@ -14,7 +16,7 @@
       <br />
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column width="75" label="No.">
+          <el-table-column width="175" label="codigo">
             <template slot-scope="scope">
 
               <div slot="reference" class="name-wrapper">
@@ -23,8 +25,8 @@
             </template>
           </el-table-column>
 
-          <el-table-column prop="mat_des" width="450" label="descripcion del material"></el-table-column>
-          <el-table-column width="150" label="unidad">
+          <el-table-column prop="mat_des" width="450" label="descripcion"></el-table-column>
+          <el-table-column width="350" label="unidad">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.mat_uni_med }}</el-tag>
@@ -33,12 +35,14 @@
           </el-table-column>
           <el-table-column align="right-center" width="250" label="Operaciones">
             <template slot-scope="scope">
-              <el-button @click="initEditMaterial(scope.$index, scope.row)" type="success" size="mini" plain>Ver
-                materiales
+              <el-button @click="initMovementOfMaterial(scope.$index, scope.row)" type="warning" size="mini" plain>
+                movimiento
+              </el-button>
+              <el-button @click="initEditMaterial(scope.$index, scope.row)" type="success" size="mini" plain>
+                editar
               </el-button>
             </template>
           </el-table-column>
-
         </el-table>
         <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
           :current-page="pagination.current_page" :total="pagination.total"
@@ -65,45 +69,44 @@ export default {
     this.getMaterials();
   },
   methods: {
-    //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
-    getMaterials(page) {
+    //  * M1. Obtiene la lista de materiales con una breve descripcion
+    async getMaterials(page) {
       this.loading = true;
       let app = this;
-      axios
-        .post("/api/material", {
-
-          description: app.writtenTextParameter.toUpperCase(),
+      let description = app.writtenTextParameter;
+      app.loading = true;
+      try {
+        let response = await axios.post("/api/material", {
+          description: description,
           page: page,
-        })
-        .then((response) => {
-          app.loading = false;
-          app.data = Object.values(response.data.data);
-          console.log(app.data);
-          app.pagination = response.data;
-        })
-        .catch((error) => {
-          this.error = error;
-          this.$notify.error({
-            title: "Error",
-            message: this.error.message,
-          });
         });
+        app.data = Object.values(response.data.data);
+        app.pagination = response.data;
+        app.loading = false;
+        console.log(response);
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
     },
 
     initEditMaterial(index, row) {
-      console.log(index, row);
-      let mat_cod = row.mat_cod;
       this.$router.push({
-        name: "editMaterial",
+        name: "editmaterial",
         params: {
-          id: mat_cod.trim(),
+          id: row.mat_cod.trim(),
         },
       });
     },
-    initAddMaterial() {
-      this.$router.push({
-        name: "addMaterial",
 
+    initMovementOfMaterial(index, row) {
+      this.$router.push({
+        name: "movementmaterial",
+        params: {
+          id: row.mat_cod.trim(),
+        },
       });
     },
   },

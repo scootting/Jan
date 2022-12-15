@@ -182,10 +182,13 @@ Route::group([
 
 
     //  |--------------------------------------------------------------------------
-    //  | Rutas API para el Sistema de Archivos
+    //  | Rutas API para el Sistema de Almacenes
     //  |--------------------------------------------------------------------------
-    //  * A1. Obtiene la lista de materiales con una breve descripcion
+    //  * M1. Obtiene la lista de materiales con una breve descripcion
     Route::post('material', 'StoreController@getMaterialsByDescription');
+    //  * M2. Obtiene la lista de movimientos del material
+    Route::post('getMovementOfMaterial', 'StoreController@getMovementOfMaterial');
+
     Route::post('addMaterial', 'StoreController@storeMaterial');
 
 

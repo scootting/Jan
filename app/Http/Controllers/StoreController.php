@@ -3,15 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Store;
-use App\Libraries\DynamicMenu;
-use App\Libraries\JWTFAuth;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class StoreController extends Controller
 {
-    //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
-    //  * parametros {description: descripcion que se esta buscando }     
+    //  * M1. Obtiene la lista de materiales con una breve descripcion
+    //  * parametros {description: descripcion que se esta buscando }
     public function getMaterialsByDescription(Request $request)
     {
 
@@ -28,6 +26,18 @@ class StoreController extends Controller
         );
         return json_encode($paginate);
     }
+
+    //  * M2. Obtiene la lista de movimientos del material
+    //  * parametros {codigo: codigo del material, gestion: la gestion que se esta consultando }
+    public function getMovementOfMaterial(Request $request)
+    {
+
+        $codigo = $request->get('codigo');
+        $gestion = $request->get('gestion');
+        $data = Store::GetMovementOfMaterial($codigo, $gestion);
+        return json_encode($data);
+    }
+
     public function storeMaterial(Request $request)
     {
         $material = $request->get('material');
@@ -53,5 +63,5 @@ class StoreController extends Controller
     {
         $data = Store::GetMaterialByIdentityCard($id);
         return json_encode($data);
-    } 
+    }
 }

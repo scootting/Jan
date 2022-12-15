@@ -7,6 +7,7 @@ Vue.use(VueRouter)
 import Material from './views/store/Material'
 import AddMaterial from './views/store/AddMaterial'
 import EditMaterial from './views/store/EditMaterial'
+import MovementMaterial from './views/store/MovementMaterial'
 
 // Pages
 import NotFound from './views/NotFound'
@@ -212,8 +213,10 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Almacenes
                 //  |--------------------------------------------------------------------------    
-                //  * S1. Obtiene la lista de materiales con una breve descripcion
+                //  * M1. Obtiene la lista de materiales con una breve descripcion                
                 { path: 'material', name: 'material', component: Material },
+                //  * M1. Obtiene la lista de los movimientos de un material durante el año               
+                { path: 'material/movement/:id', name: 'movementmaterial', component: MovementMaterial },
                 { path: 'material/add', name: 'addMaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
 
