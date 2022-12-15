@@ -188,6 +188,8 @@ Route::group([
     Route::post('material', 'StoreController@getMaterialsByDescription');
     //  * M2. Obtiene la lista de movimientos del material
     Route::post('getMovementOfMaterial', 'StoreController@getMovementOfMaterial');
+    //  * M3. Reporte para mostrar el kardex de un material
+    Route::get('ReportKardexByMaterial/', 'StoreController@getReportKardexByMaterial');
 
     Route::post('addMaterial', 'StoreController@storeMaterial');
 

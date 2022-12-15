@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Store;
+use App\Libraries\JSRClient;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+
 
 class StoreController extends Controller
 {
@@ -37,6 +39,24 @@ class StoreController extends Controller
         $data = Store::GetMovementOfMaterial($codigo, $gestion);
         return json_encode($data);
     }
+
+    public function getReportKardexByMaterial(Request $request)
+    {
+        $mat_cod = $request->get('mat_cod');
+        $gestion = $request->get('gestion');
+        $nreport = 'Store_Kardex_By_Material';
+        $controls = array(
+            'p_mat_cod' =>trim($mat_cod),
+            'p_gestion' => $gestion,
+        );        
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+
+
+
+
+
 
     public function storeMaterial(Request $request)
     {

@@ -3,6 +3,9 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>material</span>
+                <el-button size="small" type="primary" icon="el-icon-printer" align="right"
+                    @click="initPrint">imprimir</el-button>
+
             </div>
             <div style="margin-top: 15px">
                 <!--
@@ -79,6 +82,29 @@ export default {
                 });
             }
         },
+    //  * M3. Reporte para mostrar el kardex de un material        
+        initPrint() {
+            var app = this;
+            axios({
+                url: "/api/ReportKardexByMaterial/",
+                params: {
+                    mat_cod: app.mat_cod,
+                    gestion: app.user.gestion,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+        },
+
+
     },
 };
 </script>

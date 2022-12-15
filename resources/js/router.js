@@ -215,7 +215,7 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * M1. Obtiene la lista de materiales con una breve descripcion                
                 { path: 'material', name: 'material', component: Material },
-                //  * M1. Obtiene la lista de los movimientos de un material durante el año               
+                //  * M2. Obtiene la lista de movimientos del material
                 { path: 'material/movement/:id', name: 'movementmaterial', component: MovementMaterial },
                 { path: 'material/add', name: 'addMaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
