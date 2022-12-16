@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Solvency;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class SolvencyController extends Controller
 {
@@ -12,16 +14,15 @@ class SolvencyController extends Controller
     public function getDebtorsDocument(Request $request)
     {
         $descripcion = strtoupper($request->get('description')); // '' cadena vacia
-        $data = Solvency::getDebtorsDocument($descripcion);
+        $data = Solvency::GetDebtorsDocument($descripcion);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 10;
-
         $paginate = new LengthAwarePaginator(
             $data->forPage($page, $perPage),
             $data->count(),
             $perPage,
             $page,
-            ['path' => url('api/persons')]
+            ['path' => url('api/getDebtorsDocument')]
         );
         return json_encode($paginate);
     }

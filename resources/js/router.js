@@ -4,9 +4,9 @@ Vue.use(VueRouter)
 
 
 //Solvencias
-import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
-
+import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
+import EditDebtorDocument from './views/solvency/EditDebtorDocument.vue'
 
 //Almancenes
 import Material from './views/store/Material'
@@ -47,7 +47,6 @@ import AddArchive from './views/archive/AddArchive'
 import TypesArchive from './views/archive/TypesArchive'
 import AddTypeArchive from './views/archive/AddTypeArchive'
 
-
 //bienes e inventarios
 import Inventory from './views/inventory/Inventory'
 import Inventory2 from './views/inventory/Inventory2'
@@ -82,15 +81,10 @@ import SaleInLine from './views/treasure/SaleInLine'
 import SaleInLineDetail from './views/treasure/SaleInLineDetail'
 import VerifySaleInLineDetail from './views/treasure/VerifySaleInLineDetail'
 
-
-
 //presupuestos individuales
 import SinglesBudget from './views/singlebudget/SinglesBudget'
 import SingleBudgetDetail from './views/singlebudget/SingleBudgetDetail'
 import AddSingleBudget from './views/singlebudget/AddSingleBudget'
-
-
-
 
 //import { component } from 'vue/types/umd'
 import addNotification from './views/certificates/addNotification'
@@ -143,8 +137,6 @@ const router = new VueRouter({
 
                 // enlaces para administrar las personas
                 { path: 'persons', name: 'persons', component: Persons },
-
-
                 { path: '', name: 'welcome', component: Welcome },
                 //{ path: 'assets', name: 'assets', component: Assets },
                 // enlaces para administrar los usuarios
@@ -159,7 +151,6 @@ const router = new VueRouter({
                 { path: 'inventory2', name: 'inventory2', component: Inventory2 },
                 // Lionel - enlace a la lista de activos de un inventario para la gestion 
                 { path: 'inventory2/:id_inventory', name: 'inventory2detail', component: Inventory2Detail },
-
 
                 { path: 'inventory', name: 'inventory', component: Inventory },
                 { path: 'inventory/:soa', name: 'inventorydetail', component: InventoryDetail },
@@ -181,7 +172,6 @@ const router = new VueRouter({
                 { path: 'addnotification', name: 'addnotification', component: addNotification }, // agregar la convocatoria para un certificado de no deuda
                 { path: 'addsolvency', name: 'addsolvency', component: AddSolvency }, // agregar solvencia para tramite
                 { path: 'edittransactiondocuments', name: 'edittransactiondocuments', component: editTransactionDocuments }, //editar el estado de un documento
-
 
                 //enlaces para la administracion de paginas de tesoreria
                 { path: 'solvency', name: 'solvency', component: Solvency }, // solvencias
@@ -225,6 +215,15 @@ const router = new VueRouter({
                 { path: 'material/add', name: 'addMaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
 
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Solvencias
+                //  |--------------------------------------------------------------------------    
+                //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
+                { path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument },
+                //  * S2. Agregar un nuevo documento de deudor
+                { path: 'debtordocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
+                //  * S3. Editar un nuevo documento de deudor
+                { path: 'debtordocument/edit/:id', name: 'editdebtordocument', component: EditDebtorDocument },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Modulo de Presupuestos Individuales
@@ -235,15 +234,6 @@ const router = new VueRouter({
                 { path: 'singlebudgetdetail/:id_single', name: 'singlebudgetdetail', component: SingleBudgetDetail },
                 //  * PIN(R2). Ruta para ir al modulo para un nuevo presupuesto individual.
                 { path: 'singlebudget/add', name: 'addsinglebudget', component: AddSingleBudget },
-
-
-                //  |--------------------------------------------------------------------------
-                //  | Rutas API para el Sistema de Solvencias
-                //  |--------------------------------------------------------------------------    
-                //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
-                { path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument },
-                //  * S2. Agregar un nuevo documento de deudor
-                { path: 'debtorsdocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
 
             ],
             meta: {
