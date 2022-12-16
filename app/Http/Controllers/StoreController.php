@@ -53,11 +53,6 @@ class StoreController extends Controller
         return $report;
     }
 
-
-
-
-
-
     public function storeMaterial(Request $request)
     {
         $material = $request->get('material');

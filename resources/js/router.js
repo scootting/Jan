@@ -3,6 +3,11 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 
+//Solvencias
+import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
+import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
+
+
 //Almancenes
 import Material from './views/store/Material'
 import AddMaterial from './views/store/AddMaterial'
@@ -230,6 +235,16 @@ const router = new VueRouter({
                 { path: 'singlebudgetdetail/:id_single', name: 'singlebudgetdetail', component: SingleBudgetDetail },
                 //  * PIN(R2). Ruta para ir al modulo para un nuevo presupuesto individual.
                 { path: 'singlebudget/add', name: 'addsinglebudget', component: AddSingleBudget },
+
+
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Solvencias
+                //  |--------------------------------------------------------------------------    
+                //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
+                { path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument },
+                //  * S2. Agregar un nuevo documento de deudor
+                { path: 'debtorsdocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
+
             ],
             meta: {
                 requiresAuth: true,
