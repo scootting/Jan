@@ -10,13 +10,26 @@
             <div style="margin-top: 15px">
                 <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter"
                     class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search" @click="getDebtorsDocument"></el-button>
+                    <el-button slot="append" icon="el-icon-search" @click="getDebtorsDocument(1)"></el-button>
                 </el-input>
             </div>
             <div>
                 <el-table v-loading="loading" :data="dataDebtors" style="width: 100%">
                     <el-table-column prop="ci_per" label="dni"></el-table-column>
+                    <el-table-column prop="estado2" label="estado2"></el-table-column>
                     <el-table-column prop="des_per" label="descripcion"></el-table-column>
+                    <el-table-column prop="detalle" label="detalle"></el-table-column>
+                    <!--
+                    -->
+                    <el-table-column align="right" width="220">
+                        <template slot-scope="scope">
+                            <el-button @click="initEditDocument(scope.$index, scope.row)" type="primary" size="mini"
+                                plain>Editar</el-button>
+                            <el-button @click="initRegularizeDocument(scope.$index, scope.row)" type="danger" plain
+                                size="mini">Regularizar</el-button>
+                        </template>
+                    </el-table-column>
+
                 </el-table>
                 <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
                     :current-page="pagination.current_page" :total="pagination.total"
@@ -30,7 +43,7 @@
 export default {
     data() {
         return {
-            writtenTextParameter: '',
+            writtenTextParameter: "",
             dataDebtors: [],
             pagination: {
                 page: 1,
@@ -45,6 +58,7 @@ export default {
         async getDebtorsDocument(page) {
             this.loading = true;
             let app = this;
+
             try {
                 let response = await axios.post("/api/getDebtorsDocument", {
                     description: app.writtenTextParameter,
@@ -63,9 +77,13 @@ export default {
         },
         initAddDebtorDocument() {
             this.$router.push({
-                name: "addDocumentOfDebtor",
+                name: "adddebtordocument",
             });
         },
+        initEditDocument() {
+
+        },
+        initRegularizeDocument() { }
     },
 };
 </script>

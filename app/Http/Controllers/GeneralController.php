@@ -70,7 +70,7 @@ class GeneralController extends Controller
 
         $descripcion = strtoupper($request->get('descripcion')); // '' cadena vacia
         $data = General::GetPersonsByDescription($descripcion);
-
+        \Log::info('GeneralController');
         \Log::info($data);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 10;

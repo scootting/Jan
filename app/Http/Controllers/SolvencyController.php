@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Solvency;
+use App\General;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 

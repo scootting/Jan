@@ -220,6 +220,7 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
                 { path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument },
+                //{ path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument2 },
                 //  * S2. Agregar un nuevo documento de deudor
                 { path: 'debtordocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
                 //  * S3. Editar un nuevo documento de deudor
