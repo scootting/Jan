@@ -17,7 +17,7 @@ class SolvencyController extends Controller
         $descripcion = strtoupper($request->get('description')); // '' cadena vacia
         $data = Solvency::GetDebtorsDocument($descripcion);
         $page = ($request->get('page') ? $request->get('page') : 1);
-        $perPage = 10;
+        $perPage = 30;
         $paginate = new LengthAwarePaginator(
             $data->forPage($page, $perPage),
             $data->count(),
