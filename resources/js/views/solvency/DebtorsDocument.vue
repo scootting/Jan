@@ -15,8 +15,10 @@
             </div>
             <div>
                 <el-table v-loading="loading" :data="dataDebtors" style="width: 100%">
+                    <el-table-column prop="fecha" label="fecha"></el-table-column>
+                    <el-table-column prop="unidad" label="unidad"></el-table-column>
                     <el-table-column prop="ci_per" label="dni"></el-table-column>
-                    <el-table-column prop="estado2" label="estado2"></el-table-column>
+                    <el-table-column prop="estado2" label="estado"></el-table-column>
                     <el-table-column prop="des_per" label="descripcion"></el-table-column>
                     <el-table-column prop="detalle" label="detalle"></el-table-column>
                     <!--

@@ -23,7 +23,7 @@
                                     <el-date-picker type="date" placeholder="seleccione una fecha"
                                         v-model="debtorDocument.fecha" style="width: 100%"></el-date-picker>
                                 </el-form-item>
-                                <el-form-item label="fecha" prop="fecha">
+                                <el-form-item label="unidad" prop="des_prg">
                                     <el-input placeholder="Please input" v-model="dni" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"
                                             @click="initSearchPerson">BUSCAR</el-button>
@@ -60,7 +60,9 @@
                                 <el-table-column prop="detalle" label="detalle"></el-table-column>
                             </el-table>
                             <p></p>
-                            <el-button @click="storeNewDebtorDocument()" type="success" size="mini" plain>Verificar
+                            <el-button @click="storeNewDebtorDocument()" type="success" size="mini" plain>Agregar
+                            </el-button>
+                            <el-button @click="storeNewDebtorDocument()" type="success" size="mini" plain>Guardar
                             </el-button>
                         </div>
                     </el-col>
@@ -91,6 +93,7 @@ export default {
                 id: "",
                 referencia: "",
                 fecha: "",
+                unidad: "",
             },
         };
     },
