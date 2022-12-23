@@ -24,12 +24,17 @@
                                         v-model="debtorDocument.fecha" style="width: 100%"></el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="unidad" prop="des_prg">
-                                    <el-input placeholder="Please input" v-model="dni" class="input-with-select">
+                                    <el-input placeholder="" v-model="dni" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"
-                                            @click="initSearchPerson">BUSCAR</el-button>
+                                            @click="initSearchPrg">BUSCAR</el-button>
                                     </el-input>
                                 </el-form-item>
-
+                                <el-form-item label="responsable" prop="resp">
+                                    <el-input placeholder="" v-model="manager.des_per" class="input-with-select">
+                                        <el-button slot="append" icon="el-icon-search"
+                                            @click="initSearchManager">BUSCAR</el-button>
+                                    </el-input>
+                                </el-form-item>
                             </el-form>
                         </div>
                         <p></p>
@@ -48,28 +53,56 @@
                                 </el-table-column>
                             </el-table>
                             <p></p>
-                            <el-button @click="initSearchPerson" type="success" size="mini" plain>Buscar
+                            <el-button @click="initSearchPerson" type="primary" size="small" plain>Buscar
                             </el-button>
                         </div>
                         <p></p>
                         <div class="grid-content bg-purple">
                             <p>deudas</p>
-                            <el-table :data="debts" style="width: 100%">
+                            <el-table :data="debts" style="width: 100%" size="small">
                                 <el-table-column prop="tipo" label="tipo"></el-table-column>
-                                <el-table-column prop="cantidad" label="cantidad"></el-table-column>
-                                <el-table-column prop="detalle" label="detalle"></el-table-column>
+                                <el-table-column prop="cant" label="cantidad"></el-table-column>
+                                <el-table-column prop="desc" label="detalle"></el-table-column>
+                                <el-table-column align="right">
+                                    <template slot-scope="scope">
+                                        <el-button @click="initRemoveDebt(scope.$index, scope.row)" type="primary" plain
+                                            size="small">Quitar</el-button>
+                                    </template>
+                                </el-table-column>
                             </el-table>
                             <p></p>
-                            <el-button @click="storeNewDebtorDocument()" type="success" size="mini" plain>Agregar
+                            <el-button @click="dialogFormVisible = true" type="primary" size="small" plain>Agregar
                             </el-button>
-                            <el-button @click="storeNewDebtorDocument()" type="success" size="mini" plain>Guardar
+                            <el-button @click="storeNewDebtorDocument()" type="danger" size="small" plain>Guardar
                             </el-button>
                         </div>
                     </el-col>
                 </el-row>
             </div>
-            <person :centerDialogVisible="isVisible" :dataPerson="personal" @update-visible="getDataModal"
-                @update-info="initGetPerson"></person>
+            <person :centerDialogVisible="isVisible" :dataPerson="person" @update-visible="getDataModal"
+                @update-info="storeNewPerson"></person>
+            <!-- componente para agregar deudas -->
+            <el-dialog title="agregar deuda" :visible.sync="dialogFormVisible">
+                <el-form :model="debt" label-width="150px" size="small">
+                    <el-form-item label="deuda">
+                        <el-radio-group v-model="debt.tipo" size="small">
+                            <el-radio-button label="fisica"></el-radio-button>
+                            <el-radio-button label="economica"></el-radio-button>
+                        </el-radio-group>
+                    </el-form-item>
+                    <el-form-item label="cantidad">
+                        <el-input-number v-model="debt.cant" controls-position="right" :min="1"></el-input-number>
+                    </el-form-item>
+                    <el-form-item label="glosa o descripcion">
+                        <el-input type="textarea" v-model="debt.desc"></el-input>
+                    </el-form-item>
+                </el-form>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" size="small" plain @click="storeNewDebt">agregar</el-button>
+                    <el-button type="danger" size="small" plain @click="dialogFormVisible = false">cerrar</el-button>
+                </span>
+            </el-dialog>
+            <!-- componente para agregar deudas -->
         </el-card>
     </div>
 </template>
@@ -83,18 +116,25 @@ export default {
     },
     data() {
         return {
-            debts: [],
             dni: '',
-            isVisible: false,
-            persons: [],
-            personal: {
-            },
+            flag: '',//ver si la persona a buscar es deudor o responsable
+            dialogFormVisible: false,//hace visible el formulario de cosas adeudadas
+            isVisible: false,//hace visible el formulario de categorias programaticas
+            persons: [],//deudores
+            debts: [],//adeudos
+            manager: {},//resposable de la deuda
+            person: {},
             debtorDocument: {
                 id: "",
                 referencia: "",
                 fecha: "",
                 unidad: "",
-            },
+            },//documento de deuda
+            debt: {
+                tipo: "fisica",
+                cant: 0,
+                desc: "",
+            }//deuda
         };
     },
     mounted() { },
@@ -121,23 +161,49 @@ export default {
             this.$router.push("/api");
         },
 
-        /*funciones del componente personas */
+        initSearchPrg() {
+
+        },
+
+        /*funciones del componente para buscar personas */
+        /*persona: deudor */
         initSearchPerson() {
             this.isVisible = true;
+            this.flag = 'Deudor'
         },
+        /*persona: responsable */
+        initSearchManager() {
+            this.isVisible = true;
+            this.flag = 'Responsable'
+        },
+
         getDataModal(isVisible) {
             this.isVisible = isVisible;
         },
 
-        /*remueve de la lista de deudores*/
-        initGetPerson(isVisible, personal) {
+        /* agrega a la lista de deudores */
+        storeNewPerson(isVisible, person) {
             this.isVisible = isVisible;
-            this.isPerson = personal;
-            this.persons.push(personal);
+            this.isPerson = person;
+            if (this.flag == 'Deudor')
+                this.persons.push(person);
+            else
+                this.manager = person;
         },
-        /*remueve de la lista de deudores*/
+        /* remueve de la lista de deudores */
         initRemovePerson(index, row) {
             this.persons.splice(index, 1);
+        },
+
+        /* agrega una cosa que se adeuda */
+        storeNewDebt() {
+            this.debts.push(this.debt);
+        },
+
+        /* quita la cosa que se adeuda */
+        initRemoveDebt(index, row) {
+            this.dialogFormVisible = false;
+            this.debts.splice(index, 1);
         },
 
     },
@@ -174,13 +240,6 @@ export default {
 .row-bg {
     padding: 10px 0;
     background-color: #f9fafc;
-}
-
-.el-input.is-disabled .el-input__inner {
-    background-color: #123456 !important;
-    border-color: #123456 !important;
-    color: #123456 !important;
-    cursor: not-allowed;
 }
 </style>
   

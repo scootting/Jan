@@ -199,18 +199,21 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  * 1. Obtener una lista de presupuestos individuales por usuario de el recurso utilizado.
     Route::post('singlebudget/', 'SingleBudgetController@getSingleBudget');
-    //  * COM1. Obtener una lista de personas utilizando una descripcion del recurso utilizado.
-    Route::post('getPersonsByDescriptionWithPagination', 'GeneralController@getPersonsByDescriptionWithPagination');
-
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Solvencias
     //  |--------------------------------------------------------------------------    
     //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
     Route::post('getDebtorsDocument', 'SolvencyController@getDebtorsDocument');
-    //Route::post('getDebtorsDocument', 'GeneralController@getPersonsByDescription');
-    
     //  * S2. Agregar un nuevo documento de deudor
     Route::post('storeDebtorDocument', 'SolvencyController@storeDebtorDocument');
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para los componentes desarrollados en le frontend
+    //  |--------------------------------------------------------------------------
+    //  * COM1. Obtener una lista de personas utilizando una descripcion del recurso utilizado.
+    Route::post('getPersonsByDescriptionWithPagination', 'GeneralController@getPersonsByDescriptionWithPagination');
+    //  * COM2. Obtiene una lista de categorias programaticas que coinciden con la descripcion.
+    Route::post('getProgramCategoryDescriptionWithPagination', 'GeneralController@getProgramCategoryDescriptionWithPagination');
 
 });

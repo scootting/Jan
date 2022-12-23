@@ -65,6 +65,16 @@ class GeneralController extends Controller
         $data = General::GetPersonsByDescriptionWithPagination($description);
         return json_encode($data);
     }
+    //  * COM2. Obtiene una lista de categorias programaticas que coinciden con la descripcion.
+    public function getProgramCategoryDescriptionWithPagination(Request $request)
+    {
+        $description = strtoupper($request->get('description')); // '' cadena vacia
+        \Log::info("esta es la descripcion".$description);
+        $data = General::GetProgramCategoryDescriptionWithPagination($description);
+        return json_encode($data);
+    }
+
+
     public function getPersonsByDescription(Request $request)
     {
 

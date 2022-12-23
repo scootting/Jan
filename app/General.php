@@ -68,12 +68,16 @@ class General extends Model
     public static function GetPersonsByDescriptionWithPagination($description)
     {
         $query = "select * from pub.ff_datos_persona('" . $description . "')";
-        \Log::info($query);
-        //$query = "select * from public.personas where paterno ='".$description."' order by paterno, materno, nombres";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-
+    //  * COM2. Obtiene una lista de categorias programaticas que coinciden con la descripcion.
+    public static function GetProgramCategoryDescriptionWithPagination($description)
+    {
+        $query = "select * from pub.ff_datos_categoria_programatica('" . $description . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
     public static function GetPersonsByDescription($description)
     {
