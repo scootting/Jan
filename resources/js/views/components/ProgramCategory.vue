@@ -9,12 +9,12 @@
 -->
       <div style="margin-top: 15px">
         <el-input placeholder="inserte una descripcion" v-model="writtenTextParameter" class="input-with-select">
-          <el-button type="success" slot="append" icon="el-icon-search" @click="getPersonByDescription"></el-button>
+          <el-button type="success" slot="append" icon="el-icon-search" @click="getProgramCategoryByDescription"></el-button>
         </el-input>
       </div>
       <br />
       <div style="margin-top: 15px">
-        <el-table v-loading="loading" :data="dataPersons" height="250" style="width: 100%">
+        <el-table v-loading="loading" :data="dataProgramCategories" height="250" style="width: 100%">
           <el-table-column prop="nro_dip" label="id" width="120">
             <template slot-scope="scope">
               <el-tag>{{ scope.row.nro_dip }}</el-tag>
@@ -37,14 +37,13 @@
 </template>
 <script>
 export default {
-  name: "Person",
   //variables locales
   data() {
     return {
       dialogVisible: this.centerDialogVisible,
-      person: this.dataPerson,
+      programcategory: this.dataProgramCategories,
       writtenTextParameter: "",
-      dataPersons: [],
+      dataProgramCategories: [],
       loading: false,
     };
   },
@@ -55,7 +54,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    dataPerson: {
+    dataProgramCategories: {
       required: true,
       type: Object,
       default: null,
@@ -70,24 +69,24 @@ export default {
     closeModalWithInfo(id, row) {
       console.log(row);
       this.dialogVisible = false;
-      this.person = row;
-      this.$emit("update-info", this.dialogVisible, this.person);
+      this.programcategory = row;
+      this.$emit("update-info", this.dialogVisible, this.programcategory);
     },
     close(){
       this.dialogVisible = false;
       this.$emit("update-visible", this.dialogVisible);    
     },
 
-    //  * COM1. Obtener una lista de personas que coinciden con la descripcion.
-    async getPersonByDescription() {
+    //  * COM2. Obtiene una lista de categorias programaticas que coinciden con la descripcion.
+    async getProgramCategoryByDescription() {
       let app = this;
       let description = app.writtenTextParameter;
       app.loading = true;
       try {
-        let response = await axios.post("/api/getPersonsByDescriptionWithPagination", {
+        let response = await axios.post("/api/getProgramCategoryDescriptionWithPagination", {
           description: description,
         });
-        app.dataPersons = Object.values(response.data);
+        app.dataProgramCategories = Object.values(response.data);
         app.loading = false;
         console.log(response);
       } catch (error) {
