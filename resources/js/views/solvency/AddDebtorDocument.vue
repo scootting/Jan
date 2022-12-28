@@ -197,7 +197,11 @@ export default {
 
         /* agrega una cosa que se adeuda */
         storeNewDebt() {
-            this.debts.push(this.debt);
+            let temp = this.debt;            
+            this.debts.push(temp);
+            this.debt.tipo = "fisica";
+            this.debt.cant = 0;
+            this.debt.desc = "";
         },
 
         /* quita la cosa que se adeuda */

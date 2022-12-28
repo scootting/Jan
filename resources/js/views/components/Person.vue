@@ -1,12 +1,6 @@
 <template>
   <div>
     <el-dialog title="buscar" :visible.sync="dialogVisible" width="36%" center :before-close="closeModal">
-      <!--
-      <span>Inserte id aca:</span>
-      <el-input placeholder="Please input" v-model="isMessage.id"></el-input>
-      <span>Inserte texto aca:</span>
-      <el-input placeholder="Please input" v-model="isMessage.info"></el-input>
--->
       <div style="margin-top: 15px">
         <el-input placeholder="inserte una descripcion" v-model="writtenTextParameter" class="input-with-select">
           <el-button type="success" slot="append" icon="el-icon-search" @click="getPersonByDescription"></el-button>

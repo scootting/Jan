@@ -3,93 +3,63 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>bienvenido</span>
-        <el-button style="float: right; padding: 3px 0" type="text"
-          >ayuda</el-button
-        >
+        <el-button style="float: right; padding: 3px 0" type="text">ayuda</el-button>
       </div>
       <h1>bienvenido/a</h1>
       <h5>esta pagina a sido intencionalmente puesta en blanco</h5>
-      <el-button type="primary" @click="reporte">Reporte</el-button>
+      <el-button type="primary" @click="test">Mensaje de bienvenida...</el-button>
+      <el-button type="primary" @click="buscarPersona">Componente persona</el-button>
+      <el-button type="primary" @click="buecarCategoria">Componente categoria</el-button>
+      <information :visible="isVisible" :tag='mensaje' @update-visible="updateIsVisible"></information>
       <!-- 
-      <example msg="Welcome to Your Vue.js App" />
-
-      <el-button type="text" @click="openModalPerson">Personas</el-button>
-      <persona :centerDialogVisible="isVisible" @update-visible="update"></persona>
-      <el-button type="text" @click="openModalValued">Valorado</el-button>
-      <valorado :centerDialogVisible.sync="isValued"></valorado>
       -->
     </el-card>
   </div>
 </template>
 
 <script>
-import persona from "./components/Person";
-import example from "./components/example.vue";
-import valorado from "./components/Valued";
+import information from "./components/Information";
 
 export default {
-  name: "Bienvenido",
   components: {
-    persona,
-    example,
-    valorado,
+    information,
   },
   data() {
     return {
-      isValued: false,
       isVisible: false,
-      messages: {},
+      mensaje: 'persona',
       data: {},
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     test() {
       alert("bienvenido al modulo");
     },
+    updateIsVisible(visible) {
+      this.isVisible = visible;
+    },
+
+    buscarPersona(){
+      this.isVisible=true;
+      this.mensaje = 'persona';
+    },
+    buecarCategoria(){
+      this.isVisible=true;
+      this.mensaje = 'categoria';
+    }
+    /*
     openModalPerson() {
       this.isVisible = true;
     },
     openModalValued() {
       this.isValued = true;
-    },
-    update(isVisible) {
-      this.isVisible = isVisible;
-    },
-    reporte() {
-      /*
-      axios({
-          url: "/api/reportSelectedFixedAssets2/",
-          params: {
-          },
-          method: "GET",
-          responseType: "pdf",
-        }).then((response) => {
-          let blob = new Blob([response.data], {
-            type: "application/pdf",
-          });
-          let link = document.createElement("a");
-          link.href = window.URL.createObjectURL(blob);
-          let url = window.URL.createObjectURL(blob);
-          window.open(url);
-        });*/
-      axios
-        .get("/api/reportSelectedFixedAssets2/", {
-          responseType: "arraybuffer",
-        })
-        .then((response) => {
-          let blob = new Blob([response.data], { type: "application/pdf" });
-          let link = document.createElement("a");
-          //link.href = window.URL.createObjectURL(blob);
-          //link.download = "test.pdf";
-          //link.click();
-          let url = window.URL.createObjectURL(blob);
-          window.open(url);
-        });
-    },
+    },*/
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+
+</style>
