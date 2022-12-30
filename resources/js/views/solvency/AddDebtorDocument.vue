@@ -23,14 +23,14 @@
                                     <el-date-picker type="date" placeholder="seleccione una fecha"
                                         v-model="debtorDocument.fecha" style="width: 100%"></el-date-picker>
                                 </el-form-item>
-                                <el-form-item label="unidad" prop="des_prg">
-                                    <el-input placeholder="" v-model="dni" class="input-with-select">
+                                <el-form-item label="unidad" prop="details">
+                                    <el-input placeholder="" v-model="prg.details" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"
                                             @click="initSearchPrg">BUSCAR</el-button>
                                     </el-input>
                                 </el-form-item>
                                 <el-form-item label="responsable" prop="resp">
-                                    <el-input placeholder="" v-model="manager.des_per" class="input-with-select">
+                                    <el-input placeholder="" v-model="manager.details" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"
                                             @click="initSearchManager">BUSCAR</el-button>
                                     </el-input>
@@ -42,18 +42,18 @@
                     <el-col :span="12">
                         <div class="grid-content bg-purple">
                             <p>deudores</p>
-                            <el-table :data="persons" style="width: 100%" size="small">
+                            <el-table :data="debtors" style="width: 100%" size="small">
                                 <el-table-column prop="nro_dip" label="dni"></el-table-column>
                                 <el-table-column prop="des_per" label="descripcion"></el-table-column>
                                 <el-table-column align="right">
                                     <template slot-scope="scope">
-                                        <el-button @click="initRemovePerson(scope.$index, scope.row)" type="primary"
+                                        <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary"
                                             plain size="small">Quitar</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
                             <p></p>
-                            <el-button @click="initSearchPerson" type="primary" size="small" plain>Buscar
+                            <el-button @click="initSearchDebtor" type="primary" size="small" plain>Buscar
                             </el-button>
                         </div>
                         <p></p>
@@ -73,14 +73,13 @@
                             <p></p>
                             <el-button @click="dialogFormVisible = true" type="primary" size="small" plain>Agregar
                             </el-button>
-                            <el-button @click="storeNewDebtorDocument()" type="danger" size="small" plain>Guardar
+                            <el-button @click="storeDebtorDocument()" type="danger" size="small" plain>Guardar
                             </el-button>
                         </div>
                     </el-col>
                 </el-row>
             </div>
-            <person :centerDialogVisible="isVisible" :dataPerson="person" @update-visible="getDataModal"
-                @update-info="storeNewPerson"></person>
+            <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
             <!-- componente para agregar deudas -->
             <el-dialog title="agregar deuda" :visible.sync="dialogFormVisible">
                 <el-form :model="debt" label-width="150px" size="small">
@@ -108,44 +107,47 @@
 </template>
   
 <script>
-import person from "../components/Person.vue";
+import information from "../components/Information.vue";
+
 export default {
-    name: "",
     components: {
-        person,
+        information,
     },
     data() {
         return {
-            dni: '',
-            flag: '',//ver si la persona a buscar es deudor o responsable
-            dialogFormVisible: false,//hace visible el formulario de cosas adeudadas
-            isVisible: false,//hace visible el formulario de categorias programaticas
-            persons: [],//deudores
-            debts: [],//adeudos
-            manager: {},//resposable de la deuda
-            person: {},
+            user: this.$store.state.user,
+            isVisible: false,           //componente campo visible
+            tag: '',                    //componente que informacion desea traer
+            flag: '',                   //deudor, responsable, categoria programatica
+            dialogFormVisible: false,   //hace visible el formulario de cosas adeudadas
+            debtors: [],                //deudores
+            debts: [],                  //cosas adeudas
+            manager: {},                //responsable (director de carrera, jefe de division)
+            prg: {},                    //categoria programatica
             debtorDocument: {
                 id: "",
                 referencia: "",
                 fecha: "",
-                unidad: "",
-            },//documento de deuda
-            debt: {
-                tipo: "fisica",
-                cant: 0,
-                desc: "",
-            }//deuda
+            },                          //documento de deuda
+            debt: { tipo: "fisica", cant: 1, desc: "" }, //deuda
         };
     },
-    mounted() { },
+    mounted() { 
+        console.log(this.user);
+    },
     methods: {
         //  * S2. Guardar la informacion de un nuevo documento de deuda.
-        async storeNewDebtorDocument() {
+        async storeDebtorDocument() {
             var app = this;
             var newPerson = app.person;
             try {
-                let response = await axios.post("/api/person", {
-                    persona: newPerson,
+                let response = await axios.post("/api/storeDebtorDocument", {
+                    usuario: app.user,
+                    documento: app.debtorDocument,
+                    deudores: app.debtors,
+                    deudas: app.debts,
+                    responsable: app.manager,
+                    programa: app.prg,
                     marker: "registrar",
                 });
                 alert("se ha creado el registro de la persona");
@@ -162,46 +164,51 @@ export default {
         },
 
         initSearchPrg() {
-
-        },
-
-        /*funciones del componente para buscar personas */
-        /*persona: deudor */
-        initSearchPerson() {
             this.isVisible = true;
-            this.flag = 'Deudor'
+            this.tag = 'categoria';
+            this.flag = 'categoria';
         },
-        /*persona: responsable */
+
+        initSearchDebtor() {
+            this.isVisible = true;
+            this.tag = 'persona';
+            this.flag = 'deudor';
+        },
         initSearchManager() {
             this.isVisible = true;
-            this.flag = 'Responsable'
+            this.tag = 'persona';
+            this.flag = 'responsable';
         },
 
-        getDataModal(isVisible) {
-            this.isVisible = isVisible;
+        updateIsVisible(visible, data) {
+            this.isVisible = visible;
+            this.data = data;
+            console.log(this.isVisible + " " + this.data);
+            switch (this.flag) {
+                case 'categoria':
+                    this.prg = data;
+                    break;
+                case 'deudor':
+                    this.debtors.push(data);
+                    break;
+                case 'responsable':
+                    this.manager = data;
+                    break;
+                default:
+                    break;
+            }
         },
 
-        /* agrega a la lista de deudores */
-        storeNewPerson(isVisible, person) {
-            this.isVisible = isVisible;
-            this.isPerson = person;
-            if (this.flag == 'Deudor')
-                this.persons.push(person);
-            else
-                this.manager = person;
-        },
         /* remueve de la lista de deudores */
-        initRemovePerson(index, row) {
-            this.persons.splice(index, 1);
+        initRemoveDebtors(index, row) {
+            this.debtors.splice(index, 1);
         },
 
         /* agrega una cosa que se adeuda */
         storeNewDebt() {
-            let temp = this.debt;            
-            this.debts.push(temp);
-            this.debt.tipo = "fisica";
-            this.debt.cant = 0;
-            this.debt.desc = "";
+            let variable = this.debt;
+            this.debt = { tipo: "fisica", cant: 1, desc: "" };
+            this.debts.push(variable);
         },
 
         /* quita la cosa que se adeuda */

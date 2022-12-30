@@ -13,6 +13,9 @@
       <information :visible="isVisible" :tag='mensaje' @update-visible="updateIsVisible"></information>
       <!-- 
       -->
+      <h1>{{data.id}}</h1>
+      <h2>{{data.details}}</h2>
+
     </el-card>
   </div>
 </template>
@@ -36,8 +39,10 @@ export default {
     test() {
       alert("bienvenido al modulo");
     },
-    updateIsVisible(visible) {
+    updateIsVisible(visible, data) {
       this.isVisible = visible;
+      this.data = data;
+      console.log(this.isVisible+" "+this.data);
     },
 
     buscarPersona(){
@@ -48,13 +53,6 @@ export default {
       this.isVisible=true;
       this.mensaje = 'categoria';
     }
-    /*
-    openModalPerson() {
-      this.isVisible = true;
-    },
-    openModalValued() {
-      this.isValued = true;
-    },*/
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="buscar" :visible.sync="visible" width="36%" center :before-close="closeModal">
+    <el-dialog title="buscar" :visible.sync="visible" width="36%" center :before-close="closeModal" size="small">
       <div style="margin-top: 15px">
         <el-input placeholder="inserte una descripcion" v-model="writtenTextParameter" class="input-with-select">
           <el-button type="success" slot="append" icon="el-icon-search" @click="getDataByDescription"></el-button>
@@ -17,7 +17,7 @@
           <el-table-column prop="details" label="detalle"></el-table-column>
           <el-table-column align="right-center" label="seleccion">
             <template slot-scope="scope">
-              <el-button @click="closeModalWithInfo(scope.$index, scope.row)" type="text" size="mini">seleccionar
+              <el-button @click="closeModal(scope.row)" type="text" size="mini">seleccionar
               </el-button>
             </template>
           </el-table-column>
@@ -35,11 +35,10 @@ export default {
     return {
       data: [],
       loading: false,
-      //person: this.dataPerson,
       writtenTextParameter: "",
     };
   },
-  //variables del componente padre
+  /* variables del componente padre */
   props: {
     visible: {
       required: true,
@@ -51,35 +50,22 @@ export default {
       type: String,
       default: '',
     },
-    /*
-    dataPerson: {
-      required: true,
-      type: Object,
-      default: null,
-    },*/
   },
   mounted() {
     console.log("estado de la propiedad visible:" + this.visible);
     console.log("estado de la propiedad tag:" + this.tag);
   },
   methods: {
-    closeModal() {
+    closeModal(row) {
       let isVisible = this.visible;
       isVisible = false;
-      this.$emit("update-visible", isVisible);
+      this.$emit("update-visible", isVisible, row);
     },
-    /*
-    closeModalWithInfo(id, row) {
-      console.log(row);
-      this.dialogVisible = false;
-      this.person = row;
-      this.$emit("update-info", this.dialogVisible, this.person);
+    closeModalWithInfo(row){
+      let isVisible = this.visible;
+      isVisible = false;
+      this.$emit("update-info", isVisible, row);
     },
-    close() {
-      this.dialogVisible = false;
-      this.$emit("update-visible", this.dialogVisible);
-    },
-    */
     //  * Obtener datos que coincidan con la descripcion.
     async getDataByDescription() {
       let app = this;
@@ -111,11 +97,6 @@ export default {
       }
       app.loading = false;
     },
-  },
-  watch: {/*
-    visible: function () {
-      this.visible = false;
-    },*/
   },
 };
 </script>
