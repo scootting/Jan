@@ -11,7 +11,7 @@
                         <div class="grid-content bg-purple">
                             <p>datos de la solicitud</p>
                             <el-form ref="form" :model="debtorDocument" label-width="120px" size="small">
-                                <el-form-item label="id" prop="id">
+                                <el-form-item label="cite" prop="id">
                                     <el-input v-model="debtorDocument.id"></el-input>
                                 </el-form-item>
                                 <el-form-item label="referencia" prop="referencia">
