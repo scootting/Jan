@@ -41,6 +41,16 @@ class ArchiveController extends Controller
     public function getTypesDocument(Request $request){
         $descripcion = $request->get('description');
         $data = Archive::GetTypesDocument($descripcion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 5;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getTypesDocument')]
+        );
+        return json_encode($paginate);
         return json_encode($data);
     }
 
