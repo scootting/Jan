@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Farm;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class FarmController extends Controller
 {
 
-    //  * G1. Obtiene la lista de los dias de venta de los productos de la granja 
+    //  * G1. Obtiene la lista de los dias de venta de los productos de la granja
     //  * Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
     public function getFarmSaleDays(Request $request)
     {
@@ -80,13 +80,29 @@ class FarmController extends Controller
         return json_encode($id_tran);
     }
 
-
     //  * G4. Obtener el numero de comprobante para la venta de productos
     //  * Route::post('getVoucherNumber', 'FarmController@getVoucherNumber');
-    public function getVoucherNumber(Request $request){
+    public function getVoucherNumber(Request $request)
+    {
         $id_dia = $request->get('id');
         $usr_cre = $request->get('usr');
         $data = Farm::GetVoucherNumber($id_dia, $usr_cre);
+        return json_encode($data);
+    }
+
+    //  * G5. Obtiene un dia de venta de los productos de la granja
+    public function getFarmSaleDayById(Request $request)
+    {
+        $id_dia = $request->get('id');
+        $data = Farm::GetFarmSaleDayById($id_dia);
+        return json_encode($data);
+    }
+
+    //  * G6. Obtiene un producto a traves de su codigo 
+    public function getProductForSale(Request $request)
+    {
+        $cod_prd = $request->get('codigo');
+        $data = Farm::GetProductForSale($cod_prd);
         return json_encode($data);
     }
 }

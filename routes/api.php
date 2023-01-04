@@ -220,8 +220,10 @@ Route::group([
     Route::post('storeFarmSalesDetail', 'FarmController@storeFarmSalesDetail');
     //  * G4. Obtener el numero de comprobante para la venta de productos
     Route::post('getVoucherNumber', 'FarmController@getVoucherNumber');
-
-
+    //  * G5. Obtiene un dia de venta de los productos de la granja
+    Route::post('getFarmSaleDayById', 'FarmController@getFarmSaleDayById');
+    //  * G6. Obtiene un producto a traves de su codigo 
+    Route::post('getProductForSale', 'FarmController@getProductForSale');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend

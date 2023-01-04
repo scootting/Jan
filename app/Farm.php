@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 
 class Farm extends Model
 {
-    //
     //  * G1. Obtiene la lista de los dias de venta de los productos de la granja 
     //  * Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
     public static function GetFarmSaleDays($gestion)
@@ -16,7 +15,6 @@ class Farm extends Model
         $query = "select * from vgra.diario where gestion = '" . $gestion . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
-
     }
 
     //  * G2. Agregar un nuevo dia de venta de los productos de la granja
@@ -53,5 +51,19 @@ class Farm extends Model
         return $data;        
     }
 
+    //  * G5. Obtiene un dia de venta de los productos de la granja 
+    public static function GetFarmSaleDayById($id)
+    {
+        $query = "select * from vgra.diario where id = '" . $id . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
+    //  * G6. Obtiene un producto a traves de su codigo 
+    public static function GetProductForSale($id)
+    {
+        $query = "select * from vgra.producto where cod_prd = '" . $id . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }

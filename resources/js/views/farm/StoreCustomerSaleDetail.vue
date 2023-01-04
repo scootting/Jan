@@ -10,15 +10,15 @@
                     <el-col :span="12">
                         <div class="grid-content bg-purple">
                             <p>datos generales de la venta</p>
-                            <el-form ref="form" :model="document" label-width="120px" size="small">
+                            <el-form ref="form" :model="dataSaleDay" label-width="120px" size="small">
                                 <el-form-item label="dia" prop="id">
-                                    <el-input v-model="document.id"></el-input>
+                                    <el-input v-model="dataSaleDay.id_dia"></el-input>
                                 </el-form-item>
                                 <el-form-item label="comprobante" prop="nro_com">
-                                    <el-input v-model="document.voucher"></el-input>
+                                    <el-input v-model="voucher.numero"></el-input>
                                 </el-form-item>
                                 <el-form-item label="fecha" prop="id">
-                                    <el-input v-model="document.fecha"></el-input>
+                                    <el-input v-model="dataSaleDay.fec_tra"></el-input>
                                 </el-form-item>
                                 <el-form-item label="identidad" prop="id">
                                     <el-input placeholder="ingrese carnet de identidad" v-model="client.id"
@@ -38,11 +38,11 @@
                         <div class="grid-content bg-purple">
                             <p>productos adquiridos</p>
                             <el-table :data="products" style="width: 100%" size="small">
-                                <el-table-column prop="tip_tra" label="pago"></el-table-column>
-                                <el-table-column prop="desc" label="detalle"></el-table-column>
+                                <el-table-column prop="tipo" label="pago"></el-table-column>
+                                <el-table-column prop="des_prd" label="detalle"></el-table-column>
+                                <el-table-column prop="uni_prd" label="medida"></el-table-column>
+                                <el-table-column prop="pre_uni" label="precio unitario"></el-table-column>
                                 <el-table-column prop="can" label="cantidad"></el-table-column>
-                                <el-table-column prop="uni" label="precio"></el-table-column>
-                                <el-table-column prop="imp" label="importe"></el-table-column>
                                 <el-table-column align="right">
                                     <template slot-scope="scope">
                                         <el-button @click="initRemoveProduct(scope.$index, scope.row)" type="primary"
@@ -64,21 +64,30 @@
             <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
             <!-- componente para agregar productos -->
             <el-dialog title="agregar producto" :visible.sync="dialogFormVisible">
-                <el-form :model="product" label-width="150px" size="small">
+                <el-form :model="dataProduct" label-width="150px" size="small">
                     <el-form-item label="deuda">
-                        <el-radio-group v-model="product.tipo" size="small">
+                        <el-radio-group v-model="dataProduct.tipo" size="small">
                             <el-radio-button label="1">Efectivo</el-radio-button>
                             <el-radio-button label="14">Credito</el-radio-button>
                         </el-radio-group>
                     </el-form-item>
+                    <el-form-item label="identidad" prop="id">
+                        <el-input placeholder="ingrese el codigo del producto" v-model="id_product"
+                            class="input-with-select">
+                            <el-button slot="append" icon="el-icon-search" @click="getProductForSale">BUSCAR</el-button>
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item label="descripcion" prop="id">
+                        <el-input v-model="dataProduct.des_prd"></el-input>
+                    </el-form-item>
+                    <el-form-item label="unidad" prop="id">
+                        <el-input v-model="dataProduct.uni_prd"></el-input>
+                    </el-form-item>
                     <el-form-item label="cantidad">
-                        <el-input-number v-model="product.can" controls-position="right" :min="1"></el-input-number>
+                        <el-input-number v-model="dataProduct.can" controls-position="right" :min="1"></el-input-number>
                     </el-form-item>
                     <el-form-item label="precio unitario">
-                        <el-input-number v-model="product.uni" controls-position="right" :min="1"></el-input-number>
-                    </el-form-item>
-                    <el-form-item label="importe">
-                        <el-input-number v-model="product.imp" controls-position="right" :min="1"></el-input-number>
+                        <el-input-number v-model="dataProduct.pre_uni" controls-position="right" :min="1"></el-input-number>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -101,22 +110,24 @@ export default {
     data() {
         return {
             user: this.$store.state.user,
+            id: this.$route.params.id,
             isVisible: false,           //componente campo visible
             tag: 'persona',             //componente que informacion desea traer
             dialogFormVisible: false,   //hace visible el formulario de cosas adeudadas
-            dataProducts: [],
-            products: [],                //deudores
+            dataProduct: {
+                tipo: "1", cod:'', can: 1, pre_uni: 0,
+            },            //producto ofertado
+            id_product: '',              //codigo del producto
+            products: [],               //lista de productos adquiridos
+            dataSaleDay: {},            //dia de ventas
             client: {},                //responsable (director de carrera, jefe de division)
-            document: {
-                id: '',
-                fecha: '',
-                voucher: "",
-            },                          //documento de deuda
-            product: { tipo: "1", can: 1, uni: 0, imp: 0 }, //deuda
+            voucher: { numero: '' },
+            //product: { tipo: "1", cod:'', can: 1, uni: 0, imp: 0 }, //deuda
         };
     },
     mounted() {
         console.log(this.user);
+        this.getFarmSaleDayById();
     },
     methods: {
         //  * S2. Guardar la informacion de un nuevo documento de deuda.
@@ -137,6 +148,32 @@ export default {
             }
         },
 
+        //  * G5. Obtiene un dia de venta de los productos de la granja
+        async getFarmSaleDayById() {
+            var app = this;
+            let response = await axios.post("/api/getFarmSaleDayById", {
+                id: app.id,
+            });
+            app.dataSaleDay = response.data[0];
+            console.log(app.dataSaleDay);
+        },
+
+        async getProductForSale() {
+            var app = this;
+            try {
+                let response = await axios.post("/api/getProductForSale", {
+                    codigo: app.id_product,
+                });
+                app.dataProduct = response.data[0];
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
+        },
+
+
         initSearchClient() {
             this.isVisible = true;
             this.tag = 'persona';
@@ -155,17 +192,11 @@ export default {
         },
 
         initStoreNewProduct() {
-            let variable = this.debt;
-            product = { tipo: "1", can: 1, uni: 0, imp: uni * can},
-                this.products.push(variable);
+            let variable = this.dataProduct;
+            console.log(variable);
+            this.dataProduct = { tipo: "1", cod:'', can: 1, pre_uni: 0, imp: 0 },
+            this.products.push(variable);
         }
-        /* agrega una cosa que se adeuda */
-        /*
-        storeNewDebt() {
-            let variable = this.debt;
-            this.debt = { tipo: "fisica", cant: 1, desc: "" };
-            this.debts.push(variable);
-        },*/
 
     },
 };
