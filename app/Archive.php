@@ -36,7 +36,8 @@ class Archive extends Model
     //  * parametros {description: descripcion del tipo de documento que se necesita }
     public static function getTypesDocument($description)
     {
-        $query = "select * from arch.tipos t where t.tipo = '" . $description . "'";
+        //$query = "select * from arch.tipos t where t.tipo = '" . $description . "'";
+        $query = "select * from arch.tipos";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
