@@ -8,6 +8,13 @@ import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
 import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
 import EditDebtorDocument from './views/solvency/EditDebtorDocument.vue'
 
+
+//granja universitaria
+import FarmSaleDays from './views/farm/FarmSaleDays.vue'
+import AddFarmSaleDay from './views/farm/AddFarmSaleDay.vue'
+import StoreCustomerSaleDetail from './views/farm/StoreCustomerSaleDetail.vue'
+
+
 //Almancenes
 import Material from './views/store/Material'
 import AddMaterial from './views/store/AddMaterial'
@@ -214,6 +221,19 @@ const router = new VueRouter({
                 { path: 'material/movement/:id', name: 'movementmaterial', component: MovementMaterial },
                 { path: 'material/add', name: 'addMaterial', component: AddMaterial },
                 { path: 'material/:id', name: 'editMaterial', component: EditMaterial },
+
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Granjas
+                //  |--------------------------------------------------------------------------    
+                //  * G1. Obtiene la lista de los dias de venta de los productos de la granja 
+                { path: 'farmsaledays', name: 'farmsaledays', component: FarmSaleDays },
+                //  * G2. Agregar un nuevo dia de venta de los productos de la granja
+                { path: 'farmsaledays/add', name: 'addfarmsaleday', component: AddFarmSaleDay },
+                //  * G3. Agregar ventas al dia de venta de los productos de la granja
+                { path: 'farmsaledays/sale/:id', name: 'storecustomersaledetail', component: StoreCustomerSaleDetail },
+
+
+
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Solvencias

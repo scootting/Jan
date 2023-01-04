@@ -208,6 +208,21 @@ Route::group([
     //  * S2. Agregar un nuevo documento de deudor
     Route::post('storeDebtorDocument', 'SolvencyController@storeDebtorDocument');
 
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Granjas
+    //  |--------------------------------------------------------------------------    
+    //  * G1. Obtiene la lista de los dias de venta de los productos de la granja 
+    Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
+    //  * G2. Agregar un nuevo dia de venta de los productos de la granja
+    Route::post('storeFarmSaleDays', 'FarmController@storeFarmSaleDays');
+    //  * G3. Agregar ventas al dia de venta de los productos de la granja
+    Route::post('storeFarmSalesDetail', 'FarmController@storeFarmSalesDetail');
+    //  * G4. Obtener el numero de comprobante para la venta de productos
+    Route::post('getVoucherNumber', 'FarmController@getVoucherNumber');
+
+
+
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend
     //  |--------------------------------------------------------------------------
