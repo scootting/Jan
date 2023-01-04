@@ -55,6 +55,7 @@ export default {
       try {
         let response = await axios.post("/api/onStoreTypeArchive", {
           archive: app.archive,
+          marker: 'añadir'
         });
         alert("el archivo se guardo correctamente");
       } catch (error) {
