@@ -217,13 +217,15 @@ Route::group([
     //  * G2. Agregar un nuevo dia de venta de los productos de la granja
     Route::post('storeFarmSaleDays', 'FarmController@storeFarmSaleDays');
     //  * G3. Agregar ventas al dia de venta de los productos de la granja
-    Route::post('storeFarmSalesDetail', 'FarmController@storeFarmSalesDetail');
+    Route::post('storeCustomerSaleDetail', 'FarmController@storeCustomerSaleDetail');
     //  * G4. Obtener el numero de comprobante para la venta de productos
     Route::post('getVoucherNumber', 'FarmController@getVoucherNumber');
     //  * G5. Obtiene un dia de venta de los productos de la granja
     Route::post('getFarmSaleDayById', 'FarmController@getFarmSaleDayById');
     //  * G6. Obtiene un producto a traves de su codigo 
     Route::post('getProductForSale', 'FarmController@getProductForSale');
+    //  * G7. Obtiene el numero de comprobante para la venta actual 
+    Route::post('getCurrentVoucherNumber', 'FarmController@getCurrentVoucherNumber');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend

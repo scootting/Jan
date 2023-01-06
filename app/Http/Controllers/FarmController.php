@@ -55,27 +55,29 @@ class FarmController extends Controller
     //  * Route::post('storeCustomerSaleDetail', 'FarmController@storeCustomerSaleDetail');
     public function storeCustomerSaleDetail(Request $request)
     {
-        $id_tran = 0;
-        $dataDays = $request->get('day');
-        $dataClient = $request->get('client');
-        $dataDetails = $request->get('details');
 
-        $id_dia = $dataDays['id_dia'];
+        $id_tran = 0;
+        $dataDays = $request->get('general');
+        $dataClient = $request->get('cliente');
+        $dataProducts = $request->get('productos');
+        $nro_com = $request->get('voucher');
+
+        $id_dia = $dataDays['id'];//manda la key y no el el id_dia
         $fec_tra = $dataDays['fec_tra'];
         $usr_cre = $dataDays['usr_cre'];
         $gestion = $dataDays['gestion'];
 
-        $ci_per = strtoupper($dataClient['ci_per']);
+        $ci_per = strtoupper($dataClient['nro_dip']);
         $des_per = strtoupper($dataClient['des_per']);
 
-        foreach ($dataDetails as $item) {
+        foreach ($dataProducts as $item) {
             # code...
-            $cod_val = $item['cod_val'];
-            $can_val = $item['can_val'];
-            $pre_uni = $item['pre_uni_val'];
-            $imp_val = $item['imp_val'];
+            $cod_prd = $item['cod_prd'];
+            $can_prd = $item['can'];
+            $pre_uni = $item['pre_uni'];
             $tip_tra = $item['tip_tra'];
-            $data = Farm::storeCustomerSaleDetail($id_dia, $id_tran, -1, $cod_val, $ci_per, $des_per, -1, $gestion, $des_tra, $pre_uni);
+            $imp_total = $can_prd * $pre_uni;
+            $data = Farm::StoreCustomerSaleDetail($id_dia, $fec_tra, $gestion, $usr_cre, $ci_per, $des_per, $nro_com, $cod_prd, $can_prd, $pre_uni, $tip_tra, $imp_total);
         }
         return json_encode($id_tran);
     }
@@ -98,11 +100,24 @@ class FarmController extends Controller
         return json_encode($data);
     }
 
-    //  * G6. Obtiene un producto a traves de su codigo 
+    //  * G6. Obtiene un producto a traves de su codigo
     public function getProductForSale(Request $request)
     {
         $cod_prd = $request->get('codigo');
         $data = Farm::GetProductForSale($cod_prd);
         return json_encode($data);
     }
+
+    //  * G7. Obtiene el numero de comprobante para la venta actual
+    public function getCurrentVoucherNumber(Request $request)
+    {
+        $id_dia = $request->get('id_dia');
+        $usr_cre = $request->get('usr_cre');
+        $data = Farm::GetCurrentVoucherNumber($id_dia, $usr_cre);
+        \Log::info($data);
+        $idx = $data[0]->{'ff_numero_com'};
+        \Log::info($idx);
+        return json_encode($idx);
+    }
+
 }

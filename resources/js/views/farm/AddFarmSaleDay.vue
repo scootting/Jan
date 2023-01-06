@@ -14,7 +14,7 @@
                                 <el-form-item label="tipo">
                                     <el-radio-group v-model="farmSaleDays.tip_tra" size="small">
                                         <el-radio-button label="1">venta</el-radio-button>
-                                        <el-radio-button label="0">deposito</el-radio-button>
+                                        <el-radio-button label="0">regular</el-radio-button>
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item label="fecha" prop="fecha">
@@ -41,7 +41,7 @@ export default {
     data() {
         return {
             user: this.$store.state.user,
-            farmSaleDays: { tipo: 1, fecha: '' },
+            farmSaleDays: { tip_tra: 1, fecha: '' },
         };
     },
     mounted() {

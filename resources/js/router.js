@@ -212,7 +212,7 @@ const router = new VueRouter({
                 { path: 'addArchive/:type', name: 'addarchive', component: AddArchive },
                 { path: 'typesarchive', name: 'typesarchive', component: TypesArchive },
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
-                { path: 'edittypearchive', name: 'edittypearchive', component: EditTypeArchive },
+                { path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Almacenes

@@ -14,13 +14,13 @@
                                 <el-form-item label="dia" prop="id">
                                     <el-input v-model="dataSaleDay.id_dia"></el-input>
                                 </el-form-item>
-                                <el-form-item label="comprobante" prop="nro_com">
-                                    <el-input v-model="voucher.numero"></el-input>
+                                <el-form-item label="comprobante" prop="voucher">
+                                    <el-input v-model="voucher"></el-input>
                                 </el-form-item>
-                                <el-form-item label="fecha" prop="id">
+                                <el-form-item label="fecha" prop="fec_tra">
                                     <el-input v-model="dataSaleDay.fec_tra"></el-input>
                                 </el-form-item>
-                                <el-form-item label="identidad" prop="id">
+                                <el-form-item label="identidad" prop="ci_per">
                                     <el-input placeholder="ingrese carnet de identidad" v-model="client.id"
                                         class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"
@@ -38,7 +38,7 @@
                         <div class="grid-content bg-purple">
                             <p>productos adquiridos</p>
                             <el-table :data="products" style="width: 100%" size="small">
-                                <el-table-column prop="tipo" label="pago"></el-table-column>
+                                <el-table-column prop="tip_tra" label="pago"></el-table-column>
                                 <el-table-column prop="des_prd" label="detalle"></el-table-column>
                                 <el-table-column prop="uni_prd" label="medida"></el-table-column>
                                 <el-table-column prop="pre_uni" label="precio unitario"></el-table-column>
@@ -65,29 +65,26 @@
             <!-- componente para agregar productos -->
             <el-dialog title="agregar producto" :visible.sync="dialogFormVisible">
                 <el-form :model="dataProduct" label-width="150px" size="small">
-                    <el-form-item label="deuda">
-                        <el-radio-group v-model="dataProduct.tipo" size="small">
+                    <el-form-item label="forma de pago">
+                        <el-radio-group v-model="dataProduct.tip_tra" size="small">
                             <el-radio-button label="1">Efectivo</el-radio-button>
                             <el-radio-button label="14">Credito</el-radio-button>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="identidad" prop="id">
-                        <el-input placeholder="ingrese el codigo del producto" v-model="id_product"
+                    <el-form-item label="codigo" prop="id">
+                        <el-input placeholder="ingrese el codigo del producto" v-model="dataProduct.cod_prd"
                             class="input-with-select">
                             <el-button slot="append" icon="el-icon-search" @click="getProductForSale">BUSCAR</el-button>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="descripcion" prop="id">
-                        <el-input v-model="dataProduct.des_prd"></el-input>
-                    </el-form-item>
                     <el-form-item label="unidad" prop="id">
                         <el-input v-model="dataProduct.uni_prd"></el-input>
                     </el-form-item>
+                    <el-form-item size="small" label="precio unitario" prop="materno">
+                        <el-input size="small" v-model="dataProduct.pre_uni"></el-input>
+                    </el-form-item>
                     <el-form-item label="cantidad">
                         <el-input-number v-model="dataProduct.can" controls-position="right" :min="1"></el-input-number>
-                    </el-form-item>
-                    <el-form-item label="precio unitario">
-                        <el-input-number v-model="dataProduct.pre_uni" controls-position="right" :min="1"></el-input-number>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -111,35 +108,35 @@ export default {
         return {
             user: this.$store.state.user,
             id: this.$route.params.id,
-            isVisible: false,           //componente campo visible
-            tag: 'persona',             //componente que informacion desea traer
-            dialogFormVisible: false,   //hace visible el formulario de cosas adeudadas
-            dataProduct: {
-                tipo: "1", cod:'', can: 1, pre_uni: 0,
-            },            //producto ofertado
-            id_product: '',              //codigo del producto
-            products: [],               //lista de productos adquiridos
-            dataSaleDay: {},            //dia de ventas
-            client: {},                //responsable (director de carrera, jefe de division)
-            voucher: { numero: '' },
-            //product: { tipo: "1", cod:'', can: 1, uni: 0, imp: 0 }, //deuda
+            isVisible: false,                                           //componente campo visible
+            tag: 'persona',                                             //componente que informacion desea traer
+            dialogFormVisible: false,                                   //hace visible el formulario de cosas adeudadas
+            dataProduct: { tip_tra: 1, can: 1 },                 //datos del producto en venta
+            products: [],                                               //lista de productos adquiridos
+            dataSaleDay: {},                                           //dia de venta
+            voucher: '',
+            client: {},                                                 //cliente
         };
     },
     mounted() {
-        console.log(this.user);
         this.getFarmSaleDayById();
+        this.getCurrentVoucherNumber();
     },
     methods: {
         //  * S2. Guardar la informacion de un nuevo documento de deuda.
         async StoreCustomerSaleDetail() {
             var app = this;
+            console.log(app.dataSaleDay);
+            console.log(app.client);
+            console.log(app.products);
             try {
-                let response = await axios.post("/api/StoreCustomerSaleDetail", {
-                    usuario: app.user,
-                    documento: app.initStoreNewProduct,
-                    marker: "registrar",
+                let response = await axios.post("/api/storeCustomerSaleDetail", {
+                    general: app.dataSaleDay,
+                    cliente: app.client,
+                    productos: app.products,
+                    voucher: app.voucher,
                 });
-                alert("se ha creado el registro de la persona");
+                alert("la venta se ha realizada correctamente");
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {
@@ -158,13 +155,15 @@ export default {
             console.log(app.dataSaleDay);
         },
 
+        //  * G6. Obtiene un producto a traves de su codigo 
         async getProductForSale() {
             var app = this;
             try {
                 let response = await axios.post("/api/getProductForSale", {
-                    codigo: app.id_product,
+                    codigo: app.dataProduct.cod_prd,
                 });
-                app.dataProduct = response.data[0];
+                app.dataProduct = { ...app.dataProduct, ...response.data[0] };
+                console.log(app.dataProduct);
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {
@@ -173,7 +172,17 @@ export default {
             }
         },
 
+        //  * G7. Obtiene el numero de comprobante para la venta actual 
+        async getCurrentVoucherNumber() {
+            var app = this;
+            let response = await axios.post("/api/getCurrentVoucherNumber", {
+                id_dia: app.id,
+                usr_cre: app.user.usuario,
+            });
+            this.voucher = response.data;
+        },
 
+        /* busca al cliente */
         initSearchClient() {
             this.isVisible = true;
             this.tag = 'persona';
@@ -185,7 +194,7 @@ export default {
             console.log(this.isVisible + " " + this.data);
         },
 
-        /* quita la cosa que se adeuda */
+        /* quita los productos de la lista de productos adquiridos */
         initRemoveProduct(index, row) {
             this.dialogFormVisible = false;
             this.products.splice(index, 1);
@@ -194,10 +203,10 @@ export default {
         initStoreNewProduct() {
             let variable = this.dataProduct;
             console.log(variable);
-            this.dataProduct = { tipo: "1", cod:'', can: 1, pre_uni: 0, imp: 0 },
-            this.products.push(variable);
+            console.log(this.products);
+            this.dataProduct = { tip_tra: 1, can: 1 },
+                this.products.push(variable);
         }
-
     },
 };
 </script>

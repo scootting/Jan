@@ -33,10 +33,14 @@ class Farm extends Model
 
     //  * G3. Agregar detalle de ventas del cliente de los productos de la granja
     //  * Route::post('storeCustomerSaleDetail', 'FarmController@storeCustomerSaleDetail');
-    public static function StoreCustomerSaleDetail($id_dia, $id_tran, $cod_val, $ci_per, $des_per, $gestion, $des_tra, $pre_uni)
+    public static function StoreCustomerSaleDetail($id_dia, $fec_tra, $gestion, $usr_cre, $ci_per, $des_per, $nro_com, $cod_prd, $can_prd, $pre_uni, $tip_tra, $imp_total)
     {
-        $query = "select * from sol.ff_nuevo_documento_deuda('" . $gestion . "','" . $fecha . "','" . $detalle . "','" . $cod_prg . "','" . $des_prg
-            . "','" . $usr_cre . "','" . $ci_resp . "','" . $ci_elab . "','" . $id_ref . "')";
+        //select * from vgra.ff_nueva_venta(...)
+        $query = "insert into vgra.dia_des(id_dia, cod_pro, can_pro, uni_pro, imp_pro, nro_com, tip_tra, ci_per, des_per, fecha, gestion, usr_cre) values ('" 
+                . $id_dia . "','" . $cod_prd . "'," . $can_prd . "," 
+                . $pre_uni . "," . $imp_total . ",'" . $nro_com . "'," . $tip_tra . ",'" 
+                . $ci_per . "','" . $des_per . "','" . $fec_tra . "'," 
+                . $gestion .",'" . $usr_cre ."')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -65,5 +69,12 @@ class Farm extends Model
         $query = "select * from vgra.producto where cod_prd = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
+    }
+
+    //  * G7. Obtiene el numero de comprobante para la venta actual 
+    public static function GetCurrentVoucherNumber($id_dia, $usr_cre){
+        $query = "select * from vgra.ff_numero_com('" . $id_dia . "','" . $usr_cre . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;        
     }
 }
