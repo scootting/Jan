@@ -100,8 +100,8 @@ class ArchiveController extends Controller
     {
         $archivo = $request->get('archive');
         $codificacion = strtoupper($archivo['codification']);
-        $descripcion = $archivo['description'];
-        $tipo = $archivo['type'];
+        $descripcion = strtoupper($archivo['description']);
+        $tipo = strtoupper($archivo['type']);
         $marcador = 'registrar';
         \Log::info($codificacion.' :descripcion: '.$descripcion.' :tipo: '.$tipo);
         switch ($marcador) {
@@ -109,12 +109,18 @@ class ArchiveController extends Controller
                 $data = Archive::OnStoreTypeArchive($codificacion, $descripcion, $tipo);
                 break;
             case 'editar':
-                //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
+                $data = Archive::UpdateTypeArchive($codificacion, $descripcion, $tipo);
                 break;
             default:
                 break;
         }
         return json_encode($data);
     }
+    public function getTypeArchiveById($id)
+    {
+        $data = Archive::GetTypeArchiveByIdentityCard($id);
+        return json_encode($data);
+    }
+
 
 }

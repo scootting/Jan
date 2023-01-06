@@ -75,4 +75,16 @@ class Archive extends Model
         return $data;
         
     }
+    public static function GetTypeArchiveByIdentityCard($codificacion)
+    {
+        $query = "select * from arch.ff_datos_tipo('" . $codificacion . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    public static function UpdateTypeArchive($codificacion, $descripcion, $tipo)
+    {
+        $query = "select * from arch.ff_editar_tipo('" . $codificacion . "', '" . $descripcion . "', '" . $tipo . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }

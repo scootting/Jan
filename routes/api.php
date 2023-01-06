@@ -180,7 +180,7 @@ Route::group([
     Route::get('arhive/{id}', 'ArchiveController@getTypeArchiveById');
 
     //  * A10. Guardar un nuevo tipo de archivo 
-    Route::post('onStoreTypeArchive/', 'ArchiveController@onStoreTypeArchive');
+    Route::post('archive', 'ArchiveController@onStoreTypeArchive');
 
 
     //  |--------------------------------------------------------------------------
