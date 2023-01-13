@@ -45,12 +45,11 @@ class Farm extends Model
         return $data;
     }
 
-
     //  * G4. Obtener el numero de comprobante para la venta de productos
     //  * Route::post('getVoucherNumber', 'FarmController@getVoucherNumber');
     public static function GetVoucherNumber($id_dia, $usr_cre)
     {
-        $query = "select * from vgra.ff_nuevo_dia('" . $id_dia . "','" . $fusr_cre . "')";
+        $query = "select * from vgra.ff_nuevo_dia('" . $id_dia . "','" . $usr_cre. "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;        
     }
@@ -72,8 +71,8 @@ class Farm extends Model
     }
 
     //  * G7. Obtiene el numero de comprobante para la venta actual 
-    public static function GetCurrentVoucherNumber($id_dia, $usr_cre){
-        $query = "select * from vgra.ff_numero_com('" . $id_dia . "','" . $usr_cre . "')";
+    public static function GetCurrentVoucherNumber($id_dia){
+        $query = "select * from vgra.ff_numero_com('" . $id_dia . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;        
     }

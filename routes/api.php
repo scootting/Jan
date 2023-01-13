@@ -118,10 +118,8 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  * T1. Obtener una lista de las transacciones realizadas de un usuario en Cajas.
     Route::post('getTransactionsByPerson', 'TreasureController@getTransactionsByPerson');
-
     //  * T2. Obtener una lista de las ventas en linea solicitadas durante la gestion.
     Route::post('getSaleInLineDetail', 'TreasureController@getSaleInLineDetail');
-
     //  * T4. Obtener el detalle de una solicitud utilizando su id.
     Route::post('getDataRequestById', 'TreasureController@getDataRequestById');
     
@@ -178,7 +176,6 @@ Route::group([
     Route::post('file/', 'ArchiveController@storeFileContainer');
     //  * A8. Obtiene un tipo de archivo en especifico 
     Route::get('arhive/{id}', 'ArchiveController@getTypeArchiveById');
-
     //  * A10. Guardar un nuevo tipo de archivo 
     Route::post('onStoreTypeArchive/', 'ArchiveController@onStoreTypeArchive');
 
@@ -228,6 +225,8 @@ Route::group([
     Route::post('getProductForSale', 'FarmController@getProductForSale');
     //  * G7. Obtiene el numero de comprobante para la venta actual 
     Route::post('getCurrentVoucherNumber', 'FarmController@getCurrentVoucherNumber');
+    //  * G8. Imprimir el reporte de la venta actual.
+    Route::get('CustomerSaleDetailReport', 'FarmController@customerSaleDetailReport');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend

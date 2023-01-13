@@ -12,13 +12,13 @@
                             <p>datos generales de la venta</p>
                             <el-form ref="form" :model="dataSaleDay" label-width="120px" size="small">
                                 <el-form-item label="dia" prop="id">
-                                    <el-input v-model="dataSaleDay.id_dia"></el-input>
+                                    <el-input v-model="dataSaleDay.id_dia" disabled></el-input>
                                 </el-form-item>
                                 <el-form-item label="comprobante" prop="voucher">
                                     <el-input v-model="voucher"></el-input>
                                 </el-form-item>
                                 <el-form-item label="fecha" prop="fec_tra">
-                                    <el-input v-model="dataSaleDay.fec_tra"></el-input>
+                                    <el-input v-model="dataSaleDay.fec_tra" disabled></el-input>
                                 </el-form-item>
                                 <el-form-item label="identidad" prop="ci_per">
                                     <el-input placeholder="ingrese carnet de identidad" v-model="client.id"
@@ -38,7 +38,6 @@
                         <div class="grid-content bg-purple">
                             <p>productos adquiridos</p>
                             <el-table :data="products" style="width: 100%" size="small">
-                                <el-table-column prop="tip_tra" label="pago"></el-table-column>
                                 <el-table-column prop="des_prd" label="detalle"></el-table-column>
                                 <el-table-column prop="uni_prd" label="medida"></el-table-column>
                                 <el-table-column prop="pre_uni" label="precio unitario"></el-table-column>
@@ -65,12 +64,6 @@
             <!-- componente para agregar productos -->
             <el-dialog title="agregar producto" :visible.sync="dialogFormVisible">
                 <el-form :model="dataProduct" label-width="150px" size="small">
-                    <el-form-item label="forma de pago">
-                        <el-radio-group v-model="dataProduct.tip_tra" size="small">
-                            <el-radio-button label="1">Efectivo</el-radio-button>
-                            <el-radio-button label="14">Credito</el-radio-button>
-                        </el-radio-group>
-                    </el-form-item>
                     <el-form-item label="codigo" prop="id">
                         <el-input placeholder="ingrese el codigo del producto" v-model="dataProduct.cod_prd"
                             class="input-with-select">
@@ -111,7 +104,7 @@ export default {
             isVisible: false,                                           //componente campo visible
             tag: 'persona',                                             //componente que informacion desea traer
             dialogFormVisible: false,                                   //hace visible el formulario de cosas adeudadas
-            dataProduct: { tip_tra: 1, can: 1 },                 //datos del producto en venta
+            dataProduct: { can: 1 },                                    //datos del producto en venta
             products: [],                                               //lista de productos adquiridos
             dataSaleDay: {},                                           //dia de venta
             voucher: '',
@@ -175,12 +168,39 @@ export default {
         //  * G7. Obtiene el numero de comprobante para la venta actual 
         async getCurrentVoucherNumber() {
             var app = this;
+            console.log(app.dataSaleDay.tip_tra);
             let response = await axios.post("/api/getCurrentVoucherNumber", {
                 id_dia: app.id,
                 usr_cre: app.user.usuario,
+                tip_tra: app.dataSaleDay.tip_tra,
             });
             this.voucher = response.data;
         },
+
+    //  * G8. Imprimir el reporte de la venta actual.
+    initCustomerSaleDetailReport() {
+            axios({
+                url: "/api/customerSaleDetailReport/",
+                params: {
+                    general: app.dataSaleDay,
+                    cliente: app.client,
+                    voucher: app.voucher,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+        },
+
+
+
 
         /* busca al cliente */
         initSearchClient() {
@@ -204,7 +224,7 @@ export default {
             let variable = this.dataProduct;
             console.log(variable);
             console.log(this.products);
-            this.dataProduct = { tip_tra: 1, can: 1 },
+            this.dataProduct = { can: 1 },
                 this.products.push(variable);
         }
     },

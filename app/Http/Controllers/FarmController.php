@@ -62,10 +62,11 @@ class FarmController extends Controller
         $dataProducts = $request->get('productos');
         $nro_com = $request->get('voucher');
 
-        $id_dia = $dataDays['id'];//manda la key y no el el id_dia
+        $id_dia = $dataDays['id']; //manda la key y no el el id_dia
         $fec_tra = $dataDays['fec_tra'];
         $usr_cre = $dataDays['usr_cre'];
         $gestion = $dataDays['gestion'];
+        $tip_tra = $dataDays['tip_tra'];
 
         $ci_per = strtoupper($dataClient['nro_dip']);
         $des_per = strtoupper($dataClient['des_per']);
@@ -75,7 +76,6 @@ class FarmController extends Controller
             $cod_prd = $item['cod_prd'];
             $can_prd = $item['can'];
             $pre_uni = $item['pre_uni'];
-            $tip_tra = $item['tip_tra'];
             $imp_total = $can_prd * $pre_uni;
             $data = Farm::StoreCustomerSaleDetail($id_dia, $fec_tra, $gestion, $usr_cre, $ci_per, $des_per, $nro_com, $cod_prd, $can_prd, $pre_uni, $tip_tra, $imp_total);
         }
@@ -112,12 +112,29 @@ class FarmController extends Controller
     public function getCurrentVoucherNumber(Request $request)
     {
         $id_dia = $request->get('id_dia');
-        $usr_cre = $request->get('usr_cre');
-        $data = Farm::GetCurrentVoucherNumber($id_dia, $usr_cre);
+        $data = Farm::GetCurrentVoucherNumber($id_dia);
         \Log::info($data);
         $idx = $data[0]->{'ff_numero_com'};
         \Log::info($idx);
         return json_encode($idx);
+    }
+
+    //  * G8. Imprimir el reporte de la venta actual.
+    public function getReportValuesQr(Request $request)
+    {
+        $id_dia = $request->get('id_dia');
+        $ci_per = $request->get('ci_per');
+        $gestion = $request->get('gestion');
+        $usr_cre = $request->get('usr_cre');
+        $nreport = 'test_1';
+        $controls = array(
+            'p_id_dia' => $id_dia,
+            'p_ci_per' => trim($ci_per),
+            'p_no_com' => $gestion,
+            'p_gestion' => trim($usr_cre),
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
     }
 
 }

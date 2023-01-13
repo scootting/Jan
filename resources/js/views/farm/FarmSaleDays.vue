@@ -8,14 +8,14 @@
       </div>
       <div>
         <el-table v-loading="loading" :data="dataSaleDays" style="width: 100%" size="medium">
-          <el-table-column prop="id_dia" label="dia" :min-width="100">
-            <template slot-scope="scope">
-              <el-tag type="primary">{{ scope.row.id_dia }}</el-tag>
-            </template>
-          </el-table-column>
-          <el-table-column prop="fec_tra" label="fecha" :min-width="100">
+          <el-table-column prop="id_dia" label="dia" :min-width="100">            
+            <el-table-column prop="fec_tra" label="fecha" :min-width="100">
             <template slot-scope="scope">
               <el-tag type="info">{{ scope.row.fec_tra }}</el-tag>
+            </template>
+          </el-table-column>
+            <template slot-scope="scope">
+              <el-tag type="primary">{{ scope.row.id_dia }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>

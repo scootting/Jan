@@ -13,8 +13,9 @@
                             <el-form ref="form" :model="farmSaleDays" label-width="120px" size="small">
                                 <el-form-item label="tipo">
                                     <el-radio-group v-model="farmSaleDays.tip_tra" size="small">
-                                        <el-radio-button label="1">venta</el-radio-button>
-                                        <el-radio-button label="0">regular</el-radio-button>
+                                        <el-radio-button label="1">ventas en efectivo</el-radio-button>
+                                        <el-radio-button label="14">ventas al credito</el-radio-button>
+                                        <el-radio-button label="0">regularizacion de ventas al creditos</el-radio-button>
                                     </el-radio-group>
                                 </el-form-item>
                                 <el-form-item label="fecha" prop="fecha">

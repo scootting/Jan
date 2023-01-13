@@ -83,6 +83,7 @@ class TreasureController extends Controller
             case 5: //INGRESO DIRECTO
             case 20: //3ra PSA
             case 13: //TRASPASO
+            case 101://EXAMEN P.S.A. - R027/2022                                       
                 $description = 'NUEVOS';
                 break;
             case 39: //CODEMETROP
