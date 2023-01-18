@@ -57,7 +57,7 @@
                 </el-row>
                 <el-button @click="StoreCustomerSaleDetail()" type="success" size="small" plain>Guardar
                 </el-button>
-                <el-button @click="test()" type="warning" size="small" plain>Imprimir
+                <el-button @click="initCustomerSaleDetailReport()" type="warning" size="small" plain>Imprimir
                 </el-button>
             </div>
             <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
@@ -71,13 +71,16 @@
                         </el-input>
                     </el-form-item>
                     <el-form-item label="unidad" prop="id">
+                        <el-input v-model="dataProduct.des_prd"></el-input>
+                    </el-form-item>
+                    <el-form-item label="unidad" prop="id">
                         <el-input v-model="dataProduct.uni_prd"></el-input>
                     </el-form-item>
                     <el-form-item size="small" label="precio unitario" prop="materno">
                         <el-input size="small" v-model="dataProduct.pre_uni"></el-input>
                     </el-form-item>
                     <el-form-item label="cantidad">
-                        <el-input-number v-model="dataProduct.can" controls-position="right" :min="1"></el-input-number>
+                        <el-input-number v-model="dataProduct.can" controls-position="right" :min="0.5" :step="0.5"></el-input-number>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -177,14 +180,16 @@ export default {
             this.voucher = response.data;
         },
 
-    //  * G8. Imprimir el reporte de la venta actual.
-    initCustomerSaleDetailReport() {
+        //  * G8. Imprimir el reporte de la venta actual.
+        initCustomerSaleDetailReport() {
+            let app = this;
+            console.log(app.dataSaleDay);
             axios({
                 url: "/api/customerSaleDetailReport/",
                 params: {
-                    general: app.dataSaleDay,
-                    cliente: app.client,
                     voucher: app.voucher,
+                    tipo: app.dataSaleDay.tip_tra,
+                    gestion: app.dataSaleDay.gestion,
                 },
                 method: "GET",
                 responseType: "arraybuffer",
@@ -198,8 +203,6 @@ export default {
                 window.open(url);
             });
         },
-
-
 
 
         /* busca al cliente */

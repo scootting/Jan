@@ -226,7 +226,7 @@ Route::group([
     //  * G7. Obtiene el numero de comprobante para la venta actual 
     Route::post('getCurrentVoucherNumber', 'FarmController@getCurrentVoucherNumber');
     //  * G8. Imprimir el reporte de la venta actual.
-    Route::get('CustomerSaleDetailReport', 'FarmController@customerSaleDetailReport');
+    Route::get('customerSaleDetailReport/', 'FarmController@customerSaleDetailReport');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend

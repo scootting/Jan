@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Farm;
 use Illuminate\Http\Request;
+use App\Libraries\JSRClient;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class FarmController extends Controller
@@ -120,18 +121,21 @@ class FarmController extends Controller
     }
 
     //  * G8. Imprimir el reporte de la venta actual.
-    public function getReportValuesQr(Request $request)
+    public function customerSaleDetailReport(Request $request)
     {
-        $id_dia = $request->get('id_dia');
-        $ci_per = $request->get('ci_per');
-        $gestion = $request->get('gestion');
-        $usr_cre = $request->get('usr_cre');
-        $nreport = 'test_1';
+        $nro_com = $request->get('voucher');
+        $tip_tra = $request->get('tipo');
+        $gestion = $request->get('gestion');//$dataDays['gestion'];
+        \Log::info("DATOS PARA LA IMPRESION DE BOUCHER");
+        \Log::info($gestion);
+        \Log::info($tip_tra);
+        \Log::info($nro_com);
+
+        $nreport = 'DetailCreditSaleLetter';
         $controls = array(
-            'p_id_dia' => $id_dia,
-            'p_ci_per' => trim($ci_per),
-            'p_no_com' => $gestion,
-            'p_gestion' => trim($usr_cre),
+            'p_nro_com' => trim($nro_com),
+            'p_tip_tra' => $tip_tra,
+            'p_gestion' => $gestion,
         );
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
