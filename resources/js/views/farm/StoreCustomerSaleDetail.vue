@@ -59,6 +59,8 @@
                 </el-button>
                 <el-button @click="initCustomerSaleDetailReport()" type="warning" size="small" plain>Imprimir
                 </el-button>
+                <el-button @click="initNewCustomerSale()" type="info" size="small" plain>Nuevo
+                </el-button>
             </div>
             <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
             <!-- componente para agregar productos -->
@@ -80,7 +82,8 @@
                         <el-input size="small" v-model="dataProduct.pre_uni"></el-input>
                     </el-form-item>
                     <el-form-item label="cantidad">
-                        <el-input-number v-model="dataProduct.can" controls-position="right" :min="0.5" :step="0.5"></el-input-number>
+                        <el-input-number v-model="dataProduct.can" controls-position="right" :min="0.5"
+                            :step="0.5"></el-input-number>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -202,6 +205,14 @@ export default {
                 let url = window.URL.createObjectURL(blob);
                 window.open(url);
             });
+        },
+
+        initNewCustomerSale() {
+            this.dataProduct = { can: 1 };                                    //datos del producto en venta
+            this.products = [];                                               //lista de productos adquiridos
+            this.voucher = '';
+            this.client = {};   
+            this.getCurrentVoucherNumber();
         },
 
 
