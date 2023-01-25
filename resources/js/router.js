@@ -13,8 +13,9 @@ import EditDebtorDocument from './views/solvency/EditDebtorDocument.vue'
 import FarmSaleDays from './views/farm/FarmSaleDays.vue'
 import AddFarmSaleDay from './views/farm/AddFarmSaleDay.vue'
 import StoreCustomerSaleDetail from './views/farm/StoreCustomerSaleDetail.vue'
+import SaleDetailReport from './views/farm/SaleDetailReport.vue'
 
-
+SaleDetailReport
 //Almancenes
 import Material from './views/store/Material'
 import AddMaterial from './views/store/AddMaterial'
@@ -233,8 +234,8 @@ const router = new VueRouter({
                 { path: 'farmsaledays/add', name: 'addfarmsaleday', component: AddFarmSaleDay },
                 //  * G3. Agregar ventas al dia de venta de los productos de la granja
                 { path: 'farmsaledays/sale/:id', name: 'storecustomersaledetail', component: StoreCustomerSaleDetail },
-
-
+                //  * G4. Detalle del dia de venta de los productos de la granja
+                { path: 'farmsaledays/saledetail/:id', name: 'saledetailreport', component: SaleDetailReport },
 
 
                 //  |--------------------------------------------------------------------------

@@ -12,7 +12,7 @@ class Farm extends Model
     //  * Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
     public static function GetFarmSaleDays($gestion)
     {
-        $query = "select * from vgra.diario where gestion = '" . $gestion . "'";
+        $query = "select * from vgra.diario where gestion = '" . $gestion . "' order by fec_tra, idx";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -75,5 +75,14 @@ class Farm extends Model
         $query = "select * from vgra.ff_numero_com('" . $id_dia . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;        
+    }
+
+
+    //  * G9. obtener todas las ventas correspondientes a un dia en especifico
+    public static function GetFarmSaleDetailById($id)
+    {
+        $query = "select * from vgra.dia_des a inner join vgra.producto b on a.cod_pro = b.cod_prd where id_dia = '" . $id . "' order by nro_com";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
     }
 }

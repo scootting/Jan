@@ -60,7 +60,6 @@ export default {
         async getDebtorsDocument(page) {
             this.loading = true;
             let app = this;
-
             try {
                 let response = await axios.post("/api/getDebtorsDocument", {
                     description: app.writtenTextParameter,
@@ -68,7 +67,6 @@ export default {
                 });
                 app.dataDebtors = Object.values(response.data.data);
                 app.pagination = response.data;
-                app.loading = false;
                 console.log(response);
             } catch (error) {
                 this.error = error.response.data;
@@ -76,6 +74,7 @@ export default {
                     dangerouslyUseHTMLString: true,
                 });
             }
+            app.loading = false;
         },
         initAddDebtorDocument() {
             this.$router.push({

@@ -227,6 +227,8 @@ Route::group([
     Route::post('getCurrentVoucherNumber', 'FarmController@getCurrentVoucherNumber');
     //  * G8. Imprimir el reporte de la venta actual.
     Route::get('customerSaleDetailReport/', 'FarmController@customerSaleDetailReport');
+    //  * G9. obtener todas las ventas correspondientes a un dia en especifico
+    Route::post('getFarmSaleDetailById', 'FarmController@getFarmSaleDetailById');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend

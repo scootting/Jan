@@ -14,9 +14,9 @@ class Solvency extends Model
     {
         # code...
         if ($description == '') {
-            $query = "select * from sol.ff_datos_deudor('')";
+            $query = "select * from sol.ff_datos_deudor('') where estado2 = 'Solicitado'";
         } else {
-            $query = "select * from sol.ff_datos_deudor('" . $description . "')";
+            $query = "select * from sol.ff_datos_deudor('" . $description . "') where estado2 = 'Solicitado'";
         }
         $data = collect(DB::select(DB::raw($query)));
         return $data;

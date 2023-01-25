@@ -141,4 +141,11 @@ class FarmController extends Controller
         return $report;
     }
 
+    //  * G9. obtener todas las ventas correspondientes a un dia en especifico
+    public function getFarmSaleDetailById(Request $request)
+    {
+        $id_dia = $request->get('id');
+        $data = Farm::GetFarmSaleDetailById($id_dia);
+        return json_encode($data);
+    }
 }

@@ -8,25 +8,26 @@
       </div>
       <div>
         <el-table v-loading="loading" :data="dataSaleDays" style="width: 100%" size="medium">
-          <el-table-column prop="id_dia" label="dia" :min-width="100">            
-            <el-table-column prop="fec_tra" label="fecha" :min-width="100">
+          <el-table-column prop="fec_tra" label="fecha" :min-width="100">
             <template slot-scope="scope">
               <el-tag type="info">{{ scope.row.fec_tra }}</el-tag>
             </template>
           </el-table-column>
+          <el-table-column prop="id_dia" label="dia" :min-width="100">
             <template slot-scope="scope">
               <el-tag type="primary">{{ scope.row.id_dia }}</el-tag>
             </template>
           </el-table-column>
           <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>
-          <el-table-column prop="com_ini" label="comprobante" :min-width="100"></el-table-column>
-          <el-table-column prop="com_fin" label="comprobante" :min-width="100"></el-table-column>
+          <el-table-column prop="com_ini" label="com. inicial" :min-width="100"></el-table-column>
+          <el-table-column prop="com_fin" label="com. final" :min-width="100"></el-table-column>
           <el-table-column align="right" :min-width="320">
             <template slot-scope="scope">
-              <el-button :disabled="dataSaleDays[scope.$index].estado == 'V'" @click="initCustomerSaleDetail(scope.$index, scope.row)"
-                type="warning" size="small" plain>realizar venta</el-button>
-              <el-button @click="initDetailStudents(scope.$index, scope.row)" type="primary" size="small" plain>detalle de
-                la venta</el-button>
+              <el-button :disabled="dataSaleDays[scope.$index].estado == 'V'"
+                @click="initCustomerSaleDetail(scope.$index, scope.row)" type="warning" size="small" plain>realizar
+                venta</el-button>
+              <el-button @click="initSaleDetailReport(scope.$index, scope.row)" type="primary" size="small" plain>detalle
+                de la venta</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -83,7 +84,7 @@ export default {
         name: "addfarmsaleday",
       });
     },
-    initCustomerSaleDetail(index, row){
+    initCustomerSaleDetail(index, row) {
       console.log(index, row);
       let id_dia = row.id;
       this.$router.push({
@@ -92,7 +93,17 @@ export default {
           id: id_dia,
         },
       });
-    }
+    },
+    initSaleDetailReport(index, row) {
+      console.log(index, row);
+      let id_dia = row.id;
+      this.$router.push({
+        name: "saledetailreport",
+        params: {
+          id: id_dia,
+        },
+      });
+    },
   }
 };
 </script>
