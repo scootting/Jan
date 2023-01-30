@@ -22,6 +22,7 @@ class Document extends Model
     public static function GetRequestMemorialById($id, $gestion){        
         $query = "select * from public.personas p inner join bdoc.diario d "+
                   "on p.nro_dip = d.ci_per where d.id ='".$id."' and d.gestion = '2023'";
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

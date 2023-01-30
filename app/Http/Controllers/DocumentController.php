@@ -32,7 +32,7 @@ class DocumentController extends Controller
     {
         $id = $request->get('id');
         $gestion = $request->get('gestion');
-        $data = Document::GetRequestMemorialById($id, $gestion);
+        $data = Document::getRequestMemorialById($id, $gestion);
         return json_encode($data);
     }
 
