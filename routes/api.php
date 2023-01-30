@@ -230,6 +230,18 @@ Route::group([
     //  * G9. obtener todas las ventas correspondientes a un dia en especifico
     Route::post('getFarmSaleDetailById', 'FarmController@getFarmSaleDetailById');
 
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Memoriales
+    //  |--------------------------------------------------------------------------    
+    //  * M1. Obtener la lista de memoriales para su verificacion 
+    Route::post('getRequestsMemorial', 'DocumentController@getRequestsMemorial');
+    //  * M2. Obtiene el memorial por su id y gestion
+    Route::post('getRequestMemorialById', 'DocumentController@getRequestMemorialById');
+    //  * M3. Imprimir el memorial seleccionado              
+    Route::get('reportRequestMemorial', 'DocumentController@reportRequestMemorial');
+
+
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend
     //  |--------------------------------------------------------------------------

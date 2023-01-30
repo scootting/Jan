@@ -9,13 +9,18 @@ import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
 import EditDebtorDocument from './views/solvency/EditDebtorDocument.vue'
 
 
+//documentacion: memoriales
+import RequestMemorial from './views/document/RequestMemorial.vue'
+import RequestMemorialDetail from './views/document/RequestMemorialDetail.vue'
+
 //granja universitaria
 import FarmSaleDays from './views/farm/FarmSaleDays.vue'
 import AddFarmSaleDay from './views/farm/AddFarmSaleDay.vue'
 import StoreCustomerSaleDetail from './views/farm/StoreCustomerSaleDetail.vue'
 import SaleDetailReport from './views/farm/SaleDetailReport.vue'
 
-SaleDetailReport
+
+
 //Almancenes
 import Material from './views/store/Material'
 import AddMaterial from './views/store/AddMaterial'
@@ -259,6 +264,14 @@ const router = new VueRouter({
                 //  * PIN(R2). Ruta para ir al modulo para un nuevo presupuesto individual.
                 { path: 'singlebudget/add', name: 'addsinglebudget', component: AddSingleBudget },
 
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Modulo de Memoriales Universitarios
+                //  |--------------------------------------------------------------------------    
+                //  * M1. Obtener una lista de los memoriales solicitados.
+                { path: 'requestMemorial', name: 'requestmemorial', component: RequestMemorial },
+                //  * M2. Obtener la lista de memoriales para su verificacion 
+                { path: 'requestMemorial/:id', name: 'requestmemorialdetail', component: RequestMemorialDetail },
+            
             ],
             meta: {
                 requiresAuth: true,

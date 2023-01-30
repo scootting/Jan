@@ -11,14 +11,23 @@ class Document extends Model
 {
     //
 
-    // *** - funcion para la busqueda de las personas por carnet de identidad - ***
-    // *** - parametros [carnet de identidad] - ***
-
-    public static function getDescriptionByAbr($abr){
-        $query = "SELECT * FROM bdoc.des_doc dd WHERE dd.id_abr ='".$abr."' AND dd.estado = 'TRUE'";
+    //  * M1. Obtener la lista de memoriales para su verificacion 
+    public static function GetRequestsMemorial($year){        
+        $query = "SELECT * FROM bdoc.diario d WHERE d.gestion ='".$year."' order by idc desc";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
-    }        
+    }
+
+    //  * M1. Obtener la lista de memoriales para su verificacion 
+    public static function GetRequestMemorialById($id, $gestion){        
+        $query = "select * from public.personas p inner join bdoc.diario d "+
+                  "on p.nro_dip = d.ci_per where d.id ='".$id."' and d.gestion = '2023'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
+
 
     // *** - añadir certificado de los diplomados - ***
     // *** - parametros [carnet de identidad, ] - ***

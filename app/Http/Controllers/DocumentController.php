@@ -11,12 +11,51 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class DocumentController extends Controller
 {
     //
-    //  * Obtener las descripciones de el recurso utilizado.
-    //  * {abr: }    
-    public function getDescriptionByAbr($abr){        
-        $data = Document::getDescriptionByAbr($abr);
-        return json_encode($data);
+    //  * M1. Obtener la lista de memoriales para su verificacion 
+    public function getRequestsMemorial(Request $request){        
+        $year = $request->get('year');
+        $data = Document::getRequestsMemorial($year);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getRequestsMemorial')]
+        );
+        return json_encode($paginate);
     } 
+
+    //  * M2. Obtener la lista de memoriales para su verificacion 
+    public function getRequestMemorialById(Request $request)
+    {
+        $id = $request->get('id');
+        $gestion = $request->get('gestion');
+        $data = Document::GetRequestMemorialById($id, $gestion);
+        return json_encode($data);
+    }
+
+    //  * M3. Imprimir el memorial seleccionado              
+    public function reportRequestMemorial(Request $request)
+    {
+        $nro_com = $request->get('voucher');
+        $tip_tra = $request->get('tipo');
+        $gestion = $request->get('gestion'); //$dataDays['gestion'];
+        \Log::info("DATOS PARA LA IMPRESION DE BOUCHER");
+        \Log::info($gestion);
+        \Log::info($tip_tra);
+        \Log::info($nro_com);
+
+        $nreport = 'DetailCreditSaleLetter';
+        $controls = array(
+            'p_nro_com' => trim($nro_com),
+            'p_tip_tra' => $tip_tra,
+            'p_gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 
     // *** - añadir certificado de los diplomados - ***
     // *** - parametros [carnet de identidad, ] - ***
