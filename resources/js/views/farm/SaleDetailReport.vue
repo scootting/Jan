@@ -3,7 +3,9 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>venta detallada de productos del dia: {{ dataSaleDay.id_dia }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text">imprimir</el-button>
+                <el-button size="small" type="success" icon="el-icon-plus" @click="initCustomerSaleDetailDayReport"
+                    style="text-align: right; float: right" plain>
+                    imprimir ventas del dia</el-button>
             </div>
             <div style="margin-top: 15px">
                 <el-table v-loading="loading" :data="data" height="400" style="width: 100%">
@@ -85,6 +87,28 @@ export default {
         initRePrintCustomerSale(index, row) {
 
         },
+        //  * G10. imprimir el reporte de ventas del dia de
+        initCustomerSaleDetailDayReport() {
+            let app = this;
+            console.log(app.dataSaleDay);
+            axios({
+                url: "/api/customerSaleDetailDayReport/",
+                params: {
+                    id: app.dataSaleDay.id,
+                    gestion: app.dataSaleDay.gestion,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+        }
     }
 };
 </script>

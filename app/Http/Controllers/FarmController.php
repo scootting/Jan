@@ -127,10 +127,6 @@ class FarmController extends Controller
         $tip_tra = $request->get('tipo');
         $gestion = $request->get('gestion');//$dataDays['gestion'];
         \Log::info("DATOS PARA LA IMPRESION DE BOUCHER");
-        \Log::info($gestion);
-        \Log::info($tip_tra);
-        \Log::info($nro_com);
-
         $nreport = 'DetailCreditSaleLetter';
         $controls = array(
             'p_nro_com' => trim($nro_com),
@@ -147,5 +143,19 @@ class FarmController extends Controller
         $id_dia = $request->get('id');
         $data = Farm::GetFarmSaleDetailById($id_dia);
         return json_encode($data);
+    }
+
+    //  * G10. Imprimir el reporte de ventas del dia.
+    public function customerSaleDetailDayReport(Request $request){
+        $id = $request->get('id');
+        $gestion = $request->get('gestion');
+        $nreport = 'FarmSaleDetailDay';
+        $controls = array(
+            'p_id' => $id,
+            'p_gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+
     }
 }
