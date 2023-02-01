@@ -149,13 +149,23 @@ class FarmController extends Controller
     public function customerSaleDetailDayReport(Request $request){
         $id = $request->get('id');
         $gestion = $request->get('gestion');
-        $nreport = 'FarmSaleDetailDay';
+        \Log::info($id);
+        \Log::info($gestion);
+        $nreport = 'FarmSaleDetailsDay_Letter';
         $controls = array(
             'p_id' => $id,
             'p_gestion' => $gestion,
         );
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
-
     }
+    //  * G11. Cerrar el reporte de ventas del dia.
+    public function setCloseSaleDetailDay(Request $request)
+    {
+        $id_dia = $request->get('id');
+        $gestion = $request->get('gestion');
+        $data = Farm::SetCloseSaleDetailDay($id_dia, $gestion);
+        return json_encode($data);
+    }
+
 }

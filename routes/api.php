@@ -229,7 +229,10 @@ Route::group([
     Route::get('customerSaleDetailReport/', 'FarmController@customerSaleDetailReport');
     //  * G9. obtener todas las ventas correspondientes a un dia en especifico
     Route::post('getFarmSaleDetailById', 'FarmController@getFarmSaleDetailById');
-
+    //  * G10. Imprimir el reporte de ventas del dia.
+    Route::get('customerSaleDetailDayReport/', 'FarmController@customerSaleDetailDayReport');
+    //  * G11. Cerrar el reporte de ventas del dia.
+    Route::post('setCloseSaleDetailDay', 'FarmController@setCloseSaleDetailDay');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales

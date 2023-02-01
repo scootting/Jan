@@ -3,11 +3,8 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>venta detallada de productos del dia: {{ dataSaleDay.id_dia }}</span>
-                <el-button size="small" type="success" icon="el-icon-plus" @click="initCustomerSaleDetailDayReport"
-                    style="text-align: right; float: right" plain>
-                    imprimir ventas del dia</el-button>
             </div>
-            <div style="margin-top: 15px">
+            <div class="grid-content bg-purple" style="margin-top: 15px">
                 <el-table v-loading="loading" :data="data" height="400" style="width: 100%">
                     <el-table-column prop="nro_com" label="no." width="120">
                         <template slot-scope="scope">
@@ -25,12 +22,18 @@
                             <el-button @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
                                 plain>anular
                             </el-button>
-                            <el-button @click="initRePrintCustomerSale(scope.$index, scope.row)" size="mini"
-                                type="primary" plain>reinprimir
+                            <el-button @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
+                                type="success" plain>reinprimir
                             </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
+                <div style="margin-top: 15px">
+                    <el-button size="small" type="primary" icon="el-icon-switch-button" @click="initCloseSaleDetailDay" plain>
+                        cerrar el dia de ventas</el-button>
+                    <el-button size="small" type="primary" icon="el-icon-printer" @click="initCustomerSaleDetailDayReport" plain>
+                        imprimir el resumen de ventas del dia</el-button>
+                </div>
             </div>
         </el-card>
     </div>
@@ -85,9 +88,32 @@ export default {
 
         },
         initRePrintCustomerSale(index, row) {
-
+            console.log(row);
         },
-        //  * G10. imprimir el reporte de ventas del dia de
+        //  * G8. Imprimir el reporte de la venta actual.
+        initCustomerSaleDetailReport(index, row) {
+            let transaccion = row;
+            axios({
+                url: "/api/customerSaleDetailReport/",
+                params: {
+                    voucher: transaccion.nro_com,
+                    tipo: transaccion.tip_tra,
+                    gestion: transaccion.gestion,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+        },
+
+        //  * G10. Imprimir el reporte de ventas del dia.
         initCustomerSaleDetailDayReport() {
             let app = this;
             console.log(app.dataSaleDay);
@@ -108,6 +134,24 @@ export default {
                 let url = window.URL.createObjectURL(blob);
                 window.open(url);
             });
+        },
+        //  * G11. Cerrar el reporte de ventas del dia.
+        async initCloseSaleDetailDay() {
+            var app = this;
+            try {
+                let response = await axios.post("/api/setCloseSaleDetailDay", {
+                    id: app.id,
+                    gestion: app.dataSaleDay.gestion,
+                });
+                console.log(response);
+                alert("acaba de cerrar el dia de ventas, puede imprimir el resumen");
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
+
         }
     }
 };
