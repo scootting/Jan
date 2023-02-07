@@ -89,7 +89,7 @@ class Farm extends Model
         \Log::info($id_dia);
         \Log::info($gestion);
         $query = "update vgra.diario set estado = 'V', " .
-            "importe = (select sum(d.imp_pro) from vgra.dia_des d where d.id_dia = " . $id_dia . "), " .
+            "importe = (select sum(d.imp_pro) from vgra.dia_des d where d.id_dia = " . $id_dia . " and d.tip_tra<> 9), " .
             "com_fin = (select max(d.nro_com) from vgra.dia_des d where d.id_dia = " . $id_dia . ") " .
             "where id = " . $id_dia . " and gestion = '" . $gestion . "'";
         \Log::info($query);
