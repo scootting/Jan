@@ -19,10 +19,12 @@
                     <el-table-column prop="imp_pro" label="importe" width="100" align="right"></el-table-column>
                     <el-table-column align="right-center" fixed="right" width="200">
                         <template slot-scope="scope">
-                            <el-button @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
+                            <el-button :disabled="data[scope.$index].tip_tra == 9" 
+                            @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
                                 plain>anular
                             </el-button>
-                            <el-button @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
+                            <el-button :disabled="data[scope.$index].tip_tra == 9" 
+                            @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
                                 type="success" plain>reinprimir
                             </el-button>
                         </template>
@@ -84,11 +86,11 @@ export default {
                 });
             }
         },
-        async initCancelTransaction(index, row) {
 
-        },
-        initRePrintCustomerSale(index, row) {
-            console.log(row);
+        //G11 Anular una transaccion o un comprobante
+        async initCancelTransaction(index, row) {
+            
+
         },
         //  * G8. Imprimir el reporte de la venta actual.
         initCustomerSaleDetailReport(index, row) {
