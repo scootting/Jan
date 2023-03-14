@@ -5,7 +5,7 @@
                 <span>venta detallada de productos del dia: {{ dataSaleDay.id_dia }}</span>
             </div>
             <div class="grid-content bg-purple" style="margin-top: 15px">
-                <el-table v-loading="loading" :data="data" height="400" style="width: 100%">
+                <el-table v-loading="loading" :data="data" height="450" style="width: 100%" :row-style="tableRowStyle">
                     <el-table-column prop="nro_com" label="no." width="120">
                         <template slot-scope="scope">
                             <el-tag>{{ scope.row.nro_com }}</el-tag>
@@ -19,28 +19,30 @@
                     <el-table-column prop="imp_pro" label="importe" width="100" align="right"></el-table-column>
                     <el-table-column align="right-center" fixed="right" width="200">
                         <template slot-scope="scope">
-                            <el-button :disabled="data[scope.$index].tip_tra == 9" 
-                            @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
+                            <el-button :disabled="scope.row.tip_tra== 9" 
+                                @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
                                 plain>anular
                             </el-button>
-                            <el-button :disabled="data[scope.$index].tip_tra == 9" 
-                            @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
+                            <el-button :disabled="scope.row.tip_tra == 9"
+                                @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
                                 type="success" plain>reinprimir
                             </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
                 <div style="margin-top: 15px">
-                    <el-button size="small" type="primary" icon="el-icon-switch-button" @click="initCloseSaleDetailDay" plain>
+                    <el-button size="small" type="primary" icon="el-icon-switch-button" @click="initCloseSaleDetailDay" :disabled="dataSaleDay.estado == 'V'" 
+                        plain>
                         cerrar el dia de ventas</el-button>
-                    <el-button size="small" type="primary" icon="el-icon-printer" @click="initCustomerSaleDetailDayReport" plain>
+                    <el-button size="small" type="primary" icon="el-icon-printer"
+                        @click="initCustomerSaleDetailDayReport" plain>
                         imprimir el resumen de ventas del dia</el-button>
                 </div>
             </div>
         </el-card>
     </div>
 </template>
-  
+
 <script>
 
 export default {
@@ -89,7 +91,7 @@ export default {
 
         //G11 Anular una transaccion o un comprobante
         async initCancelTransaction(index, row) {
-            
+
 
         },
         //  * G8. Imprimir el reporte de la venta actual.
@@ -153,12 +155,15 @@ export default {
                     dangerouslyUseHTMLString: true,
                 });
             }
-
-        }
+        },
+        tableRowStyle({ row, rowIndex }) {
+            if (row.tip_tra == 9)
+                return {'background': '#FFB9B9'}
+        },
     }
 };
 </script>
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
+<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .el-row {
     margin-bottom: 20px;
@@ -190,5 +195,8 @@ export default {
     padding: 10px 0;
     background-color: #f9fafc;
 }
+
+.el-table .delete-row {
+    background: red !important;
+}
 </style>
-  
