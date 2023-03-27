@@ -28,27 +28,15 @@
           <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>
           <el-table-column align="right" :min-width="320">
             <template slot-scope="scope">
-              <el-button
-                :disabled="days[scope.$index].estado == 'V'"
-                @click="initSaleStudents(scope.$index, scope.row)"                
-                size="mini"  type="warning"
-                >realizar venta de valores</el-button
-              >
-              <el-button
-                @click="initDetailStudents(scope.$index, scope.row)"
-                size="mini"  type="primary"
-                >detalle de venta del dia</el-button
-              >
+              <el-button :disabled="days[scope.$index].estado == 'V'" @click="initSaleStudents(scope.$index, scope.row)"
+                size="mini" type="warning">realizar venta de valores</el-button>
+              <el-button @click="initDetailStudents(scope.$index, scope.row)" size="mini" type="primary">detalle de venta
+                del dia</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          :page-size="pagination.per_page"
-          layout="prev, pager, next"
-          :current-page="pagination.current_page"
-          :total="pagination.total"
-          @current-change="getDataPageSelected"
-        ></el-pagination>
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next" :current-page="pagination.current_page"
+          :total="pagination.total" @current-change="getSaleOfDays"></el-pagination>
       </div>
     </el-card>
   </div>
@@ -70,49 +58,33 @@ export default {
     };
   },
   mounted() {
-    let app = this;
-    axios
-      .post("/api/getSaleOfDaysByDescription", {
-        description: app.writtenTextParameter,
-        user: app.user.usuario,
-        year: app.user.gestion,
-      })
-      .then((response) => {
-        app.loading = false;
-        app.days = response.data.data;
-        console.log(app.days);
-        app.pagination = response.data;
-      })
-      .catch((error) => {
-        this.error = error;
-        this.$notify.error({
-          title: "Error",
-          message: this.error.message,
-        });
-      });
+    this.getSaleOfDays();
   },
   methods: {
     test() {
       alert("bienvenido al modulo");
     },
-    getDataPageSelected(page) {
+
+    async getSaleOfDays(page) {
+      this.loading = true;
       let app = this;
-      app.loading = true;
-      axios
-        .post("/api/getSaleOfDaysByDescription", {
+      try {
+        let response = await axios.post("/api/getSaleOfDaysByDescription", {
           description: app.writtenTextParameter,
-          user: app.user,
-          year: app.year,
+          user: app.user.usuario,
+          year: app.user.gestion,
           page: page,
-        })
-        .then((response) => {
-          app.loading = false;
-          app.days = Object.values(response.data.data);
-          app.pagination = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
         });
+        app.days = Object.values(response.data.data);
+        app.pagination = response.data;
+        console.log(app.days);
+        app.loading = false;
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
     },
     initAddDay() {
       alert("el modulo esta aun en contruccion");
@@ -124,7 +96,7 @@ export default {
       axios({
         url: "/api/reportDetailStudents/",
         params: {
-          id_dia: id,   
+          id_dia: id,
           gestion: app.user.gestion,
           usr_cre: app.user.usuario,
         },
