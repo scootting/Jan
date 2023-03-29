@@ -9,16 +9,13 @@
         <el-form ref="form" :model="archive" label-width="120px" size="small">
           <el-form-item label="Tipo">
             <el-radio-group v-model="archive.type">
-              <el-radio-button label="Archivo" index="A"></el-radio-button>
-              <el-radio-button label="Contenedor" index="C"></el-radio-button>
-              <el-radio-button label="Ubicacion" index="U"></el-radio-button>
+              <el-radio-button label="A">Archivo</el-radio-button>
+              <el-radio-button label="C">Contenedor</el-radio-button>
+              <el-radio-button label="U">Ubicacion</el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <el-form-item label="Codificacion">
-            <el-input v-model="archive.codification"></el-input>
-          </el-form-item>
           <el-form-item label="Descripcion">
-            <el-input type="textarea" v-model="archive.description"></el-input>
+            <el-input type="textarea" v-model="archive.descr"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onStoreTypeArchive">Guardar</el-button>
@@ -38,9 +35,8 @@ export default {
   data() {
     return {
       archive: {
-        description: '',
-        codification: '',
-        type: 'Archivo',
+        descr: '',
+        type: 'A',
       }
     };
   },

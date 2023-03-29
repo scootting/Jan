@@ -12,7 +12,7 @@
           <el-table-column prop="cod" label="codigo">
              <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.cod }}</el-tag>
+                <el-tag size="medium">{{ scope.row.idt }} - {{ scope.row.idc }}</el-tag>
               </div>
             </template>
           </el-table-column>
@@ -97,9 +97,9 @@ export default {
     initEditTypesArchive(index, row) {
       console.log(index, row);
       this.$router.push({
-        name: "editArchive",
+        name: "edittypearchive",
         params: {
-          id: row.id.trim(),
+          id: row.id,
         },
       });
     },

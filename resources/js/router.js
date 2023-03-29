@@ -217,7 +217,9 @@ const router = new VueRouter({
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
                 { path: 'addArchive/:type', name: 'addarchive', component: AddArchive },
                 { path: 'typesarchive', name: 'typesarchive', component: TypesArchive },
+
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
+
                 { path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive },
 
                 //  |--------------------------------------------------------------------------

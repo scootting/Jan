@@ -9,7 +9,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 class ArchiveController extends Controller
 {
     //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
-    //  * parametros {description: descripcion que se esta buscando }     
+    //  * parametros {description: descripcion que se esta buscando }
     public function getArchivesByDescription(Request $request)
     {
 
@@ -28,17 +28,19 @@ class ArchiveController extends Controller
     }
 
     //  * A2. Obtiene la lista de documentos que pertenecen a un archivo
-    //  * parametros {id: identificador del archivo, year: gestion del archivo }     
-    public function getDocumentsbyArchive(Request $request){
+    //  * parametros {id: identificador del archivo, year: gestion del archivo }
+    public function getDocumentsbyArchive(Request $request)
+    {
         $archivo = $request->get('id');
         $gestion = $request->get('year');
         $data = Archive::GetDocumentsbyArchive($archivo, $gestion);
         return json_encode($data);
     }
-    
+
     //  * A3. Obtiene la lista de tipos de documentos que pertenecen a un archivo
-    //  * parametros {description: descripcion del tipo de documento que se necesita }     
-    public function getTypesDocument(Request $request){
+    //  * parametros {description: descripcion del tipo de documento que se necesita }
+    public function getTypesDocument(Request $request)
+    {
         $descripcion = $request->get('description');
         $data = Archive::GetTypesDocument($descripcion);
         $page = ($request->get('page') ? $request->get('page') : 1);
@@ -55,7 +57,7 @@ class ArchiveController extends Controller
     }
 
     //  * A6. Obtiene la lista de contenedores para archivar con una breve descripcion
-    //  * parametros {description: descripcion que se esta buscando }     
+    //  * parametros {description: descripcion que se esta buscando }
     public function getFileContainerByDescription(Request $request)
     {
 
@@ -74,7 +76,7 @@ class ArchiveController extends Controller
     }
 
     //  * A7. Obtiene la lista de contenedores para archivar con una breve descripcion
-    //  * parametros {archivo: datos del documento[descripcion, tipo]} 
+    //  * parametros {archivo: datos del documento[descripcion, tipo]}
     public function storeFileContainer(Request $request)
     {
         $archivo = $request->get('archivo');
@@ -82,7 +84,7 @@ class ArchiveController extends Controller
         $tipo = $archivo['tipo'];
         $gestion = $archivo['gestion'];
         $marcador = $request->get('marker');
-        \Log::info($glosa.' :glosa: '.$tipo.' :gestion: '.$gestion);
+        \Log::info($glosa . ' :glosa: ' . $tipo . ' :gestion: ' . $gestion);
         switch ($marcador) {
             case 'registrar':
                 $data = Archive::SaveFileContainer($glosa, $tipo, $gestion);
@@ -95,25 +97,34 @@ class ArchiveController extends Controller
         }
         return json_encode($data);
     }
-    //  * A10. Guardar un nuevo tipo de archivo 
+
+    //  * A8. Obtiene un tipo de archivo en especifico
+    public function getTypeArchiveById($id)
+    {
+        \Log::info("ENTRA A ESTA FUNCION DEL CONTROLADOR");
+        $data = Archive::GetTypeArchiveById($id);
+        return json_encode($data);
+    }
+    //  * A10. Guardar un nuevo tipo de archivo
     public function onStoreTypeArchive(Request $request)
     {
         $archivo = $request->get('archive');
-        $codificacion = strtoupper($archivo['codification']);
-        $descripcion = $archivo['description'];
-        $tipo = $archivo['type'];
-        $marcador = 'registrar';
-        \Log::info($codificacion.' :descripcion: '.$descripcion.' :tipo: '.$tipo);
+        $marcador = $request->get('marker');
+        \Log::info($request);
+        $descripcion = $archivo['descr'];
         switch ($marcador) {
-            case 'registrar':
-                $data = Archive::OnStoreTypeArchive($codificacion, $descripcion, $tipo);
+            case 'añadir':
+                $tipo = $archivo['type'];
+                $data = Archive::OnStoreTypeArchive($descripcion, $tipo);
                 break;
             case 'editar':
-                //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
+                $id = $archivo['id'];
+                $data = Archive::OnUpdateTypeArchive($id, $descripcion);
                 break;
             default:
                 break;
         }
+        
         return json_encode($data);
     }
 

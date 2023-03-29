@@ -175,7 +175,7 @@ Route::group([
     //  * A7. Guardar un nuevo archivo, contenedor o ubicacion
     Route::post('file/', 'ArchiveController@storeFileContainer');
     //  * A8. Obtiene un tipo de archivo en especifico 
-    Route::get('arhive/{id}', 'ArchiveController@getTypeArchiveById');
+    Route::get('typeArchive/{id}', 'ArchiveController@getTypeArchiveById');
     //  * A10. Guardar un nuevo tipo de archivo 
     Route::post('onStoreTypeArchive/', 'ArchiveController@onStoreTypeArchive');
 
