@@ -1,192 +1,86 @@
 <template>
-  <div style="margin-top: 15px 0" class="grid-content bg-purple">
+  <div>
     <el-card class="box-card">
-      <el-form
-        label-width="190px"
-        :model="newActive"
-        ref="newActive"
-        :inline="false"
-        size="normal"
-        class="demo-form-inline"
-      >
+      <div slot="header" class="clearfix">
+        <span>regulizar activo encontrado</span>
+        <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
+      </div>
+      <el-form label-width="190px" :model="newActive" ref="newActive" :inline="false" size="normal">
         <el-row :gutter="20">
           <el-col :span="12">
-            <el-form-item size="mini" label="CI Responsable:">
-              <el-input
-                v-model="newActive.ci_resp"
-                size="mini"
-                type="text"
-                class="input-with-select"
-                ><el-button
-                  slot="append"
-                  icon="el-icon-search"
-                  @click="getEncargados(newActive.ci_resp)"
-                ></el-button
-              ></el-input>
-            </el-form-item>
-            <el-form-item size="mini" label="Cargo:" prop="car_cod">
-              <el-select
-                v-model="newActive.car_cod"
-                value-key="id"
-                placeholder="Determinar Cargo"
-              >
-                <el-option
-                  v-for="item in cargos"
-                  :key="item.id"
-                  :label="item.descripcion"
-                  :value="item.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
+            <div class="grid-content bg-purple">
+              <p>datos del documento de regularizacion</p>
+              <el-form-item size="mini" label="CI Responsable:">
+                <el-input v-model="newActive.ci_resp" size="mini" type="text" class="input-with-select"><el-button
+                    slot="append" icon="el-icon-search" @click="getEncargados(newActive.ci_resp)"></el-button></el-input>
+              </el-form-item>
+              <el-form-item size="mini" label="NOMBRE:">
+                <el-input disabled :value="getNombre" placeholder="NOMBRE DE RESPONSABLE DE ACTIVO" size="mini" readonly
+                  style="width: 100%" />
+              </el-form-item>
+              <el-form-item size="mini" label="Cargo:" prop="car_cod">
+                <el-select v-model="newActive.car_cod" value-key="id" placeholder="Determinar Cargo">
+                  <el-option v-for="item in cargos" :key="item.id" :label="item.descripcion" :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item size="mini" label="SubUnidad:" prop="sub_ofc_cod">
+                <el-select v-model="newActive.sub_ofc_cod" placeholder="Seleccione una subunidad">
+                  <el-option v-for="item in subUnidades" :key="item.id" :label="item.descripcion" :value="item.id">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item size="mini" label="Nro de documento:" prop="nro_doc">
+                <el-input disabled type="text" v-model="newActive.nro_doc"></el-input>
+              </el-form-item>
+
+            </div>
           </el-col>
           <el-col :span="12">
-            <el-form-item size="mini" label="NOMBRE:">
-              <el-input
-                disabled
-                :value="getNombre"
-                placeholder="NOMBRE DE RESPONSABLE DE ACTIVO"
-                size="mini"
-                readonly
-                style="width: 100%"
-              />
-            </el-form-item>
+            <div class="grid-content bg-purple">
+              <p>datos del activo a regulizar</p>
+              <el-form-item size="mini" label="Cantidad:" prop="cantidad">
+                <el-input-number v-model="newActive.cantidad" size="mini" label="Cantidad" :min="1" :max="10000000"
+                  :step="1" :controls="true" controls-position="both">
+                </el-input-number>
+              </el-form-item>
+              <el-form-item size="mini" label="Estado de Activo:" prop="estado">
+                <el-select v-model="newActive.estado" value-key="desc" placeholder="Determinar estado">
+                  <el-option v-for="item in estados" :key="item.desc" :label="item.desc" :value="item.desc">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item size="mini" label="Unidad de Medida:" prop="med">
+                <el-input type="text" v-model="newActive.med"></el-input>
+              </el-form-item>
+              <el-form-item size="mini" label="Codigo antiguo:" prop="cod_ant">
+                <el-input type="text" v-model="newActive.cod_ant"></el-input>
+              </el-form-item>
+              <el-form-item size="mini" label="Seleccionar Partida:" prop="partida">
+                <el-select v-model="newActive.partida" value-key="par_cod" placeholder="Determinar Partida">
+                  <el-option v-for="item in partidas" :key="item.par_cod" :label="item.par_des" :value="item.par_cod">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item size="mini" label="Seleccionar Partida Contable:" prop="contable">
+                <el-select v-model="newActive.contable" value-key="con_cod" placeholder="Determinar Partida Contable">
+                  <el-option v-for="item in contable" :key="item.con_cod" :label="item.con_des" :value="item.con_cod">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item size="mini" label="Descripcion:" prop="descripcion">
+                <el-input type="textarea" v-model="newActive.des" rows="10" max-rows="10"></el-input>
+              </el-form-item>
+              <el-form-item size="mini" label="Descripcion Detallada:" prop="descripcion">
+                <DescripcionDetalle v-model="newActive.des_det" />
+              </el-form-item>
+            </div>
           </el-col>
         </el-row>
-        <hr style="color: gray" />
-        <br />
-        <el-row type="flex" justify="space-between">
-          <el-col :span="11">
-            <el-form-item size="mini" label="Cantidad:" prop="cantidad">
-              <el-input-number
-                v-model="newActive.cantidad"
-                size="mini"
-                label="Cantidad"
-                :min="1"
-                :max="10000000"
-                :step="1"
-                :controls="true"
-                controls-position="both"
-              >
-              </el-input-number>
-            </el-form-item>
-            <el-form-item size="mini" label="SubUnidad:" prop="sub_ofc_cod">
-              <el-select
-                v-model="newActive.sub_ofc_cod"
-                placeholder="Seleccione una subunidad"
-              >
-                <el-option
-                  v-for="item in subUnidades"
-                  :key="item.id"
-                  :label="item.descripcion"
-                  :value="item.id"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item size="mini" label="Estado de Activo:" prop="estado">
-              <el-select
-                v-model="newActive.estado"
-                value-key="desc"
-                placeholder="Determinar estado"
-              >
-                <el-option
-                  v-for="item in estados"
-                  :key="item.desc"
-                  :label="item.desc"
-                  :value="item.desc"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-             <el-form-item size="mini" label="Unidad de Medida:" prop="med">
-              <el-input type="text" v-model="newActive.med"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item size="mini" label="Nro de documento:" prop="nro_doc">
-              <el-input
-                disabled
-                type="text"
-                v-model="newActive.nro_doc"
-              ></el-input>
-            </el-form-item>
-            <el-form-item size="mini" label="Codigo antiguo:" prop="cod_ant">
-              <el-input type="text" v-model="newActive.cod_ant"></el-input>
-            </el-form-item>
-            <el-form-item
-              size="mini"
-              label="Seleccionar Partida:"
-              prop="partida"
-            >
-              <el-select
-                v-model="newActive.partida"
-                value-key="par_cod"
-                placeholder="Determinar Partida"
-              >
-                <el-option
-                  v-for="item in partidas"
-                  :key="item.par_cod"
-                  :label="item.par_des"
-                  :value="item.par_cod"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item
-              size="mini"
-              label="Seleccionar Partida Contable:"
-              prop="contable"
-            >
-              <el-select
-                v-model="newActive.contable"
-                value-key="con_cod"
-                placeholder="Determinar Partida Contable"
-              >
-                <el-option
-                  v-for="item in contable"
-                  :key="item.con_cod"
-                  :label="item.con_des"
-                  :value="item.con_cod"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <hr style="color: gray" />
-        <br />
-        <el-row type="flex" justify="space-between">
-          <el-col :span="11">
-            <el-form-item size="mini" label="Descripcion:" prop="descripcion">
-              <el-input
-                type="textarea"
-                v-model="newActive.des"
-                rows="10"
-                max-rows="10"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="11">
-            <el-form-item
-              size="mini"
-              label="Descripcion Detallada:"
-              prop="descripcion"
-            >
-              <DescripcionDetalle v-model="newActive.des_det" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-form-item>
-          <el-button size="mini" type="primary" plain @click="saveAsset"
-            >Registrar activo</el-button
-          >
-          <el-button size="mini" type="primary" plain @click="Return">Terminar</el-button>
-          <el-button size="mini" type="danger" plain @click="Exit"
-            >Cancelar</el-button
-          >
-        </el-form-item>
       </el-form>
+      <el-button size="mini" type="primary" plain @click="saveAsset">Registrar activo</el-button>
+      <el-button size="mini" type="primary" plain @click="Return">Terminar</el-button>
+      <el-button size="mini" type="danger" plain @click="Exit">Cancelar</el-button>
     </el-card>
   </div>
 </template>
@@ -218,8 +112,8 @@ export default {
         partida: "",
         contable: "",
         cantidad: "1",
-        med:"PIEZA",
-        cod_ant:"0",
+        med: "PIEZA",
+        cod_ant: "0",
         cod_soa: this.$route.params.soa,
         sub_ofc_cod: "",
         ci_resp: "",
@@ -384,13 +278,36 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.el-row {
+  margin-bottom: 20px;
+}
+
+.el-col {
+  border-radius: 4px;
+}
+
+.bg-purple-dark {
+  background: #99a9bf;
+}
+
 .bg-purple {
   background: #d3dce6;
 }
+
+.bg-purple-light {
+  background: #e5e9f2;
+}
+
 .grid-content {
   border-radius: 4px;
   padding: 15px;
   min-height: 36px;
 }
+
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
 </style>
+  

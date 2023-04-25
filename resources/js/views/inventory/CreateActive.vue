@@ -1,26 +1,14 @@
 <template>
-  <div >
+  <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>Seleccionar unidad para crear activo</span>
-        <el-button style="float: right; padding: 3px 0" type="text"
-          >Ayuda</el-button
-        >
+        <el-button style="float: right; padding: 3px 0" type="text">Ayuda</el-button>
       </div>
-
-      <div
-        style="margin-top: 15px">
-        <el-input
-          placeholder="INSERTE UNA DESCRIPCION"
-          v-model="writtenTextParameter"
-          class="input-with-select"
-          @keyup.enter.native="getOffices"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="getOffices"
-          ></el-button>
+      <div style="margin-top: 15px">
+        <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select"
+          @keyup.enter.native="getOffices">
+          <el-button slot="append" icon="el-icon-search" @click="getOffices"></el-button>
         </el-input>
       </div>
       <br />
@@ -33,29 +21,16 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="descripcion"
-            label="DESCRIPCION"
-          ></el-table-column>
+          <el-table-column prop="descripcion" label="DESCRIPCION"></el-table-column>
           <el-table-column align="right" width="220">
             <template slot-scope="scope">
-              <el-button
-                @click="initShowInventory(scope.$index, scope.row)"
-                type="primary"
-                plain
-                size="mini"
-                >Crear Activo</el-button
-              >
+              <el-button @click="initShowInventory(scope.$index, scope.row)" type="primary" plain size="mini">Crear
+                Activo</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          :page-size="pagination.per_page"
-          layout="prev, pager, next"
-          :current-page="pagination.current_page"
-          :total="pagination.total"
-          @current-change="getOfficesPaginate"
-        ></el-pagination>
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next" :current-page="pagination.current_page"
+          :total="pagination.total" @current-change="getOfficesPaginate"></el-pagination>
       </div>
     </el-card>
   </div>
@@ -63,7 +38,7 @@
 
 <script>
 export default {
-name: "NuevoInventario",
+  name: "NuevoInventario",
   data() {
     return {
       loading: false,
@@ -75,8 +50,8 @@ name: "NuevoInventario",
       },
       writtenTextParameter: "",
     };
-},
-mounted() {
+  },
+  mounted() {
     this.getOffices();
   },
   methods: {
@@ -118,6 +93,4 @@ mounted() {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

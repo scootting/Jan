@@ -41,8 +41,8 @@ class ArchiveController extends Controller
     //  * parametros {description: descripcion del tipo de documento que se necesita }
     public function getTypesDocument(Request $request)
     {
-        $descripcion = $request->get('description');
-        $data = Archive::GetTypesDocument($descripcion);
+        $tipo = $request->get('id_type');
+        $data = Archive::GetTypesDocument($tipo);/*
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 5;
         $paginate = new LengthAwarePaginator(
@@ -51,8 +51,8 @@ class ArchiveController extends Controller
             $perPage,
             $page,
             ['path' => url('api/getTypesDocument')]
-        );
-        return json_encode($paginate);
+        );*/
+        //return json_encode($paginate);
         return json_encode($data);
     }
 

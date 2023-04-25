@@ -4,43 +4,25 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>archivos</span>
-        <el-button
-          style="text-align: right; float: right"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          @click="initAddArchive"
-          >nuevo archivo</el-button
-        >
+        <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
+          @click="initAddArchive">nuevo documento</el-button>
       </div>
       <div style="margin-top: 15px">
-        <el-input
-          placeholder="INSERTE UNA DESCRIPCION"
-          v-model="writtenTextParameter"
-          class="input-with-select"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="getArchives(1)"
-          ></el-button>
+        <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="getArchives(1)"></el-button>
         </el-input>
       </div>
       <br />
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column width="75" label="No.">
+          <el-table-column width="150" label="No.">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.no_doc }}</el-tag>
+                <el-tag size="medium">{{ scope.row.id_doc }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="glosa"
-            width="450"
-            label="descripcion del documento"
-          ></el-table-column>
+          <el-table-column prop="glosa" width="650" label="descripcion del documento"></el-table-column>
           <el-table-column width="150" label="Estado">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
@@ -50,23 +32,13 @@
           </el-table-column>
           <el-table-column align="right-center" width="250" label="Operaciones">
             <template slot-scope="scope">
-              <el-button
-                @click="getDocumentsbyArchive(scope.row.no_doc)"
-                type="success"
-                plain
-                size="mini"
-                >Ver documentos
+              <el-button @click="getArchivesByDocument(scope.row.id)" type="success" plain size="mini">ver archivos
               </el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          :page-size="pagination.per_page"
-          layout="prev, pager, next"
-          :current-page="pagination.current_page"
-          :total="pagination.total"
-          @current-change="getArchives"
-        ></el-pagination>
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next" :current-page="pagination.current_page"
+          :total="pagination.total" @current-change="getArchives"></el-pagination>
       </div>
     </el-card>
   </div>
@@ -114,11 +86,11 @@ export default {
         });
     },
 
-    getDocumentsbyArchive(id_archive) {
+    getArchivesByDocument(id) {
       this.$router.push({
         name: "archivedetails",
         params: {
-          id: id_archive,
+          id: id,
         },
       });
     },

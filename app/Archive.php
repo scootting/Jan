@@ -13,9 +13,9 @@ class Archive extends Model
     public static function GetArchivesByDescription($description)
     {
         if ($description == '') {
-            $query = "select * from arch.doc d";
+            $query = "select * from arch.doc d where id_tipo = 'A' order by id_doc desc";
         } else {
-            $query = "select * from arch.doc d where d.glosa like '%" . $description . "%'";
+            $query = "select * from arch.doc d where d.glosa like '%" . $description . "%' and id_tipo = 'A' order by id_doc desc";
         }
 
         \Log::info("Esta es la consulta de archivos: " . $query);
@@ -34,10 +34,10 @@ class Archive extends Model
     }
     //  * A3. Obtiene la lista de tipos de documentos que pertenecen a un archivo
     //  * parametros {description: descripcion del tipo de documento que se necesita }
-    public static function getTypesDocument($description)
+    public static function getTypesDocument($type)
     {
         //$query = "select * from arch.tipos t where t.tipo = '" . $description . "'";
-        $query = "select * from arch.tipos d order by d.tipo, d.idx asc";
+        $query = "select * from arch.tipos d where idt ='".$type."' order by d.descr asc";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

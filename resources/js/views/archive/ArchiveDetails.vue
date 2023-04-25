@@ -3,67 +3,17 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>detalle del archivo</span>
-        <el-button
-          style="float: right; padding: 3px 0"
-          type="text"
-          @click="test"
-          >ayuda</el-button
-        >
+        <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
       </div>
       <el-row :gutter="50">
-        <!--
-        <el-col :span="24"
-          ><div class="grid-content bg-purple">
-            <el-form
-              ref="form"
-              :model="this.personal"
-              label-width="200px"
-              size="mini"
-            >
-              <el-form-item label="carnet de identidad">
-                <el-input v-model="personal.nro_dip" disabled></el-input>
-              </el-form-item>
-              <el-form-item label="apellido paterno">
-                <el-input v-model="personal.paterno" disabled></el-input>
-              </el-form-item>
-              <el-form-item label="apellido materno">
-                <el-input v-model="personal.materno" disabled></el-input>
-              </el-form-item>
-              <el-form-item label="nombres">
-                <el-input v-model="personal.nombres" disabled></el-input>
-              </el-form-item>
-            </el-form>
-          </div></el-col
-        >
-        -->
-        <el-col :span="24"
-          ><div class="grid-content bg-purple">
-            <el-table
-              :data="documentsArchive"
-              border
-              style="width: 100%"
-              size="small"
-            >
-              <el-table-column
-                prop="indice"
-                label="indice"
-                align="right"
-                width="50"
-              >
+        <el-col :span="24">
+          <div>
+            <el-table :data="documentsArchive" border style="width: 100%" size="small">
+              <el-table-column prop="indice" label="indice" align="right" width="100">
               </el-table-column>
-              <el-table-column
-                prop="fecha"
-                label="fecha"
-                width="100"
-                align="center"
-              >
+              <el-table-column prop="fecha" label="fecha" width="100" align="center">
               </el-table-column>
-              <el-table-column
-                prop="numeral"
-                label="no. documento"
-                width="100"
-                align="right"
-              >
+              <el-table-column prop="numeral" label="no. documento" width="100" align="right">
               </el-table-column>
               <el-table-column prop="descr" label="documento" width="250" align="center">
                 <template slot-scope="scope">
@@ -72,56 +22,28 @@
                   }}</el-tag>
                 </template>
               </el-table-column>
-              <el-table-column prop="glosa" label="descripcion" width="750">
+              <el-table-column prop="glosa" label="descripcion" width="650">
               </el-table-column>
-              <el-table-column
-                align="right-center"
-                label="operaciones"
-                width="180"
-              >
+              <el-table-column align="right-center" label="operaciones" width="180">
                 <template slot-scope="scope">
-                  <el-button
-                    :disabled="scope.row.guardado === true"
-                    type="text"
-                    size="mini"
-                    @click="initEditDocumentOfArchive(scope.$index, scope.row)"
-                    >editar</el-button
-                  >
-                  <el-button
-                    :disabled="scope.row.guardado === true"
-                    type="text"
-                    size="mini"
-                    @click="DeleteDocumentOfArchive(scope.$index, scope.row)"
-                    >quitar</el-button
-                  >
+                  <el-button :disabled="scope.row.guardado === true" type="text" size="mini"
+                    @click="initEditDocumentOfArchive(scope.$index, scope.row)">editar</el-button>
+                  <el-button :disabled="scope.row.guardado === true" type="text" size="mini"
+                    @click="DeleteDocumentOfArchive(scope.$index, scope.row)">quitar</el-button>
                 </template>
               </el-table-column>
             </el-table>
-          </div></el-col
-        >
+          </div>
+        </el-col>
       </el-row>
       <!-- Form Add Document to Archive-->
-      <el-button type="text" @click="initAddDocumentOfArchive"
-        >Agregar nuevo documento</el-button
-      >
-      <el-dialog
-        title="detalle del documento"
-        :visible.sync="dialogFormVisible"
-      >
+      <el-button type="text" @click="initAddDocumentOfArchive">Agregar nuevo documento</el-button>
+      <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
         <el-form :model="document" label-width="220px" size="small">
           <el-form-item label="tipo de documento">
-            <el-select
-              v-model="document.id_tipo"
-              value-key="descr"
-              size="small"
-              placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument"
-            >
-              <el-option
-                v-for="item in typesDocument"
-                :key="item.id"
-                :label="item.descr"
-                :value="item.id"
-              >
+            <el-select v-model="document.id_tipo" value-key="descr" size="small"
+              placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument">
+              <el-option v-for="item in typesDocument" :key="item.id" :label="item.descr" :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
@@ -129,48 +51,24 @@
             <el-input v-model="document.numeral" autocomplete="off"></el-input>
           </el-form-item>
           <el-form-item label="fecha del registro">
-            <el-date-picker
-              type="date"
-              v-model="document.fecha"
-              placeholder="seleccione una fecha"
-              style="width: 100%"
-              format="yyyy/MM/dd"
-              value-format="yyyy-MM-dd"
-            ></el-date-picker>
+            <el-date-picker type="date" v-model="document.fecha" placeholder="seleccione una fecha" style="width: 100%"
+              format="yyyy/MM/dd" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
 
           <el-form-item label="glosa o descripcion">
-            <el-input
-              type="textarea"
-              v-model="document.glosa"
-              autocomplete="off"
-            ></el-input>
+            <el-input type="textarea" v-model="document.glosa" autocomplete="off"></el-input>
           </el-form-item>
           <!--
         -->
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button
-            type="primary"
-            size="small"
-            plain
-            @click="AddDocumetOfArchive"
-            >Confirmar</el-button
-          >
-          <el-button
-            type="danger"
-            size="small"
-            plain
-            @click="dialogFormVisible = false"
-            >Cancelar</el-button
-          >
+          <el-button type="primary" size="small" plain @click="AddDocumetOfArchive">Confirmar</el-button>
+          <el-button type="danger" size="small" plain @click="dialogFormVisible = false">Cancelar</el-button>
         </span>
       </el-dialog>
       <!-- Form Add Document to Archive-->
       <!-- Form Add Container to Archive-->
-      <el-button type="text" @click="initAddArchiveOfContainer"
-        >Agregar contenedor</el-button
-      >
+      <el-button type="text" @click="initAddArchiveOfContainer">Agregar contenedor</el-button>
       <!-- Form Add Container to Archive-->
     </el-card>
   </div>
@@ -182,7 +80,7 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
-      id_archive: null,
+      id: null,
       documentsArchive: [],
       typesDocument: [],
       dialogFormVisible: false,
@@ -214,11 +112,10 @@ export default {
       let app = this;
       try {
         let response = await axios.post("/api/getTypesDocument", {
-          description: "Documento",
+          id_type: "A",
         });
         app.typesDocument = response.data;
         console.log(app.typesDocument);
-        console.log(app.documentsArchive);
       } catch (error) {
         console.log(error);
       }
@@ -240,6 +137,7 @@ export default {
         });
       }
     },
+
     //  * Inicia la edicion de un documento
     initEditDocumentOfArchive(idx, row) {
       this.document = row;
@@ -247,6 +145,7 @@ export default {
       console.log(this.document);
       this.dialogFormVisible = true;
     },
+    
     //  * Inicia un nuevo documento
     initAddDocumentOfArchive() {
       this.document = {
@@ -263,7 +162,7 @@ export default {
       this.dialogFormVisible = true;
     },
 
-    initAddArchiveOfContainer(idx, row){
+    initAddArchiveOfContainer(idx, row) {
       alert('hola como estas?');
     },
     //  * Guarda los cambios de un nuevo documento sea nuevo o uno ya existente
@@ -279,8 +178,8 @@ export default {
       this.documentsArchive.splice(idx, 1);
       console.log(this.documentsArchive);
     },
-    OnchangeTypeDocument(idx){
-        this.document.descr = this.typesDocument[idx-1].descr;
+    OnchangeTypeDocument(idx) {
+      this.document.descr = this.typesDocument[idx - 1].descr;
     }
   },
 };
@@ -291,23 +190,29 @@ export default {
 .el-row {
   margin-bottom: 20px;
 }
+
 .el-col {
   border-radius: 4px;
 }
+
 .bg-purple-dark {
   background: #99a9bf;
 }
+
 .bg-purple {
   background: #d3dce6;
 }
+
 .bg-purple-light {
   background: #e5e9f2;
 }
+
 .grid-content {
   border-radius: 4px;
   padding: 15px;
   min-height: 36px;
 }
+
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;
