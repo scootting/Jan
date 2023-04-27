@@ -215,7 +215,7 @@ export default {
 
 .row-bg {
   padding: 10px 0;
-  background-color: #f9fafc;
+  background-color:#f9fafc;
 }
 
 .el-form .el-select {
