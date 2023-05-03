@@ -101,7 +101,6 @@ class ArchiveController extends Controller
     //  * A8. Obtiene un tipo de archivo en especifico
     public function getTypeArchiveById($id)
     {
-        \Log::info("ENTRA A ESTA FUNCION DEL CONTROLADOR");
         $data = Archive::GetTypeArchiveById($id);
         return json_encode($data);
     }

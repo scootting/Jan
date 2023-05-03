@@ -40,13 +40,15 @@
       <el-button type="text" @click="initAddDocumentOfArchive">Agregar nuevo documento</el-button>
       <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
         <el-form :model="document" label-width="220px" size="small">
+
           <el-form-item label="tipo de documento">
-            <el-select v-model="document.id_tipo" value-key="descr" size="small"
+            <el-select v-model="document.id_arch" value-key="descr" size="small"
               placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument">
               <el-option v-for="item in typesDocument" :key="item.id" :label="item.descr" :value="item.id">
               </el-option>
             </el-select>
           </el-form-item>
+
           <el-form-item label="Numero del documento">
             <el-input v-model="document.numeral" autocomplete="off"></el-input>
           </el-form-item>
@@ -62,7 +64,7 @@
         -->
         </el-form>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" size="small" plain @click="AddDocumetOfArchive">Confirmar</el-button>
+          <el-button type="primary" size="small" plain @click="AddArchiveToDocument">Confirmar</el-button>
           <el-button type="danger" size="small" plain @click="dialogFormVisible = false">Cancelar</el-button>
         </span>
       </el-dialog>
@@ -80,20 +82,19 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
-      id: null,
-      documentsArchive: [],
-      typesDocument: [],
-      dialogFormVisible: false,
-      stateStore: "",
+      id: null,                    //identificador del documento 
+      documentsArchive: [],       //lista de archivos pertenecientes a un documento
+      typesDocument: [],          //diferentes tipos de archivos que pertenecen a un documento
+      dialogFormVisible: false,   //para el dialogo
+      stateStore: "",             //estado para ver si se aniade o se edita
       document: {
-        id_doc: "",
         numeral: "",
-        indice: "",
         glosa: "",
         fecha: "",
-        id_tipo: null,
-        descr: "",
-        gestion: null,
+        id_tipo: 'A',
+        id_arch: null,
+        descr_arch: "",
+        gestion: "",
       },
     };
   },
@@ -145,19 +146,9 @@ export default {
       console.log(this.document);
       this.dialogFormVisible = true;
     },
-    
-    //  * Inicia un nuevo documento
+
+    //  * Iniciar el cuadro de dialogo para insertar un nuevo archivo
     initAddDocumentOfArchive() {
-      this.document = {
-        id_doc: "",
-        numeral: "",
-        indice: "",
-        glosa: "",
-        fecha: "",
-        id_tipo: null,
-        descr: "",
-        gestion: null,
-      };
       this.stateStore = "añadir";
       this.dialogFormVisible = true;
     },
@@ -166,10 +157,16 @@ export default {
       alert('hola como estas?');
     },
     //  * Guarda los cambios de un nuevo documento sea nuevo o uno ya existente
-    AddDocumetOfArchive() {
-      if (this.stateStore == "añadir")
-        this.documentsArchive.push(this.document);
+    AddArchiveToDocument() {
       this.dialogFormVisible = false;
+      if (this.stateStore == "añadir") {
+        let variable = this.document;
+        this.documentsArchive.push(variable);
+      }
+      else{
+
+      }
+      this.document = { numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr_arch: "", gestion: "" };
       console.log(this.documentsArchive);
     },
 
@@ -179,7 +176,9 @@ export default {
       console.log(this.documentsArchive);
     },
     OnchangeTypeDocument(idx) {
-      this.document.descr = this.typesDocument[idx - 1].descr;
+      console.log(this.document);   
+      console.log(idx);   
+      this.document.descr = this.typesDocument[idx].descr;
     }
   },
 };
@@ -215,7 +214,7 @@ export default {
 
 .row-bg {
   padding: 10px 0;
-  background-color:#f9fafc;
+  background-color: #f9fafc;
 }
 
 .el-form .el-select {

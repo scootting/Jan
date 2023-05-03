@@ -100,6 +100,7 @@ class TreasureController extends Controller
                 break;
             case 9: //CAOB
             case 42: //ORIGINARIA 43
+            case 41: // por convenio
             case 43: //capacidades especiales
             case 36: //traspaso de universidades
                 $description = 'ORIGINARIA';

@@ -33,7 +33,6 @@
               <el-form-item size="mini" label="Nro de documento:" prop="nro_doc">
                 <el-input disabled type="text" v-model="newActive.nro_doc"></el-input>
               </el-form-item>
-
             </div>
           </el-col>
           <el-col :span="12">
