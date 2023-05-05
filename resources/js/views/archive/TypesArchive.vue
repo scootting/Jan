@@ -71,16 +71,15 @@ export default {
         async getTypesDocument(page) {
             this.loading = true;
             let app = this;
-
             try {
                 let response = await axios.post("/api/getTypesDocument", {
                     description: app.writtenTextParameter,
                     page: page,
                 });
+                console.log(response);
                 app.data = Object.values(response.data.data);
                 app.pagination = response.data;
                 app.loading = false;
-                console.log(response);
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {

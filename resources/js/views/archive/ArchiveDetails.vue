@@ -26,9 +26,9 @@
               </el-table-column>
               <el-table-column align="right-center" label="operaciones" width="180">
                 <template slot-scope="scope">
-                  <el-button :disabled="scope.row.guardado === true" type="text" size="mini"
+                  <el-button :disabled="scope.row.guardado === true" type="primary" plain size="mini"
                     @click="initEditDocumentOfArchive(scope.$index, scope.row)">editar</el-button>
-                  <el-button :disabled="scope.row.guardado === true" type="text" size="mini"
+                  <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
                     @click="DeleteDocumentOfArchive(scope.$index, scope.row)">quitar</el-button>
                 </template>
               </el-table-column>
@@ -37,12 +37,12 @@
         </el-col>
       </el-row>
       <!-- Form Add Document to Archive-->
-      <el-button type="text" @click="initAddDocumentOfArchive">Agregar nuevo documento</el-button>
+      <el-button type="primary" @click="initAddDocumentOfArchive" size="small">Agregar nuevo archivo</el-button>
       <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
         <el-form :model="document" label-width="220px" size="small">
 
           <el-form-item label="tipo de documento">
-            <el-select v-model="document.id_arch" value-key="descr" size="small"
+            <el-select v-model="document.descr" value-key="descr" size="small"
               placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument">
               <el-option v-for="item in typesDocument" :key="item.id" :label="item.descr" :value="item.id">
               </el-option>
@@ -56,7 +56,6 @@
             <el-date-picker type="date" v-model="document.fecha" placeholder="seleccione una fecha" style="width: 100%"
               format="yyyy/MM/dd" value-format="yyyy-MM-dd"></el-date-picker>
           </el-form-item>
-
           <el-form-item label="glosa o descripcion">
             <el-input type="textarea" v-model="document.glosa" autocomplete="off"></el-input>
           </el-form-item>
@@ -69,9 +68,7 @@
         </span>
       </el-dialog>
       <!-- Form Add Document to Archive-->
-      <!-- Form Add Container to Archive-->
-      <el-button type="text" @click="initAddArchiveOfContainer">Agregar contenedor</el-button>
-      <!-- Form Add Container to Archive-->
+      <el-button type="success" @click="initStoreArchivesOfDocument" size="small">Guardar documento</el-button>
     </el-card>
   </div>
 </template>
@@ -88,12 +85,13 @@ export default {
       dialogFormVisible: false,   //para el dialogo
       stateStore: "",             //estado para ver si se aniade o se edita
       document: {
+        indice: 0,
         numeral: "",
         glosa: "",
         fecha: "",
         id_tipo: 'A',
         id_arch: null,
-        descr_arch: "",
+        descr: "",
         gestion: "",
       },
     };
@@ -108,15 +106,15 @@ export default {
     test() {
       alert("test");
     },
-    //  * A3. Obtiene la lista de tipos de documentos que pertenecen a un archivo
+
+    //  * A9. Obtiene la lista de tipos de documentos que pertenecen a un archivo
     async getTypesDocument() {
       let app = this;
       try {
-        let response = await axios.post("/api/getTypesDocument", {
+        let response = await axios.post("/api/getTypesDocumentById", {
           id_type: "A",
         });
         app.typesDocument = response.data;
-        console.log(app.typesDocument);
       } catch (error) {
         console.log(error);
       }
@@ -139,11 +137,35 @@ export default {
       }
     },
 
+    //  * A11. Guardar los archivos del documento
+    async initStoreArchivesOfDocument() {
+      var app = this;
+      var newArchivesOfDocument = app.documentsArchive;
+      var newDocument = app.id;
+      var newYear = app.user.gestion;
+      try {
+        let response = axios
+          .post("/api/storeArchivesOfDocument", {
+            archivesOfDocument: newArchivesOfDocument,
+            document: newDocument,
+            year: newYear,
+            marker: "registrar",
+          });
+        console.log(response);
+        app.$alert("Se ha registrado correctamente los archivos del documento", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      } catch (error) {
+        app.$alert("No se registro nada", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      };
+    },
+
     //  * Inicia la edicion de un documento
     initEditDocumentOfArchive(idx, row) {
       this.document = row;
       this.stateStore = "editar";
-      console.log(this.document);
       this.dialogFormVisible = true;
     },
 
@@ -153,9 +175,6 @@ export default {
       this.dialogFormVisible = true;
     },
 
-    initAddArchiveOfContainer(idx, row) {
-      alert('hola como estas?');
-    },
     //  * Guarda los cambios de un nuevo documento sea nuevo o uno ya existente
     AddArchiveToDocument() {
       this.dialogFormVisible = false;
@@ -163,10 +182,10 @@ export default {
         let variable = this.document;
         this.documentsArchive.push(variable);
       }
-      else{
+      else {
 
       }
-      this.document = { numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr_arch: "", gestion: "" };
+      this.document = { indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: "" };
       console.log(this.documentsArchive);
     },
 
@@ -175,10 +194,15 @@ export default {
       this.documentsArchive.splice(idx, 1);
       console.log(this.documentsArchive);
     },
+    //* actualizar un componente al hacer la seleccion nueva *//
     OnchangeTypeDocument(idx) {
-      console.log(this.document);   
-      console.log(idx);   
-      this.document.descr = this.typesDocument[idx].descr;
+      console.log(this.document);
+      console.log(idx);
+      let resultado = this.typesDocument.find(tipo => tipo.id == idx);
+      this.document.id_arch = resultado.id;
+      this.document.descr = resultado.descr;
+      console.log(resultado);
+      console.log(this.document);
     }
   },
 };

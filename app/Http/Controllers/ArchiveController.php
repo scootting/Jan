@@ -37,12 +37,12 @@ class ArchiveController extends Controller
         return json_encode($data);
     }
 
-    //  * A3. Obtiene la lista de tipos de documentos que pertenecen a un archivo
-    //  * parametros {description: descripcion del tipo de documento que se necesita }
+    //  * A3. Obtiene la lista de tipos de documentos
+    //  * parametros {tipo: descripcion del tipo de documento que se necesita }
     public function getTypesDocument(Request $request)
     {
-        $tipo = $request->get('id_type');
-        $data = Archive::GetTypesDocument($tipo);/*
+        $tipo = '';
+        $data = Archive::GetTypesDocument($tipo);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 5;
         $paginate = new LengthAwarePaginator(
@@ -51,8 +51,16 @@ class ArchiveController extends Controller
             $perPage,
             $page,
             ['path' => url('api/getTypesDocument')]
-        );*/
-        //return json_encode($paginate);
+        );
+        return json_encode($paginate);
+    }
+
+    //  * A9. Obtiene la lista de tipos de documentos que pertenecen a un archivo, contenedor o ubicacion
+    //  * parametros {tipo: descripcion del tipo de documento que se necesita }
+    public function getTypesDocumentById(Request $request)
+    {
+        $tipo = $request->get('id_type');
+        $data = Archive::GetTypesDocument($tipo);
         return json_encode($data);
     }
 
@@ -123,8 +131,12 @@ class ArchiveController extends Controller
             default:
                 break;
         }
-        
+
         return json_encode($data);
     }
 
+    //  * A11. Guardar los archivos del documento
+    public function storeArchivesOfDocument(Request $request)
+    {
+    }
 }

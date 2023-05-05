@@ -176,9 +176,12 @@ Route::group([
     Route::post('file/', 'ArchiveController@storeFileContainer');
     //  * A8. Obtiene un tipo de archivo en especifico 
     Route::get('typeArchive/{id}', 'ArchiveController@getTypeArchiveById');
+    //  * A9. Obtiene la lista de tipos de documentos que pertenecen a un archivo
+    Route::post('getTypesDocumentById/', 'ArchiveController@getTypesDocumentById');
     //  * A10. Guardar un nuevo tipo de archivo 
     Route::post('onStoreTypeArchive/', 'ArchiveController@onStoreTypeArchive');
-
+    //  * A11. Guardar los archivos del documento
+    Route::post('storeArchivesOfDocument', 'ArchiveController@storeArchivesOfDocument');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes

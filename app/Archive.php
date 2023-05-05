@@ -36,8 +36,13 @@ class Archive extends Model
     //  * parametros {description: descripcion del tipo de documento que se necesita }
     public static function getTypesDocument($type)
     {
-        //$query = "select * from arch.tipos t where t.tipo = '" . $description . "'";
-        $query = "select * from arch.tipos d where idt ='".$type."' order by d.descr asc";
+        if ($type == '') {
+            $query = "select * from arch.tipos d order by d.idc desc";
+        } else {
+            //$query = "select * from arch.tipos t where t.tipo = '" . $description . "'";
+            $query = "select * from arch.tipos d where idt ='" . $type . "' order by d.descr asc";
+        }
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -71,21 +76,23 @@ class Archive extends Model
     //  * A8. Obtiene un tipo de archivo en especifico
     public static function GetTypeArchiveById($id)
     {
-        $query = "select * from arch.tipos d where d.id = '".$id."'";
+        $query = "select * from arch.tipos d where d.id = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     //  * A9. Actualiza la informacion de un tipo de archivo
-    public static function OnUpdateTypeArchive($id, $descripcion){
-        $query = "UPDATE arch.tipos set descr = '" . $descripcion . "' where id = '" . $id ."'";
+    public static function OnUpdateTypeArchive($id, $descripcion)
+    {
+        $query = "UPDATE arch.tipos set descr = '" . $descripcion . "' where id = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
-        return $data;        
+        return $data;
     }
 
-    //  * A10. Guardar un nuevo tipo de archivo 
-    public static function OnStoreTypeArchive($descripcion, $tipo){
-        $query = "SELECT * FROM arch.ff_registrar_tipo('" . $descripcion . "','" . $tipo ."')";
+    //  * A10. Guardar un nuevo tipo de archivo
+    public static function OnStoreTypeArchive($descripcion, $tipo)
+    {
+        $query = "SELECT * FROM arch.ff_registrar_tipo('" . $descripcion . "','" . $tipo . "')";
         $data = collect(DB::select(DB::raw($query)));
-        return $data;        
+        return $data;
     }
 }
