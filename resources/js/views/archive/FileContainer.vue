@@ -3,50 +3,26 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>contenedores de archivos</span>
-        <el-button
-          style="text-align: right; float: right"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          @click="initAddFileContainer"
-        >nuevo contenedor</el-button>
+        <span>contenedores</span>
+        <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
+          @click="getFileContainer(1)">nuevo contenedor</el-button>
       </div>
       <div style="margin-top: 15px">
-        <el-input
-          placeholder="INSERTE UNA DESCRIPCION"
-          v-model="writtenTextParameter"
-          class="input-with-select"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="getContainers(1)"
-          ></el-button>
+        <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="getFileContainer(1)"></el-button>
         </el-input>
       </div>
       <br />
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column width="75" label="No.">
+          <el-table-column width="150" label="No.">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.no_con }}</el-tag>
+                <el-tag size="medium">{{ scope.row.id_doc }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column width="375" label="tipo">
-            <template slot-scope="scope">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium" type="warning">{{ scope.row.descr }}</el-tag>
-              </div>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="des_con"
-            width="450"
-            label="descripcion del contenedor"
-          ></el-table-column>
+          <el-table-column prop="glosa" width="850" label="descripcion del contenedor"></el-table-column>
           <el-table-column width="150" label="Estado">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
@@ -56,23 +32,13 @@
           </el-table-column>
           <el-table-column align="right-center" width="250" label="Operaciones">
             <template slot-scope="scope">
-              <el-button
-                @click="getFilesbyContainer(scope.row.no_con)"
-                type="success"
-                plain
-                size="mini"
-                >Ver archivos
+              <el-button @click="getDocumentsByFileContainer(scope.row.id)" type="success" plain size="mini">ver documentos
               </el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          :page-size="pagination.per_page"
-          layout="prev, pager, next"
-          :current-page="pagination.current_page"
-          :total="pagination.total"
-          @current-change="getContainers"
-        ></el-pagination>
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next" :current-page="pagination.current_page"
+          :total="pagination.total" @current-change="getFileContainer"></el-pagination>
       </div>
     </el-card>
   </div>
@@ -92,18 +58,19 @@ export default {
     };
   },
   mounted() {
-    this.getContainers();
+    this.getFileContainer();
   },
   methods: {
-    //  * A6. Obtiene la lista de contenedores para archivar con una breve descripcion
-    getContainers(page) {
+    //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
+    getFileContainer(page) {
       this.loading = true;
       let app = this;
       axios
-        .post("/api/fileContainer", {
+        .post("/api/archive", {
           year: app.user.gestion,
           description: app.writtenTextParameter.toUpperCase(),
-          page:page,
+          page: page,
+          id: 'C',
         })
         .then((response) => {
           app.loading = false;
@@ -119,22 +86,20 @@ export default {
           });
         });
     },
-    getFilesbyContainer(id_container) {
+
+    getDocumentsByFileContainer(id) {
       this.$router.push({
         name: "filecontainerdetails",
         params: {
-          id: id_container
+          id: id,
         },
       });
     },
-    initAddFileContainer(){
+    initAddFileContainer() {
       this.$router.push({
-        name: "addarchive",
-        params: {
-          type: 'Contenedor'
-        },
-      });        
-    }
+        name: "addcontainer",
+      });
+    },
   },
 };
 </script>

@@ -3,7 +3,6 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>venta de valores para estudiantes nuevos</span>
-        <!--
         <el-button
           style="text-align: right; float: right"
           size="small"
@@ -11,7 +10,7 @@
           icon="el-icon-plus"
           @click="initAddDay"
           >nuevo dia</el-button
-        >-->
+        >
       </div>
       <div>
         <el-table v-loading="loading" :data="days" style="width: 100%">

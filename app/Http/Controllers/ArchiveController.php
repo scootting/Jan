@@ -14,7 +14,8 @@ class ArchiveController extends Controller
     {
 
         $descripcion = strtoupper($request->get('description'));
-        $data = Archive::GetArchivesByDescription($descripcion);
+        $tipo = $request->get('id');
+        $data = Archive::GetArchivesByDescription($descripcion, $tipo);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 5;
         $paginate = new LengthAwarePaginator(

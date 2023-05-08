@@ -5,7 +5,7 @@
       <div slot="header" class="clearfix">
         <span>archivos</span>
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-          @click="initAddArchive">nuevo documento</el-button>
+          @click="getArchives(1)">nuevo documento</el-button>
       </div>
       <div style="margin-top: 15px">
         <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
@@ -22,7 +22,7 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="glosa" width="650" label="descripcion del documento"></el-table-column>
+          <el-table-column prop="glosa" width="850" label="descripcion del documento"></el-table-column>
           <el-table-column width="150" label="Estado">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
@@ -70,6 +70,7 @@ export default {
           year: app.user.gestion,
           description: app.writtenTextParameter.toUpperCase(),
           page: page,
+          id: 'A',
         })
         .then((response) => {
           app.loading = false;

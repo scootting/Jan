@@ -10,12 +10,12 @@ class Archive extends Model
     //
     //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
     //  * parametros [description: descripcion que se esta buscando ]
-    public static function GetArchivesByDescription($description)
+    public static function GetArchivesByDescription($description, $type)
     {
         if ($description == '') {
-            $query = "select * from arch.doc d where id_tipo = 'A' order by id_doc desc";
+            $query = "select * from arch.doc d where id_tipo = '". $type ."' order by id_doc desc";
         } else {
-            $query = "select * from arch.doc d where d.glosa like '%" . $description . "%' and id_tipo = 'A' order by id_doc desc";
+            $query = "select * from arch.doc d where d.glosa like '%" . $description . "%' and id_tipo = '". $type . "' order by id_doc desc";
         }
 
         \Log::info("Esta es la consulta de archivos: " . $query);
