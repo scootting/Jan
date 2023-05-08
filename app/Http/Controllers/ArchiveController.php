@@ -131,7 +131,6 @@ class ArchiveController extends Controller
             default:
                 break;
         }
-
         return json_encode($data);
     }
 
@@ -139,23 +138,11 @@ class ArchiveController extends Controller
     public function storeArchivesOfDocument(Request $request)
     {
         $dataArchivesOfDocument = $request->get('archivesOfDocument');
-        $documento = $request->get('document');
+        $documento = $request->get('document'); //id del documento
         $gestion = $request->get('year');
         $marcador = $request->get('marker');
 
-        /*
-        $idx = Treasure::getIdTransactionsByYear($gestion);
-        $idx = $idx[0]->{'ff_id_tramite'};
-        $nro_com = str_pad($idx, 6, "0", STR_PAD_LEFT);
-         */
-        $tip_tra = '10';
-
-        if ($paterno != "") {
-            $des_per = $paterno . " " . $materno . ", " . $nombres;
-        } else {
-            $des_per = $materno . "," . $nombres;
-        }
-
+        $marker = Archive::deleteArchivesByDocument($documento);
         foreach ($dataArchivesOfDocument as $item) {
             # code...
             //indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: ""
@@ -167,15 +154,7 @@ class ArchiveController extends Controller
             $id_tipo = $item['id_tipo'];
             $id_arch = $item['id_arch'];
             $descripcion = $item['descr'];
-            if ($indice == 0) {
-                //insertar
-                $marker = Archive::addArchivesByDocument($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion);
-                $id_tran = $marker[0]->{'id_tran'};
-            }
-            else{
-                //actualizar
-                $data = Treasure::updateArchivesByDocument($id_dia, $id_tran, -1, $cod_val, $ci_per, $des_per, -1, $gestion, $des_tra, $pre_uni);
-            }
+            $marker = Archive::addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion);
             $id_tran = 0;
         }
         return json_encode($marker);

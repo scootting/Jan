@@ -85,6 +85,7 @@ export default {
       dialogFormVisible: false,   //para el dialogo
       stateStore: "",             //estado para ver si se aniade o se edita
       document: {
+        id_doc:"",
         indice: 0,
         numeral: "",
         glosa: "",
@@ -98,7 +99,7 @@ export default {
   },
   mounted() {
     let app = this;
-    app.id_archive = app.$route.params.id;
+    app.id = app.$route.params.id;
     app.getTypesDocument();
     app.getDocumentsbyArchive();
   },
@@ -124,7 +125,7 @@ export default {
       let app = this;
       try {
         let response = await axios.post("/api/getDocumentsbyArchive", {
-          id: app.id_archive,
+          id: app.id,
           year: app.user.gestion,
         });
         app.documentsArchive = response.data;
@@ -144,6 +145,7 @@ export default {
       var newDocument = app.id;
       var newYear = app.user.gestion;
       try {
+        console.log(newArchivesOfDocument);
         let response = axios
           .post("/api/storeArchivesOfDocument", {
             archivesOfDocument: newArchivesOfDocument,
@@ -185,15 +187,27 @@ export default {
       else {
 
       }
-      this.document = { indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: "" };
+      this.document = {id_doc:"", indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: ""};
       console.log(this.documentsArchive);
+      this.OnUpdateIndex();
     },
 
     //  * Quita un documento ya existente
     DeleteDocumentOfArchive(idx, row) {
       this.documentsArchive.splice(idx, 1);
       console.log(this.documentsArchive);
+      this.OnUpdateIndex();
     },
+
+    //  * Actualiza el indice de la lista
+    OnUpdateIndex(){
+      let indice = 0;
+      this.documentsArchive.forEach(element => {
+        indice+=1;
+        element.indice = indice;
+      });      
+    },
+
     //* actualizar un componente al hacer la seleccion nueva *//
     OnchangeTypeDocument(idx) {
       console.log(this.document);

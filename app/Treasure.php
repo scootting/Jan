@@ -159,6 +159,7 @@ class Treasure extends Model
             "ci_per, des_per, idx, gestion, des_tra, imp_val) VALUES " .
             "('" . $id_dia . "','" . $id_tran . "','" . $nro_sol . "','" . $cod_val . "','" .
             $ci_per . "','" . $des_per . "','" . $idx . "','" . $gestion . "','" . $des_tra . "','" . $imp_val . "')";
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
