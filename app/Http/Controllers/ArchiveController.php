@@ -160,4 +160,27 @@ class ArchiveController extends Controller
         }
         return json_encode($marker);
     }
+
+    //  * A12. Obtiene la lista de documentos y contenedores que sean menor al actual y se encuentre libres
+    public function getDocumentAndFilesContainerById(Request $request)
+    {
+        $id_fileContainer = $request->get('id');
+        \Log::info($id_fileContainer);
+        $document = Archive::GetDataDocumentById($id_fileContainer);
+        /*
+        $data = Archive::GetDocumentAndFilesContainerById($id_fileContainer);
+        foreach ($data as $key => $item) {
+            # code...
+            if(item.tipo_rama = 'A')
+                $arrayDOCUMENTOS 
+            else {
+                $arrayCONTENENDORES
+            }
+        }
+        */
+        $fileContainer = Archive::GetDetaFileContainerById($id_fileContainer);
+        return json_encode(['documents' => $document, 'fileContainer' => $fileContainer]);
+    
+    }
+
 }

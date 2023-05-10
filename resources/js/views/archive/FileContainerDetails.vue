@@ -2,42 +2,65 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>detalle de documentos que contiene el contenedor</span>
+        <span>contenido del contenedor</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
       </div>
-      <el-row :gutter="50">
-        <el-col :span="24">
-          <div>
-            <el-table :data="documentsArchive" border style="width: 100%" size="small">
-              <el-table-column prop="indice" label="indice" align="right" width="100">
-              </el-table-column>
-              <el-table-column prop="fecha" label="fecha" width="100" align="center">
-              </el-table-column>
-              <el-table-column prop="numeral" label="no. documento" width="100" align="right">
-              </el-table-column>
-              <el-table-column prop="descr" label="documento" width="250" align="center">
-                <template slot-scope="scope">
-                  <el-tag size="medium">{{
-                    scope.row.descr
-                  }}</el-tag>
-                </template>
-              </el-table-column>
-              <el-table-column prop="glosa" label="descripcion" width="650">
-              </el-table-column>
-              <el-table-column align="right-center" label="operaciones" width="180">
-                <template slot-scope="scope">
-                  <el-button :disabled="scope.row.guardado === true" type="primary" plain size="mini"
-                    @click="initEditDocumentOfArchive(scope.$index, scope.row)">editar</el-button>
-                  <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
-                    @click="DeleteDocumentOfArchive(scope.$index, scope.row)">quitar</el-button>
-                </template>
-              </el-table-column>
-            </el-table>
+      <el-row :gutter="20">
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <span>documentos</span>
+            <div>
+              <el-table :data="documents" border style="width: 100%" size="small">
+                <el-table-column prop="fecha" label="fecha" width="100" align="center">
+                </el-table-column>
+                <el-table-column prop="id_doc" label="codigo" width="100" align="center">
+                  <template slot-scope="scope">
+                    <el-tag size="medium">{{
+                      scope.row.id_doc
+                    }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="glosa" label="glosa" width="300" align="right">
+                </el-table-column>
+                <el-table-column align="right-center" label="operaciones" width="120">
+                  <template slot-scope="scope">
+                    <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
+                      @click="initCheckDocuments(scope.$index, scope.row)">ver archivos</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="grid-content bg-purple">
+            <span>contenedores</span>
+            <div>
+              <el-table :data="fileContainer" border style="width: 100%" size="small">
+                <el-table-column prop="fecha" label="fecha" width="100" align="center">
+                </el-table-column>
+                <el-table-column prop="id_doc" label="codigo" width="250" align="center">
+                  <template slot-scope="scope">
+                    <el-tag size="medium">{{
+                      scope.row.id_doc
+                    }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="glosa" label="descripcion" width="100" align="right">
+                </el-table-column>
+                <el-table-column align="right-center" label="operaciones" width="150">
+                  <template slot-scope="scope">
+                    <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
+                      @click="initCheckFileContainers(scope.$index, scope.row)">ver contenido</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+
           </div>
         </el-col>
       </el-row>
       <!-- Form Add Document to Archive-->
-      <el-button type="primary" @click="initAddDocumentOfArchive" size="small">Agregar nuevo archivo</el-button>
       <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
         <el-form :model="document" label-width="220px" size="small">
 
@@ -68,7 +91,10 @@
         </span>
       </el-dialog>
       <!-- Form Add Document to Archive-->
-      <el-button type="success" @click="initStoreArchivesOfDocument" size="small">Guardar documento</el-button>
+      <el-button type="primary" size="small" @click="initAddDocumentOfArchive">Agregar documento</el-button>
+      <el-button type="success" @click="initStoreArchivesOfDocument" size="small">Agregar contenedor</el-button>
+      <el-button type="warning" @click="initStoreArchivesOfDocument" size="small">Guardar cambios en el
+        contenedor</el-button>
     </el-card>
   </div>
 </template>
@@ -78,11 +104,11 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
-      id: null,                    //identificador del documento 
-      documentsArchive: [],       //lista de archivos pertenecientes a un documento
-      typesDocument: [],          //diferentes tipos de archivos que pertenecen a un documento
-      dialogFormVisible: false,   //para el dialogo
-      stateStore: "",             //estado para ver si se aniade o se edita
+      id: null,                    //identificador del contenedor 
+      documents: [],               //lista de documentos
+      fileContainer: [],           //lista de contenedores
+      dialogFormVisible: false,    //para el dialogo
+      stateStore: "",              //estado para ver si se aniade o se edita
       document: {
         id_doc: "",
         indice: 0,
@@ -94,47 +120,52 @@ export default {
         descr: "",
         gestion: "",
       },
+      documentsArchive: [],
+      typesDocument: [],
     };
   },
-  mounted() {
+  mounted() { 
     let app = this;
     app.id = app.$route.params.id;
-    app.getTypesDocument();
-    app.getDocumentsbyArchive();
+    app.getDocumentAndFilesContainerById();
   },
   methods: {
     test() {
       alert("test");
     },
 
-    //  * A9. Obtiene la lista de tipos de documentos que pertenecen a un archivo
-    async getTypesDocument() {
+    //  * A12. Obtiene la lista de documentos y contenedores que sean menor al actual
+    async getDocumentAndFilesContainerById() {
       let app = this;
       try {
-        let response = await axios.post("/api/getTypesDocumentById", {
-          id_type: "A",
+        let response = await axios.post("/api/getDocumentAndFilesContainerById", {
+          id: app.id,
         });
-        app.typesDocument = response.data;
+        app.documents = response.data.documents;
+        app.fileContainer = response.data.fileContainer;
+        console.log(app.documents);
+        console.log(app.fileContainer);
       } catch (error) {
         console.log(error);
       }
     },
-    //  * A2. Obtiene la lista de documentos que pertenecen a un archivo
-    async getDocumentsbyArchive() {
-      let app = this;
-      try {
-        let response = await axios.post("/api/getDocumentsbyArchive", {
-          id: app.id,
-          year: app.user.gestion,
-        });
-        app.documentsArchive = response.data;
-        console.log(app.documentsArchive);
-      } catch (error) {
-        this.error = error.response.data;
-        app.$alert(this.error.message, "Gestor de errores", {
-          dangerouslyUseHTMLString: true,
-        });
-      }
+
+    initCheckDocuments(idx, row){
+      this.$router.push({
+        name: "archivedetails",
+        params: {
+          id: row.id_rama,
+        },
+      });
+    },
+
+    initCheckFileContainers(idx, row){
+      this.$router.push({
+        name: "filecontainerdetails",
+        params: {
+          id: row.id_rama,
+        },
+      });
     },
 
     //  * A11. Guardar los archivos del documento
@@ -162,7 +193,6 @@ export default {
         });
       };
     },
-
     //  * Inicia la edicion de un documento
     initEditDocumentOfArchive(idx, row) {
       this.document = row;
@@ -177,6 +207,7 @@ export default {
     },
 
     //  * Guarda los cambios de un nuevo documento sea nuevo o uno ya existente
+
     AddArchiveToDocument() {
       this.dialogFormVisible = false;
       if (this.stateStore == "añadir") {
