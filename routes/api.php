@@ -182,6 +182,8 @@ Route::group([
     Route::post('onStoreTypeArchive/', 'ArchiveController@onStoreTypeArchive');
     //  * A11. Guardar los archivos del documento
     Route::post('storeArchivesOfDocument', 'ArchiveController@storeArchivesOfDocument');
+    //  * A12. Obtiene la lista de documentos y contenedores que sean menor al actual
+    Route::post('getDocumentAndFilesContainerById', 'ArchiveController@getDocumentAndFilesContainerById');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes

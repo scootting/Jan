@@ -13,9 +13,9 @@ class Archive extends Model
     public static function GetArchivesByDescription($description, $type)
     {
         if ($description == '') {
-            $query = "select * from arch.doc d where id_tipo = '". $type ."' order by id_doc desc";
+            $query = "select * from arch.doc d where id_tipo = '" . $type . "' order by id_doc desc";
         } else {
-            $query = "select * from arch.doc d where d.glosa like '%" . $description . "%' and id_tipo = '". $type . "' order by id_doc desc";
+            $query = "select * from arch.doc d where d.glosa like '%" . $description . "%' and id_tipo = '" . $type . "' order by id_doc desc";
         }
 
         \Log::info("Esta es la consulta de archivos: " . $query);
@@ -97,15 +97,18 @@ class Archive extends Model
     }
 
     //  * A11. Guardar los archivos del documento
-    public static function addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion){
+    public static function addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion)
+    {
         //$query = "SELECT * FROM arch.ff_registrar_detalle_documento('" . $descripcion . "','" . $tipo . "')";
         $query = "INSERT INTO arch.doc2(id_doc, numeral, indice, glosa, fecha, id_arch, gestion, id_tipo) VALUES " .
-        "('" . $documento . "','" . $numeral . "','" . $indice . "','" . $glosa . "','" .$fecha . "','" . $id_arch . "','" . $gestion . "','" . $id_tipo . "')";
+            "('" . $documento . "','" . $numeral . "','" . $indice . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "','" . $id_tipo . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
 
     }
-    public static function deleteArchivesByDocument($documento){
+    //  * A11. Guardar los archivos del documento
+    public static function deleteArchivesByDocument($documento)
+    {
         $query = "delete from arch.doc2 where id_doc = '" . $documento . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;

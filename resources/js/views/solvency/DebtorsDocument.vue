@@ -76,15 +76,17 @@ export default {
             }
             app.loading = false;
         },
+
         initAddDebtorDocument() {
             this.$router.push({
-                name: "adddebtordocument",
+                name: "adddebts",
             });
         },
-        initEditDocument() {
+        
+        initRegularizeDocument(idx, row) { 
+            
+        }
 
-        },
-        initRegularizeDocument() { }
     },
 };
 </script>

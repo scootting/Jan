@@ -2,11 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-
 //Solvencias
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
 import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
 import EditDebtorDocument from './views/solvency/EditDebtorDocument.vue'
+
+import AddDebts from './views/solvency/AddDebts.vue'
+import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
+
 
 
 //documentacion: memoriales
@@ -255,6 +258,11 @@ const router = new VueRouter({
                 { path: 'debtordocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
                 //  * S3. Editar un nuevo documento de deudor
                 { path: 'debtordocument/edit/:id', name: 'editdebtordocument', component: EditDebtorDocument },
+
+                //  * S4. Agregar Deudas 
+                { path: 'debts/add', name: 'adddebts', component: AddDebts },
+                //  * S5. Regularizar Deudas
+                { path: 'debts/regularize/:id', name: 'regularizedebts', component: RegularizeDebts },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Modulo de Presupuestos Individuales
