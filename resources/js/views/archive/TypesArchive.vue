@@ -95,6 +95,7 @@ export default {
     },
     initEditTypesArchive(index, row) {
       console.log(index, row);
+      let cod = row.cod;
       this.$router.push({
         name: "edittypearchive",
         params: {

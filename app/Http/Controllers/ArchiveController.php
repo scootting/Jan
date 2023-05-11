@@ -134,7 +134,6 @@ class ArchiveController extends Controller
         }
         return json_encode($data);
     }
-
     //  * A11. Guardar los archivos del documento
     public function storeArchivesOfDocument(Request $request)
     {
