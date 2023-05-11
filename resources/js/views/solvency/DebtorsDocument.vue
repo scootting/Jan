@@ -8,26 +8,37 @@
             </div>
             <br />
             <div style="margin-top: 15px">
-                <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter"
-                    class="input-with-select">
+                <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search" @click="getDebtorsDocument(1)"></el-button>
                 </el-input>
             </div>
             <div>
                 <el-table v-loading="loading" :data="dataDebtors" style="width: 100%">
-                    <el-table-column prop="fecha" label="fecha"></el-table-column>
-                    <el-table-column prop="unidad" label="unidad"></el-table-column>
-                    <el-table-column prop="ci_per" label="dni"></el-table-column>
-                    <el-table-column prop="estado2" label="estado"></el-table-column>
-                    <el-table-column prop="des_per" label="descripcion"></el-table-column>
-                    <el-table-column prop="detalle" label="detalle"></el-table-column>
-                    <!--
-                    -->
-                    <el-table-column align="right" width="220">
+                    <el-table-column prop="fecha" label="fecha" width="100"></el-table-column>
+                    <el-table-column prop="idc" label="no." width="100" align="center">
                         <template slot-scope="scope">
+                            <el-tag size="medium">{{
+                                scope.row.idc
+                            }}</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="unidad" label="unidad" width="220"></el-table-column>
+                    <el-table-column prop="ci_per" label="carnet" width="150" align="center">
+                        <template slot-scope="scope">
+                            <el-tag size="medium">{{
+                                scope.row.ci_per
+                            }}</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="des_per" label="apellidos y nombres" width="250"></el-table-column>
+                    <el-table-column prop="detalle" label="detalle" width="400"></el-table-column>
+                    <el-table-column align="right" width="120">
+                        <template slot-scope="scope">
+                            <!--
                             <el-button @click="initEditDocument(scope.$index, scope.row)" type="primary" size="mini"
                                 plain>Editar</el-button>
-                            <el-button @click="initRegularizeDocument(scope.$index, scope.row)" type="danger" plain
+                            -->
+                            <el-button @click="initRegularizeDocument(scope.$index, scope.row)" type="warning" plain
                                 size="mini">Regularizar</el-button>
                         </template>
                     </el-table-column>
@@ -57,6 +68,7 @@ export default {
         this.getDebtorsDocument();
     },
     methods: {
+
         async getDebtorsDocument(page) {
             this.loading = true;
             let app = this;
@@ -82,11 +94,16 @@ export default {
                 name: "adddebts",
             });
         },
-        
-        initRegularizeDocument(idx, row) { 
-            
-        }
 
+        initRegularizeDocument(idx, row) {
+            console.log(row);
+            this.$router.push({
+                name: "regularizedebts",
+                params: {
+                    id: row.id_concepto,
+                },
+            });
+        }
     },
 };
 </script>

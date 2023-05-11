@@ -124,7 +124,7 @@ export default {
       typesDocument: [],
     };
   },
-  mounted() { 
+  mounted() {
     let app = this;
     app.id = app.$route.params.id;
     app.getDocumentAndFilesContainerById();
@@ -150,7 +150,7 @@ export default {
       }
     },
 
-    initCheckDocuments(idx, row){
+    initCheckDocuments(idx, row) {
       this.$router.push({
         name: "archivedetails",
         params: {
@@ -159,13 +159,24 @@ export default {
       });
     },
 
-    initCheckFileContainers(idx, row){
+    initCheckFileContainers(idx, row) {
       this.$router.push({
         name: "filecontainerdetails",
         params: {
           id: row.id_rama,
         },
       });
+    },
+
+    beforeRouteUpdate(to, from, next) {
+      alert("hola entramos");
+      next();
+      // called when the route that renders this component has changed.
+      // This component being reused (by using an explicit `key`) in the new route or not doesn't change anything.
+      // For example, for a route with dynamic params `/foo/:id`, when we
+      // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
+      // will be reused (unless you provided a `key` to `<router-view>`), and this hook will be called when that happens.
+      // has access to `this` component instance.
     },
 
     //  * A11. Guardar los archivos del documento

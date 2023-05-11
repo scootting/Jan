@@ -251,17 +251,17 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Solvencias
                 //  |--------------------------------------------------------------------------    
-                //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
+                //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
                 { path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument },
                 //{ path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument2 },
-                //  * S2. Agregar un nuevo documento de deudor
+                //  * SO2. Agregar un nuevo documento de deudor
                 { path: 'debtordocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
-                //  * S3. Editar un nuevo documento de deudor
+                //  * SO3. Editar un nuevo documento de deudor
                 { path: 'debtordocument/edit/:id', name: 'editdebtordocument', component: EditDebtorDocument },
 
-                //  * S4. Agregar Deudas 
+                //  * SO4. Agregar Deudas 
                 { path: 'debts/add', name: 'adddebts', component: AddDebts },
-                //  * S5. Regularizar Deudas
+                //  * SO5. Regularizar Deudas
                 { path: 'debts/regularize/:id', name: 'regularizedebts', component: RegularizeDebts },
 
                 //  |--------------------------------------------------------------------------

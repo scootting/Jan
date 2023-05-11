@@ -207,11 +207,12 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Solvencias
     //  |--------------------------------------------------------------------------    
-    //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
+    //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
     Route::post('getDebtorsDocument', 'SolvencyController@getDebtorsDocument');
-    //  * S2. Agregar un nuevo documento de deudor
+    //  * SO2. Agregar un nuevo documento de deudor
     Route::post('storeDebtorDocument', 'SolvencyController@storeDebtorDocument');
-
+        //  * SO3. Obtiene la informacion necesario del recurso solicitado por su id
+        Route::post('getDebtsById', 'SolvencyController@getDebtsById');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Granjas

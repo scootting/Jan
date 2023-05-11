@@ -30,24 +30,37 @@ router.beforeEach((to, from, next) => {
     }
 });
 
+/*router.beforeRouteUpdate((to, from, next)  => {
+    console.log("mis pruebas");
+    if (to.params.id !== from.params.id) {
+        fetchDetails(router.params.id)
+    }
+    // called when the route that renders this component has changed.
+    // This component being reused (by using an explicit `key`) in the new route or not doesn't change anything.
+    // For example, for a route with dynamic params `/foo/:id`, when we
+    // navigate between `/foo/1` and `/foo/2`, the same `Foo` component instance
+    // will be reused (unless you provided a `key` to `<router-view>`), and this hook will be called when that happens.
+    // has access to `this` component instance.
+});*/
+
 axios.interceptors.request.use(
-    function(config) {
+    function (config) {
         const auth_token = localStorage.getItem("access_token");
         if (auth_token) {
             config.headers.Authorization = `Bearer ${auth_token}`; //auth_token
         }
         return config;
     },
-    function(err) {
+    function (err) {
         return Promise.reject(err);
     }
 );
 
 axios.interceptors.response.use(
-    function(response) {
+    function (response) {
         return response;
     },
-    function(error) {
+    function (error) {
         // handle error
         if (error.response) {
             switch (error.response.status) {
