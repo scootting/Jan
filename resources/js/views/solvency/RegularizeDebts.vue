@@ -44,12 +44,6 @@
                                         v-model="pays.referencia">
                                     </el-input>
                                 </el-form-item>
-                                <el-form-item label="unidad" prop="details">
-                                    <el-input placeholder="" v-model="prg.details" class="input-with-select">
-                                        <el-button slot="append" icon="el-icon-search"
-                                            @click="initSearchPrg">BUSCAR</el-button>
-                                    </el-input>
-                                </el-form-item>
                                 <el-form-item label="responsable" prop="resp">
                                     <el-input placeholder="" v-model="manager.details" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"

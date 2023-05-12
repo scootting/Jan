@@ -223,7 +223,9 @@ const router = new VueRouter({
 
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
 
-                { path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive },
+                {
+                    path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive,
+                },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Almacenes
@@ -281,7 +283,7 @@ const router = new VueRouter({
                 { path: 'requestMemorial', name: 'requestmemorial', component: RequestMemorial },
                 //  * M2. Obtener la lista de memoriales para su verificacion 
                 { path: 'requestMemorial/:id', name: 'requestmemorialdetail', component: RequestMemorialDetail },
-            
+
             ],
             meta: {
                 requiresAuth: true,
