@@ -99,10 +99,12 @@ class Archive extends Model
     //  * A11. Guardar los archivos del documento
     public static function addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion)
     {
-        //$query = "SELECT * FROM arch.ff_registrar_detalle_documento('" . $descripcion . "','" . $tipo . "')";
-        $query = "INSERT INTO arch.doc2(id_doc, numeral, indice, glosa, fecha, id_arch, gestion, id_tipo) VALUES " .
-            "('" . $documento . "','" . $numeral . "','" . $indice . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "','" . $id_tipo . "')";
-        $data = collect(DB::select(DB::raw($query)));
+        $query = "select * from arch.ff_registrar_detalle_documento('" . $documento . "','" . $numeral . "','" . $indice . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "','" . $id_tipo . "')";
+        //$query = "INSERT INTO arch.doc2(id_doc, numeral, indice, glosa, fecha, id_arch, gestion, id_tipo) VALUES " .
+            //"('" . $documento . "','" . $numeral . "','" . $indice . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "','" . $id_tipo . "')";
+        
+       
+            $data = collect(DB::select(DB::raw($query)));
         return $data;
 
     }
