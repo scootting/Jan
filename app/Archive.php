@@ -130,5 +130,26 @@ class Archive extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
+    public static function GetDocumentFree($id)
+    {
+        $query = "select * from arch.doc d left join arch.doc_con e on d.id = e.id_rama where e.id_rama is null " .
+                  "and id_tipo = 'A'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    public static function GetContainerFree($id)
+    {
+        $query = "select * from arch.doc d left join arch.doc_con e on d.id = e.id_raiz where e.id_raiz is null " .
+                  "and id_tipo <> 'A'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+        /*
+        $query = "select * from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
+        where b.id_raiz = '" . $id . "' and b.tipo_rama <> 'A'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;*/
+    }
+
 
 }

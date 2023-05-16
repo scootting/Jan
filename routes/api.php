@@ -183,6 +183,8 @@ Route::group([
     Route::post('storeArchivesOfDocument', 'ArchiveController@storeArchivesOfDocument');
     //  * A12. Obtiene la lista de documentos y contenedores que sean menor al actual
     Route::post('getDocumentAndFilesContainerById', 'ArchiveController@getDocumentAndFilesContainerById');
+    //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
+    Route::post('getDocumentAndContainerFree', 'ArchiveController@getDocumentAndContainerFree');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes

@@ -182,5 +182,15 @@ class ArchiveController extends Controller
         return json_encode(['documents' => $document, 'fileContainer' => $fileContainer]);
     
     }
+    
+    //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
+    public function getDocumentAndContainerFree(Request $request)
+    {
+        $id_fileContainer = $request->get('id');
+        \Log::info($id_fileContainer);
+        $dataDocuments = Archive::GetDocumentFree($id_fileContainer);
+        $dataContainers = Archive::GetContainerFree($id_fileContainer);
+        return json_encode(['dataDocuments' => $dataDocuments, 'dataContainers' => $dataContainers]);   
+    }
 
 }
