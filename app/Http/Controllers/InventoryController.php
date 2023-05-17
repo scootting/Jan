@@ -58,11 +58,62 @@ class InventoryController extends Controller
                     $reportName = 'todo_detallado_1'; //funciona
                     break;
             }
-            $report = JSRClient::GetReportWithParameters($reportName, $controls);
+            $report = JSRClient::GetReportWithParametersXML($reportName, $controls);
             return $report;
         }
     }
 
+    public function getReportXML(Request $request)
+    {
+        $tip_repo = $request->get('reporte');
+        $ofc_cod = $request->get('ofc_cod');
+        $tipo_filtro = $request->get('filtroTipo');
+        $valor = $request->get('filtroValor');
+        if ($tip_repo == 'general') {
+            switch ($tipo_filtro) {
+                case 'cargo':
+                    $controls = array('p_car_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'car_general_1'; //funciona
+                    break;
+                case 'subUnidad':
+                    $controls = array('p_sub_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'sub_ofc_general_1'; //funciona
+                    break;
+                    $controls = array('p_resp_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'resp_general_1'; //funciona
+                    break;
+                case 'responsable':
+                    break;
+                case 'todo':
+                    $controls = array('p_unidad' => $ofc_cod);
+                    $reportName = 'todo_general'; //funciona
+                    break;
+            }
+            $report = JSRClient::GetReportWithParametersXML($reportName, $controls);
+            return $report;
+        } else { //detallado
+            switch ($tipo_filtro) {
+                case 'cargo':
+                    $controls = array('p_car_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'car_detallado_1'; //funciona
+                    break;
+                case 'subUnidad':
+                    $controls = array('p_sub_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'sub_ofc_detallado_1'; //funciona
+                    break;
+                case 'responsable':
+                    $controls = array('p_resp_unidad' => implode(',', $valor), 'p_unidad' => $ofc_cod);
+                    $reportName = 'resp_detallado_1'; //funciona
+                    break;
+                case 'todo':
+                    $controls = array('p_unidad' => $ofc_cod);
+                    $reportName = 'todo_detallado_1'; //funciona
+                    break;
+            }
+            $report = JSRClient::GetReportWithParameters($reportName, $controls);
+            return $report;
+        }
+    }    
     //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
     //  * {year: año , user: usuario que esta creando el inventario}
     //

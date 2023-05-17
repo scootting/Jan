@@ -46,6 +46,7 @@ Route::group([
     Route::get('inventarioDetalle/', 'InventoryController@getReportDetalle');
     Route::get('inventarioGeneral/', 'InventoryController@getReportGeneral');
     Route::get('generarReporte/', 'InventoryController@getReport');
+    Route::get('generarReporte2/', 'InventoryController@getReportXML');
 
     //rutas de inventarios 2
     Route::get('inventory2/unidad', 'InventoryController@getUnidad');
