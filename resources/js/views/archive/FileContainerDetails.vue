@@ -111,13 +111,15 @@ export default {
     app.getDocumentAndFilesContainerById();
     app.getDocumentAndContainerFree();
   },
+  /*
   beforeRouteUpdate(to, from, next) {
     if (to.params.id !== from.params.id) {
       this.id = to.params.id;
       this.getDocumentAndFilesContainerById();
     }
     next();
-  },
+  },*/
+
   methods: {
     test() {
       alert("test");
@@ -153,6 +155,7 @@ export default {
     },
     //va a ver los archivos de un documento
     initCheckDocuments(idx, row) {
+      alert(row);
       this.$router.push({
         name: "archivedetails",
         params: {
@@ -172,9 +175,6 @@ export default {
 
     handleSelectionChange(val) {
       this.selected = val;
-      /*
-      console.log("Seleccionado Array");
-      console.log(this.selected);*/
     },
 
     AddArchiveToContainer() {
