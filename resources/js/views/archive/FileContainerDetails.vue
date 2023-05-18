@@ -159,7 +159,7 @@ export default {
       this.$router.push({
         name: "archivedetails",
         params: {
-          id: row.id_rama,
+          id: row.id,
         },
       });
     },
@@ -168,7 +168,7 @@ export default {
       this.$router.push({
         name: "filecontainerdetails",
         params: {
-          id: row.id_rama,
+          id: row.id,
         },
       });
     },
