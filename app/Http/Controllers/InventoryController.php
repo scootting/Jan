@@ -58,7 +58,7 @@ class InventoryController extends Controller
                     $reportName = 'todo_detallado_1'; //funciona
                     break;
             }
-            $report = JSRClient::GetReportWithParametersXML($reportName, $controls);
+            $report = JSRClient::GetReportWithParameters($reportName, $controls);
             return $report;
         }
     }
@@ -87,9 +87,10 @@ class InventoryController extends Controller
                 case 'todo':
                     $controls = array('p_unidad' => $ofc_cod);
                     $reportName = 'todo_general'; //funciona
+                    \Log::info("Inventario Todo");
                     break;
             }
-            $report = JSRClient::GetReportWithParametersXML($reportName, $controls);
+            $report = JSRClient::GetReportWithParametersXLS($reportName, $controls);
             return $report;
         } else { //detallado
             switch ($tipo_filtro) {
@@ -108,9 +109,10 @@ class InventoryController extends Controller
                 case 'todo':
                     $controls = array('p_unidad' => $ofc_cod);
                     $reportName = 'todo_detallado_1'; //funciona
+                    \Log::info("Inventario Detallado");
                     break;
             }
-            $report = JSRClient::GetReportWithParameters($reportName, $controls);
+            $report = JSRClient::GetReportWithParametersXLS($reportName, $controls);
             return $report;
         }
     }    

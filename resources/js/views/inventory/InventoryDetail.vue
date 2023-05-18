@@ -201,9 +201,7 @@ export default {
         window.open(url);
       });
     },
-
     GenerarReporte2() {
-      let fileName = "Holas";
       axios({
         url: "/api/generarReporte2/",
         params: {
@@ -213,46 +211,24 @@ export default {
           filtroValor: this.filtro.values,
         },
         method: "GET",
-        responseType: "arraybuffer",
+        responseType: "",
       }).then((response) => {
-        const url = URL.createObjectURL(new Blob([response.data], {
-          type: 'application/vnd.ms-excel'
-        }))
-        const link = document.createElement('a')
-        link.href = url
-        link.setAttribute('download', fileName)
-        document.body.appendChild(link)
-        link.click()
-        /*
-        let blob = new Blob([response.data], {
-          type: "application/xls",
-        });
-        let link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        let url = window.URL.createObjectURL(blob);
-        window.open(url);*/
+        const link = document.createElement('a');
+        // Tell the browser to associate the response data to
+        // the URL of the link we created above.
+        link.href = window.URL.createObjectURL(
+          new Blob([response.data])
+        );
+        // Tell the browser to download, not render, the file.
+        link.setAttribute('download', 'report.xlsx');
+
+        // Place the link in the DOM.
+        document.body.appendChild(link);
+
+        // Make the magic happen!
+        link.click();
       });
     },
-
-    reportExcel(val) {
-      axios
-        // add responseType
-        .get("/algn/api/report/" + val, { responseType: 'blob' })
-        .then((res) => {
-          const url = window.URL.createObjectURL(new Blob([res]));
-          const a = document.createElement("a");
-          a.href = url;
-          const filename = `file.xlsx`;
-          a.setAttribute('download', filename);
-          document.body.appendChild(link);
-          a.click();
-          a.remove();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-
     ReporteGeneral() {
       let ciResp;
       if (this.respSelectCI != -1) {
