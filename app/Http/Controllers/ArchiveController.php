@@ -179,7 +179,9 @@ class ArchiveController extends Controller
         }
         */
         $fileContainer = Archive::GetDetaFileContainerById($id_fileContainer);
-        return json_encode(['documents' => $document, 'fileContainer' => $fileContainer]);
+        // *A15 Obtiene un documento o contenedor o ubiacion por su id
+        $container = Archive::GetFileContainerById($id_fileContainer);
+        return json_encode(['documents' => $document, 'fileContainer' => $fileContainer, 'container' => $container]);
     
     }
     
@@ -191,6 +193,39 @@ class ArchiveController extends Controller
         $dataDocuments = Archive::GetDocumentFree($id_fileContainer);
         $dataContainers = Archive::GetContainerFree($id_fileContainer);
         return json_encode(['dataDocuments' => $dataDocuments, 'dataContainers' => $dataContainers]);   
+    }
+
+    //  * A14. Guardar los documentos y contenedores en el contenedor
+    public function storeDocumentsAndContainers(Request $request)
+    {
+        $documentos = $request->get('documents'); // matrices
+        $contenedores = $request->get('fileContainer'); //matrices
+        $usuario = $request->get('username');//dato
+        $gestion = $request->get('year');//dato
+        $id_raiz = $request->get('id_container');//dato
+        $id_tipo_raiz = $request->get('id_type');//dato
+        //$contenedor = $request->get('container');//array
+        $marcador = $request->get('marker');
+
+        //$id_raiz = $contenedor['id'];//array
+        //$id_tipo_raiz = $contenedor['id_tipo'];//dato
+
+        $marker = Archive::deleteDocumentsAndContainerFromContainer($id_raiz);
+        foreach ($documentos as $item) {
+            \log::info($item);
+            $id_rama = $item['id'];
+            $id_tipo_rama = strtoupper($item['id_tipo']);
+            $marker = Archive::AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion);
+            $id_tran = 0;
+        }
+        foreach ($contenedores as $item) {
+            \log::info($item);
+            $id_rama = $item['id'];
+            $id_tipo_rama = strtoupper($item['id_tipo']);
+            $marker = Archive::AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion);
+            $id_tran = 0;
+        }
+        return json_encode($marker);
     }
 
 }

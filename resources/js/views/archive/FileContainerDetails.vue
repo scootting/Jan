@@ -6,6 +6,9 @@
         <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
       </div>
       <el-row :gutter="20">
+        <el-col :span="24">
+          <p>{{container}}</p>
+        </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple">
             <span>documentos</span>
@@ -91,6 +94,7 @@ export default {
     return {
       user: this.$store.state.user,
       id: null,                    //identificador del contenedor 
+      container:{},                //informacion del contenedor 
       documents: [],               //lista de documentos que pertenecen al contenedor
       fileContainer: [],           //lista de contenedores que pertenecen al contenedor
       dialogFormVisible: false,    //para el dialogo
@@ -127,6 +131,8 @@ export default {
         });
         app.documents = response.data.documents;
         app.fileContainer = response.data.fileContainer;
+        app.container = response.data.container[0];
+        console.log(app.documents);
       } catch (error) {
         console.log(error);
       }
@@ -190,19 +196,19 @@ export default {
       this.dialogFormVisible = true;
     },
 
-    //  * A14. Guardar los archivos del contenedor
+    //  * A14. Guardar los documentos y contenedores en el contenedor
     async initStoreDocumentsAndContainers() {
       var app = this;
-      var newArchivesOfDocument = app.documentsArchive;
-      var newDocument = app.id;
-      var newYear = app.user.gestion;
       try {
-        console.log(newArchivesOfDocument);
         let response = axios
-          .post("/api/storeArchivesOfDocument", {
-            archivesOfDocument: newArchivesOfDocument,
-            document: newDocument,
-            year: newYear,
+          .post("/api/storeDocumentsAndContainers", {
+            documents: app.documents,
+            fileContainer: app.fileContainer,
+            username: app.user.usuario,
+            year: app.user.gestion,
+            id_container: app.container.id,
+            id_type: app.container.id_tipo,
+            //container: app.container,
             marker: "registrar",
           });
         console.log(response);
@@ -210,6 +216,7 @@ export default {
           dangerouslyUseHTMLString: true
         });
       } catch (error) {
+        console.log(error);
         app.$alert("No se registro nada", 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
         });

@@ -232,10 +232,26 @@ export default {
         let url = window.URL.createObjectURL(blob);
         window.open(url);*/
       });
-
-
     },
 
+    reportExcel(val) {
+      axios
+        // add responseType
+        .get("/algn/api/report/" + val, { responseType: 'blob' })
+        .then((res) => {
+          const url = window.URL.createObjectURL(new Blob([res]));
+          const a = document.createElement("a");
+          a.href = url;
+          const filename = `file.xlsx`;
+          a.setAttribute('download', filename);
+          document.body.appendChild(link);
+          a.click();
+          a.remove();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
 
     ReporteGeneral() {
       let ciResp;

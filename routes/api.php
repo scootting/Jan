@@ -186,6 +186,8 @@ Route::group([
     Route::post('getDocumentAndFilesContainerById', 'ArchiveController@getDocumentAndFilesContainerById');
     //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
     Route::post('getDocumentAndContainerFree', 'ArchiveController@getDocumentAndContainerFree');
+    //  * A14. Guardar los documentos y contenedores en el contenedor
+    Route::post('storeDocumentsAndContainers', 'ArchiveController@storeDocumentsAndContainers');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes

@@ -39,7 +39,7 @@ class JSRClient
             self::$jasperPass,
             ""
         );
-        $report = $client->reportService()->runReport('/reports/interactive/'.$nameReport, 'xls', null, null, $controls);
+        $report = $client->reportService()->runReport('/reports/interactive/'.$nameReport, 'xlsx', null, null, $controls);
         return $report; 
     }
 
