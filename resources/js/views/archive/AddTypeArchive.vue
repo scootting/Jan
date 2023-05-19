@@ -54,6 +54,9 @@ export default {
           marker: 'añadir'
         });
         alert("el archivo se guardo correctamente");
+        this.$router.push({
+          name: "typesarchive",
+        });
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {
@@ -66,7 +69,5 @@ export default {
 </script>
   
   <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
+<style scoped></style>
   

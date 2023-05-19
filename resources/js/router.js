@@ -57,6 +57,7 @@ import Layout from './views/Layout'
 //archivos
 import Archive from './views/archive/Archive'
 import ArchiveDetails from './views/archive/ArchiveDetails'
+import AddArchiveDetails from './views/archive/AddArchiveDetails'
 import FileContainer from './views/archive/FileContainer'
 import FileContainerDetails from './views/archive/FileContainerDetails'
 import AddArchive from './views/archive/AddArchive'
@@ -215,6 +216,7 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
                 { path: 'archive', name: 'archive', component: Archive },
+                { path: 'archive/add', name: 'addarchivedetails', component: AddArchiveDetails },
                 { path: 'archive/:id', name: 'archivedetails', component: ArchiveDetails },
                 { path: 'filecontainer', name: 'filecontainer', component: FileContainer },
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },

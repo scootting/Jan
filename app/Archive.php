@@ -113,6 +113,15 @@ class Archive extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    //  * A11. Guardar los archivos del documento
+    public static function AddHeaderOfDocument($id_tipo, $glosa, $fecha, $id_arch, $gestion){
+        //insert into arch.doc( ... ) values ( ... ) RETURNING id_doc
+        $query = "INSERT INTO arch.doc(id_tipo, glosa, fecha, id_arch, gestion) VALUES " .
+            "('" . $id_tipo . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "') RETURNING id";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
 
     //  * A12. Obtiene la lista de documentos y contenedores que sean menor al actual y se encuentre libres
     //  * parametros {id: identificador del contenedor raiz }

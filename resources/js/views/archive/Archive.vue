@@ -5,7 +5,7 @@
       <div slot="header" class="clearfix">
         <span>archivos</span>
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-          @click="getArchives(1)">nuevo documento</el-button>
+          @click="addNewArchivesByDocument">nuevo documento</el-button>
       </div>
       <div style="margin-top: 15px">
         <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
@@ -86,29 +86,18 @@ export default {
           });
         });
     },
-
+    //  * Agrega archivos a un nuevo documento.
+    addNewArchivesByDocument(){
+      this.$router.push({
+        name: "addarchivedetails",
+      });
+    },
+    //  * Edita los archivos de un nuevo documento.
     getArchivesByDocument(id) {
       this.$router.push({
         name: "archivedetails",
         params: {
           id: id,
-        },
-      });
-    },
-
-    editInventory(index, row) {
-      this.$router.push({
-        name: "editinventory2",
-        params: {
-          id: row.id,
-        },
-      });
-    },
-    initAddArchive() {
-      this.$router.push({
-        name: "addarchive",
-        params: {
-          type: "Documento",
         },
       });
     },
