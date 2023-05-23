@@ -201,6 +201,40 @@ export default {
         window.open(url);
       });
     },
+
+    /*
+    GenerarReporte2() {
+      let fileName = "Holas";
+      axios({
+        url: "/api/generarReporte2/",
+        params: {
+          ofc_cod: this.oficina.cod_soa,
+          reporte: this.reporte.tipo,
+          filtroTipo: this.filtro.tipo,
+          filtroValor: this.filtro.values,
+        },
+        method: "GET",
+        responseType: "arraybuffer",
+      }).then((response) => {
+        const url = URL.createObjectURL(new Blob([response.data], {
+          type: 'application/vnd.ms-excel'
+        }))
+        const link = document.createElement('a')
+        link.href = url
+        link.setAttribute('download', fileName)
+        document.body.appendChild(link)
+        link.click()
+        /*
+        let blob = new Blob([response.data], {
+          type: "application/xls",
+        });
+        let link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        let url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
+    },
+    */
     GenerarReporte2() {
       axios({
         url: "/api/generarReporte2/",
@@ -211,7 +245,7 @@ export default {
           filtroValor: this.filtro.values,
         },
         method: "GET",
-        responseType: "",
+        responseType: "blob",
       }).then((response) => {
         const link = document.createElement('a');
         // Tell the browser to associate the response data to
