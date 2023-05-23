@@ -46,6 +46,7 @@ Route::group([
     Route::get('inventarioDetalle/', 'InventoryController@getReportDetalle');
     Route::get('inventarioGeneral/', 'InventoryController@getReportGeneral');
     Route::get('generarReporte/', 'InventoryController@getReport');
+    Route::get('generarReporte2/', 'InventoryController@getReportXML');
 
     //rutas de inventarios 2
     Route::get('inventory2/unidad', 'InventoryController@getUnidad');
@@ -122,7 +123,6 @@ Route::group([
     Route::post('getSaleInLineDetail', 'TreasureController@getSaleInLineDetail');
     //  * T4. Obtener el detalle de una solicitud utilizando su id.
     Route::post('getDataRequestById', 'TreasureController@getDataRequestById');
-    
 
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
@@ -174,16 +174,20 @@ Route::group([
     Route::post('fileContainer', 'ArchiveController@getFileContainerByDescription');
     //  * A7. Guardar un nuevo archivo, contenedor o ubicacion
     Route::post('file/', 'ArchiveController@storeFileContainer');
-    //  * A8. Obtiene un tipo de archivo en especifico 
+    //  * A8. Obtiene un tipo de archivo en especifico
     Route::get('typeArchive/{id}', 'ArchiveController@getTypeArchiveById');
     //  * A9. Obtiene la lista de tipos de documentos que pertenecen a un archivo
     Route::post('getTypesDocumentById/', 'ArchiveController@getTypesDocumentById');
-    //  * A10. Guardar un nuevo tipo de archivo 
+    //  * A10. Guardar un nuevo tipo de archivo
     Route::post('onStoreTypeArchive/', 'ArchiveController@onStoreTypeArchive');
     //  * A11. Guardar los archivos del documento
     Route::post('storeArchivesOfDocument', 'ArchiveController@storeArchivesOfDocument');
     //  * A12. Obtiene la lista de documentos y contenedores que sean menor al actual
     Route::post('getDocumentAndFilesContainerById', 'ArchiveController@getDocumentAndFilesContainerById');
+    //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
+    Route::post('getDocumentAndContainerFree', 'ArchiveController@getDocumentAndContainerFree');
+    //  * A14. Guardar los documentos y contenedores en el contenedor
+    Route::post('storeDocumentsAndContainers', 'ArchiveController@storeDocumentsAndContainers');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes
@@ -197,7 +201,6 @@ Route::group([
 
     Route::post('addMaterial', 'StoreController@storeMaterial');
 
-
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el sistema de Presupuestos Individuales
     //  |--------------------------------------------------------------------------
@@ -206,17 +209,18 @@ Route::group([
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Solvencias
-    //  |--------------------------------------------------------------------------    
-    //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
+    //  |--------------------------------------------------------------------------
+    //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
     Route::post('getDebtorsDocument', 'SolvencyController@getDebtorsDocument');
-    //  * S2. Agregar un nuevo documento de deudor
+    //  * SO2. Agregar un nuevo documento de deudor
     Route::post('storeDebtorDocument', 'SolvencyController@storeDebtorDocument');
-
+    //  * SO3. Obtiene la informacion necesario del recurso solicitado por su id
+    Route::post('getDebtsById', 'SolvencyController@getDebtsById');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Granjas
-    //  |--------------------------------------------------------------------------    
-    //  * G1. Obtiene la lista de los dias de venta de los productos de la granja 
+    //  |--------------------------------------------------------------------------
+    //  * G1. Obtiene la lista de los dias de venta de los productos de la granja
     Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
     //  * G2. Agregar un nuevo dia de venta de los productos de la granja
     Route::post('storeFarmSaleDays', 'FarmController@storeFarmSaleDays');
@@ -226,9 +230,9 @@ Route::group([
     Route::post('getVoucherNumber', 'FarmController@getVoucherNumber');
     //  * G5. Obtiene un dia de venta de los productos de la granja
     Route::post('getFarmSaleDayById', 'FarmController@getFarmSaleDayById');
-    //  * G6. Obtiene un producto a traves de su codigo 
+    //  * G6. Obtiene un producto a traves de su codigo
     Route::post('getProductForSale', 'FarmController@getProductForSale');
-    //  * G7. Obtiene el numero de comprobante para la venta actual 
+    //  * G7. Obtiene el numero de comprobante para la venta actual
     Route::post('getCurrentVoucherNumber', 'FarmController@getCurrentVoucherNumber');
     //  * G8. Imprimir el reporte de la venta actual.
     Route::get('customerSaleDetailReport/', 'FarmController@customerSaleDetailReport');
@@ -241,14 +245,13 @@ Route::group([
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales
-    //  |--------------------------------------------------------------------------    
-    //  * M1. Obtener la lista de memoriales para su verificacion 
+    //  |--------------------------------------------------------------------------
+    //  * M1. Obtener la lista de memoriales para su verificacion
     Route::post('getRequestsMemorial', 'DocumentController@getRequestsMemorial');
     //  * M2. Obtiene el memorial por su id y gestion
     Route::post('getRequestMemorialById', 'DocumentController@getRequestMemorialById');
-    //  * M3. Imprimir el memorial seleccionado              
+    //  * M3. Imprimir el memorial seleccionado
     Route::get('reportRequestMemorial', 'DocumentController@reportRequestMemorial');
-
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend

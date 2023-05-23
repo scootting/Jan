@@ -57,6 +57,7 @@ import Layout from './views/Layout'
 //archivos
 import Archive from './views/archive/Archive'
 import ArchiveDetails from './views/archive/ArchiveDetails'
+import AddArchiveDetails from './views/archive/AddArchiveDetails'
 import FileContainer from './views/archive/FileContainer'
 import FileContainerDetails from './views/archive/FileContainerDetails'
 import AddArchive from './views/archive/AddArchive'
@@ -215,6 +216,7 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
                 { path: 'archive', name: 'archive', component: Archive },
+                { path: 'archive/add', name: 'addarchivedetails', component: AddArchiveDetails },
                 { path: 'archive/:id', name: 'archivedetails', component: ArchiveDetails },
                 { path: 'filecontainer', name: 'filecontainer', component: FileContainer },
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
@@ -223,7 +225,9 @@ const router = new VueRouter({
 
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
 
-                { path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive },
+                {
+                    path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive,
+                },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Almacenes
@@ -251,17 +255,17 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Solvencias
                 //  |--------------------------------------------------------------------------    
-                //  * S1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
+                //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
                 { path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument },
                 //{ path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument2 },
-                //  * S2. Agregar un nuevo documento de deudor
+                //  * SO2. Agregar un nuevo documento de deudor
                 { path: 'debtordocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
-                //  * S3. Editar un nuevo documento de deudor
+                //  * SO3. Editar un nuevo documento de deudor
                 { path: 'debtordocument/edit/:id', name: 'editdebtordocument', component: EditDebtorDocument },
 
-                //  * S4. Agregar Deudas 
+                //  * SO4. Agregar Deudas 
                 { path: 'debts/add', name: 'adddebts', component: AddDebts },
-                //  * S5. Regularizar Deudas
+                //  * SO5. Regularizar Deudas
                 { path: 'debts/regularize/:id', name: 'regularizedebts', component: RegularizeDebts },
 
                 //  |--------------------------------------------------------------------------
@@ -281,7 +285,7 @@ const router = new VueRouter({
                 { path: 'requestMemorial', name: 'requestmemorial', component: RequestMemorial },
                 //  * M2. Obtener la lista de memoriales para su verificacion 
                 { path: 'requestMemorial/:id', name: 'requestmemorialdetail', component: RequestMemorialDetail },
-            
+
             ],
             meta: {
                 requiresAuth: true,

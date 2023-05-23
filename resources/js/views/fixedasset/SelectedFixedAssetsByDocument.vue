@@ -4,31 +4,16 @@
       <div slot="header" class="clearfix">
         <span>activos fijos para el documento: {{ nro_doc }}</span>
         <el-button-group style="text-align: right; float: right">
-          <el-button
-            size="small"
-            type="primary"
-            icon="el-icon-printer"
-            @click="initPrintSelectedFixedAssets"
-            >imprimir</el-button
-          >
-          <el-button
-            size="small"
-            type="default"
-            icon="el-icon-tickets"
-            @click="initPrintSelectedFixedAssetsv2"
-            >imprimir</el-button
-          >
+          <el-button size="small" type="primary" icon="el-icon-printer"
+            @click="initPrintSelectedFixedAssets">imprimir</el-button>
+          <el-button size="small" type="default" icon="el-icon-tickets"
+            @click="initPrintSelectedFixedAssetsv2">imprimir</el-button>
         </el-button-group>
       </div>
       <br />
       <div>
-        <el-table
-          v-loading="loading"
-          :data="dataFixedAssets"
-          style="width: 100%"
-          border
-          @selection-change="handleSelectionChange"
-        >
+        <el-table v-loading="loading" :data="dataFixedAssets" style="width: 100%" border
+          @selection-change="handleSelectionChange">
           <el-table-column type="selection"> </el-table-column>
           <el-table-column prop="codigo" label="codigo">
             <template slot-scope="scope">

@@ -32,6 +32,17 @@ class JSRClient
         return $report; 
     }
 
+    public static function GetReportWithParametersXLS($nameReport, $controls){
+        $client = new Client(
+            self::$URLServer,
+            self::$jasperUser,
+            self::$jasperPass,
+            ""
+        );
+        $report = $client->reportService()->runReport('/reports/interactive/'.$nameReport, 'xlsx', null, null, $controls);
+        return $report; 
+    }
+
     public static function GetReport($nameReport){
         $client = new Client(
             self::$URLServer,

@@ -6,6 +6,9 @@
         <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
       </div>
       <el-row :gutter="20">
+        <el-col :span="24">
+          <p>{{container}}</p>
+        </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple">
             <span>documentos</span>
@@ -56,44 +59,30 @@
                 </el-table-column>
               </el-table>
             </div>
-
           </div>
         </el-col>
       </el-row>
-      <!-- Form Add Document to Archive-->
+
+      <!-- Form Add Document and Containers -->
       <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
-        <el-form :model="document" label-width="220px" size="small">
-
-          <el-form-item label="tipo de documento">
-            <el-select v-model="document.descr" value-key="descr" size="small"
-              placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument">
-              <el-option v-for="item in typesDocument" :key="item.id" :label="item.descr" :value="item.id">
-              </el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item label="Numero del documento">
-            <el-input v-model="document.numeral" autocomplete="off"></el-input>
-          </el-form-item>
-          <el-form-item label="fecha del registro">
-            <el-date-picker type="date" v-model="document.fecha" placeholder="seleccione una fecha" style="width: 100%"
-              format="yyyy/MM/dd" value-format="yyyy-MM-dd"></el-date-picker>
-          </el-form-item>
-          <el-form-item label="glosa o descripcion">
-            <el-input type="textarea" v-model="document.glosa" autocomplete="off"></el-input>
-          </el-form-item>
-          <!--
-        -->
-        </el-form>
+        <el-table :data="data" style="width: 100%" border @selection-change="handleSelectionChange">
+          <el-table-column type="selection"> </el-table-column>
+          <el-table-column prop="id_doc" label="no. de documento">
+            <template slot-scope="scope">
+              <el-tag size="success" type="info">{{ scope.row.id_doc }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="glosa" label="glosa"></el-table-column>
+        </el-table>
         <span slot="footer" class="dialog-footer">
-          <el-button type="primary" size="small" plain @click="AddArchiveToDocument">Confirmar</el-button>
+          <el-button type="primary" size="small" plain @click="AddArchiveToContainer">Confirmar</el-button>
           <el-button type="danger" size="small" plain @click="dialogFormVisible = false">Cancelar</el-button>
         </span>
       </el-dialog>
       <!-- Form Add Document to Archive-->
-      <el-button type="primary" size="small" @click="initAddDocumentOfArchive">Agregar documento</el-button>
-      <el-button type="success" @click="initStoreArchivesOfDocument" size="small">Agregar contenedor</el-button>
-      <el-button type="warning" @click="initStoreArchivesOfDocument" size="small">Guardar cambios en el
+      <el-button type="primary" size="small" @click="initAddDocument">Agregar documento</el-button>
+      <el-button type="success" @click="initAddContainer" size="small">Agregar contenedor</el-button>
+      <el-button type="warning" @click="initStoreDocumentsAndContainers" size="small">Guardar cambios en el
         contenedor</el-button>
     </el-card>
   </div>
@@ -105,35 +94,36 @@ export default {
     return {
       user: this.$store.state.user,
       id: null,                    //identificador del contenedor 
-      documents: [],               //lista de documentos
-      fileContainer: [],           //lista de contenedores
+      container:{},                //informacion del contenedor 
+      documents: [],               //lista de documentos que pertenecen al contenedor
+      fileContainer: [],           //lista de contenedores que pertenecen al contenedor
       dialogFormVisible: false,    //para el dialogo
       stateStore: "",              //estado para ver si se aniade o se edita
-      document: {
-        id_doc: "",
-        indice: 0,
-        numeral: "",
-        glosa: "",
-        fecha: "",
-        id_tipo: 'A',
-        id_arch: null,
-        descr: "",
-        gestion: "",
-      },
-      documentsArchive: [],
-      typesDocument: [],
+      dataDocuments: [],            //la posible lista de documentos que no estan en otro contenedor
+      dataContainers: [],            //la posible lista de contenedores que no estan relacionados
+      data: [],
+      selected: [],         //documentos nuevos selecccionados
     };
   },
-  mounted() { 
+  mounted() {
     let app = this;
     app.id = app.$route.params.id;
     app.getDocumentAndFilesContainerById();
+    app.getDocumentAndContainerFree();
   },
+  /*
+  beforeRouteUpdate(to, from, next) {
+    if (to.params.id !== from.params.id) {
+      this.id = to.params.id;
+      this.getDocumentAndFilesContainerById();
+    }
+    next();
+  },*/
+
   methods: {
     test() {
       alert("test");
     },
-
     //  * A12. Obtiene la lista de documentos y contenedores que sean menor al actual
     async getDocumentAndFilesContainerById() {
       let app = this;
@@ -143,44 +133,82 @@ export default {
         });
         app.documents = response.data.documents;
         app.fileContainer = response.data.fileContainer;
+        app.container = response.data.container[0];
         console.log(app.documents);
-        console.log(app.fileContainer);
       } catch (error) {
         console.log(error);
       }
     },
-
-    initCheckDocuments(idx, row){
+    //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
+    async getDocumentAndContainerFree() {
+      let app = this;
+      try {
+        let response = await axios.post("/api/getDocumentAndContainerFree", {
+          id: app.id,
+        });
+        app.dataDocuments = response.data.dataDocuments;
+        app.dataContainers = response.data.dataContainers;
+        console.log(app.dataDocuments);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    //va a ver los archivos de un documento
+    initCheckDocuments(idx, row) {
+      alert(row);
       this.$router.push({
         name: "archivedetails",
         params: {
-          id: row.id_rama,
+          id: row.id,
         },
       });
     },
-
-    initCheckFileContainers(idx, row){
+    //va a ver lo que contiene un contenedor    
+    initCheckFileContainers(idx, row) {
       this.$router.push({
         name: "filecontainerdetails",
         params: {
-          id: row.id_rama,
+          id: row.id,
         },
       });
     },
 
-    //  * A11. Guardar los archivos del documento
-    async initStoreArchivesOfDocument() {
+    handleSelectionChange(val) {
+      this.selected = val;
+    },
+
+    AddArchiveToContainer() {
+      if (this.stateStore == 'Contenedor')
+        this.fileContainer = this.fileContainer.concat(this.selected);
+      else
+        this.documents = this.documents.concat(this.selected);
+      this.dialogFormVisible = false;
+    },
+
+    initAddDocument() {
+      this.stateStore = 'Documento'
+      this.data = this.dataDocuments;
+      this.dialogFormVisible = true;
+    },
+    initAddContainer() {
+      this.stateStore = 'Contenedor';
+      this.data = this.dataContainers;
+      this.dialogFormVisible = true;
+    },
+
+    //  * A14. Guardar los documentos y contenedores en el contenedor
+    async initStoreDocumentsAndContainers() {
       var app = this;
-      var newArchivesOfDocument = app.documentsArchive;
-      var newDocument = app.id;
-      var newYear = app.user.gestion;
       try {
-        console.log(newArchivesOfDocument);
         let response = axios
-          .post("/api/storeArchivesOfDocument", {
-            archivesOfDocument: newArchivesOfDocument,
-            document: newDocument,
-            year: newYear,
+          .post("/api/storeDocumentsAndContainers", {
+            documents: app.documents,
+            fileContainer: app.fileContainer,
+            username: app.user.usuario,
+            year: app.user.gestion,
+            id_container: app.container.id,
+            id_type: app.container.id_tipo,
+            //container: app.container,
             marker: "registrar",
           });
         console.log(response);
@@ -188,66 +216,12 @@ export default {
           dangerouslyUseHTMLString: true
         });
       } catch (error) {
+        console.log(error);
         app.$alert("No se registro nada", 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
         });
       };
     },
-    //  * Inicia la edicion de un documento
-    initEditDocumentOfArchive(idx, row) {
-      this.document = row;
-      this.stateStore = "editar";
-      this.dialogFormVisible = true;
-    },
-
-    //  * Iniciar el cuadro de dialogo para insertar un nuevo archivo
-    initAddDocumentOfArchive() {
-      this.stateStore = "añadir";
-      this.dialogFormVisible = true;
-    },
-
-    //  * Guarda los cambios de un nuevo documento sea nuevo o uno ya existente
-
-    AddArchiveToDocument() {
-      this.dialogFormVisible = false;
-      if (this.stateStore == "añadir") {
-        let variable = this.document;
-        this.documentsArchive.push(variable);
-      }
-      else {
-
-      }
-      this.document = { id_doc: "", indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: "" };
-      console.log(this.documentsArchive);
-      this.OnUpdateIndex();
-    },
-
-    //  * Quita un documento ya existente
-    DeleteDocumentOfArchive(idx, row) {
-      this.documentsArchive.splice(idx, 1);
-      console.log(this.documentsArchive);
-      this.OnUpdateIndex();
-    },
-
-    //  * Actualiza el indice de la lista
-    OnUpdateIndex() {
-      let indice = 0;
-      this.documentsArchive.forEach(element => {
-        indice += 1;
-        element.indice = indice;
-      });
-    },
-
-    //* actualizar un componente al hacer la seleccion nueva *//
-    OnchangeTypeDocument(idx) {
-      console.log(this.document);
-      console.log(idx);
-      let resultado = this.typesDocument.find(tipo => tipo.id == idx);
-      this.document.id_arch = resultado.id;
-      this.document.descr = resultado.descr;
-      console.log(resultado);
-      console.log(this.document);
-    }
   },
 };
 </script>

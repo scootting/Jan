@@ -67,6 +67,9 @@ export default {
                     marker: 'editar'
                 });
                 alert("el archivo se guardo correctamente");
+                this.$router.push({
+                    name: "addtypearchive",
+                });
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {

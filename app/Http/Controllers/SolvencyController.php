@@ -82,4 +82,10 @@ class SolvencyController extends Controller
         }
         return json_encode($data);
     }
+
+    public function getDebtsById(Request $request){
+        $id_concepto = $request->get('id');
+        $data = Solvency::getDebtsById($id_concepto);
+        return json_encode($data);
+    }
 }

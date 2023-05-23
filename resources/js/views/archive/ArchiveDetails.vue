@@ -151,7 +151,7 @@ export default {
             archivesOfDocument: newArchivesOfDocument,
             document: newDocument,
             year: newYear,
-            marker: "registrar",
+            marker: "editar",//editar
           });
         console.log(response);
         app.$alert("Se ha registrado correctamente los archivos del documento", 'Gestor de mensajes', {

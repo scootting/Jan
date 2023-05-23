@@ -118,8 +118,7 @@ class ArchiveController extends Controller
     {
         $archivo = $request->get('archive');
         $marcador = $request->get('marker');
-        \Log::info($request);
-        $descripcion = $archivo['descr'];
+        $descripcion = strtoupper($archivo['descr']);
         switch ($marcador) {
             case 'añadir':
                 $tipo = $archivo['type'];
@@ -138,24 +137,54 @@ class ArchiveController extends Controller
     public function storeArchivesOfDocument(Request $request)
     {
         $dataArchivesOfDocument = $request->get('archivesOfDocument');
-        $documento = $request->get('document'); //id del documento
         $gestion = $request->get('year');
         $marcador = $request->get('marker');
 
-        $marker = Archive::deleteArchivesByDocument($documento);
-        foreach ($dataArchivesOfDocument as $item) {
-            # code...
-            //indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: ""
-            $indice = $item['indice'];
-            $numeral = strtoupper($item['numeral']);
-            $glosa = strtoupper($item['glosa']);
-            $fecha = $item['fecha'];
+        switch ($marcador) {
+            case 'añadir':
+                # code add...
+                $documento = 0;
+                foreach ($dataArchivesOfDocument as $item) {
+                    //indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: ""
+                    $indice = $item['indice'];
+                    $numeral = strtoupper($item['numeral']);
+                    $glosa = strtoupper($item['glosa']);
+                    $fecha = $item['fecha'];
 
-            $id_tipo = $item['id_tipo'];
-            $id_arch = $item['id_arch'];
-            $descripcion = $item['descr'];
-            $marker = Archive::addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion);
-            $id_tran = 0;
+                    $id_tipo = $item['id_tipo'];
+                    $id_arch = $item['id_arch'];
+                    $descripcion = $item['descr'];
+                    if($indice == 1){
+                        $response = Archive::AddHeaderOfDocument($id_tipo, $glosa, $fecha, $id_arch, $gestion);
+                        $documento = $response[0]->{'id'};
+                        \Log::info($response);
+                    }
+                    $marker = Archive::addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion);
+                }
+                
+                break;
+            case 'editar':
+                # code edit...
+                $documento = $request->get('document'); //id del documento
+            
+                $marker = Archive::deleteArchivesByDocument($documento);
+                foreach ($dataArchivesOfDocument as $item) {
+                    //indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: ""
+                    $indice = $item['indice'];
+                    $numeral = strtoupper($item['numeral']);
+                    $glosa = strtoupper($item['glosa']);
+                    $fecha = $item['fecha'];
+
+                    $id_tipo = $item['id_tipo'];
+                    $id_arch = $item['id_arch'];
+                    $descripcion = $item['descr'];
+                    $marker = Archive::addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion);
+                    $id_tran = 0;
+                }
+                break;
+            default:
+                break;
+
         }
         return json_encode($marker);
     }
@@ -169,17 +198,62 @@ class ArchiveController extends Controller
         /*
         $data = Archive::GetDocumentAndFilesContainerById($id_fileContainer);
         foreach ($data as $key => $item) {
-            # code...
-            if(item.tipo_rama = 'A')
-                $arrayDOCUMENTOS 
-            else {
-                $arrayCONTENENDORES
-            }
+        # code...
+        if(item.tipo_rama = 'A')
+        $arrayDOCUMENTOS
+        else {
+        $arrayCONTENENDORES
         }
-        */
+        }
+         */
         $fileContainer = Archive::GetDetaFileContainerById($id_fileContainer);
-        return json_encode(['documents' => $document, 'fileContainer' => $fileContainer]);
-    
+        // *A15 Obtiene un documento o contenedor o ubiacion por su id
+        $container = Archive::GetFileContainerById($id_fileContainer);
+        return json_encode(['documents' => $document, 'fileContainer' => $fileContainer, 'container' => $container]);
+
+    }
+
+    //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
+    public function getDocumentAndContainerFree(Request $request)
+    {
+        $id_fileContainer = $request->get('id');
+        \Log::info($id_fileContainer);
+        $dataDocuments = Archive::GetDocumentFree($id_fileContainer);
+        $dataContainers = Archive::GetContainerFree($id_fileContainer);
+        return json_encode(['dataDocuments' => $dataDocuments, 'dataContainers' => $dataContainers]);
+    }
+
+    //  * A14. Guardar los documentos y contenedores en el contenedor
+    public function storeDocumentsAndContainers(Request $request)
+    {
+        $documentos = $request->get('documents'); // matrices
+        $contenedores = $request->get('fileContainer'); //matrices
+        $usuario = $request->get('username'); //dato
+        $gestion = $request->get('year'); //dato
+        $id_raiz = $request->get('id_container'); //dato
+        $id_tipo_raiz = $request->get('id_type'); //dato
+        //$contenedor = $request->get('container');//array
+        $marcador = $request->get('marker');
+
+        //$id_raiz = $contenedor['id'];//array
+        //$id_tipo_raiz = $contenedor['id_tipo'];//dato
+
+        $marker = Archive::deleteDocumentsAndContainerFromContainer($id_raiz);
+        foreach ($documentos as $item) {
+            \log::info($item);
+            $id_rama = $item['id'];
+            $id_tipo_rama = strtoupper($item['id_tipo']);
+            $marker = Archive::AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion);
+            $id_tran = 0;
+        }
+        foreach ($contenedores as $item) {
+            \log::info($item);
+            $id_rama = $item['id'];
+            $id_tipo_rama = strtoupper($item['id_tipo']);
+            $marker = Archive::AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion);
+            $id_tran = 0;
+        }
+        return json_encode($marker);
     }
 
 }
