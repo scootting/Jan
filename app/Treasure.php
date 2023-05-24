@@ -123,12 +123,12 @@ class Treasure extends Model
         return $data;
     }
 
-    public static function addSaleOfDay($user, $year)
+    //  * T22. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
+    public static function storeDayForSale($user, $year)
     {
-        //insert into val.diario(fec_tra, glosa, estado, tip_mon, importe, gestion, nro_com_min, usr_cre)
-        //               values (now(), 'Venta: De La Universidad Autónoma "Tomás Frías" En BOLIVIANOS', 'C', 'B', 0, 2021,'-1', 'rcallizaya');
-        $query = "insert into val.diario(fec_tra, glosa, estado, tip_mon, importe, id_lugar, gestion, tip_tra, nro_com_min, usr_cre)" .
-            "values (now(), 'Venta: De La Universidad Autónoma \"Tomás Frías\" En BOLIVIANOS', 'C', 'B', 0, 'U', '" . $year . "', 0, '-1', '" . $user . "')";
+        //$query = "insert into val.diario(fec_tra, glosa, estado, tip_mon, importe, id_lugar, gestion, tip_tra, nro_com_min, usr_cre)" .
+        //    "values (now(), 'Venta: De La Universidad Autónoma \"Tomás Frías\" En BOLIVIANOS', 'C', 'B', 0, 'U', '" . $year . "', 0, '-1', '" . $user . "')";
+        $query = "select * from val.ff_registrar_dia_venta('". $user ."', '". $year ."')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

@@ -3,14 +3,8 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>venta de valores para estudiantes nuevos</span>
-        <el-button
-          style="text-align: right; float: right"
-          size="small"
-          type="primary"
-          icon="el-icon-plus"
-          @click="initAddDay"
-          >nuevo dia</el-button
-        >
+        <el-button style="text-align: right; float: right" size="mini" type="success" icon="el-icon-plus"
+          @click="initStoreDayForSale">agregar dia para la venta de alumnos nuevos</el-button>
       </div>
       <div>
         <el-table v-loading="loading" :data="days" style="width: 100%">
@@ -85,8 +79,25 @@ export default {
         });
       }
     },
-    initAddDay() {
-      alert("el modulo esta aun en contruccion");
+
+    //  * T22. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
+    async initStoreDayForSale() {
+      this.loading = true;
+      let app = this;
+      try {
+        let response = await axios.post("/api/storeDayForSale", {
+          user: app.user.usuario,
+          year: app.user.gestion,
+        });
+        console.log(response);
+        alert("Se creo correctamente un dia para la venta de valores");
+        app.getSaleOfDays();
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
     },
 
     initDetailStudents(index, row) {

@@ -123,6 +123,9 @@ Route::group([
     Route::post('getSaleInLineDetail', 'TreasureController@getSaleInLineDetail');
     //  * T4. Obtener el detalle de una solicitud utilizando su id.
     Route::post('getDataRequestById', 'TreasureController@getDataRequestById');
+    //  * T22. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
+    Route::post('storeDayForSale', 'TreasureController@storeDayForSale');
+
 
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***

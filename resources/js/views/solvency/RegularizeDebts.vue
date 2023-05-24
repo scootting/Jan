@@ -35,19 +35,30 @@
                         <div class="grid-content bg-purple">
                             <p>datos del documento de regularizacion</p>
                             <el-form ref="form" :model="pays" label-width="120px" size="small">
+                                <el-form-item label="responsable" prop="responsable">
+                                    <el-input placeholder="" v-model="manager.details" class="input-with-select">
+                                        <el-button slot="append" icon="el-icon-search"
+                                            @click="initSearchManager">BUSCAR</el-button>
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item label="autoriza" prop="mae">
+                                    <el-input placeholder="" v-model="director.details" class="input-with-select">
+                                        <el-button slot="append" icon="el-icon-search"
+                                            @click="initSearchDirector">BUSCAR</el-button>
+                                    </el-input>
+                                </el-form-item>
                                 <el-form-item label="fecha" prop="fecha">
                                     <el-date-picker type="date" placeholder="seleccione una fecha"
                                         v-model="pays.fecha" style="width: 100%"></el-date-picker>
                                 </el-form-item>
-                                <el-form-item label="referencia" prop="referencia">
-                                    <el-input type="textarea" autosize placeholder="Ingrese una referencia"
-                                        v-model="pays.referencia">
+                                <el-form-item label="referencia" prop="des_ref">
+                                    <el-input type="textarea" autosize placeholder="Ingrese las referencia a documentos y cartas que autorizan la regularizacion"
+                                        v-model="pays.des_ref">
                                     </el-input>
                                 </el-form-item>
-                                <el-form-item label="responsable" prop="resp">
-                                    <el-input placeholder="" v-model="manager.details" class="input-with-select">
-                                        <el-button slot="append" icon="el-icon-search"
-                                            @click="initSearchManager">BUSCAR</el-button>
+                                <el-form-item label="detalle" prop="des_reg">
+                                    <el-input type="textarea" autosize placeholder="Ingrese el detalle y forma que se realiza la regularizacion"
+                                        v-model="pays.des_reg">
                                     </el-input>
                                 </el-form-item>
                             </el-form>
@@ -73,21 +84,14 @@ export default {
             debts:{},                       //deudas            
             user: this.$store.state.user,   //usuario
             pays: {},                       //pagos
-
+            manager: {},                //responsable (director de carrera, jefe de division)
+            director: {},                //responsable (director de carrera, jefe de division)
+            prg: {},                    //categoria programatica
 
             isVisible: false,           //componente campo visible
             tag: '',                    //componente que informacion desea traer
             flag: '',                   //deudor, responsable, categoria programatica
-            dialogFormVisible: false,   //hace visible el formulario de cosas adeudadas
-            debtors: [],                //deudores
-            manager: {},                //responsable (director de carrera, jefe de division)
-            prg: {},                    //categoria programatica
-            debtorDocument: {
-                id: "",
-                referencia: "",
-                fecha: "",
-            },                          //documento de deuda
-            debt: { tipo: "fisica", cant: 1, desc: "" }, //deuda
+
         };
     },
     mounted() {
@@ -116,15 +120,15 @@ export default {
             this.flag = 'categoria';
         },
 
-        initSearchDebtor() {
-            this.isVisible = true;
-            this.tag = 'persona';
-            this.flag = 'deudor';
-        },
         initSearchManager() {
             this.isVisible = true;
             this.tag = 'persona';
             this.flag = 'responsable';
+        },
+        initSearchDirector() {
+            this.isVisible = true;
+            this.tag = 'persona';
+            this.flag = 'director';
         },
 
         updateIsVisible(visible, data) {
@@ -135,8 +139,8 @@ export default {
                 case 'categoria':
                     this.prg = data;
                     break;
-                case 'deudor':
-                    this.debtors.push(data);
+                case 'director':
+                    this.director = data;
                     break;
                 case 'responsable':
                     this.manager = data;

@@ -56,52 +56,10 @@
                             <el-button @click="initSearchDebtor" type="primary" size="small" plain>Buscar
                             </el-button>
                         </div>
-                        <p></p>
-                        <div class="grid-content bg-purple">
-                            <p>deudas</p>
-                            <el-table :data="debts" style="width: 100%" size="small">
-                                <el-table-column prop="tipo" label="tipo"></el-table-column>
-                                <el-table-column prop="cant" label="cantidad"></el-table-column>
-                                <el-table-column prop="desc" label="detalle"></el-table-column>
-                                <el-table-column align="right">
-                                    <template slot-scope="scope">
-                                        <el-button @click="initRemoveDebt(scope.$index, scope.row)" type="primary" plain
-                                            size="small">Quitar</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <p></p>
-                            <el-button @click="dialogFormVisible = true" type="primary" size="small" plain>Agregar
-                            </el-button>
-                            <el-button @click="storeDebtorDocument()" type="danger" size="small" plain>Guardar
-                            </el-button>
-                        </div>
                     </el-col>
                 </el-row>
             </div>
             <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
-            <!-- componente para agregar deudas -->
-            <el-dialog title="agregar deuda" :visible.sync="dialogFormVisible">
-                <el-form :model="debt" label-width="150px" size="small">
-                    <el-form-item label="deuda">
-                        <el-radio-group v-model="debt.tipo" size="small">
-                            <el-radio-button label="fisica"></el-radio-button>
-                            <el-radio-button label="economica"></el-radio-button>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="cantidad">
-                        <el-input-number v-model="debt.cant" controls-position="right" :min="1"></el-input-number>
-                    </el-form-item>
-                    <el-form-item label="glosa o descripcion">
-                        <el-input type="textarea" v-model="debt.desc"></el-input>
-                    </el-form-item>
-                </el-form>
-                <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" size="small" plain @click="storeNewDebt">agregar</el-button>
-                    <el-button type="danger" size="small" plain @click="dialogFormVisible = false">cerrar</el-button>
-                </span>
-            </el-dialog>
-            <!-- componente para agregar deudas -->
         </el-card>
     </div>
 </template>
@@ -121,7 +79,6 @@ export default {
             flag: '',                   //deudor, responsable, categoria programatica
             dialogFormVisible: false,   //hace visible el formulario de cosas adeudadas
             debtors: [],                //deudores
-            debts: [],                  //cosas adeudas
             manager: {},                //responsable (director de carrera, jefe de division)
             prg: {},                    //categoria programatica
             debtorDocument: {
@@ -129,7 +86,6 @@ export default {
                 referencia: "",
                 fecha: "",
             },                          //documento de deuda
-            debt: { tipo: "fisica", cant: 1, desc: "" }, //deuda
         };
     },
     mounted() { 
@@ -202,19 +158,6 @@ export default {
         /* remueve de la lista de deudores */
         initRemoveDebtors(index, row) {
             this.debtors.splice(index, 1);
-        },
-
-        /* agrega una cosa que se adeuda */
-        storeNewDebt() {
-            let variable = this.debt;
-            this.debt = { tipo: "fisica", cant: 1, desc: "" };
-            this.debts.push(variable);
-        },
-
-        /* quita la cosa que se adeuda */
-        initRemoveDebt(index, row) {
-            this.dialogFormVisible = false;
-            this.debts.splice(index, 1);
         },
 
     },

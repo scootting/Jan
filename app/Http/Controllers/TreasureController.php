@@ -234,13 +234,16 @@ class TreasureController extends Controller
         return json_encode($data);
     }
 
-    public function addSaleOfDay(Request $request)
+    //  * T22. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
+    public function storeDayForSale(Request $request)
     {
         $usuario = $request->get('user');
         $gestion = $request->get('year');
-        $data = Treasure::addSaleOfDay($usuario, $gestion);
-        return json_encode($data);
+        $data = Treasure::storeDayForSale($usuario, $gestion);
+        $id_dia = $data[0]->{'id_dia'};
+        return json_encode($id_dia);
     }
+
 
     public function getValueById(Request $request)
     {

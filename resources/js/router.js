@@ -5,8 +5,8 @@ Vue.use(VueRouter)
 //Solvencias
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
 import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
-import EditDebtorDocument from './views/solvency/EditDebtorDocument.vue'
 
+import EditDebts from './views/solvency/EditDebts.vue'
 import AddDebts from './views/solvency/AddDebts.vue'
 import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
 
@@ -260,9 +260,9 @@ const router = new VueRouter({
                 //{ path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument2 },
                 //  * SO2. Agregar un nuevo documento de deudor
                 { path: 'debtordocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
-                //  * SO3. Editar un nuevo documento de deudor
-                { path: 'debtordocument/edit/:id', name: 'editdebtordocument', component: EditDebtorDocument },
 
+                //  * SO3. Editar un nuevo documento de deudor
+                { path: 'debts/:id', name: 'editdebts', component: EditDebts },
                 //  * SO4. Agregar Deudas 
                 { path: 'debts/add', name: 'adddebts', component: AddDebts },
                 //  * SO5. Regularizar Deudas

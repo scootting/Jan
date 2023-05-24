@@ -34,9 +34,9 @@
                     <el-table-column prop="detalle" label="detalle" width="400"></el-table-column>
                     <el-table-column align="right" width="120">
                         <template slot-scope="scope">
-                            <!--
-                            <el-button @click="initEditDocument(scope.$index, scope.row)" type="primary" size="mini"
+                            <el-button @click="initEditDebts(scope.$index, scope.row)" type="primary" size="mini"
                                 plain>Editar</el-button>
+                            <!--
                             -->
                             <el-button @click="initRegularizeDocument(scope.$index, scope.row)" type="warning" plain
                                 size="mini">Regularizar</el-button>
@@ -95,6 +95,14 @@ export default {
             });
         },
 
+        initEditDebts(idx, row){
+            this.$router.push({
+                name: "editdebts",
+                params: {
+                    id: row.id_concepto,
+                },
+            });
+        },
         initRegularizeDocument(idx, row) {
             console.log(row);
             this.$router.push({
