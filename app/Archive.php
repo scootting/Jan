@@ -116,8 +116,9 @@ class Archive extends Model
     //  * A11. Guardar los archivos del documento
     public static function AddHeaderOfDocument($id_tipo, $glosa, $fecha, $id_arch, $gestion){
         //insert into arch.doc( ... ) values ( ... ) RETURNING id_doc
-        $query = "INSERT INTO arch.doc(id_tipo, glosa, fecha, id_arch, gestion) VALUES " .
-            "('" . $id_tipo . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "') RETURNING id";
+        //$query = "INSERT INTO arch.doc(id_tipo, glosa, fecha, id_arch, gestion) VALUES " .
+        //    "('" . $id_tipo . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "') RETURNING id";
+        $query = "select * from arch.ff_registrar_documento('" . $id_tipo . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

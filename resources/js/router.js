@@ -60,7 +60,7 @@ import ArchiveDetails from './views/archive/ArchiveDetails'
 import AddArchiveDetails from './views/archive/AddArchiveDetails'
 import FileContainer from './views/archive/FileContainer'
 import FileContainerDetails from './views/archive/FileContainerDetails'
-import AddArchive from './views/archive/AddArchive'
+import AddFileContainer from './views/archive/AddFileContainer'
 import TypesArchive from './views/archive/TypesArchive'
 import AddTypeArchive from './views/archive/AddTypeArchive'
 import EditTypeArchive from './views/archive/EditTypeArchive'
@@ -216,18 +216,16 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
                 { path: 'archive', name: 'archive', component: Archive },
-                { path: 'archive/add', name: 'addarchivedetails', component: AddArchiveDetails },
+                { path: 'archive2/add', name: 'addarchivedetails', component: AddArchiveDetails },
                 { path: 'archive/:id', name: 'archivedetails', component: ArchiveDetails },
                 { path: 'filecontainer', name: 'filecontainer', component: FileContainer },
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
-                { path: 'addArchive/:type', name: 'addarchive', component: AddArchive },
+                { path: 'filecontainer2/add', name: 'addfilecontainer', component: AddFileContainer },
                 { path: 'typesarchive', name: 'typesarchive', component: TypesArchive },
 
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
-
-                {
-                    path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive,
-                },
+                
+                { path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive, },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Almacenes

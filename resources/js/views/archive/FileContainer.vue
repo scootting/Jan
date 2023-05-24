@@ -5,7 +5,7 @@
       <div slot="header" class="clearfix">
         <span>contenedores</span>
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-          @click="getFileContainer(1)">nuevo contenedor</el-button>
+          @click="initAddFileContainer">nuevo contenedor</el-button>
       </div>
       <div style="margin-top: 15px">
         <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
@@ -97,7 +97,7 @@ export default {
     },
     initAddFileContainer() {
       this.$router.push({
-        name: "addcontainer",
+        name: "addfilecontainer",
       });
     },
   },

@@ -240,7 +240,7 @@ class TreasureController extends Controller
         $usuario = $request->get('user');
         $gestion = $request->get('year');
         $data = Treasure::storeDayForSale($usuario, $gestion);
-        $id_dia = $data[0]->{'id_dia'};
+        $id_dia = $data[0]->{'ff_registrar_dia_venta'};
         return json_encode($id_dia);
     }
 

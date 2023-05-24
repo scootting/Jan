@@ -59,8 +59,6 @@
               </el-form>
             </div>
           </el-col>
-
-          -->
         </el-row>
       </div>
       <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>

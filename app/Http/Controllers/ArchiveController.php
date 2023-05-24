@@ -157,8 +157,8 @@ class ArchiveController extends Controller
                     $descripcion = $item['descr'];
                     if($indice == 1){
                         $response = Archive::AddHeaderOfDocument($id_tipo, $glosa, $fecha, $id_arch, $gestion);
-                        $documento = $response[0]->{'id'};
                         \Log::info($response);
+                        $documento = $response[0]->{'ff_registrar_documento'};
                     }
                     $marker = Archive::addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion);
                 }
