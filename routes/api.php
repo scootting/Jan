@@ -175,8 +175,8 @@ Route::group([
     Route::post('getArchivesByContainer/', 'ArchiveController@getArchivesByContainer');
     //  * A6. Obtiene la lista de contenedores para archivar con una breve descripcion
     Route::post('fileContainer', 'ArchiveController@getFileContainerByDescription');
-    //  * A7. Guardar un nuevo archivo, contenedor o ubicacion
-    Route::post('file/', 'ArchiveController@storeFileContainer');
+    //  * A7. Guardar contenedor o ubicacion
+    Route::post('storeFileContainer', 'ArchiveController@storeFileContainer');
     //  * A8. Obtiene un tipo de archivo en especifico
     Route::get('typeArchive/{id}', 'ArchiveController@getTypeArchiveById');
     //  * A9. Obtiene la lista de tipos de documentos que pertenecen a un archivo

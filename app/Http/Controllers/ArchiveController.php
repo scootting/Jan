@@ -88,12 +88,16 @@ class ArchiveController extends Controller
     //  * parametros {archivo: datos del documento[descripcion, tipo]}
     public function storeFileContainer(Request $request)
     {
-        $archivo = $request->get('archivo');
-        $glosa = strtoupper($archivo['glosa']);
-        $tipo = $archivo['tipo'];
-        $gestion = $archivo['gestion'];
+        $contenedor = $request->get('document');
+        $gestion = $request->get('year');
         $marcador = $request->get('marker');
-        \Log::info($glosa . ' :glosa: ' . $tipo . ' :gestion: ' . $gestion);
+        \Log::info($contenedor);
+        /*
+        $glosa = strtoupper($contenedor['glosa']);
+        $tipo = $contenedor['tipo'];
+        $gestion = $contenedor['gestion'];
+        $marcador = $request->get('marker');
+
         switch ($marcador) {
             case 'registrar':
                 $data = Archive::SaveFileContainer($glosa, $tipo, $gestion);
@@ -104,7 +108,7 @@ class ArchiveController extends Controller
             default:
                 break;
         }
-        return json_encode($data);
+        return json_encode($data);*/
     }
 
     //  * A8. Obtiene un tipo de archivo en especifico

@@ -48,7 +48,6 @@
               </el-option>
             </el-select>
           </el-form-item>
-
           <el-form-item label="Numero del documento">
             <el-input v-model="document.numeral" autocomplete="off"></el-input>
           </el-form-item>
