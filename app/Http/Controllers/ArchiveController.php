@@ -88,19 +88,28 @@ class ArchiveController extends Controller
     //  * parametros {archivo: datos del documento[descripcion, tipo]}
     public function storeFileContainer(Request $request)
     {
-        $contenedor = $request->get('document');
+        $contenedor = $request->get('container');
         $gestion = $request->get('year');
         $marcador = $request->get('marker');
+
+        $codigo = ($contenedor['codigo'] ? $contenedor['codigo'] : '');// condicion if else si existe el dato se asigna lo primero sino lo segundo
         \Log::info($contenedor);
-        /*
+
+        $tipo = 'C';
+        $id_arch = $contenedor['id_arch'];
+        $fecha = $contenedor['fecha'];
         $glosa = strtoupper($contenedor['glosa']);
-        $tipo = $contenedor['tipo'];
-        $gestion = $contenedor['gestion'];
+        \Log::info("esta es la glosa ". $glosa);
+        if($glosa == ""){
+            $glosa = $contenedor['descr'];
+        }
         $marcador = $request->get('marker');
 
         switch ($marcador) {
             case 'registrar':
-                $data = Archive::SaveFileContainer($glosa, $tipo, $gestion);
+                $response = Archive::StoreFileContainer($tipo, $glosa, $fecha, $id_arch, $gestion, $codigo);
+                \Log::info($response);
+                $container = $response[0]->{'ff_registrar_contenedor'};
                 break;
             case 'editar':
                 //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
@@ -108,7 +117,7 @@ class ArchiveController extends Controller
             default:
                 break;
         }
-        return json_encode($data);*/
+        return json_encode($container);
     }
 
     //  * A8. Obtiene un tipo de archivo en especifico

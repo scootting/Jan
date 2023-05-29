@@ -10,9 +10,9 @@
           <el-col :span="12" :offset="6">
             <div class="grid-content bg-purple">
 
-              <el-form :model="document" label-width="220px" size="small">
+              <el-form :model="filecontainer" label-width="220px" size="small">
                 <el-form-item label="tipo de contenedor">
-                  <el-select v-model="document.descr" value-key="descr" size="small"
+                  <el-select v-model="filecontainer.descr" value-key="descr" size="small"
                     placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument">
                     <el-option v-for="item in typesDocument" :key="item.id" :label="item.descr" :value="item.id">
                     </el-option>
@@ -25,14 +25,14 @@
                   </el-radio-group>
                 </el-form-item>
                 <el-form-item label="Numero de contenedor">
-                  <el-input v-model="document.numeral" autocomplete="off" :disabled="isNumerable"></el-input>
+                  <el-input v-model="filecontainer.codigo" autocomplete="off" :disabled="isNumerable"></el-input>
                 </el-form-item>
                 <el-form-item label="fecha del registro">
-                  <el-date-picker type="date" v-model="document.fecha" placeholder="seleccione una fecha"
+                  <el-date-picker type="date" v-model="filecontainer.fecha" placeholder="seleccione una fecha"
                     style="width: 100%" format="yyyy/MM/dd" value-format="yyyy-MM-dd"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="glosa o descripcion">
-                  <el-input type="textarea" v-model="document.glosa" autocomplete="off"></el-input>
+                  <el-input type="textarea" v-model="filecontainer.glosa" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item>
                   <el-button size="small" type="primary" @click.prevent="initStoreFileContainer" plain>Guardar</el-button>
@@ -53,7 +53,7 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
-      document: {},
+      filecontainer: {codigo:'', glosa:''},
       numerable: 1,
       typesDocument: [],
       isNumerable: true,
@@ -80,15 +80,15 @@ export default {
     //  * A7. Guardar el nuevo contenedor funcion 11 posiblemente
     async initStoreFileContainer() {
       var app = this;
-      var newFileContainer = app.document;
+      var newFileContainer = app.filecontainer;
       var newYear = app.user.gestion;
       try {
         console.log(newFileContainer);
         let response = axios
           .post("/api/storeFileContainer", {
-            document: newFileContainer,  //add
+            container: newFileContainer,  //add
             year: newYear,
-            marker: "añadir", //editar
+            marker: "registrar", //editar
           });
         app.$alert("Se ha registrado correctamente los archivos del documento", 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
@@ -107,15 +107,15 @@ export default {
     //* actualizar un componente al hacer la seleccion nueva *//
     OnchangeTypeDocument(idx) {
       let resultado = this.typesDocument.find(tipo => tipo.id == idx);
-      this.document.id_arch = resultado.id;
-      this.document.descr = resultado.descr;
+      this.filecontainer.id_arch = resultado.id;
+      this.filecontainer.descr = resultado.descr;
     },
     OnchangeNumerable(idx) {
       if (idx != 1)
         this.isNumerable = false;
       else {
         this.isNumerable = true;
-        this.document.numeral = '';
+        this.filecontainer.numeral = '';
       }
       console.log(idx);
     },
