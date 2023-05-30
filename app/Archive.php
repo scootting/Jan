@@ -141,15 +141,18 @@ class Archive extends Model
     //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
     public static function GetDocumentFree($id)
     {
-        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo, d.fecha from arch.doc d left join arch.doc_con e on d.id = e.id_rama where e.id_rama is null " .
+        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo from arch.doc d left join arch.doc_con e on d.id = e.id_rama where e.id_rama is null " .
             "and id_tipo = 'A'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     public static function GetContainerFree($id)
     {
-        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo, d.fecha from arch.doc d left join arch.doc_con e on d.id = e.id_raiz where e.id_raiz is null " .
+        /*
+        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo from arch.doc d left join arch.doc_con e on d.id = e.id_raiz where e.id_raiz is null " .
             "and id_tipo <> 'A'";
+            */
+        $query = "SELECT * FROM arch.ff_contenedor_libre('" . $id . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -165,6 +168,8 @@ class Archive extends Model
     //  * A14. Guardar los documentos y contenedores en el contenedor
     public static function deleteDocumentsAndContainerFromContainer($container)
     {
+        $query = "delete from arch.doc_con where id_raiz = '" . $container . "'";
+        $data = collect(DB::select(DB::raw($query)));
         $query = "delete from arch.doc_con where id_raiz = '" . $container . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
