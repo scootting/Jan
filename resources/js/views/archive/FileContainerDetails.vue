@@ -111,14 +111,14 @@ export default {
     app.getDocumentAndFilesContainerById();
     app.getDocumentAndContainerFree();
   },
-  /*
+  
   beforeRouteUpdate(to, from, next) {
     if (to.params.id !== from.params.id) {
       this.id = to.params.id;
       this.getDocumentAndFilesContainerById();
     }
     next();
-  },*/
+  },
 
   methods: {
     test() {
