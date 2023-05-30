@@ -152,11 +152,6 @@ class Archive extends Model
             "and id_tipo <> 'A'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
-        /*
-    $query = "select * from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
-    where b.id_raiz = '" . $id . "' and b.tipo_rama <> 'A'";
-    $data = collect(DB::select(DB::raw($query)));
-    return $data;*/
     }
 
     // *A15 Obtiene un documento o contenedor o ubiacion por su id
@@ -166,6 +161,7 @@ class Archive extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
     //  * A14. Guardar los documentos y contenedores en el contenedor
     public static function deleteDocumentsAndContainerFromContainer($container)
     {
@@ -173,7 +169,6 @@ class Archive extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-
     public static function AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion)
     {
         //$query = "SELECT * FROM arch.ff_registrar_detalle_documento('" . $descripcion . "','" . $tipo . "')";
@@ -184,5 +179,12 @@ class Archive extends Model
         return $data;
     }
 
+    //  * A16. Busca los documentos para la solicitud de prestamo
+    public static function getDataDocument($description)
+    {
+        $query = "select * from arch.ff_buscar_documento('" . $description . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
 }

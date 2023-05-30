@@ -64,6 +64,7 @@ import AddFileContainer from './views/archive/AddFileContainer'
 import TypesArchive from './views/archive/TypesArchive'
 import AddTypeArchive from './views/archive/AddTypeArchive'
 import EditTypeArchive from './views/archive/EditTypeArchive'
+import Loans from './views/archive/Loans'
 
 //bienes e inventarios
 import Inventory from './views/inventory/Inventory'
@@ -222,6 +223,7 @@ const router = new VueRouter({
                 { path: 'filecontainer/:id', name: 'filecontainerdetails', component: FileContainerDetails },
                 { path: 'filecontainer2/add', name: 'addfilecontainer', component: AddFileContainer },
                 { path: 'typesarchive', name: 'typesarchive', component: TypesArchive },
+                { path: 'loans', name: 'loans', component: Loans },
 
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
                 

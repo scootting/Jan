@@ -191,6 +191,8 @@ Route::group([
     Route::post('getDocumentAndContainerFree', 'ArchiveController@getDocumentAndContainerFree');
     //  * A14. Guardar los documentos y contenedores en el contenedor
     Route::post('storeDocumentsAndContainers', 'ArchiveController@storeDocumentsAndContainers');
+    //  * A16. Busca los documentos para la solicitud de prestamo
+    Route::post('getDataDocument', 'ArchiveController@getDataDocument');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes

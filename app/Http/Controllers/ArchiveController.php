@@ -269,5 +269,21 @@ class ArchiveController extends Controller
         }
         return json_encode($marker);
     }
+    //  * A16. Busca los documentos para la solicitud de prestamo
+    public function getDataDocument(Request $request)
+    {
+        $descripcion = strtoupper($request->get('description')); // '' cadena vacia
+        $data = Archive::GetDataDocument($descripcion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 15;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getDebtorsDocument')]
+        );
+        return json_encode($paginate);
+    }
 
 }
