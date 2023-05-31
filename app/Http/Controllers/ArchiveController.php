@@ -288,5 +288,22 @@ class ArchiveController extends Controller
         );
         return json_encode($paginate);
     }
+    //  * 17. Obtener una lista de las solicitudes de reserva por usuario.
+    public function getBookingDocument(Request $request)
+    {
+        $usuario = $request->get('user'); 
+        $gestion = $request->get('year'); 
+        $data = Archive::GetBookingDocument($usuario, $gestion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 15;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getDebtorsDocument')]
+        );
+        return json_encode($paginate);
+    }
 
 }

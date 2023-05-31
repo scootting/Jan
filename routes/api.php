@@ -126,7 +126,6 @@ Route::group([
     //  * T22. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
     Route::post('storeDayForSale', 'TreasureController@storeDayForSale');
 
-
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
     Route::post('getDataOfStudentById', 'TreasureController@getDataOfStudentById');
@@ -193,6 +192,8 @@ Route::group([
     Route::post('storeDocumentsAndContainers', 'ArchiveController@storeDocumentsAndContainers');
     //  * A16. Busca los documentos para la solicitud de prestamo
     Route::post('getDataDocument', 'ArchiveController@getDataDocument');
+    //  * 17. Obtener una lista de las solicitudes de reserva por usuario.
+    Route::post('getBookingDocument', 'ArchiveController@getBookingDocument');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes

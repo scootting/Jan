@@ -190,5 +190,13 @@ class Archive extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-
+    //  * 17. Obtener una lista de las solicitudes de reserva por usuario.
+    
+    public static function GetBookingDocument($user, $year)
+    {
+        $query = "select * from arch.reserva r where r.usr_cre = '" . $user . "' and r.gestion = '" . $year . "'";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }

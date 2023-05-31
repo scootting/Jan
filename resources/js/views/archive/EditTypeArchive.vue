@@ -11,7 +11,6 @@
                         <el-radio-group v-model="archive.idt" disabled>
                             <el-radio-button label="A">Archivo</el-radio-button>
                             <el-radio-button label="C">Contenedor</el-radio-button>
-                            <el-radio-button label="U">Ubicacion</el-radio-button>
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="Codificacion">

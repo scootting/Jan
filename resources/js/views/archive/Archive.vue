@@ -33,14 +33,14 @@
             </template>
           </el-table-column>
           <el-table-column prop="glosa" width="650" label="descripcion del documento"></el-table-column>
-          <el-table-column width="150" label="Estado">
+          <el-table-column width="100" label="Estado">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.estado }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="right-center" width="250" label="Operaciones">
+          <el-table-column align="right-center" width="120" label="Operaciones" fixed="right">
             <template slot-scope="scope">
               <el-button @click="getArchivesByDocument(scope.row.id)" type="success" plain size="mini">ver archivos
               </el-button>
