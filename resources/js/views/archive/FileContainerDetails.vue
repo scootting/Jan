@@ -235,7 +235,7 @@ export default {
             fileContainer: app.fileContainer,
             username: app.user.usuario,
             year: app.user.gestion,
-            id_container: app.container.id,
+            id_container: app.id,
             id_type: app.container.id_tipo,
             //container: app.container,
             marker: "registrar",

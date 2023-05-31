@@ -13,7 +13,7 @@
                             <el-radio-button label="C">Contenedor</el-radio-button>
                         </el-radio-group>
                     </el-form-item>
-                    <el-form-item label="Codificacion">
+                    <el-form-item label="codificacion">
                         <el-input v-model="archive.idc" disabled></el-input>
                     </el-form-item> <el-form-item label="Descripcion">
                         <el-input type="textarea" v-model="archive.descr"></el-input>

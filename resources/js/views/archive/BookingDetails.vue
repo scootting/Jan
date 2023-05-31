@@ -10,9 +10,29 @@
                 <el-col :span="6">
                     <div class="grid-content bg-purple">
                         <span>reserva</span>
-                        <p>{{ reservations }}</p>
-                        <el-button slot="append" @click="getDataDocument(1)">guardar reserva</el-button>
+                        <el-table v-loading="loading" :data="reservations" style="width: 100%" size="small">
+                            <el-table-column prop="id_doc" label="codigo" width="100" align="center">
+                                <template slot-scope="scope">
+                                    <el-tag type="success" size="medium">{{ scope.row.id_doc }}</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column>
+                                <template slot-scope="scope">
+                                    <el-button @click="initAddBooking(scope.$index, scope.row)" type="warning" size="mini"
+                                        plain>verificar</el-button>
+                                </template>
+                            </el-table-column>
+                            <el-table-column>
+                                <template slot-scope="scope">
+                                    <el-button @click="initAddBooking(scope.$index, scope.row)" type="danger" size="mini"
+                                        plain>quitar</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
 
+                        <br>
+                        <el-button type="primary" size="small" plain @click="initStoreBookingDocument">Guardar
+                            solicitud</el-button>
                     </div>
                 </el-col>
                 <el-col :span="18">
@@ -43,7 +63,7 @@
                                 <el-table-column prop="glosa" label="glosa" width="350"></el-table-column>
                                 <el-table-column align="right" fixed="right" width="100">
                                     <template slot-scope="scope">
-                                        <el-button @click="initAddReservation(scope.$index, scope.row)" type="warning"
+                                        <el-button @click="initAddBooking(scope.$index, scope.row)" type="warning"
                                             size="mini" plain>Agregar</el-button>
                                     </template>
                                 </el-table-column>
@@ -56,6 +76,7 @@
                 </el-col>
             </el-row>
         </el-card>
+        <!--
         <el-drawer title="Documentos reservados" :visible.sync="table" direction="rtl" size="35%">
             <el-table :data="reservations">
                 <el-table-column prop="id_doc" label="codigo" width="180" align="center">
@@ -77,6 +98,7 @@
                 </el-table-column>
             </el-table>
         </el-drawer>
+        -->
     </div>
 </template>
   
@@ -118,14 +140,22 @@ export default {
             }
             app.loading = false;
         },
-        initAddReservation(idx, row) {
-            this.reservations.push(row);
+        initAddBooking(idx, row) {
+
+            let resultado = this.reservations.find(item => item.id == row.id);
+            console.log(resultado + "   " + row.id);
+            if (resultado === undefined) {
+                this.reservations.push(row);
+            }
         },
+        initStoreBookingDocument(idx, row) {
+        },
+        /*
         cancelForm() {
             this.loading = false;
             this.dialog = false;
             clearTimeout(this.timer);
-        }
+        }*/
 
     },
 };
