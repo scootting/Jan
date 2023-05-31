@@ -7,22 +7,32 @@
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
           @click="addNewArchivesByDocument">nuevo documento</el-button>
       </div>
+      <!--
       <div style="margin-top: 15px">
         <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="getArchives(1)"></el-button>
         </el-input>
       </div>
+      -->
       <br />
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column width="150" label="No.">
+          <el-table-column width="90" label="No.">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.id_doc }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="glosa" width="850" label="descripcion del documento"></el-table-column>
+          <el-table-column prop="fecha" width="100" label="fecha"></el-table-column>
+          <el-table-column width="250" label="tipo">
+            <template slot-scope="scope">
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium" type="danger">{{ scope.row.descr }}</el-tag>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="glosa" width="650" label="descripcion del documento"></el-table-column>
           <el-table-column width="150" label="Estado">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
@@ -87,7 +97,7 @@ export default {
         });
     },
     //  * Agrega archivos a un nuevo documento.
-    addNewArchivesByDocument(){
+    addNewArchivesByDocument() {
       this.$router.push({
         name: "addarchivedetails",
       });

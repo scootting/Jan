@@ -8,6 +8,9 @@
       <el-row :gutter="50">
         <el-col :span="24">
           <div>
+            {{ archive }}
+          </div>
+          <div>
             <el-table :data="documentsArchive" border style="width: 100%" size="small">
               <el-table-column prop="indice" label="indice" align="right" width="100">
               </el-table-column>
@@ -84,6 +87,7 @@ export default {
       typesDocument: [],          //diferentes tipos de archivos que pertenecen a un documento
       dialogFormVisible: false,   //para el dialogo
       stateStore: "",             //estado para ver si se aniade o se edita
+      archive:{},                //informacion principal del documento
       document: {
         id_doc:"",
         indice: 0,
@@ -128,7 +132,8 @@ export default {
           id: app.id,
           year: app.user.gestion,
         });
-        app.documentsArchive = response.data;
+        app.documentsArchive = response.data.data;
+        app.archive = response.data.archive[0];
         console.log(app.documentsArchive);
       } catch (error) {
         this.error = error.response.data;

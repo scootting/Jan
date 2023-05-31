@@ -8,21 +8,29 @@
           @click="initAddFileContainer">nuevo contenedor</el-button>
       </div>
       <div style="margin-top: 15px">
+        <!--
         <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
           <el-button slot="append" icon="el-icon-search" @click="getFileContainer(1)"></el-button>
         </el-input>
-      </div>
-      <br />
-      <div>
+        -->
+        <br>
         <el-table v-loading="loading" :data="data" style="width: 100%">
-          <el-table-column width="150" label="No.">
+          <el-table-column width="90" label="No.">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.id_doc }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="glosa" width="850" label="descripcion del contenedor"></el-table-column>
+          <el-table-column prop="fecha" width="100" label="fecha"></el-table-column>
+          <el-table-column width="250" label="tipo">
+            <template slot-scope="scope">
+              <div slot="reference" class="name-wrapper">
+                <el-tag size="medium" type="danger">{{ scope.row.descr }}</el-tag>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="glosa" width="650" label="descripcion del contenedor"></el-table-column>
           <el-table-column width="150" label="Estado">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
@@ -32,7 +40,8 @@
           </el-table-column>
           <el-table-column align="right-center" width="250" label="Operaciones">
             <template slot-scope="scope">
-              <el-button @click="getDocumentsByFileContainer(scope.row.id)" type="success" plain size="mini">ver documentos
+              <el-button @click="getDocumentsByFileContainer(scope.row.id)" type="success" plain size="mini">ver
+                documentos
               </el-button>
             </template>
           </el-table-column>

@@ -13,12 +13,10 @@ class Archive extends Model
     public static function GetArchivesByDescription($description, $type)
     {
         if ($description == '') {
-            $query = "select * from arch.doc d where id_tipo = '" . $type . "' order by id_doc desc";
+            $query = "select d.id, d.id_doc, d.fecha, d.glosa, d.gestion, d.estado, e.descr from arch.doc d inner join arch.tipos e on d.id_arch = e.id where id_tipo = '" . $type . "' order by id_doc desc";
         } else {
-            $query = "select * from arch.doc d where d.glosa like '%" . $description . "%' and id_tipo = '" . $type . "' order by id_doc desc";
+            $query = "select d.id, d.id_doc, d.fecha, d.glosa, d.gestion, d.estado, e.descr from arch.doc d where inner join arch.tipos e on d.id_arch = e.id d.glosa like '%" . $description . "%' and id_tipo = '" . $type . "' order by id_doc desc";
         }
-
-        \Log::info("Esta es la consulta de archivos: " . $query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -153,14 +151,7 @@ class Archive extends Model
             "and id_tipo <> 'A'";
             */
         $query = "SELECT * FROM arch.ff_contenedor_libre('" . $id . "')";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-
-    // *A15 Obtiene un documento o contenedor o ubiacion por su id
-    public static function GetFileContainerById($id)
-    {
-        $query = "select * from arch.doc d where d.id = " . $id;
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -180,6 +171,14 @@ class Archive extends Model
         $query = "INSERT INTO arch.doc_con(id_rama, tipo_rama, id_raiz, tipo_raiz, usr_cre, gestion, orden) VALUES " .
             "('" . $id_rama . "','" . $id_tipo_rama . "','" . $id_raiz . "','" . $id_tipo_raiz . "','" . $usuario . "','" . $gestion . "', 1)";
         \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    // *A15 Obtiene un documento o contenedor o ubiacion por su id
+    public static function GetFileContainerById($id)
+    {
+        $query = "select * from arch.doc d inner join arch.tipos e on d.id_arch = e.id where d.id = " . $id;
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

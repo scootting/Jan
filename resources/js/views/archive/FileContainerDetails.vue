@@ -5,10 +5,38 @@
         <span>contenido del contenedor</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
       </div>
+      <div class="grid-content bg-purple">
+        <el-row :gutter="20">
+          <el-form :model="container" label-width="220px" size="small">
+            <el-col :span="12">
+              <el-form-item label="codigo">
+                <el-input v-model="container.id_doc"></el-input>
+              </el-form-item>
+              <el-form-item label="fecha">
+                <el-input v-model="container.fecha"></el-input>
+              </el-form-item>
+              <el-form-item label="glosa">
+                <el-input type="textarea" v-model="container.glosa"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="gestion">
+                <el-input v-model="container.gestion"></el-input>
+              </el-form-item>
+              <el-form-item label="estado">
+                <el-input v-model="container.estado"></el-input>
+                <el-button size="small" type="primary" @click.prevent="test" plain>Ver Contenedor</el-button>
+                <el-button size="small" type="primary" @click.prevent="test" plain>Liberar</el-button>
+              </el-form-item>
+              <el-form-item label="tipo">
+                <el-input type="textarea" v-model="container.descr"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-form>
+        </el-row>
+      </div>
+      <br>
       <el-row :gutter="20">
-        <el-col :span="24">
-          <p>{{container}}</p>
-        </el-col>
         <el-col :span="12">
           <div class="grid-content bg-purple">
             <span>documentos</span>
@@ -94,7 +122,7 @@ export default {
     return {
       user: this.$store.state.user,
       id: null,                    //identificador del contenedor 
-      container:{},                //informacion del contenedor 
+      container: {},                //informacion del contenedor 
       documents: [],               //lista de documentos que pertenecen al contenedor
       fileContainer: [],           //lista de contenedores que pertenecen al contenedor
       dialogFormVisible: false,    //para el dialogo
@@ -111,11 +139,12 @@ export default {
     app.getDocumentAndFilesContainerById();
     app.getDocumentAndContainerFree();
   },
-  
+
   beforeRouteUpdate(to, from, next) {
     if (to.params.id !== from.params.id) {
       this.id = to.params.id;
       this.getDocumentAndFilesContainerById();
+      this.getDocumentAndContainerFree();
     }
     next();
   },

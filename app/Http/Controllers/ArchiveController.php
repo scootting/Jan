@@ -35,7 +35,10 @@ class ArchiveController extends Controller
         $archivo = $request->get('id');
         $gestion = $request->get('year');
         $data = Archive::GetDocumentsbyArchive($archivo, $gestion);
-        return json_encode($data);
+        // *A15 Obtiene un documento o contenedor o ubiacion por su id
+        $archive = Archive::GetFileContainerById($archivo);
+        //return json_encode($data);
+        return json_encode(['data' => $data, 'archive' => $archive]);
     }
 
     //  * A3. Obtiene la lista de tipos de documentos
