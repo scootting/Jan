@@ -192,8 +192,12 @@ Route::group([
     Route::post('storeDocumentsAndContainers', 'ArchiveController@storeDocumentsAndContainers');
     //  * A16. Busca los documentos para la solicitud de prestamo
     Route::post('getDataDocument', 'ArchiveController@getDataDocument');
-    //  * 17. Obtener una lista de las solicitudes de reserva por usuario.
+    //  * A17. Obtener una lista de las solicitudes de reserva por usuario.
     Route::post('getBookingDocument', 'ArchiveController@getBookingDocument');
+    //  * A18. Guardar la reserva de documentos por el usuario
+    Route::post('storeBookingDocument', 'ArchiveController@storeBookingDocument');
+    //  * A19. Busca los documentos reservados para la solicitud
+    Route::post('getDataBookingDetails', 'ArchiveController@getDataBookingDetails');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes

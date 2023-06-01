@@ -66,6 +66,8 @@ import AddTypeArchive from './views/archive/AddTypeArchive'
 import EditTypeArchive from './views/archive/EditTypeArchive'
 import Booking from './views/archive/Booking'
 import BookingDetails from './views/archive/BookingDetails'
+import RequestDocument from './views/archive/Request'
+import RequestDocumentDetails from './views/archive/RequestDetails'
 
 //bienes e inventarios
 import Inventory from './views/inventory/Inventory'
@@ -228,6 +230,10 @@ const router = new VueRouter({
                 { path: 'booking', name: 'booking', component: Booking },
                 //  * A. Modulo para agregar nuevas solicitudes de reserva y prestamo de documentos
                 { path: 'booking/add', name: 'bookingdetails', component: BookingDetails },
+                //  * A. Modulo para prestar devolver las solicitudes de documentos
+                { path: 'requestdocument', name: 'requestdocument', component: RequestDocument },
+                //  * A. Modulo para cofirmar la solicitud unica  de prestar devolver las solicitudes de documentos
+                { path: 'requestdocument/:id', name: 'requestdocumentdetails', component: RequestDocumentDetails },
 
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
                 

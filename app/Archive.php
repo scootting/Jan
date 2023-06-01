@@ -64,7 +64,7 @@ class Archive extends Model
     //  * parametros [glosa: descripcion del documento, tipo: archivo, documento, ubicacion ]
     public static function StoreFileContainer($id_tipo, $glosa, $fecha, $id_arch, $gestion, $id_doc)
     {
-        $query = "select * from arch.ff_registrar_contenedor('" . $id_tipo . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "','" . $id_doc ."')";
+        $query = "select * from arch.ff_registrar_contenedor('" . $id_tipo . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "','" . $id_doc . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -110,7 +110,8 @@ class Archive extends Model
         return $data;
     }
     //  * A11. Guardar los archivos del documento
-    public static function AddHeaderOfDocument($id_tipo, $glosa, $fecha, $id_arch, $gestion){
+    public static function AddHeaderOfDocument($id_tipo, $glosa, $fecha, $id_arch, $gestion)
+    {
         //insert into arch.doc( ... ) values ( ... ) RETURNING id_doc
         //$query = "INSERT INTO arch.doc(id_tipo, glosa, fecha, id_arch, gestion) VALUES " .
         //    "('" . $id_tipo . "','" . $glosa . "','" . $fecha . "','" . $id_arch . "','" . $gestion . "') RETURNING id";
@@ -118,7 +119,6 @@ class Archive extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-
 
     //  * A12. Obtiene la lista de documentos y contenedores que sean menor al actual y se encuentre libres
     //  * parametros {id: identificador del contenedor raiz }
@@ -148,8 +148,8 @@ class Archive extends Model
     {
         /*
         $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo from arch.doc d left join arch.doc_con e on d.id = e.id_raiz where e.id_raiz is null " .
-            "and id_tipo <> 'A'";
-            */
+        "and id_tipo <> 'A'";
+         */
         $query = "SELECT * FROM arch.ff_contenedor_libre('" . $id . "')";
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
@@ -191,11 +191,36 @@ class Archive extends Model
         return $data;
     }
     //  * 17. Obtener una lista de las solicitudes de reserva por usuario.
-    
     public static function GetBookingDocument($user, $year)
     {
-        $query = "select * from arch.reserva r where r.usr_cre = '" . $user . "' and r.gestion = '" . $year . "'";
+        if($user != '')
+            $query = "select * from arch.reserva r where r.usr_cre = '" . $user . "' and r.gestion = '" . $year . "'";
+        else
+            $query = "select * from arch.reserva r where r.gestion = '" . $year . "'";
         \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  * A18. Guardar la reserva de documentos por el usuario
+    public static function AddHeaderOfBookingDocument($ci_per, $des_per, $fecha, $gestion, $usr_cre)
+    {
+        $query = "SELECT * FROM arch.ff_registrar_reserva('" . $ci_per . "','" . $des_per . "','" . $fecha . "','" . $gestion . "','" . $usr_cre . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    public static function AddStoreBookingDocument($reserva, $id)
+    {
+        $query = "INSERT INTO arch.res_det(id_res, id_doc) VALUES " .
+            "('" . $reserva . "','" . $id . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    public static function GetDataBookingDetails($id)
+    {
+        //$query = "SELECT * FROM arch.res_det d inner join arch.doc2 e on d.id_doc::varchar = e.id_doc where d.id_res = '" . $id . "'";
+        $query = "SELECT * FROM arch.res_det d inner join arch.doc e on d.id_doc = e.id where d.id_res = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

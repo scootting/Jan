@@ -18,13 +18,13 @@
                             </el-table-column>
                             <el-table-column>
                                 <template slot-scope="scope">
-                                    <el-button @click="initAddBooking(scope.$index, scope.row)" type="warning" size="mini"
-                                        plain>verificar</el-button>
+                                    <el-button @click="initSeeBookingDocument(scope.$index, scope.row)" type="warning"
+                                        size="mini" plain>ver</el-button>
                                 </template>
                             </el-table-column>
                             <el-table-column>
                                 <template slot-scope="scope">
-                                    <el-button @click="initAddBooking(scope.$index, scope.row)" type="danger" size="mini"
+                                    <el-button @click="initRemoveBooking(scope.$index, scope.row)" type="danger" size="mini"
                                         plain>quitar</el-button>
                                 </template>
                             </el-table-column>
@@ -107,6 +107,7 @@ export default {
     data() {
         return {
             table: false,
+            user: this.$store.state.user,
             documents: [],
             reservations: [],
             pagination: {
@@ -117,6 +118,7 @@ export default {
         };
     },
     mounted() {
+        console.log(this.user);
         this.getDataDocument();
     },
     methods: {
@@ -148,15 +150,34 @@ export default {
                 this.reservations.push(row);
             }
         },
-        initStoreBookingDocument(idx, row) {
+        initRemoveBooking(idx, row) {
+            this.reservations.splice(idx, 1);
         },
-        /*
-        cancelForm() {
-            this.loading = false;
-            this.dialog = false;
-            clearTimeout(this.timer);
-        }*/
+        initSeeBookingDocument(idx, row) {
 
+        },
+        //  * A18. Guardar la reserva de documentos por el usuario
+        initStoreBookingDocument() {
+            console.log(this.reservations);
+            var app = this;
+            try {
+                let response = axios
+                    .post("/api/storeBookingDocument", {
+                        user: app.user,
+                        reservations: app.reservations,
+                        marker: "registrar",
+                    });
+                console.log(response);
+                app.$alert("Se ha registrado correctamente los archivos del documento", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+            } catch (error) {
+                console.log(error);
+                app.$alert("No se registro nada", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+            };
+        },
     },
 };
 </script>

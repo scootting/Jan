@@ -95,15 +95,15 @@ class ArchiveController extends Controller
         $gestion = $request->get('year');
         $marcador = $request->get('marker');
 
-        $codigo = ($contenedor['codigo'] ? $contenedor['codigo'] : '');// condicion if else si existe el dato se asigna lo primero sino lo segundo
+        $codigo = ($contenedor['codigo'] ? $contenedor['codigo'] : ''); // condicion if else si existe el dato se asigna lo primero sino lo segundo
         \Log::info($contenedor);
 
         $tipo = 'C';
         $id_arch = $contenedor['id_arch'];
         $fecha = $contenedor['fecha'];
         $glosa = strtoupper($contenedor['glosa']);
-        \Log::info("esta es la glosa ". $glosa);
-        if($glosa == ""){
+        \Log::info("esta es la glosa " . $glosa);
+        if ($glosa == "") {
             $glosa = $contenedor['descr'];
         }
         $marcador = $request->get('marker');
@@ -171,19 +171,19 @@ class ArchiveController extends Controller
                     $id_tipo = $item['id_tipo'];
                     $id_arch = $item['id_arch'];
                     $descripcion = $item['descr'];
-                    if($indice == 1){
+                    if ($indice == 1) {
                         $response = Archive::AddHeaderOfDocument($id_tipo, $glosa, $fecha, $id_arch, $gestion);
                         \Log::info($response);
                         $documento = $response[0]->{'ff_registrar_documento'};
                     }
                     $marker = Archive::addArchivesByDocument($documento, $indice, $numeral, $glosa, $fecha, $id_tipo, $id_arch, $gestion);
                 }
-                
+
                 break;
             case 'editar':
                 # code edit...
                 $documento = $request->get('document'); //id del documento
-            
+
                 $marker = Archive::deleteArchivesByDocument($documento);
                 foreach ($dataArchivesOfDocument as $item) {
                     //indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: ""
@@ -291,8 +291,8 @@ class ArchiveController extends Controller
     //  * 17. Obtener una lista de las solicitudes de reserva por usuario.
     public function getBookingDocument(Request $request)
     {
-        $usuario = $request->get('user'); 
-        $gestion = $request->get('year'); 
+        $usuario = $request->get('user');
+        $gestion = $request->get('year');
         $data = Archive::GetBookingDocument($usuario, $gestion);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 15;
@@ -305,5 +305,40 @@ class ArchiveController extends Controller
         );
         return json_encode($paginate);
     }
+    //  * A18. Guardar la reserva de documentos por el usuario
+    public function storeBookingDocument(Request $request)
+    {
+        $usuario = $request->get('user');
+        $ci_per = $usuario['nodip'];
+        $des_per = $usuario['descripcion'];
+        $gestion = $usuario['gestion'];
+        $usr_cre = $usuario['usuario'];
 
+        $reservas = $request->get('reservations');
+        $fecha = date('d-m-Y');
+        $marcador = $request->get('marker');
+        switch ($marcador) {
+            case 'registrar':
+                # code add...
+                $response = Archive::AddHeaderOfBookingDocument($ci_per, $des_per, $fecha, $gestion, $usr_cre);
+                $reserva = $response[0]->{'ff_registrar_reserva'};
+                foreach ($reservas as $item) {
+                    $id_doc = $item['id'];
+                    $marker = Archive::AddStoreBookingDocument($reserva, $id_doc);
+                }
+                break;
+            case 'editar':
+                break;
+            default:
+                break;
+
+        }
+        return json_encode($marker);
+    }
+    //  * A19. Busca los documentos reservados para la solicitud
+    public function getDataBookingDetails(Request $request){
+        $id_booking = $request->get('id');
+        $data = Archive::GetDataBookingDetails($id_booking);
+        return json_encode($data);
+    }
 }

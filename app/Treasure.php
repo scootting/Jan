@@ -164,14 +164,6 @@ class Treasure extends Model
         return $data;
     }
 
-    public static function getValueById($valor, $gestion)
-    {
-        $query = "SELECT * FROM val.val_ue u INNER JOIN val.valores v ON u.cod_val = v.cod_val " .
-            "WHERE u.gestion = '" . $gestion . "' AND u.cod_val = '" . $valor . "' AND u.estado = 'S'";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-
     //  * Encontrar todas las transacciones de una gestion.
     //  * {id: numero de carnet de identidad}
     public static function GetAllTransactionsByYear($description, $year)
@@ -187,5 +179,10 @@ class Treasure extends Model
         $query = "select * from val.ff_anular_transaccion('" . $id . "', '" . $day . "', '" . $year . "', '" . $user . "','" . $type . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
+    }
+
+    public static function storeValuesOfUniversity(){
+
+
     }
 }
