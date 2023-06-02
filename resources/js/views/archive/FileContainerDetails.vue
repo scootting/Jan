@@ -7,7 +7,7 @@
       </div>
       <div class="grid-content bg-purple">
         <el-row :gutter="20">
-          <el-form :model="container" label-width="220px" size="small">
+          <el-form :model="container" label-width="220px" size="small" disabled="true">
             <el-col :span="12">
               <el-form-item label="codigo">
                 <el-input v-model="container.id_doc"></el-input>
@@ -25,14 +25,14 @@
               </el-form-item>
               <el-form-item label="estado">
                 <el-input v-model="container.estado"></el-input>
-                <el-button size="small" type="primary" @click.prevent="test" plain>Ver Contenedor</el-button>
-                <el-button size="small" type="primary" @click.prevent="test" plain>Liberar</el-button>
               </el-form-item>
               <el-form-item label="tipo">
                 <el-input type="textarea" v-model="container.descr"></el-input>
               </el-form-item>
             </el-col>
           </el-form>
+          <el-button size="small" type="primary" @click.prevent="test" plain>Ver Contenedor</el-button>
+          <el-button size="small" type="primary" @click.prevent="test" plain>Liberar</el-button>
         </el-row>
       </div>
       <br>

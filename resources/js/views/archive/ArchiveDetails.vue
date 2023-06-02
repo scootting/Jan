@@ -5,11 +5,40 @@
         <span>detalle del archivo</span>
         <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
       </div>
+      <div class="grid-content bg-purple">
+        <el-row :gutter="20">
+          <el-form :model="archive" label-width="220px" size="small" disabled="true">
+            <el-col :span="12">
+              <el-form-item label="codigo">
+                <el-input v-model="archive.id_doc"></el-input>
+              </el-form-item>
+              <el-form-item label="fecha">
+                <el-input v-model="archive.fecha"></el-input>
+              </el-form-item>
+              <el-form-item label="glosa">
+                <el-input type="textarea" v-model="archive.glosa"></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="gestion">
+                <el-input v-model="archive.gestion"></el-input>
+              </el-form-item>
+              <el-form-item label="estado">
+                <el-input v-model="archive.estado"></el-input>
+              </el-form-item>
+              <el-form-item label="tipo">
+                <el-input type="textarea" v-model="archive.descr"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-form>
+          <el-button size="small" type="primary" @click.prevent="test" plain>Ver Contenedor</el-button>
+          <el-button size="small" type="primary" @click.prevent="test" plain>Liberar</el-button>
+        </el-row>
+      </div>
+      <br>
+
       <el-row :gutter="50">
         <el-col :span="24">
-          <div>
-            {{ archive }}
-          </div>
           <div>
             <el-table :data="documentsArchive" border style="width: 100%" size="small">
               <el-table-column prop="indice" label="indice" align="right" width="100">
@@ -87,9 +116,9 @@ export default {
       typesDocument: [],          //diferentes tipos de archivos que pertenecen a un documento
       dialogFormVisible: false,   //para el dialogo
       stateStore: "",             //estado para ver si se aniade o se edita
-      archive:{},                //informacion principal del documento
+      archive: {},                //informacion principal del documento
       document: {
-        id_doc:"",
+        id_doc: "",
         indice: 0,
         numeral: "",
         glosa: "",
@@ -192,7 +221,7 @@ export default {
       else {
 
       }
-      this.document = {id_doc:"", indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: ""};
+      this.document = { id_doc: "", indice: 0, numeral: "", glosa: "", fecha: "", id_tipo: 'A', id_arch: null, descr: "", gestion: "" };
       console.log(this.documentsArchive);
       this.OnUpdateIndex();
     },
@@ -205,12 +234,12 @@ export default {
     },
 
     //  * Actualiza el indice de la lista
-    OnUpdateIndex(){
+    OnUpdateIndex() {
       let indice = 0;
       this.documentsArchive.forEach(element => {
-        indice+=1;
+        indice += 1;
         element.indice = indice;
-      });      
+      });
     },
 
     //* actualizar un componente al hacer la seleccion nueva *//
