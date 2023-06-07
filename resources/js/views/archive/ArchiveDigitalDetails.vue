@@ -208,7 +208,7 @@ export default {
         responseType: "arraybuffer",
       }).then((response) => {
         let pdfData = response.data;
-        let blob = new Blob([pdfData], { type: 'application/pdf' });
+        let blob = new Blob(base64ToArrayBuffer([pdfData]), { type: 'application/pdf' });
         let url = URL.createObjectURL(blob);
         window.open(url);
       });

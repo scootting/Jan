@@ -369,16 +369,38 @@ class ArchiveController extends Controller
         $result = Archive::GetDigitalDocumentById2($id, $year);
         if (count($result) > 0) {
             // Decodificar el dato bytea utilizando pg_unescape_bytea
+            //$pdfData = hex2bin($pdfData);
+            //$pdfData = pg_unescape_bytea($result[0]->pdf_data);
+
+            $pdfData = $result[0]->pdf_data;
+            $pdfData =  hex2bin($pdfData);
+            $pdfData = pg_unescape_bytea($pdfData);
+            /*
             $pdfData = stream_get_contents($result[0]->pdf_data);
             return response()->json([
                 'pdfData' => base64_encode($pdfData), // Convertir a base64 para pasar a la vista de Vue
-            ]);            
+            ]);*/
+            return $pdfData;            
         } else {
             \Log::info("no ingresa a la db");
+            return response()->json([
+                'error' => 'No se encontró ningún registro con el ID proporcionado.',
+            ]);
         }
-
         //$raw = pg_fetch_result($escaped, 0, 0);
         //header('Content-type: image/jpeg');
         //return pg_unescape_bytea($raw);
+    }
+
+    private function hexToBin($hexString)
+    {
+        $length = strlen($hexString);
+        $binString = '';
+
+        for ($i = 0; $i < $length; $i += 2) {
+            $binString .= chr(hexdec(substr($hexString, $i, 2)));
+        }
+
+        return $binString;
     }
 }
