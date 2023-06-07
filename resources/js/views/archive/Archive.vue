@@ -40,9 +40,11 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column align="right-center" width="120" label="Operaciones" fixed="right">
+          <el-table-column align="right-center" width="220" label="Operaciones" fixed="right">
             <template slot-scope="scope">
               <el-button @click="getArchivesByDocument(scope.row.id)" type="success" plain size="mini">ver archivos
+              </el-button>
+              <el-button @click="getArchivesDigitalByDocument(scope.row.id)" type="info" plain size="mini">digitalizar
               </el-button>
             </template>
           </el-table-column>
@@ -106,6 +108,14 @@ export default {
     getArchivesByDocument(id) {
       this.$router.push({
         name: "archivedetails",
+        params: {
+          id: id,
+        },
+      });
+    },
+    getArchivesDigitalByDocument(id){
+      this.$router.push({
+        name: "archivedigitaldetails",
         params: {
           id: id,
         },

@@ -224,4 +224,26 @@ class Archive extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //  * A20. Guarda los documentos digitalizados
+    public static function StoreDigitalDocument($id, $escaped)
+    {
+        $query = "INSERT INTO arch.doc_dig(id_doc, dig_doc) VALUES (". $id .", '{$escaped}') ";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
+    public static function GetDigitalDocumentById($id, $year){
+        $query = "SELECT dig_doc FROM arch.doc_dig d WHERE d.id_doc = ". $id ."";
+        \Log::info($query);
+        $data = DB::select(DB::raw($query));
+        return $data;
+    }
+    public static function GetDigitalDocumentById2($id, $year){
+        $query = "SELECT dig_doc as pdf_data FROM arch.doc_dig d WHERE d.id_doc = ?";
+        $data = DB::select($query, [$id]);
+        return $data;
+    }
 }

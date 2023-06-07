@@ -198,7 +198,13 @@ Route::group([
     Route::post('storeBookingDocument', 'ArchiveController@storeBookingDocument');
     //  * A19. Busca los documentos reservados para la solicitud
     Route::post('getDataBookingDetails', 'ArchiveController@getDataBookingDetails');
+    //  * A20. Guarda los documentos digitalizados
+    Route::post('storeDigitalDocument', 'ArchiveController@storeDigitalDocument');
+    //  * A21. Obtiene el documento digital seleccionado
+    Route::get('getDigitalDocumentById', 'ArchiveController@getDigitalDocumentById');
 
+
+    
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes
     //  |--------------------------------------------------------------------------

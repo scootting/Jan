@@ -68,6 +68,7 @@ import Booking from './views/archive/Booking'
 import BookingDetails from './views/archive/BookingDetails'
 import RequestDocument from './views/archive/Request'
 import RequestDocumentDetails from './views/archive/RequestDetails'
+import ArchiveDigitalDetails from './views/archive/ArchiveDigitalDetails'
 
 //bienes e inventarios
 import Inventory from './views/inventory/Inventory'
@@ -238,7 +239,7 @@ const router = new VueRouter({
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
                 
                 { path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive, },
-
+                { path: 'archive3/:id', name: 'archivedigitaldetails', component: ArchiveDigitalDetails, },
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Almacenes
                 //  |--------------------------------------------------------------------------    

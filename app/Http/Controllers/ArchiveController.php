@@ -336,9 +336,49 @@ class ArchiveController extends Controller
         return json_encode($marker);
     }
     //  * A19. Busca los documentos reservados para la solicitud
-    public function getDataBookingDetails(Request $request){
+    public function getDataBookingDetails(Request $request)
+    {
         $id_booking = $request->get('id');
         $data = Archive::GetDataBookingDetails($id_booking);
         return json_encode($data);
+    }
+
+    //  * A20. Guarda los documentos digitalizados
+    public function storeDigitalDocument(Request $request)
+    {
+        $id_document = $request->get('id_doc');
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $data = file_get_contents($file);
+            // Escapar el dato binario
+            $escaped = pg_escape_bytea($data);
+            // Insertarlo en la base de datos
+            $data = Archive::StoreDigitalDocument($id_document, $escaped);
+
+        } else {
+            return response()->json(['error' => 'File not exist!']);
+        }
+        return response()->json(['success' => 'Uploaded Successfully.']);
+    }
+    //  * A21. Obtiene el documento digital seleccionado
+    public function getDigitalDocumentById(Request $request)
+    {
+        $id = $request->get('id');
+        $year = $request->get('year');
+        $result = Archive::GetDigitalDocumentById2($id, $year);
+        if (count($result) > 0) {
+            // Decodificar el dato bytea utilizando pg_unescape_bytea
+            $pdfData = stream_get_contents($result[0]->pdf_data);
+            return response()->json([
+                'pdfData' => base64_encode($pdfData), // Convertir a base64 para pasar a la vista de Vue
+            ]);            
+        } else {
+            \Log::info("no ingresa a la db");
+        }
+
+        //$raw = pg_fetch_result($escaped, 0, 0);
+        //header('Content-type: image/jpeg');
+        //return pg_unescape_bytea($raw);
     }
 }
