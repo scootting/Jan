@@ -208,33 +208,11 @@ export default {
         responseType: "arraybuffer",
       }).then((response) => {
         let pdfData = response.data;
-        let blob = new Blob(base64ToArrayBuffer([pdfData]), { type: 'application/pdf' });
+        console.log(response);
+        let blob = new Blob([pdfData], { type: 'application/pdf' });
         let url = URL.createObjectURL(blob);
         window.open(url);
       });
-    },
-    base64ToArrayBuffer(base64) {
-      let binaryString;
-      let buffer;
-
-      if (typeof window !== 'undefined') {
-        // Navegador
-        binaryString = window.atob(base64);
-      } else {
-        // Node.js
-        binaryString = Buffer.from(base64, 'base64').toString('binary');
-      }
-
-      const length = binaryString.length;
-      const bytes = new Uint8Array(length);
-
-      for (let i = 0; i < length; i++) {
-        bytes[i] = binaryString.charCodeAt(i);
-      }
-
-      buffer = bytes.buffer;
-
-      return buffer;
     },
   },
 };

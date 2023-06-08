@@ -367,22 +367,27 @@ class ArchiveController extends Controller
         $id = $request->get('id');
         $year = $request->get('year');
         $result = Archive::GetDigitalDocumentById2($id, $year);
-        if (count($result) > 0) {
+
+        if (!empty($result)) {
+            //$my_bytea = stream_get_contents($result[0]->pdf_data);
+            $my_bytea = stream_get_contents($result);
+            $my_string = pg_unescape_bytea($my_bytea);
+            $html_data = htmlspecialchars($my_string);
+            \Log::info($my_string);
+            /*
             // Decodificar el dato bytea utilizando pg_unescape_bytea
             //$pdfData = hex2bin($pdfData);
-            //$pdfData = pg_unescape_bytea($result[0]->pdf_data);
-
-            $pdfData = $result[0]->pdf_data;
-            $pdfData =  hex2bin($pdfData);
-            $pdfData = pg_unescape_bytea($pdfData);
+            //$pdfData = pg_unescape_bytea(base64_encode($result[0]->pdf_data));
+            //$pdfData = $result[0]->pdf_data;
+            //$pdfData =  pack('H*',$pdfData);
+            //$pdfData = pg_unescape_bytea(file_get_contents($pdfData));
             /*
             $pdfData = stream_get_contents($result[0]->pdf_data);
             return response()->json([
-                'pdfData' => base64_encode($pdfData), // Convertir a base64 para pasar a la vista de Vue
+            'pdfData' => base64_encode($pdfData), // Convertir a base64 para pasar a la vista de Vue
             ]);*/
-            return $pdfData;            
+            return $my_string;
         } else {
-            \Log::info("no ingresa a la db");
             return response()->json([
                 'error' => 'No se encontró ningún registro con el ID proporcionado.',
             ]);
