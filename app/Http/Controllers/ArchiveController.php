@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Archive;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Storage;
+
 
 class ArchiveController extends Controller
 {
@@ -346,15 +348,29 @@ class ArchiveController extends Controller
     //  * A20. Guarda los documentos digitalizados
     public function storeDigitalDocument(Request $request)
     {
+        /*
+        $fileNameExt = $request->file('productimage')->getClientOriginalName();
+        $fileName = pathinfo($fileNameExt, PATHINFO_FILENAME);
+        $fileNameToStore = $fileName.'_'.time().'.'.$fileExt;
+        $pathToStore = $request->file('productimage')->storeAs('public/images',$fileNameToStore);
+        */
         $id_document = $request->get('id_doc');
-
+        $year = $request->get('gestion');
+        $fileExt = $request->file('file')->getClientOriginalExtension();
         if ($request->hasFile('file')) {
             $file = $request->file('file');
+            //path
+            $path = "documento";
+            $file_name = 'documento-'. $year . '-' . strval($id_document).'.'. $fileExt;//$file->getClientOriginalName();
+            $ruta = $path . "/" . $file_name;
+            $file->storeAs($path, $file_name);
+            //$file->store('documento');    
+            //documento digital
             $data = file_get_contents($file);
             // Escapar el dato binario
             $escaped = pg_escape_bytea($data);
             // Insertarlo en la base de datos
-            $data = Archive::StoreDigitalDocument($id_document, $escaped);
+            $data = Archive::StoreDigitalDocument($id_document, $escaped, $ruta);
 
         } else {
             return response()->json(['error' => 'File not exist!']);
@@ -367,45 +383,37 @@ class ArchiveController extends Controller
         $id = $request->get('id');
         $year = $request->get('year');
         $result = Archive::GetDigitalDocumentById2($id, $year);
+        //$path = Archive::GetDigitalDocumentById($id, $year);
 
-        if (!empty($result)) {
+        if (!empty($result[0]->pdf_data)) {
             //$my_bytea = stream_get_contents($result[0]->pdf_data);
-            $my_bytea = stream_get_contents($result);
-            $my_string = pg_unescape_bytea($my_bytea);
-            $html_data = htmlspecialchars($my_string);
-            \Log::info($my_string);
-            /*
-            // Decodificar el dato bytea utilizando pg_unescape_bytea
-            //$pdfData = hex2bin($pdfData);
-            //$pdfData = pg_unescape_bytea(base64_encode($result[0]->pdf_data));
-            //$pdfData = $result[0]->pdf_data;
-            //$pdfData =  pack('H*',$pdfData);
-            //$pdfData = pg_unescape_bytea(file_get_contents($pdfData));
-            /*
-            $pdfData = stream_get_contents($result[0]->pdf_data);
-            return response()->json([
-            'pdfData' => base64_encode($pdfData), // Convertir a base64 para pasar a la vista de Vue
-            ]);*/
-            return $my_string;
+            $my_bytea = stream_get_contents($result[0]->pdf_data);
+            //$my_string = pg_unescape_bytea($my_bytea);
+            //$html_data = htmlspecialchars($my_string);
+            \Log::info($my_bytea);
+            return $my_bytea;
         } else {
             return response()->json([
                 'error' => 'No se encontró ningún registro con el ID proporcionado.',
             ]);
         }
-        //$raw = pg_fetch_result($escaped, 0, 0);
-        //header('Content-type: image/jpeg');
-        //return pg_unescape_bytea($raw);
+
+        /*
+        \Log::info($path[0]->des_doc);
+        $contenidoArchivo = storage_path('app/' . $path[0]->des_doc);
+        \Log::info($contenidoArchivo);
+        if (Storage::exists($path[0]->des_doc)) {
+            // Obtener el contenido del archivo
+            $contenidoArchivo = Storage::get($path[0]->des_doc);
+            //\Log::info( $contenidoArchivo);
+            // Devolver el archivo como respuesta
+            return $contenidoArchivo;
+            //return response($contenidoArchivo, 200, $headers);
+        }else{
+            return response()->json([
+                'error' => 'No se encontró ningún registro con el ID proporcionado.',
+            ]);
+        }*/
     }
 
-    private function hexToBin($hexString)
-    {
-        $length = strlen($hexString);
-        $binString = '';
-
-        for ($i = 0; $i < $length; $i += 2) {
-            $binString .= chr(hexdec(substr($hexString, $i, 2)));
-        }
-
-        return $binString;
-    }
 }

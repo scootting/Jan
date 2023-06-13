@@ -205,13 +205,27 @@ export default {
           year: app.user.gestion,
         },
         method: "GET",
-        responseType: "arraybuffer",
+        responseType: "blob",
       }).then((response) => {
         let pdfData = response.data;
         console.log(response);
         let blob = new Blob([pdfData], { type: 'application/pdf' });
         let url = URL.createObjectURL(blob);
         window.open(url);
+        /*
+        const urlArchivo = window.URL.createObjectURL(new Blob([response.data]));
+
+        // Crear un enlace temporal y hacer clic en él para iniciar la descarga
+        const enlaceDescarga = document.createElement('a');
+        enlaceDescarga.href = urlArchivo;
+        enlaceDescarga.setAttribute('download', nombreArchivo);
+        document.body.appendChild(enlaceDescarga);
+        enlaceDescarga.click();
+
+        // Liberar el objeto URL creado
+        window.URL.revokeObjectURL(urlArchivo);
+        document.body.removeChild(enlaceDescarga);
+*/
       });
     },
   },

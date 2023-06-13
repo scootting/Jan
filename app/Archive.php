@@ -226,9 +226,9 @@ class Archive extends Model
     }
 
     //  * A20. Guarda los documentos digitalizados
-    public static function StoreDigitalDocument($id, $escaped)
+    public static function StoreDigitalDocument($id, $escaped, $path)
     {
-        $query = "INSERT INTO arch.doc_dig(id_doc, dig_doc) VALUES (". $id .", '{$escaped}') ";
+        $query = "INSERT INTO arch.doc_dig(id_doc, des_doc, dig_doc) VALUES (". $id .",'". $path. "', '{$escaped}') ";
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
@@ -236,7 +236,7 @@ class Archive extends Model
 
 
     public static function GetDigitalDocumentById($id, $year){
-        $query = "SELECT dig_doc FROM arch.doc_dig d WHERE d.id_doc = ". $id ."";
+        $query = "SELECT des_doc FROM arch.doc_dig d WHERE d.id_doc = ". $id ."";
         \Log::info($query);
         $data = DB::select(DB::raw($query));
         return $data;
