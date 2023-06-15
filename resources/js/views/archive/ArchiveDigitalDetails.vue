@@ -176,12 +176,16 @@ export default {
     //  * Inicia la edicion de un documento
     initEditDocumentOfArchive(idx, row) {
       this.document = row;
+      console.log("editar:  ");
+      console.log(this.document);
       this.stateStore = "añadir";
       this.dialogFormVisible = true;
     },
 
     storeDigitalDocument() {
       var app = this;
+      console.log("guardar:  ");
+      console.log(this.document);
       this.$refs.upload.submit();
     },
     handleSuccessBoucher(response, file, fileList) {
