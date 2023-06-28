@@ -163,6 +163,7 @@ export default {
         });
         app.documentsArchive = response.data.data;
         app.archive = response.data.archive[0];
+        console.log("recibido");
         console.log(app.documentsArchive);
       } catch (error) {
         this.error = error.response.data;
@@ -179,6 +180,7 @@ export default {
       var newDocument = app.id;
       var newYear = app.user.gestion;
       try {
+        console.log("enviado");
         console.log(newArchivesOfDocument);
         let response = axios
           .post("/api/storeArchivesOfDocument", {

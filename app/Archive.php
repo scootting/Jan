@@ -27,6 +27,7 @@ class Archive extends Model
     {
         //SELECT * FROM arch.ff_documentos_archivo('00000001', '2019')
         $query = "SELECT * FROM arch.ff_documentos_archivo('" . $archive . "','" . $year . "')";
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

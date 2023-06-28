@@ -69,7 +69,7 @@ import BookingDetails from './views/archive/BookingDetails'
 import RequestDocument from './views/archive/Request'
 import RequestDocumentDetails from './views/archive/RequestDetails'
 import ArchiveDigitalDetails from './views/archive/ArchiveDigitalDetails'
-
+import TransferContainerDetails from './views/archive/TransferContainerDetails'
 //bienes e inventarios
 import Inventory from './views/inventory/Inventory'
 import Inventory2 from './views/inventory/Inventory2'
@@ -235,6 +235,8 @@ const router = new VueRouter({
                 { path: 'requestdocument', name: 'requestdocument', component: RequestDocument },
                 //  * A. Modulo para cofirmar la solicitud unica  de prestar devolver las solicitudes de documentos
                 { path: 'requestdocument/:id', name: 'requestdocumentdetails', component: RequestDocumentDetails },
+                //  * A. Modulo para realizar la transferencia de archivos o de contenedores
+                { path: 'transfercontainerdetails', name: 'transfercontainerdetails', component: TransferContainerDetails },
 
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
                 
