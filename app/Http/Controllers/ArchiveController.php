@@ -416,4 +416,26 @@ class ArchiveController extends Controller
         }*/
     }
 
+    
+    //  * A22. Guarda las tranferencias realizadas entre dos contenedores
+    public function storeTransferDocumentsAndContainers(Request $request)
+    {
+        $todos = $request->get('all');
+        $marcador = $request->get('marker');
+        switch ($marcador) {
+            case 'editar':
+                # code add...
+                foreach ($todos as $item) {
+                    $id = $usuario['id'];
+                    $id_raiz = $usuario['id_raiz'];
+                    $marker = Archive::StoreTransferDocumentsAndContainers($id, $id_raiz);
+                }
+                break;
+            default:
+                break;
+
+        }
+        return json_encode($marker);
+    }
+
 }

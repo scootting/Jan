@@ -43,7 +43,7 @@
                                 <el-table-column align="right-center" label="operaciones" width="120">
                                     <template slot-scope="scope">
                                         <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
-                                            @click="initTransferDocumentOrContainer(scope.$index, scope.row)">traspasar</el-button>
+                                            @click="initTransferDocumentOrContainer(scope.$index, scope.row, 'source', 'documents')">traspasar</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -67,7 +67,7 @@
                                 <el-table-column align="right-center" label="operaciones" width="150">
                                     <template slot-scope="scope">
                                         <el-button type="danger" plain size="mini"
-                                            @click="initTransferDocumentOrContainer(scope.$index, scope.row)">traspasar</el-button>
+                                            @click="initTransferDocumentOrContainer(scope.$index, scope.row, 'source', 'containers')">traspasar</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -111,7 +111,7 @@
                                 <el-table-column align="right-center" label="operaciones" width="120">
                                     <template slot-scope="scope">
                                         <el-button type="danger" plain size="mini"
-                                            @click="initTransferDocumentOrContainer(scope.$index, scope.row)">traspasar</el-button>
+                                            @click="initTransferDocumentOrContainer(scope.$index, scope.row, 'target', 'documents')">traspasar</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -135,7 +135,7 @@
                                 <el-table-column align="right-center" label="operaciones" width="150">
                                     <template slot-scope="scope">
                                         <el-button type="danger" plain size="mini"
-                                            @click="initTransferDocumentOrContainer(scope.$index, scope.row)">traspasar</el-button>
+                                            @click="initTransferDocumentOrContainer(scope.$index, scope.row, 'target', 'containers')">traspasar</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -178,7 +178,7 @@
                 </span>
             </el-dialog>
             <!-- Form Add Document to Archive-->
-            <el-button type="warning" @click="test" size="small">Guardar cambios</el-button>
+            <el-button type="warning" @click="onStoreTransferDocumentsAndContainers" size="small">Guardar cambios</el-button>
         </el-card>
     </div>
 </template>
@@ -202,6 +202,7 @@ export default {
             documents2: [],               //lista de documentos que pertenecen al contenedor
             fileContainer: [],           //lista de contenedores que pertenecen al contenedor
             fileContainer2: [],           //lista de contenedores que pertenecen al contenedor
+            allDocumentsAndContainers: [],
             dialogFormVisible: false,    //para el dialogo
             stateContainer: "",              //estado para ver que contenedor es
 
@@ -223,7 +224,6 @@ export default {
         test() {
             alert("test");
         },
-
 
         //  * 1. Obtener una lista de inventarios por usuario de el recurso utilizado.
         getFileContainer(page) {
@@ -266,10 +266,6 @@ export default {
                     app.fileContainer2 = response.data.fileContainer;
                     app.container2 = response.data.container[0];
                 }
-                console.log(app.documents);
-                console.log(app.documents2);
-                console.log(app.fileContainer);
-                console.log(app.fileContainer2);
             } catch (error) {
                 console.log(error);
             }
@@ -292,8 +288,57 @@ export default {
             console.log(this.stateContainer);
             app.getDocumentAndFilesContainerById(id);
         },
-        initTransferDocumentOrContainer(idx,row){
-            console.log("enviar");
+        async onStoreTransferDocumentsAndContainers() {
+            var app = this;
+            try {
+                this.allDocumentsAndContainers = app.documents.concat(app.documents2).concat(app.fileContainer).concat(app.fileContainer2);
+                console.log(app.allDocumentsAndContainers);
+                let response = await axios
+                    .post("/api/storeTransferDocumentsAndContainers", {
+                        all: app.allDocumentsAndContainers,
+                        marker: "editar",//editar
+                    });
+                console.log(response);
+                app.$alert("Se ha registrado correctamente los cambios", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+            } catch (error) {
+                app.$alert("No se registro nada", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+            };
+        },
+        initTransferDocumentOrContainer(idx, row, container, types) {
+            let app = this;
+            let temp = row;
+            if (container == "source") {
+                if (types == "documents") {
+                    this.documents.splice(idx, 1);
+                    temp.id_raiz = app.id2;
+                    this.documents2.push(temp);
+                }
+                else {
+                    this.container.splice(idx, 1);
+                    temp.id_raiz = app.id2;
+                    this.container2.push(temp);
+                }
+                console.log(this.id);
+                console.log(this.id2);
+                console.log(this.documents);
+                console.log(this.documents2);
+            }
+            else {
+                if (types == "documents") {
+                    this.documents2.splice(idx, 1);
+                    temp.id_raiz = app.id;
+                    this.documents.push(temp);
+                }
+                else {
+                    this.container2.splice(idx, 1);
+                    temp.id_raiz = app.id;
+                    this.container.push(temp);
+                }
+            }
         }
     },
 };

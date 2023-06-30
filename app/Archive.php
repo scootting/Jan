@@ -247,4 +247,15 @@ class Archive extends Model
         $data = DB::select($query, [$id]);
         return $data;
     }
+
+    //  * A22. Guarda las tranferencias realizadas entre dos contenedores
+    public static function StoreTransferDocumentsAndContainers($id, $id_raiz)
+    {
+        /*
+        $query = "UPDATE arch.tipos set descr = '" . $descripcion . "' where id = '" . $id . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+        */
+    }
+
 }
