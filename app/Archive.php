@@ -125,14 +125,14 @@ class Archive extends Model
     //  * parametros {id: identificador del contenedor raiz }
     public static function GetDataDocumentById($id)
     {
-        $query = "select a.id, a.glosa, a.fecha, a.id_doc, a.id_tipo, b.id_raiz from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
+        $query = "select a.id, a.glosa, a.fecha, a.id_doc, a.id_tipo, b.id_raiz, b.id as id_cd from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
         where b.id_raiz = '" . $id . "' and b.tipo_rama = 'A'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     public static function GetDetaFileContainerById($id)
     {
-        $query = "select a.id, a.glosa, a.fecha, a.id_doc, a.id_tipo, b.id_raiz from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
+        $query = "select a.id, a.glosa, a.fecha, a.id_doc, a.id_tipo, b.id_raiz, b.id as id_cd from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
         where b.id_raiz = '" . $id . "' and b.tipo_rama <> 'A'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
@@ -249,13 +249,11 @@ class Archive extends Model
     }
 
     //  * A22. Guarda las tranferencias realizadas entre dos contenedores
-    public static function StoreTransferDocumentsAndContainers($id, $id_raiz)
+    public static function StoreTransferDocumentsAndContainers($id, $id_rama, $id_raiz)
     {
-        /*
-        $query = "UPDATE arch.tipos set descr = '" . $descripcion . "' where id = '" . $id . "'";
+        $query = "UPDATE arch.doc_con set id_raiz = " . $id_raiz . " where id = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
-        */
     }
 
 }

@@ -426,14 +426,14 @@ class ArchiveController extends Controller
             case 'editar':
                 # code add...
                 foreach ($todos as $item) {
-                    $id = $usuario['id'];
-                    $id_raiz = $usuario['id_raiz'];
-                    $marker = Archive::StoreTransferDocumentsAndContainers($id, $id_raiz);
+                    $id = $item['id_cd'];
+                    $id_rama = $item['id'];
+                    $id_raiz = $item['id_raiz'];
+                    $marker = Archive::StoreTransferDocumentsAndContainers($id, $id_rama, $id_raiz);
                 }
                 break;
             default:
                 break;
-
         }
         return json_encode($marker);
     }
