@@ -63,8 +63,13 @@
                                 <el-table-column prop="glosa" label="glosa" width="350"></el-table-column>
                                 <el-table-column align="right" fixed="right" width="100">
                                     <template slot-scope="scope">
-                                        <el-button @click="initAddBooking(scope.$index, scope.row)" type="warning"
+                                        <div v-if="scope.row.reserva !== 'Prestado'">
+                                            <el-button @click="initAddBooking(scope.$index, scope.row)" type="primary" :disabled="scope.row.reserva === 'Prestado'"
                                             size="mini" plain>Agregar</el-button>
+                                        </div>
+                                        <div v-else>
+                                            <el-tag type="danger" effect="dark">Prestado</el-tag>
+                                        </div>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -133,7 +138,7 @@ export default {
                 });
                 app.documents = Object.values(response.data.data);
                 app.pagination = response.data;
-                console.log(response);
+                console.log(this.documents);
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {

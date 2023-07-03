@@ -437,5 +437,20 @@ class ArchiveController extends Controller
         }
         return json_encode($marker);
     }
+    //  * A23. Realizar la entrega, devolucion o cancelacion de la reserva
+    public function storeChangeStateReservation(Request $request)
+    {
+        $estado = $request->get('state'); // matrices
+        $documentos = $request->get('selected'); //matrices
+        //$marcador = $request->get('marker');    
+        foreach ($documentos as $item) {
+            $id = $item['id'];
+            $documento = $item['id_doc2'];
+            $reserva = $item['id_res'];
+            $marker = Archive::StoreChangeStateReservation($id, $documento, $reserva, $estado);
+            $id_tran = 0;
+        }
+        return json_encode($marker);
+    }
 
 }

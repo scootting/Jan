@@ -218,10 +218,11 @@ class Archive extends Model
         return $data;
     }
 
+    //  * A19. Busca los documentos reservados para la solicitud
     public static function GetDataBookingDetails($id)
     {
         //$query = "SELECT * FROM arch.res_det d inner join arch.doc2 e on d.id_doc::varchar = e.id_doc where d.id_res = '" . $id . "'";
-        $query = "SELECT * FROM arch.res_det d inner join arch.doc e on d.id_doc = e.id where d.id_res = '" . $id . "'";
+        $query = "SELECT e.id_doc, e.fecha, e.glosa, d.id, d.id_doc as id_doc2, d.id_res, d.estado FROM arch.res_det d inner join arch.doc e on d.id_doc = e.id where d.id_res = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -252,6 +253,13 @@ class Archive extends Model
     public static function StoreTransferDocumentsAndContainers($id, $id_rama, $id_raiz)
     {
         $query = "UPDATE arch.doc_con set id_raiz = " . $id_raiz . " where id = '" . $id . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    //  * A23. Realizar la entrega, devolucion o cancelacion de la reserva
+    public static function StoreChangeStateReservation($id, $documento, $reserva, $estado)
+    {
+        $query = "UPDATE arch.res_det set estado = '" . $estado . "' where id = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

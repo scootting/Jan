@@ -9,7 +9,8 @@
                     <div class="grid-content bg-purple">
                         <span>documentos reservados</span>
                         <br>
-                        <el-table v-loading="loading" :data="reservations" style="width: 100%" size="small">
+                        <el-table v-loading="loading" :data="reservations" style="width: 100%" size="small"
+                            @selection-change="handleSelectionChange">
                             <el-table-column type="selection"> </el-table-column>
                             <el-table-column prop="id_doc" label="codigo" width="100" align="center">
                                 <template slot-scope="scope">
@@ -28,8 +29,9 @@
 
                         </el-table>
                         <br>
-                        <el-button type="success" size="small" plain @click="test">aprobar la reserva</el-button>
-                        <el-button type="danger" size="small" plain @click="test">cancelar la reserva</el-button>
+                        <el-button type="success" size="small" plain @click="initStoreChangeStateReservation('Prestado')">prestar</el-button>
+                        <el-button type="info" size="small" plain @click="initStoreChangeStateReservation('Devuelto')">devolver</el-button>
+                        <el-button type="danger" size="small" plain @click="initStoreChangeStateReservation('Registrado')">cancelar</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -44,6 +46,7 @@ export default {
             id: null,
             user: this.$store.state.user,
             reservations: [],
+            selectedDocuments: [],
             loading: true,
         };
     },
@@ -73,30 +76,30 @@ export default {
             }
             app.loading = false;
         },
-
-        //  * A18. Guardar la reserva de documentos por el usuario
-        /*
-        initStoreBookingDocument() {
-            console.log(this.reservations);
-            var app = this;
+        //  * A23. Realizar la entrega, devolucion o cancelacion de la reserva
+        async initStoreChangeStateReservation($stateRequest) {
+            let app = this;
+            console.log(this.selectedDocuments);
             try {
-                let response = axios
-                    .post("/api/storeBookingDocument", {
-                        user: app.user,
-                        reservations: app.reservations,
-                        marker: "registrar",
-                    });
-                console.log(response);
-                app.$alert("Se ha registrado correctamente los archivos del documento", 'Gestor de mensajes', {
-                    dangerouslyUseHTMLString: true
+                let response = await axios.post("/api/storeChangeStateReservation", {
+                    state: $stateRequest,
+                    selected: this.selectedDocuments
                 });
+                alert("el estado se cambio correctamente");
+                /*
+                this.$router.push({
+                    name: "typesarchive",
+                });*/
             } catch (error) {
-                console.log(error);
-                app.$alert("No se registro nada", 'Gestor de mensajes', {
-                    dangerouslyUseHTMLString: true
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
                 });
-            };
-        },*/
+            }
+        },
+        handleSelectionChange(val) {
+            this.selectedDocuments = val;
+        },
     },
 };
 </script>

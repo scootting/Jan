@@ -204,8 +204,9 @@ Route::group([
     Route::get('getDigitalDocumentById', 'ArchiveController@getDigitalDocumentById');
     //  * A22. Guarda las tranferencias realizadas entre dos contenedores
     Route::post('storeTransferDocumentsAndContainers', 'ArchiveController@storeTransferDocumentsAndContainers');
+    //  * A23. Realizar la entrega, devolucion o cancelacion de la reserva
+    Route::post('storeChangeStateReservation', 'ArchiveController@storeChangeStateReservation');
 
-    
     
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes
