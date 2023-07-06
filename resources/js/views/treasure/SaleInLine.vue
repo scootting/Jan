@@ -31,20 +31,20 @@
             label="glosa"
             :min-width="450"
           ></el-table-column>
-          <el-table-column align="right" :min-width="250">
+          <el-table-column align="right" :min-width="450">
             <template slot-scope="scope">
               <el-button
                 :disabled="days[scope.$index].estado == 'V'"
                 @click="initSaleInLineDetail(scope.$index, scope.row)"
                 size="mini"
                 type="warning" plain
-                >realizar ventas</el-button
+                >verificacion de ventas en linea</el-button
               >
               <el-button
                 @click="initDetailStudents(scope.$index, scope.row)"
                 size="mini"
                 type="primary" plain
-                >imprimir ventas</el-button
+                >imprimir reporte del dia de ventas</el-button
               >
             </template>
           </el-table-column>

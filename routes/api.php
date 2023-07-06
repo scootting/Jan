@@ -125,6 +125,8 @@ Route::group([
     Route::post('getDataRequestById', 'TreasureController@getDataRequestById');
     //  * T22. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
     Route::post('storeDayForSale', 'TreasureController@storeDayForSale');
+    //  * T40 trae el documento digitalizado
+    Route::get('getDigitalBoucher', 'TreasureController@getDigitalBoucher');
 
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***

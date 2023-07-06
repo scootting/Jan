@@ -53,7 +53,28 @@ class TreasureController extends Controller
         $detail = Treasure::GetDetailRequestById($id_request);
         $boucher = Treasure::getBoucherRequestById($id_request);
         $extract = Treasure::getExtractBankById($id_request);
-        return json_encode(['data' => $data, 'detail' => $detail, 'boucher' => $boucher, 'extract' => $extract]);
+        $all = Treasure::getAllExtractBank();
+        return json_encode(['data' => $data, 'detail' => $detail, 'boucher' => $boucher, 'extract' => $extract, 'all' => $all]);
+    }
+
+    //  *  D4. Obtener el documento digitalizado de cada solicitud
+    //  * {id: id del boucher digitalizado }
+    public function getDigitalBoucher(Request $request)
+    {
+        $id = $request->get('id');
+        $year = $request->get('year');
+        $result = Treasure::GetDigitalBoucher($id, $year);
+        \Log::info("Hola, ingresas aca!!!");
+
+        if (!empty($result[0]->pdf_data)) {
+            $my_bytea = stream_get_contents($result[0]->pdf_data);
+            \Log::info($my_bytea);
+            return $my_bytea;
+        } else {
+            return response()->json([
+                'error' => 'No se encontró ningún registro con el ID proporcionado.',
+            ]);
+        }
     }
 
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad y el año de ingreso.
@@ -83,7 +104,7 @@ class TreasureController extends Controller
             case 5: //INGRESO DIRECTO
             case 20: //3ra PSA
             case 13: //TRASPASO
-            case 101://EXAMEN P.S.A. - R027/2022                                       
+            case 101: //EXAMEN P.S.A. - R027/2022
                 $description = 'NUEVOS';
                 break;
             case 39: //CODEMETROP
@@ -243,7 +264,6 @@ class TreasureController extends Controller
         $id_dia = $data[0]->{'ff_registrar_dia_venta'};
         return json_encode($id_dia);
     }
-
 
     public function getValueById(Request $request)
     {

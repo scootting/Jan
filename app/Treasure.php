@@ -57,7 +57,7 @@ class Treasure extends Model
     //obtiene los boucher registrados en la solicitud
     public static function getBoucherRequestById($id)
     {
-        $query = "select * from linea.deposito_solicitud d where d.id_sol = " . $id;
+        $query = "select id, id_sol, boucher, fecha, imp_bou, ruta from linea.deposito_solicitud d where d.id_sol = " . $id;
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -70,6 +70,24 @@ class Treasure extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    //obtiene todos los boucher de banco solicitados del extracto bancario
+    public static function getAllExtractBank()
+    {
+        $query = "select * from linea.extracto e where e.estado = 'Solicitado' ";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    
+    //  * T40 trae el documento digitalizado
+    //  * {id: id del boucher digitalizado }
+    public static function GetDigitalBoucher($id, $year){
+        $query = "SELECT img as pdf_data FROM linea.deposito_solicitud d WHERE d.id = ?";
+        \Log::info($query);
+        $data = DB::select($query, [$id]);
+        return $data;
+    }
+
+
 
 
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad.

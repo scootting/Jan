@@ -3,30 +3,80 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>ventas en linea del dia: {{ id }}</span>
-        <el-button size="small" type="default" icon="el-icon-plus" @click="initAllVerifyRequest"
+        <el-button size="small" type="success" icon="el-icon-plus" @click="initAllVerifyRequest"
           style="text-align: right; float: right">
           verificar todas las solicitudes de la venta de valores en linea</el-button>
       </div>
       <br />
+      <div class="grid-content bg-purple">
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <span>solicitudes por verificar</span>
+            <el-table v-loading="loading" :data="requests" style="width: 100%">
+              <el-table-column label="numero" width="150">
+                <template slot-scope="scope">
+                  <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium" effect="dark">{{ scope.row.idc }}</el-tag>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="estado" label="estado" width="150" align="center">
+                <template slot-scope="scope">
+                  <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium" effect="dark" type="danger">{{ scope.row.estado }}</el-tag>
+                  </div>
+                </template>
+              </el-table-column>
+              <el-table-column prop="ci_per" label="ci"></el-table-column>
+              <el-table-column prop="des_per" label="descripcion" width="280"></el-table-column>
+              <el-table-column align="right" width="220">
+                <template slot-scope="scope">
+                  <el-button @click="initVerifyRequestSaleInLine(scope.$index, scope.row)" type="success" size="mini"
+                    plain>
+                    Verificar
+                  </el-button>
+                  <el-button @click="initEditRequestSaleInLine(scope.$index, scope.row)" type="warning" plain size="mini">
+                    Imprimir</el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
+              :current-page="pagination.current_page" :total="pagination.total" @current-change="getSaleInLineDetail">
+            </el-pagination>
+          </el-col>
+        </el-row>
+      </div>
+      <br>
+      <br>
       <div>
-        <el-table v-loading="loading" :data="requests" style="width: 100%">
-          <el-table-column prop="tipo" label="tipo"></el-table-column>
-          <el-table-column prop="idc" label="id"></el-table-column>
-          <el-table-column prop="ci_per" label="ci"></el-table-column>
-          <el-table-column prop="des_per" label="descripcion" width="280"></el-table-column>
-          <el-table-column align="right" width="220">
-            <template slot-scope="scope">
-              <el-button @click="initVerifyRequestSaleInLine(scope.$index, scope.row)" type="warning" size="mini" plain>
-                Verificar
-              </el-button>
-              <el-button @click="initEditRequestSaleInLine(scope.$index, scope.row)" type="success" plain size="mini">
-                Imprimir</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
-          :current-page="pagination.current_page" :total="pagination.total" @current-change="getSaleInLineDetail">
-        </el-pagination>
+        <el-row :gutter="20">
+          <el-col :span="24">
+            <div class="grid-content bg-purple">
+              <span>transacciones verificadas</span>
+              <div>
+                <el-table :data="fileContainer" border style="width: 100%" size="small">
+                  <el-table-column prop="fecha" label="fecha" width="100" align="center">
+                  </el-table-column>
+                  <el-table-column prop="id_doc" label="codigo" width="250" align="center">
+                    <template slot-scope="scope">
+                      <el-tag size="medium">{{
+                        scope.row.id_doc
+                      }}</el-tag>
+                    </template>
+                  </el-table-column>
+                  <el-table-column prop="glosa" label="descripcion" width="100" align="right">
+                  </el-table-column>
+                  <el-table-column align="right-center" label="operaciones" width="150">
+                    <template slot-scope="scope">
+                      <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
+                        @click="initCheckFileContainers(scope.$index, scope.row)">ver contenido</el-button>
+                    </template>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </el-card>
   </div>
@@ -86,7 +136,7 @@ export default {
         },
       });
     },
-    async initAllVerifyRequest(){
+    async initAllVerifyRequest() {
 
 
     }
