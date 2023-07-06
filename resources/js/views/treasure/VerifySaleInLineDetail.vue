@@ -72,13 +72,13 @@
                             </el-table-column>
                         </el-table>
                         <p></p>
-                        <el-button @click="initVerifyRequestManually()" type="info" size="mini">Agregar Manualmente
+                        <el-button @click="initVerifyRequestManually()" type="info" size="mini" :disabled=" dataRequest.estado === 'Verificado'" >Agregar Manualmente
                         </el-button>
-                        <el-button @click="initVerifyRequestSaleInLine()" type="success" size="mini" plain>Verificar
+                        <el-button @click="initStoreRequestSaleInLine()" type="success" size="mini" plain :disabled=" dataRequest.estado === 'Verificado'">Verificar
                         </el-button>
-                        <el-button @click="storeObservationRequestSale()" type="warning" size="mini" plain>Observar
+                        <el-button @click="initstoreObservationRequestSale()" type="warning" size="mini" plain :disabled=" dataRequest.estado === 'Verificado'">Observar
                         </el-button>
-                        <el-button @click="test()" type="danger" size="mini" plain>Anular
+                        <el-button @click="initBackToDay()" type="danger" size="mini" plain>Cerrar
                         </el-button>
                     </div>
                 </el-col>
@@ -107,7 +107,6 @@
             </span>
         </el-dialog>
         <!-- Form Add Document to Archive-->
-
     </div>
 </template>
   
@@ -130,6 +129,8 @@ export default {
     },
     mounted() {
         this.getDataRequestById();
+        console.log("este es el id" + this.$route.params.id);//dia
+        console.log("este es el request" + this.$route.params.request);//solicitud
     },
     methods: {
         test() {
@@ -152,6 +153,7 @@ export default {
                 app.boucherRequest = response.data.boucher;
                 app.extractRequest = response.data.extract;
                 app.allExtractRequest = response.data.all;
+                this.checkMountOfBoucherAndRequest();
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {
@@ -159,7 +161,26 @@ export default {
                 });
             }
         },
-
+        async getDataRequestById2() {
+            var app = this;
+            console.log(app.request);
+            try {
+                let response = await axios.post("/api/getDataRequestById/", {
+                    id: app.request,
+                });
+                app.loading = false;
+                console.log(response);
+                app.dataRequest = response.data.data[0];
+                app.dataDetailRequest = response.data.detail;
+                app.allExtractRequest = response.data.all;
+                this.checkMountOfBoucherAndRequest();
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
+        },
         initVerifyRequestManually() {
             this.dialogFormVisible = true;   //para el dialogo
         },
@@ -167,23 +188,76 @@ export default {
             this.dialogFormVisible = false;
             let variable = this.document;
             this.extractRequest.push(row);
+            this.checkMountOfBoucherAndRequest();
         },
         initDeleteBoucher(idx, row) {
             this.extractRequest.splice(idx, 1);
             console.log(this.extractRequest);
+            this.checkMountOfBoucherAndRequest();
         },
 
-        //  *  D2. Guardar los boucher generados por cada solicitud
-        //  * {boucher: imagen del boucher }
-        //  * {request: informacion del boucher }
+        checkMountOfBoucherAndRequest() {
+            let app = this;
+            console.log("app.dataRequest");
+            console.log(app.dataRequest);//importe
+            let importe = app.dataRequest.importe;
+            let importe_valores = 0.00;
+            for (let value of app.dataDetailRequest) {
+                importe_valores += Number(value.imp_val);
+            }
+            let importe_boucher = 0.00;
+            for (let value of app.boucherRequest) {
+                importe_boucher += Number(value.imp_bou);
+            }
+            let importe_extract = 0.00;
+            for (let value of app.extractRequest) {
+                importe_extract += Number(value.imp_doc);
+            }
+            console.log(importe);//imp_val
+            console.log(importe_valores);
+            console.log(importe_boucher);
+            console.log(importe_extract);
+        },
 
-        storeVerifyRequestSale() {
+        //  *  T41. Guardar las verificaciones realizadas cada solicitud
+        async initStoreRequestSaleInLine() {
             var app = this;
+            var app = this;
+            console.log(app.request);
+            try {
+                let response = await axios.post("/api/storeRequestSaleInLine", {
+                    id: app.id, //dia
+                    request: app.request, //id de de la solicitud
+                    dataRequest: app.dataRequest, //datos de la solicitud
+                    dataDetailRequest: app.dataDetailRequest,
+                    boucherRequest: app.boucherRequest,
+                    extractRequest: app.extractRequest,
+                });
+                console.log(response);
+                app.getDataRequestById2();
+            } catch (error) {
+                console.log(error);
+                /*
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });*/
+            }
         },
         storeObservationRequestSale() {
             var app = this;
         },
 
+        initBackToDay() {
+            let app = this;
+            this.$router.push({
+                name: "saleinlinedetail",
+                params: {
+                    id: app.id,
+                },
+            });
+
+        },
         //  * T40 trae el documento digitalizado
         async initGetDigitalBoucher(idx, row) {
             console.log(row);

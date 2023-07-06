@@ -77,6 +77,56 @@ class TreasureController extends Controller
         }
     }
 
+    //  *  T41. Guardar las verificaciones realizadas cada solicitud
+    public function storeRequestSaleInLine(Request $request)
+    {
+
+        $id_tran = 0;
+        $id_dia = $request->get('id');
+        $fec_tra = '06/07/2023';
+        $usr_cre = 'linea';
+        $gestion = '2023';
+        \Log::info($request);
+        
+        $id_request = $request->get('request');
+        $dataRequest = $request->get('dataRequest');
+        $dataDetailRequest = $request->get('dataDetailRequest');
+        $boucherRequest = $request->get('boucherRequest');
+        $extractRequest = $request->get('extractRequest');
+
+        $ci_per = strtoupper($dataRequest['ci_per']);
+        $des_per = strtoupper($dataRequest['des_per']);
+        $idc = strtoupper($dataRequest['idc']);
+        $tip_tra = '10';
+
+        foreach ($dataDetailRequest as $item) {
+            # code...
+            $cod_val = $item['cod_val'];
+            $can_val = $item['can_val'];
+            $pre_uni = $item['imp_val'];
+            //$imp_val = $item['imp_val'];
+            $imp_val = $can_val * $pre_uni;
+            $marker = Treasure::addStoreRequestSaleInLine($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, $idc, $ci_per, $des_per, $tip_tra, $gestion);
+            $id_tran = $marker[0]->{'id_tran'};
+            //$data = Treasure::addProcedureByStudents($id_dia, $id_tran, -1, $cod_val, $ci_per, $des_per, -1, $gestion, $des_tra, $pre_uni);
+            $id_tran = 0;
+        }
+        foreach ($extractRequest as $item) {
+            # code...
+            $id = $item['id'];
+            $marker = Treasure::storeChangeStateExtract($id, 'Verificado', $id_dia);
+            $id_tran = 0;
+        }
+        $data = Treasure::storeChangeStateRequest($id_request, 'Verificado');
+        return json_encode($marker);
+    }
+    public function getTransactionsByDay(Request $request){
+        $id_dia = $request->get('id');
+        $data = Treasure::GetTransactionsByDay($id_dia);
+        return json_encode($data);
+    }
+
+
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad y el año de ingreso.
     //  * {id: numero de carnet de identidad}
     //  * {year: año de ingreso}

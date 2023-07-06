@@ -127,7 +127,11 @@ Route::group([
     Route::post('storeDayForSale', 'TreasureController@storeDayForSale');
     //  * T40 trae el documento digitalizado
     Route::get('getDigitalBoucher', 'TreasureController@getDigitalBoucher');
-
+    //  *  T41. Guardar las verificaciones realizadas cada solicitud
+    Route::post('storeRequestSaleInLine', 'TreasureController@storeRequestSaleInLine');
+    //  *  T42. Guardar las verificaciones realizadas cada solicitud
+    Route::post('getTransactionsByDay', 'TreasureController@getTransactionsByDay');
+    
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
     Route::post('getDataOfStudentById', 'TreasureController@getDataOfStudentById');

@@ -66,7 +66,7 @@ class Treasure extends Model
     public static function getExtractBankById($id)
     {
         $query = "select * from linea.extracto e where e.id_doc in (select d.boucher from linea.deposito_solicitud d " .
-                 "where d.id_sol = " . $id . ")";
+            "where d.id_sol = " . $id . ")";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -77,18 +77,50 @@ class Treasure extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-    
+
     //  * T40 trae el documento digitalizado
     //  * {id: id del boucher digitalizado }
-    public static function GetDigitalBoucher($id, $year){
+    public static function GetDigitalBoucher($id, $year)
+    {
         $query = "SELECT img as pdf_data FROM linea.deposito_solicitud d WHERE d.id = ?";
         \Log::info($query);
         $data = DB::select($query, [$id]);
         return $data;
     }
 
+    public static function addStoreRequestSaleInLine($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, $nro_com, $ci_per, $des_per, $tip_tra, $gestion)
+    {
+        //insert into val.tra_dia( ... ) values ( ... ) RETURNING id_tran
+        $query = "INSERT INTO val.tra_dia(id_dia, cod_val, can_val, pre_uni, fec_tra, usr_cre," .
+            "nro_com, ci_per, des_per, tip_tra, gestion) VALUES " .
+            "('" . $id_dia . "','" . $cod_val . "','" . $can_val . "','" . $pre_uni . "','" . $fec_tra . "','" . $usr_cre . "','" .
+            $nro_com . "','" . $ci_per . "','" . $des_per . "','10','" . $gestion . "') RETURNING id_tran";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
+    public static function storeChangeStateExtract($id_extract,  $state, $id_dia){
+        $query = "UPDATE linea.extracto set estado = '" . $state . "', id_dia = '" . $id_dia . "' where id = '" . $id_extract . "'";
+        $data = collect(DB::select(DB::raw($query)));
 
+        return $data;
+    }
+    public static function StoreChangeStateRequest($id_request,  $state){
+        $query = "UPDATE linea.solicitudes set estado = '" . $state . "' where id = '" . $id_request . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    
+    public static function GetTransactionsByDay($id_dia){
+        $query = "select * from val.tra_dia d where d.id_dia = '" . $id_dia . "' and d.tip_tra <> 9";
+        \Log::info($query);
+        \Log::info($query);
+        \Log::info($query);
+        \Log::info($query);
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad.
     //  * {id: numero de carnet de identidad}
@@ -146,7 +178,7 @@ class Treasure extends Model
     {
         //$query = "insert into val.diario(fec_tra, glosa, estado, tip_mon, importe, id_lugar, gestion, tip_tra, nro_com_min, usr_cre)" .
         //    "values (now(), 'Venta: De La Universidad Autónoma \"Tomás Frías\" En BOLIVIANOS', 'C', 'B', 0, 'U', '" . $year . "', 0, '-1', '" . $user . "')";
-        $query = "select * from val.ff_registrar_dia_venta('". $user ."', '". $year ."')";
+        $query = "select * from val.ff_registrar_dia_venta('" . $user . "', '" . $year . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -199,8 +231,8 @@ class Treasure extends Model
         return $data;
     }
 
-    public static function storeValuesOfUniversity(){
-
+    public static function storeValuesOfUniversity()
+    {
 
     }
 }

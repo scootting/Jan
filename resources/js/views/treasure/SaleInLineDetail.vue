@@ -54,22 +54,24 @@
             <div class="grid-content bg-purple">
               <span>transacciones verificadas</span>
               <div>
-                <el-table :data="fileContainer" border style="width: 100%" size="small">
-                  <el-table-column prop="fecha" label="fecha" width="100" align="center">
+                <el-table :data="transactions" border style="width: 100%" size="small">
+                  <el-table-column prop="fec_tra" label="fecha" width="100" align="center">
                   </el-table-column>
-                  <el-table-column prop="id_doc" label="codigo" width="250" align="center">
+                  <el-table-column prop="cod_val" label="codigo" width="250" align="center">
                     <template slot-scope="scope">
                       <el-tag size="medium">{{
-                        scope.row.id_doc
+                        scope.row.cod_val
                       }}</el-tag>
                     </template>
                   </el-table-column>
-                  <el-table-column prop="glosa" label="descripcion" width="100" align="right">
+                  <el-table-column prop="ci_per" label="carnet" width="100" align="right">
+                  </el-table-column>
+                  <el-table-column prop="des_per" label="persona" width="500" align="right">
                   </el-table-column>
                   <el-table-column align="right-center" label="operaciones" width="150">
                     <template slot-scope="scope">
                       <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
-                        @click="initCheckFileContainers(scope.$index, scope.row)">ver contenido</el-button>
+                        @click="test()">ver desglose</el-button>
                     </template>
                   </el-table-column>
                 </el-table>
@@ -91,6 +93,7 @@ export default {
       id: this.$route.params.id,
       user: this.$store.state.user,
       requests: [],
+      transactions:[],
       pagination: {
         page: 1,
       },
@@ -99,6 +102,8 @@ export default {
   mounted() {
     let app = this;
     this.getSaleInLineDetail(app.pagination.page);
+    this.getTransactionsByDay();
+
   },
   methods: {
     test() {
@@ -106,6 +111,20 @@ export default {
     },
     //  * T3. Obtener la lista de solicitudes bancarias en estado solicitado.
     //  * {year: año de ingreso}
+    async getTransactionsByDay(){
+      let app = this;
+      try {
+        let response = await axios.post("/api/getTransactionsByDay", {
+          id: app.id,
+        });
+        app.loading = false;
+        app.transactions = Object.values(response.data);
+        console.log(response);
+      } catch (error) {
+        this.error = error.response.data;
+      }
+    },
+
     async getSaleInLineDetail(page) {
       let app = this;
       try {
