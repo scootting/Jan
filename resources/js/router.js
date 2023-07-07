@@ -10,7 +10,10 @@ import EditDebts from './views/solvency/EditDebts.vue'
 import AddDebts from './views/solvency/AddDebts.vue'
 import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
 
+//recursos propios
 
+import Resource from './views/solvency/Resource.vue'
+import Expense from './views/solvency/Expense.vue'
 
 //documentacion: memoriales
 import RequestMemorial from './views/document/RequestMemorial.vue'
@@ -206,6 +209,11 @@ const router = new VueRouter({
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
                 //{ path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Recursos Propios
+                //  |--------------------------------------------------------------------------    
+                { path: 'expense', name: 'expense', component: Expense },
+                { path: 'resource', name: 'resource', component: Resource },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Tesoro
