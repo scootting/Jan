@@ -7,7 +7,7 @@
       </div>
       <div class="grid-content bg-purple">
         <el-row :gutter="20">
-          <el-form :model="container" label-width="220px" size="small" disabled="true">
+          <el-form :model="container" label-width="220px" size="small" :disabled="true">
             <el-col :span="12">
               <el-form-item label="codigo">
                 <el-input v-model="container.id_doc"></el-input>
@@ -31,8 +31,13 @@
               </el-form-item>
             </el-col>
           </el-form>
-          <el-button size="small" type="primary" @click.prevent="test" plain>Ver Contenedor</el-button>
-          <el-button size="small" type="primary" @click.prevent="test" plain>Liberar</el-button>
+          <div align="right">
+            <el-button size="small" type="primary" @click.prevent="initGoToContainer"
+              :disabled="container.contenido === 0">Ver Contenedor</el-button>
+            <el-button size="small" type="warning" @click.prevent="initRemoveLinkToContainer"
+              :disabled="container.contenido === 0">Liberar del
+              contenedor</el-button>
+          </div>
         </el-row>
       </div>
       <br>
@@ -163,7 +168,7 @@ export default {
         app.documents = response.data.documents;
         app.fileContainer = response.data.fileContainer;
         app.container = response.data.container[0];
-        console.log(app.documents);
+        console.log(app.container);
       } catch (error) {
         console.log(error);
       }
@@ -251,6 +256,40 @@ export default {
         });
       };
     },
+    //* ve hacia el contenedor 
+    initGoToContainer() {
+      this.$router.push({
+        name: "filecontainerdetails",
+        params: {
+          id: this.container.contenido,
+        },
+      });
+    },
+
+    //  * A25. Quita el enlace al contenedor
+    async initRemoveLinkToContainer() {
+      console.log(this.archive);
+      var app = this;
+      try {
+        let response = axios
+          .post("/api/removeLinkToContainer", {
+            id_raiz: app.container.contenido,
+            id_rama: app.container.id_principal,
+            marker: "editar",//editar
+          });
+        console.log(response);
+        app.$alert("Se ha quitado el enlace", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+        app.getDocumentAndFilesContainerById();
+        app.getDocumentAndContainerFree();
+      } catch (error) {
+        app.$alert(error, 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      };
+    },
+
   },
 };
 </script>

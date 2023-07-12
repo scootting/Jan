@@ -179,7 +179,7 @@ class Archive extends Model
     // *A15 Obtiene un documento o contenedor o ubiacion por su id
     public static function GetFileContainerById($id)
     {
-        $query = "select * from arch.doc d inner join arch.tipos e on d.id_arch = e.id where d.id = " . $id;
+        $query = "select *, d.id as id_principal from arch.doc d inner join arch.tipos e on d.id_arch = e.id where d.id = " . $id;
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -222,7 +222,9 @@ class Archive extends Model
     public static function GetDataBookingDetails($id)
     {
         //$query = "SELECT * FROM arch.res_det d inner join arch.doc2 e on d.id_doc::varchar = e.id_doc where d.id_res = '" . $id . "'";
-        $query = "SELECT e.id_doc, e.fecha, e.glosa, d.id, d.id_doc as id_doc2, d.id_res, d.estado FROM arch.res_det d inner join arch.doc e on d.id_doc = e.id where d.id_res = '" . $id . "'";
+        
+        $query = "select * from arch.ff_documentos_reserva('" . $id . "')";
+        //$query = "SELECT e.id_doc, e.fecha, e.glosa, d.id, d.id_doc as id_doc2, d.id_res, d.estado FROM arch.res_det d inner join arch.doc e on d.id_doc = e.id where d.id_res = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -260,6 +262,13 @@ class Archive extends Model
     public static function StoreChangeStateReservation($id, $documento, $reserva, $estado)
     {
         $query = "UPDATE arch.res_det set estado = '" . $estado . "' where id = '" . $id . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  * A25. Quita el enlace al contenedor
+    public static function RemoveLinkToContainer($id_raiz, $id_rama){
+        $query = "DELETE FROM arch.doc_con where id_rama = '" . $id_rama . "' and id_raiz = '" . $id_raiz . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

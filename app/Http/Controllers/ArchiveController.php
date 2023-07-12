@@ -6,6 +6,7 @@ use App\Archive;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Storage;
+use App\Libraries\JSRClient;
 
 
 class ArchiveController extends Controller
@@ -451,6 +452,39 @@ class ArchiveController extends Controller
             $id_tran = 0;
         }
         return json_encode($marker);
+    }
+
+    //  * A24. Muestra el reporte del documento
+    public function getReportDocument(Request $request)
+    {
+        $p_id = $request->get('id');
+        $nreport = 'ArchiveDetailDocumentLetter';
+        $controls = array(
+            'p_id' => $p_id,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+    
+    //  * A10. Guardar un nuevo tipo de archivo
+    public function removeLinkToContainer(Request $request)
+    {
+        $id_rama = $request->get('id_rama');
+        $id_raiz = $request->get('id_raiz');
+        $marcador = $request->get('marker');
+        \Log::info("DATOS");
+        \Log::info($id_rama);
+        \Log::info($id_raiz);
+        switch ($marcador) {
+            case 'añadir':
+                break;
+            case 'editar':
+                $data = Archive::RemoveLinkToContainer($id_raiz, $id_rama);
+                break;
+            default:
+                break;
+        }
+        return json_encode($data);
     }
 
 }

@@ -25,6 +25,13 @@
                                     </div>
                                 </template>
                             </el-table-column>
+                            <el-table-column width="250" label="tipo">
+                                <template slot-scope="scope">
+                                    <div slot="reference" class="name-wrapper">
+                                        <el-tag size="medium" type="danger">{{ scope.row.des_con }}</el-tag>
+                                    </div>
+                                </template>
+                            </el-table-column>
                             <el-table-column prop="glosa" width="650" label="descripcion del documento"></el-table-column>
 
                         </el-table>

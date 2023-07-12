@@ -7,7 +7,7 @@
       </div>
       <div class="grid-content bg-purple">
         <el-row :gutter="20">
-          <el-form :model="archive" label-width="220px" size="small" disabled="true">
+          <el-form :model="archive" label-width="220px" size="small" :disabled="true">
             <el-col :span="12">
               <el-form-item label="codigo">
                 <el-input v-model="archive.id_doc"></el-input>
@@ -24,15 +24,19 @@
                 <el-input v-model="archive.gestion"></el-input>
               </el-form-item>
               <el-form-item label="estado">
-                <el-input v-model="archive.estado"></el-input>
+                <el-input v-model="archive.reserva"></el-input>
               </el-form-item>
               <el-form-item label="tipo">
                 <el-input type="textarea" v-model="archive.descr"></el-input>
               </el-form-item>
             </el-col>
           </el-form>
-          <el-button size="small" type="primary" @click.prevent="test" plain>Ver Contenedor</el-button>
-          <el-button size="small" type="primary" @click.prevent="test" plain>Liberar</el-button>
+          <div align="right">
+            <el-button size="small" type="primary" @click.prevent="initGoToContainer"
+              :disabled="archive.contenido === 0">Ver Contenedor</el-button>
+            <el-button size="small" type="warning" @click.prevent="initRemoveLinkToContainer" :disabled="archive.contenido === 0">Liberar del
+              contenedor</el-button>
+          </div>
         </el-row>
       </div>
       <br>
@@ -101,6 +105,7 @@
       </el-dialog>
       <!-- Form Add Document to Archive-->
       <el-button type="success" @click="initStoreArchivesOfDocument" size="small">Guardar documento</el-button>
+      <el-button type="danger" @click="initGetReportDocument" size="small">Imprimir documento</el-button>
     </el-card>
   </div>
 </template>
@@ -199,7 +204,52 @@ export default {
         });
       };
     },
+    //  * A24. Muestra el reporte del documento
+    initGetReportDocument() {
+      console.log(this.archive);
+      let app = this;
+      axios({
+        url: "/api/getReportDocument/",
+        params: {
+          id: app.archive.id_principal,
+        },
+        method: "GET",
+        responseType: "arraybuffer",
+      }).then((response) => {
+        let blob = new Blob([response.data], {
+          type: "application/pdf",
+        });
+        let link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        let url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
 
+    },
+
+    //  * A25. Quita el enlace al contenedor
+    async initRemoveLinkToContainer() {
+      console.log(this.archive);
+      var app = this;
+      try {
+        let response = axios
+          .post("/api/removeLinkToContainer", {
+            id_raiz: app.archive.contenido,
+            id_rama: app.archive.id_principal,
+            marker: "editar",//editar
+          });
+        console.log(response);
+        app.$alert("Se ha quitado el enlace", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+        app.getTypesDocument();
+        app.getDocumentsbyArchive();
+      } catch (error) {
+        app.$alert(error, 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      };
+    },
     //  * Inicia la edicion de un documento
     initEditDocumentOfArchive(idx, row) {
       this.document = row;
@@ -253,7 +303,17 @@ export default {
       this.document.descr = resultado.descr;
       console.log(resultado);
       console.log(this.document);
-    }
+    },
+    //* ve hacia el contenedor 
+    initGoToContainer() {
+      this.$router.push({
+        name: "filecontainerdetails",
+        params: {
+          id: this.archive.contenido,
+        },
+      });
+
+    },
   },
 };
 </script>

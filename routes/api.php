@@ -212,6 +212,10 @@ Route::group([
     Route::post('storeTransferDocumentsAndContainers', 'ArchiveController@storeTransferDocumentsAndContainers');
     //  * A23. Realizar la entrega, devolucion o cancelacion de la reserva
     Route::post('storeChangeStateReservation', 'ArchiveController@storeChangeStateReservation');
+    //  * A24. Muestra el reporte del documento
+    Route::get('getReportDocument/', 'ArchiveController@getReportDocument');
+    //  * A25. Quita el enlace al contenedor
+    Route::post('removeLinkToContainer', 'ArchiveController@removeLinkToContainer');
 
     
     //  |--------------------------------------------------------------------------

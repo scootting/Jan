@@ -7,7 +7,7 @@
       </div>
       <div class="grid-content bg-purple">
         <el-row :gutter="20">
-          <el-form :model="archive" label-width="220px" size="small">
+          <el-form :model="archive" label-width="220px" size="small" :disabled="true">
             <el-col :span="12">
               <el-form-item label="codigo">
                 <el-input v-model="archive.id_doc"></el-input>
@@ -31,8 +31,6 @@
               </el-form-item>
             </el-col>
           </el-form>
-          <el-button size="small" type="primary" @click.prevent="test" plain>Ver Contenedor</el-button>
-          <el-button size="small" type="primary" @click.prevent="test" plain>Liberar</el-button>
         </el-row>
       </div>
       <br>
@@ -40,7 +38,7 @@
       <el-row :gutter="50">
         <el-col :span="24">
           <div>
-            <el-table :data="documentsArchive" border style="width: 100%" size="small">
+            <el-table :data="documentsArchive" border style="width: 100%" size="small" fixed>
               <el-table-column prop="indice" label="indice" align="right" width="100">
               </el-table-column>
               <el-table-column prop="fecha" label="fecha" width="100" align="center">
@@ -56,12 +54,12 @@
               </el-table-column>
               <el-table-column prop="glosa" label="descripcion" width="650">
               </el-table-column>
-              <el-table-column align="right-center" label="operaciones" width="200">
+              <el-table-column align="right-center" label="operaciones" width="300" fixed="right">
                 <template slot-scope="scope">
-                  <el-button :disabled="scope.row.guardado === true" type="primary" plain size="mini"
+                  <el-button type="primary" plain size="mini"
                     @click="initEditDocumentOfArchive(scope.$index, scope.row)">digitalizar</el-button>
-                  <el-button :disabled="scope.row.guardado === true" type="primary" plain size="mini"
-                    @click="getDigitalDocumentById(scope.$index, scope.row)">digital</el-button>
+                  <el-button :disabled="scope.row.digital === 0" type="primary" plain size="mini"
+                    @click="getDigitalDocumentById(scope.$index, scope.row)">ver archivo digitalizado</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -101,7 +99,7 @@
         </el-form>
         <span slot="footer" class="dialog-footer">
           <el-button type="success" size="small" @click="storeDigitalDocument()">guardar archivo digitalizado</el-button>
-          <el-button type="danger" size="small" @click="dialogFormVisible = false">Cancelar</el-button>
+          <el-button type="danger" size="small" @click="dialogFormVisible = false">Cerrar</el-button>
         </span>
       </el-dialog>
       <!-- Form Add Document to Archive
@@ -188,13 +186,14 @@ export default {
       console.log(this.document);
       this.$refs.upload.submit();
     },
+
+
     handleSuccessBoucher(response, file, fileList) {
       this.$alert('Gracias, acaba de subir el documento digital ' + file.name + ' satifactoriamente.', 'confirmacion', {
         confirmButtonText: 'bueno',
       });
-      //this.document = {};
       this.digitalDocument = [];
-      /*this.getDataRequestById();*/
+      this.getDocumentsbyArchive();
       console.log(response, file, fileList);
       this.fileList = fileList;
 
@@ -218,7 +217,6 @@ export default {
         window.open(url);
         /*
         const urlArchivo = window.URL.createObjectURL(new Blob([response.data]));
-
         // Crear un enlace temporal y hacer clic en él para iniciar la descarga
         const enlaceDescarga = document.createElement('a');
         enlaceDescarga.href = urlArchivo;
