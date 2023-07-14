@@ -216,7 +216,8 @@ Route::group([
     Route::get('getReportDocument/', 'ArchiveController@getReportDocument');
     //  * A25. Quita el enlace al contenedor
     Route::post('removeLinkToContainer', 'ArchiveController@removeLinkToContainer');
-
+    //  * A26. Muestra el reporte de la reserva
+    Route::get('getReportBooking/', 'ArchiveController@getReportBooking');
     
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes

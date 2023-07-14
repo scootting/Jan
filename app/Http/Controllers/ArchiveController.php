@@ -342,7 +342,10 @@ class ArchiveController extends Controller
     public function getDataBookingDetails(Request $request)
     {
         $id_booking = $request->get('id');
-        $data = Archive::GetDataBookingDetails($id_booking);
+        $bookingDetail = Archive::GetDataBookingDetails($id_booking);
+        $booking = Archive::GetBookingById($id_booking);
+        return json_encode(['bookingDetail' => $bookingDetail, 'booking' => $booking]);
+
         return json_encode($data);
     }
 
@@ -466,7 +469,7 @@ class ArchiveController extends Controller
         return $report;
     }
     
-    //  * A10. Guardar un nuevo tipo de archivo
+    //  * A25. Guardar un nuevo tipo de archivo
     public function removeLinkToContainer(Request $request)
     {
         $id_rama = $request->get('id_rama');
@@ -486,5 +489,16 @@ class ArchiveController extends Controller
         }
         return json_encode($data);
     }
-
+    //  * A26. Muestra el reporte del documento
+    public function getReportBooking(Request $request)
+    {
+        $p_id = $request->get('id');
+        \Log::info($p_id);
+        $nreport = 'BookingDetailDocumentLetter';
+        $controls = array(
+            'p_id' => $p_id,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 }

@@ -2,8 +2,42 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>documentos registrados</span>
+                <span>detalle de la reserva</span>
             </div>
+            <div class="grid-content bg-purple">
+                <el-row :gutter="20">
+                    <el-form :model="booking" label-width="220px" size="small" :disabled="true">
+                        <el-col :span="12">
+                            <el-form-item label="codigo">
+                                <el-input v-model="booking.idc"></el-input>
+                            </el-form-item>
+                            <el-form-item label="fecha">
+                                <el-input v-model="booking.fecha"></el-input>
+                            </el-form-item>
+                            <el-form-item label="solicitante">
+                                <el-input v-model="booking.des_per"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="12">
+                            <el-form-item label="gestion">
+                                <el-input v-model="booking.gestion"></el-input>
+                            </el-form-item>
+                            <el-form-item label="estado">
+                                <el-input v-model="booking.estado"></el-input>
+                            </el-form-item>
+                            <!--
+                            <el-form-item label="observaciones">
+                                <el-input type="textarea" v-model="booking.observacion"></el-input>
+                            </el-form-item>
+
+                        -->
+                        </el-col>
+                    </el-form>
+                </el-row>
+            </div>
+            <br>
+
+
             <el-row :gutter="20">
                 <el-col :span="24">
                     <div class="grid-content bg-purple">
@@ -25,6 +59,7 @@
                                     </div>
                                 </template>
                             </el-table-column>
+                            <!--
                             <el-table-column width="250" label="tipo">
                                 <template slot-scope="scope">
                                     <div slot="reference" class="name-wrapper">
@@ -32,13 +67,16 @@
                                     </div>
                                 </template>
                             </el-table-column>
+                            -->
                             <el-table-column prop="glosa" width="650" label="descripcion del documento"></el-table-column>
-
                         </el-table>
                         <br>
-                        <el-button type="success" size="small" plain @click="initStoreChangeStateReservation('Prestado')">prestar</el-button>
-                        <el-button type="info" size="small" plain @click="initStoreChangeStateReservation('Devuelto')">devolver</el-button>
-                        <el-button type="danger" size="small" plain @click="initStoreChangeStateReservation('Registrado')">cancelar</el-button>
+                        <el-button type="success" size="small" plain @click="initStoreChangeStateReservation('Prestado')"
+                            :disabled="booking.estado !== 'Solicitado'">prestar</el-button>
+                        <el-button type="info" size="small" plain @click="initStoreChangeStateReservation('Devuelto')"
+                            :disabled="booking.estado !== 'Prestado'">devolver</el-button>
+                        <el-button type="danger" size="small" plain
+                            @click="initReturnBooking()">Cerrar</el-button>
                     </div>
                 </el-col>
             </el-row>
@@ -55,6 +93,7 @@ export default {
             reservations: [],
             selectedDocuments: [],
             loading: true,
+            booking: {}
         };
     },
     mounted() {
@@ -73,7 +112,8 @@ export default {
                 let response = await axios.post("/api/getDataBookingDetails", {
                     id: app.id,
                 });
-                app.reservations = Object.values(response.data);
+                app.reservations = response.data.bookingDetail;
+                app.booking = response.data.booking[0];
                 console.log(response);
             } catch (error) {
                 this.error = error.response.data;
@@ -88,11 +128,16 @@ export default {
             let app = this;
             console.log(this.selectedDocuments);
             try {
-                let response = await axios.post("/api/storeChangeStateReservation", {
-                    state: $stateRequest,
-                    selected: this.selectedDocuments
-                });
-                alert("el estado se cambio correctamente");
+                if (app.selectedDocuments.length > 0) {
+                    let response = await axios.post("/api/storeChangeStateReservation", {
+                        state: $stateRequest,
+                        selected: this.selectedDocuments
+                    });
+
+                }else{
+                    alert("debe seleccionar un elemento");
+
+                }
                 /*
                 this.$router.push({
                     name: "typesarchive",
@@ -104,6 +149,14 @@ export default {
                 });
             }
         },
+
+        //  *  Route. Iniciar una nueva solicitud para la reserva de documentos
+        initReturnBooking() {
+            this.$router.push({
+                name: "booking",
+            });
+        },
+        
         handleSelectionChange(val) {
             this.selectedDocuments = val;
         },

@@ -89,20 +89,27 @@ export default {
                 name: "bookingdetails",
             });
         },
-        /*
-        initEditRequest(idx, row) { },
-        //  *  Route. Iniciar el registro de comprobantesde pago para la venta en linea de valores
-        initSaleBoucher(idx, row) {
-            console.log(idx, row);
-            let id = row.id;
-            this.$router.push({
-                name: "boucherofrequest",
+        initPrintBooking(idx, row) {
+            console.log(row.id);
+            let app = this;
+            axios({
+                url: "/api/getReportBooking/",
                 params: {
-                    id: id,
+                    id: row.id,
                 },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
             });
+
         },
-*/
     },
 };
 </script>

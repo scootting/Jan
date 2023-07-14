@@ -261,6 +261,7 @@ class Archive extends Model
     //  * A23. Realizar la entrega, devolucion o cancelacion de la reserva
     public static function StoreChangeStateReservation($id, $documento, $reserva, $estado)
     {
+
         $query = "UPDATE arch.res_det set estado = '" . $estado . "' where id = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
@@ -273,4 +274,11 @@ class Archive extends Model
         return $data;
     }
 
+    //  * A26. Obtener una reserva por su id
+    public static function GetBookingById($id)
+    {
+        $query = "select * from arch.reserva r where r.id = " . $id;
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }
