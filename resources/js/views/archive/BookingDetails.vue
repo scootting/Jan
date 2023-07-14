@@ -67,12 +67,15 @@
                                 <el-table-column align="right" fixed="right" width="100">
                                     <template slot-scope="scope">
                                         <div v-if="scope.row.reserva !== 'Prestado'">
-                                            <el-button @click="initAddBooking(scope.$index, scope.row)" type="primary" :disabled="scope.row.reserva === 'Prestado'"
-                                            size="mini" plain>Agregar</el-button>
+                                            <el-button @click="initAddBooking(scope.$index, scope.row)" type="primary"
+                                                :disabled="scope.row.reserva === 'Prestado'" size="mini"
+                                                plain>Agregar</el-button>
                                         </div>
                                         <div v-else>
                                             <el-tag type="danger" effect="dark">Prestado</el-tag>
                                         </div>
+                                        <el-button :disabled="scope.row.digital === 0" type="primary" plain size="mini"
+                                            @click="getDigitalDocumentById(scope.$index, scope.row)">ver archivo</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -185,6 +188,25 @@ export default {
                     dangerouslyUseHTMLString: true
                 });
             };
+        },
+        getDigitalDocumentById(idx, row) {
+            let app = this;
+            console.log(row);
+            axios({
+                url: "/api/getDigitalDocumentById2/",
+                params: {
+                    id: row.digital,
+                    year: app.user.gestion,
+                },
+                method: "GET",
+                responseType: "blob",
+            }).then((response) => {
+                let pdfData = response.data;
+                console.log(response);
+                let blob = new Blob([pdfData], { type: 'application/pdf' });
+                let url = URL.createObjectURL(blob);
+                window.open(url);
+            });
         },
     },
 };

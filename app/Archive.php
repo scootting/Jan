@@ -240,9 +240,8 @@ class Archive extends Model
 
 
     public static function GetDigitalDocumentById($id, $year){
-        $query = "SELECT des_doc FROM arch.doc_dig d WHERE d.id_doc = ". $id ."";
-        \Log::info($query);
-        $data = DB::select(DB::raw($query));
+        $query = "SELECT dig_doc as pdf_data FROM arch.doc_dig d WHERE d.id_doc = ?";
+        $data = DB::select($query, [$id]);
         return $data;
     }
     public static function GetDigitalDocumentById2($id, $year){

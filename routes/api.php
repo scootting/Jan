@@ -208,6 +208,7 @@ Route::group([
     Route::post('storeDigitalDocument', 'ArchiveController@storeDigitalDocument');
     //  * A21. Obtiene el documento digital seleccionado
     Route::get('getDigitalDocumentById', 'ArchiveController@getDigitalDocumentById');
+    Route::get('getDigitalDocumentById2', 'ArchiveController@getDigitalDocumentById2');
     //  * A22. Guarda las tranferencias realizadas entre dos contenedores
     Route::post('storeTransferDocumentsAndContainers', 'ArchiveController@storeTransferDocumentsAndContainers');
     //  * A23. Realizar la entrega, devolucion o cancelacion de la reserva

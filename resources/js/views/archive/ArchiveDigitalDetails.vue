@@ -201,6 +201,7 @@ export default {
 
     getDigitalDocumentById(idx, row) {
       let app = this;
+      console.log(row);
       axios({
         url: "/api/getDigitalDocumentById/",
         params: {

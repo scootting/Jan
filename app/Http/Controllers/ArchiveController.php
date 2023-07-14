@@ -420,6 +420,27 @@ class ArchiveController extends Controller
         }*/
     }
 
+    //  * A21. Obtiene el documento digital seleccionado
+    public function getDigitalDocumentById22(Request $request)
+    {
+        $id = $request->get('id');
+        $year = $request->get('year');
+        $result = Archive::GetDigitalDocumentById2($id, $year);
+        //$path = Archive::GetDigitalDocumentById($id, $year);
+
+        if (!empty($result[0]->pdf_data)) {
+            //$my_bytea = stream_get_contents($result[0]->pdf_data);
+            $my_bytea = stream_get_contents($result[0]->pdf_data);
+            //$my_string = pg_unescape_bytea($my_bytea);
+            //$html_data = htmlspecialchars($my_string);
+            \Log::info($my_bytea);
+            return $my_bytea;
+        } else {
+            return response()->json([
+                'error' => 'No se encontró ningún registro con el ID proporcionado.',
+            ]);
+        }
+    }
     
     //  * A22. Guarda las tranferencias realizadas entre dos contenedores
     public function storeTransferDocumentsAndContainers(Request $request)
