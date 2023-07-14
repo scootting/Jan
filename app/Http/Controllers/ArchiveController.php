@@ -421,12 +421,13 @@ class ArchiveController extends Controller
     }
 
     //  * A21. Obtiene el documento digital seleccionado
-    public function getDigitalDocumentById22(Request $request)
+    public function getDigitalDocumentById2(Request $request)
     {
         $id = $request->get('id');
+        \Log::info("este esleadasdsadsa");
+        \Log::info($id);
         $year = $request->get('year');
-        $result = Archive::GetDigitalDocumentById2($id, $year);
-        //$path = Archive::GetDigitalDocumentById($id, $year);
+        $result = Archive::GetDigitalDocumentById($id, $year);
 
         if (!empty($result[0]->pdf_data)) {
             //$my_bytea = stream_get_contents($result[0]->pdf_data);

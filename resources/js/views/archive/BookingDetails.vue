@@ -64,7 +64,7 @@
                                 <el-table-column prop="fecha" label="fecha" width="90" align="center"></el-table-column>
                                 <el-table-column prop="numeral" label="numero" width="100" align="center"></el-table-column>
                                 <el-table-column prop="glosa" label="glosa" width="350"></el-table-column>
-                                <el-table-column align="right" fixed="right" width="100">
+                                <el-table-column fixed="right" width="80">
                                     <template slot-scope="scope">
                                         <div v-if="scope.row.reserva !== 'Prestado'">
                                             <el-button @click="initAddBooking(scope.$index, scope.row)" type="primary"
@@ -74,8 +74,12 @@
                                         <div v-else>
                                             <el-tag type="danger" effect="dark">Prestado</el-tag>
                                         </div>
-                                        <el-button :disabled="scope.row.digital === 0" type="primary" plain size="mini"
-                                            @click="getDigitalDocumentById(scope.$index, scope.row)">ver archivo</el-button>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column fixed="right" width="100">
+                                    <template slot-scope="scope">
+                                        <el-button :disabled="scope.row.digital === 0" type="primary" size="mini"
+                                            @click="getDigitalDocumentById(scope.$index, scope.row)">descargar</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
