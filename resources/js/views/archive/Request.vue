@@ -3,6 +3,7 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>solicitudes de reserva</span>
+                <el-button style="float: right; padding: 3px 0" type="text" @click="initGetReportBorrowed()">documentos prestados</el-button>
             </div>
             <el-alert title="importante" type="warning"
                 description="las solicitudes de reserva tienen una duracion valida de 30 dias, sino se realizan se anulara la solicitud."
@@ -21,13 +22,12 @@
                     </el-table-column>
                     <el-table-column prop="ci_per" label="ci" width="150"></el-table-column>
                     <el-table-column prop="des_per" label="descripcion" width="300"></el-table-column>
-                    <el-table-column prop="fecha" label="fecha" width="150"></el-table-column>
                     <el-table-column prop="estado" label="estado" width="150"></el-table-column>
                     <el-table-column align="right" width="320" fixed="right">
                         <template slot-scope="scope">
                             <el-button @click="initEditrequest(scope.$index, scope.row)" type="warning" plain size="mini">
                                 ver la solicitud</el-button>
-                            <el-button @click="initPrintrequest(scope.$index, scope.row)" type="primary" size="mini"
+                            <el-button @click="initPrintBooking(scope.$index, scope.row)" type="primary" size="mini"
                                 plain>imprimir solicitud</el-button>
                         </template>
                     </el-table-column>
@@ -91,6 +91,46 @@ export default {
                 },
             });
         },
+        initGetReportBorrowed(){
+            let app = this;
+            axios({
+                url: "/api/getReportBorrowed/",
+                params: {
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+        },
+        initPrintBooking(idx, row) {
+            console.log(row.id);
+            let app = this;
+            axios({
+                url: "/api/getReportBooking/",
+                params: {
+                    id: row.id,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+
+        },
+
         /*
         initPrintRequest(idx, row) { },
         */

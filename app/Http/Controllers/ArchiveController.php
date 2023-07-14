@@ -501,4 +501,15 @@ class ArchiveController extends Controller
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
+    //  * A26. Muestra el reporte del documento
+    public function getReportBorrowed(Request $request)
+    {
+        $nreport = 'BorrowedDocumentLetter';
+        $p_id = '';
+        $controls = array(
+            'p_id' => $p_id,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 }

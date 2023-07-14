@@ -60,7 +60,7 @@
               </el-table-column>
               <el-table-column prop="glosa" label="descripcion" width="650">
               </el-table-column>
-              <el-table-column align="right-center" label="operaciones" width="180">
+              <el-table-column align="right-center" label="operaciones" width="180" fixed="right">
                 <template slot-scope="scope">
                   <el-button :disabled="scope.row.guardado === true" type="primary" plain size="mini"
                     @click="initEditDocumentOfArchive(scope.$index, scope.row)">editar</el-button>

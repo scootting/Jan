@@ -25,12 +25,6 @@
                             <el-form-item label="estado">
                                 <el-input v-model="booking.estado"></el-input>
                             </el-form-item>
-                            <!--
-                            <el-form-item label="observaciones">
-                                <el-input type="textarea" v-model="booking.observacion"></el-input>
-                            </el-form-item>
-
-                        -->
                         </el-col>
                     </el-form>
                 </el-row>
@@ -133,7 +127,8 @@ export default {
                         state: $stateRequest,
                         selected: this.selectedDocuments
                     });
-
+                    app.getDataBookingDetails();
+                    alert("se ha realizado el cambio correspondiente");
                 }else{
                     alert("debe seleccionar un elemento");
 
