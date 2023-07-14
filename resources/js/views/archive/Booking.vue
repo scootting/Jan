@@ -22,12 +22,17 @@
                             </div>
                         </template>
                     </el-table-column>
+                    <!--
                     <el-table-column prop="observacion" label="observacion" width="150" align="right"></el-table-column>
+                    -->
                     <el-table-column prop="estado" label="estado" width="150"></el-table-column>
                     <el-table-column align="right" width="620">
                         <template slot-scope="scope">
+                            <!--
                             <el-button @click="initEditBooking(scope.$index, scope.row)" type="warning" plain size="mini">
                                 editar la solicitud</el-button>
+-->
+
                             <el-button @click="initPrintBooking(scope.$index, scope.row)" type="primary" size="mini"
                                 plain>imprimir solicitud</el-button>
                         </template>

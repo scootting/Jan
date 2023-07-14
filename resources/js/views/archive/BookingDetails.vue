@@ -16,12 +16,15 @@
                                     <el-tag type="success" size="medium">{{ scope.row.id_doc }}</el-tag>
                                 </template>
                             </el-table-column>
+                            <!--
                             <el-table-column>
                                 <template slot-scope="scope">
                                     <el-button @click="initSeeBookingDocument(scope.$index, scope.row)" type="warning"
                                         size="mini" plain>ver</el-button>
                                 </template>
                             </el-table-column>
+
+                            -->
                             <el-table-column>
                                 <template slot-scope="scope">
                                     <el-button @click="initRemoveBooking(scope.$index, scope.row)" type="danger" size="mini"
