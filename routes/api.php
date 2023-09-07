@@ -287,11 +287,21 @@ Route::group([
     Route::get('reportRequestMemorial', 'DocumentController@reportRequestMemorial');
 
     //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Recursos Propios
+    //  |--------------------------------------------------------------------------    
+    //  * RP1. Obtener la lista de cursos de posgrado.    
+    Route::post('courses', 'ResourceController@getCoursesOfPostgraduate');
+
+
+    //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend
     //  |--------------------------------------------------------------------------
     //  * COM1. Obtener una lista de personas utilizando una descripcion del recurso utilizado.
     Route::post('getPersonsByDescriptionWithPagination', 'GeneralController@getPersonsByDescriptionWithPagination');
     //  * COM2. Obtiene una lista de categorias programaticas que coinciden con la descripcion.
     Route::post('getProgramCategoryDescriptionWithPagination', 'GeneralController@getProgramCategoryDescriptionWithPagination');
+
+
+    
 
 });
