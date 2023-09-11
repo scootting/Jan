@@ -74,6 +74,15 @@ class GeneralController extends Controller
         return json_encode($data);
     }
 
+    //  * COM3. Obtiene una lista de valores universitarios que coinciden con la descripcion.
+    public function getUniversityValuesDescriptionWithPagination(Request $request)
+    {
+        $description = strtoupper($request->get('description')); // '' cadena vacia
+        $year = strtoupper($request->get('year')); // '' cadena vacia
+        \Log::info("esta es la descripcion".$description);
+        $data = General::GetUniversityValuesDescriptionWithPagination($description, $year);
+        return json_encode($data);
+    }
 
     public function getPersonsByDescription(Request $request)
     {

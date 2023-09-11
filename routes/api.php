@@ -300,6 +300,8 @@ Route::group([
     Route::post('getPersonsByDescriptionWithPagination', 'GeneralController@getPersonsByDescriptionWithPagination');
     //  * COM2. Obtiene una lista de categorias programaticas que coinciden con la descripcion.
     Route::post('getProgramCategoryDescriptionWithPagination', 'GeneralController@getProgramCategoryDescriptionWithPagination');
+    //  * COM3. Obtiene una lista de valores universitarios que coinciden con la descripcion.
+    Route::post('getUniversityValuesDescriptionWithPagination', 'GeneralController@getUniversityValuesDescriptionWithPagination');
 
 
     

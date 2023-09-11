@@ -11,8 +11,8 @@ import AddDebts from './views/solvency/AddDebts.vue'
 import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
 
 //recursos propios
-
 import Courses from './views/resources/Courses.vue'
+import AddCourse from './views/resources/AddCourse.vue'
 
 //documentacion: memoriales
 import RequestMemorial from './views/document/RequestMemorial.vue'
@@ -212,6 +212,7 @@ const router = new VueRouter({
                 //  | Rutas API para el Recursos Propios
                 //  |--------------------------------------------------------------------------    
                 { path: 'courses', name: 'courses', component: Courses },
+                { path: 'courses/add', name: 'addcourse', component: AddCourse },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Tesoro

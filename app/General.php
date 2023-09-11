@@ -79,6 +79,15 @@ class General extends Model
         return $data;
     }
 
+    //  * COM3. Obtiene una lista de valores universitarios que coinciden con la descripcion.
+    public static function GetUniversityValuesDescriptionWithPagination($description, $year)
+    {
+        $query = "select * from pub.ff_datos_valores('" . $description . "', '" . $year . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
     public static function GetPersonsByDescription($description)
     {
         \Log::info("Description: " . $description);

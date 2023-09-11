@@ -4,43 +4,33 @@
       <div slot="header" class="clearfix">
         <span>cursos postgrado</span>
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-          @click="addNewCourse">nuevo curso</el-button>
+          @click="addCourse">nuevo curso</el-button>
       </div>
       <br />
       <div>
         <el-table v-loading="loading" :data="dataCourses" style="width: 100%">
-          <el-table-column width="90" label="No.">
+          <el-table-column width="190" label="categoria programatica">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.id_doc }}</el-tag>
+                <el-tag size="medium">{{ scope.row.cod_prg }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="fecha" width="100" label="fecha"></el-table-column>
-          <el-table-column width="250" label="descripcion">
+          <el-table-column width="350" label="descripcion">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium" type="danger">{{ scope.row.detalle }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="glosa" width="650" label="descripcion del documento"></el-table-column>
-          <el-table-column width="100" label="Estado">
+          <el-table-column prop="cod_val" width="650" label="valorado"></el-table-column>
+          <el-table-column align="right-center" width="220" label="Operaciones" fixed="right">
             <template slot-scope="scope">
-              <div slot="reference" class="name-wrapper">
-                <el-tag size="medium">{{ scope.row.estado }}</el-tag>
-              </div>
+              <el-button @click="getMotionCourses(scope.row.id)" type="success" plain size="mini">movimiento
+              </el-button>
             </template>
           </el-table-column>
           <!--
-          <el-table-column align="right-center" width="220" label="Operaciones" fixed="right">
-            <template slot-scope="scope">
-              <el-button @click="getArchivesByDocument(scope.row.id)" type="success" plain size="mini">ver archivos
-              </el-button>
-              <el-button @click="getArchivesDigitalByDocument(scope.row.id)" type="info" plain size="mini">digitalizar
-              </el-button>
-            </template>
-          </el-table-column>
           -->
         </el-table>
         <el-pagination :page-size="pagination.per_page" layout="prev, pager, next" :current-page="pagination.current_page"
@@ -89,9 +79,14 @@ export default {
                 });
             }
     },
-    addNewCourse() {
-      alert("bienvenido al modulo");
+    addCourse() {
+      this.$router.push({
+        name: "addcourse",
+      });
     },
+    getMotionCourses(id){
+      console.log(id);
+    }
   },
 };
 </script>

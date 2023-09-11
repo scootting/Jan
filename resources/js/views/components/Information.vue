@@ -36,6 +36,7 @@ export default {
       data: [],
       loading: false,
       writtenTextParameter: "",
+      user: this.$store.state.user,
     };
   },
   /* variables del componente padre */
@@ -78,15 +79,22 @@ export default {
             app.url = '/api/getPersonsByDescriptionWithPagination';
             console.log("entro a personas");
             break;
-          //  * COM2. Obtener una lista de categorias programaticas.
+          //  * COM2. Obtener una lista de categorias programaticas.          
           case 'categoria':
             app.url = '/api/getProgramCategoryDescriptionWithPagination';
             console.log("entro a categorias");
+            break;
+          //  * COM3. Obtener una lista de los valores universitarios.          
+          case 'valores':
+            app.url = '/api/getUniversityValuesDescriptionWithPagination';
+            console.log("entro a valores");
+            break;
           default:
             break;
         }
         let response = await axios.post(app.url, {
           description: description,
+          year: this.user.gestion,
         });
         app.data = Object.values(response.data);
       } catch (error) {
