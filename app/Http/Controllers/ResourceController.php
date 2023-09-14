@@ -29,5 +29,37 @@ class ResourceController extends Controller
         );
         return json_encode($paginate);
     }
+
+    //  * RP2. Guardar un curso de postgrado.    
+    public function storeCourseOfPostgraduate(Request $request){
+        $curso = $request->get('dataCourse');//objeto
+        $programa = $request->get('dataProgram');//objeto
+        $valor = $request->get('dataValue');
+
+        $curso_detalle = strtoupper($curso['detalle']);
+        $tipo = $programa['cat_sis'];
+        $cod_prg = $programa['cod_prg']; 
+        $cod_val = $valor['cod_val'];
+        $pre_val = $valor['pre_uni'];
+                
+        if($curso_detalle == ''){
+            $curso_detalle = $programa['cat_des'];
+        }
+        $gestion = $request->get('year');//valor entero
+        $marcador = $request->get('marker');
+
+        switch ($marcador) {
+            case 'registrar':
+                $response = Resource::StoreCourseOfPostgraduate($curso_detalle, $tipo, $cod_prg, $cod_val, $pre_val, $gestion);
+                $course = $response[0]->{'ff_registrar_curso'};
+                break;
+            case 'editar':
+                //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
+                break;
+            default:
+                break;
+        }
+        return json_encode($course);
+    }
     
 }

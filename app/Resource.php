@@ -15,5 +15,13 @@ class Resource extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    
+    public static function StoreCourseOfPostgraduate($curso_detalle, $tipo, $cod_prg, $cod_val, $pre_val, $gestion)
+    {
+        $query = "select * from rec.ff_registrar_curso('" . $curso_detalle . "','" . $tipo . "','" . $cod_prg . "','" . $cod_val . "'," . $pre_val . ",'" . $gestion . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
 
 }

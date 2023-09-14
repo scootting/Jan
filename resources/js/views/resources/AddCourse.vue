@@ -11,28 +11,13 @@
             <div class="grid-content bg-purple">
 
               <el-form :model="dataCourse" label-width="220px" size="small">
-                <!--
-                <el-form-item size="small" label="numeracion">
-                  <el-radio-group v-model="numerable" size="small" @change="OnchangeNumerable">
-                    <el-radio-button label="1">automatica</el-radio-button>
-                    <el-radio-button label="2">manualmente</el-radio-button>
-                  </el-radio-group>
-                </el-form-item>
-                <el-form-item label="Numero de contenedor">
-                  <el-input v-model="dataCourse.codigo" autocomplete="off" :disabled="isNumerable"></el-input>
-                </el-form-item>
-                <el-form-item label="fecha del registro">
-                  <el-date-picker type="date" v-model="dataCourse.fecha" placeholder="seleccione una fecha"
-                    style="width: 100%" format="yyyy/MM/dd" value-format="yyyy-MM-dd"></el-date-picker>
-                </el-form-item>
-                -->
                 <el-form-item label="curso" prop="details">
-                  <el-input placeholder="" v-model="prg.details" class="input-with-select">
+                  <el-input placeholder="" v-model="dataProgram.details" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search" @click="initSearchCourse">BUSCAR</el-button>
                   </el-input>
                 </el-form-item>
                 <el-form-item label="valor" prop="details">
-                  <el-input placeholder="" v-model="valore.details" class="input-with-select">
+                  <el-input placeholder="" v-model="dataValue.details" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search" @click="initSearchValues">BUSCAR</el-button>
                   </el-input>
                 </el-form-item>
@@ -67,9 +52,9 @@ export default {
       tag: '',                    //componente que informacion desea traer
       flag: '',                   //deudor, responsable, categoria programatica
 
-      dataCourse: {},
-      prg:{},
-      valore:{},
+      dataCourse: {detalle:''},
+      dataProgram:{},
+      dataValue:{},
     };
   },
   mounted() { },
@@ -91,16 +76,43 @@ export default {
       console.log(this.isVisible + " " + this.data);
       switch (this.flag) {
         case 'categoria':
-          this.prg = data;
+          this.dataProgram = data;
           break;
         case 'valores':
-          this.valore = data;
+          this.dataValue = data;
           break;
         default:
           break;
       }
     },
-
+    //  * RP2. Guardar un curso de postgrado.    
+    async initStoreCourse(){
+      console.log(this.dataCourse);
+      console.log(this.dataProgram);
+      console.log(this.dataValue);
+      let app = this;
+      try {
+        let response = await axios
+          .post("/api/storeCourseOfPostgraduate", {
+            dataCourse: app.dataCourse,  //add
+            dataProgram: app.dataProgram,  //add
+            dataValue: app.dataValue,  //add
+            year: app.user.gestion,
+            marker: "registrar", //editar
+          });
+        app.$alert("Se ha registrado correctamente los datos", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+        /*
+        this.$router.push({
+          name: "filecontainer",
+        });*/
+      } catch (error) {
+        app.$alert("No se registro nada", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      };      
+    }
 
   },
 };
