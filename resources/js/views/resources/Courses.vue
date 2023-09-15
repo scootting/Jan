@@ -16,17 +16,20 @@
               </div>
             </template>
           </el-table-column>
-          <el-table-column width="350" label="descripcion">
+          <el-table-column width="190" label="codigo valor">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
-                <el-tag size="medium" type="danger">{{ scope.row.detalle }}</el-tag>
+                <el-tag size="medium">{{ scope.row.cod_val }}</el-tag>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="cod_val" width="650" label="valorado"></el-table-column>
-          <el-table-column align="right-center" width="220" label="Operaciones" fixed="right">
+          <el-table-column prop="detalle" width="350" label="descripcion del curso"></el-table-column>
+          <el-table-column prop="pre_val" width="150" label="precio"></el-table-column>
+          <el-table-column align="right-center" width="220" label="movimientos" fixed="right">
             <template slot-scope="scope">
-              <el-button @click="getMotionCourses(scope.row.id)" type="success" plain size="mini">movimiento
+              <el-button @click="initGetInputOfCourse(scope.row.id)" type="primary" size="small">ingresos
+              </el-button>
+              <el-button @click="initGetOutputOfCourse(scope.row.id)" type="danger" size="small">egresos
               </el-button>
             </template>
           </el-table-column>
@@ -52,7 +55,7 @@ export default {
       },
     };
   },
-  mounted() { 
+  mounted() {
     this.getCourses();
   },
   methods: {
@@ -60,38 +63,49 @@ export default {
     async getCourses(page) {
       console.log()
       let app = this;
-            try {
-                let response = await axios.post("/api/courses", {
-                    year: app.user.gestion,
-                    page: page,
-                });
-                app.loading = false;
-                console.log(response);
+      try {
+        let response = await axios.post("/api/courses", {
+          year: app.user.gestion,
+          page: page,
+        });
+        app.loading = false;
+        console.log(response);
 
-                app.dataCourses = Object.values(response.data.data);
-                app.pagination = response.data;
-            } catch (error) {
-              console.log(error);
-                this.error = error.response.data;
-                
-                app.$alert(this.error.message, "Gestor de errores", {
-                    dangerouslyUseHTMLString: true,
-                });
-            }
+        app.dataCourses = Object.values(response.data.data);
+        app.pagination = response.data;
+      } catch (error) {
+        console.log(error);
+        this.error = error.response.data;
+
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
     },
     addCourse() {
       this.$router.push({
         name: "addcourse",
       });
     },
-    getMotionCourses(id){
-      console.log(id);
+    initGetInputOfCourse(id) {
+      this.$router.push({
+        name: "inputcoursedetails",
+        params: {
+          id: id,
+        },
+      });
+    },
+    initGetOutputOfCourse(id) {
+      this.$router.push({
+        name: "outputcoursedetails",
+        params: {
+          id: id,
+        },
+      });
     }
   },
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
+<style scoped></style>

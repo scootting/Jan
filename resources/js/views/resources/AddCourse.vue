@@ -21,6 +21,9 @@
                     <el-button slot="append" icon="el-icon-search" @click="initSearchValues">BUSCAR</el-button>
                   </el-input>
                 </el-form-item>
+                <el-form-item label="Precio del curso">
+                  <el-input v-model="dataValue.pre_uni"></el-input>
+                </el-form-item>
                 <el-form-item label="descripcion">
                   <el-input type="textarea" v-model="dataCourse.detalle" autocomplete="off"></el-input>
                 </el-form-item>
@@ -52,9 +55,9 @@ export default {
       tag: '',                    //componente que informacion desea traer
       flag: '',                   //deudor, responsable, categoria programatica
 
-      dataCourse: {detalle:''},
-      dataProgram:{},
-      dataValue:{},
+      dataCourse: { detalle: '' },
+      dataProgram: {},
+      dataValue: {},
     };
   },
   mounted() { },
@@ -77,6 +80,7 @@ export default {
       switch (this.flag) {
         case 'categoria':
           this.dataProgram = data;
+          this.dataCourse.detalle = this.dataProgram.details;
           break;
         case 'valores':
           this.dataValue = data;
@@ -86,7 +90,7 @@ export default {
       }
     },
     //  * RP2. Guardar un curso de postgrado.    
-    async initStoreCourse(){
+    async initStoreCourse() {
       console.log(this.dataCourse);
       console.log(this.dataProgram);
       console.log(this.dataValue);
@@ -111,7 +115,7 @@ export default {
         app.$alert("No se registro nada", 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
         });
-      };      
+      };
     }
 
   },

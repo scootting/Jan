@@ -61,5 +61,15 @@ class ResourceController extends Controller
         }
         return json_encode($course);
     }
+    //  * A8. Obtiene un tipo de archivo en especifico
+    public function getInputCourse(Request $request)
+    {
+        $gestion = $request->get('year');//valor entero
+        $id = $request->get('id');
+        $data = Resource::GetInputCourse($id, $gestion);
+        return json_encode($data);
+    }
+
+    
     
 }

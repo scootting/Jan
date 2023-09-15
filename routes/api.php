@@ -293,7 +293,9 @@ Route::group([
     Route::post('courses', 'ResourceController@getCoursesOfPostgraduate');
     //  * RP2. Guardar un curso de postgrado.    
     Route::post('storeCourseOfPostgraduate', 'ResourceController@storeCourseOfPostgraduate');
-
+    //  * RP3. Obtiene las transacciones realizadas en caja universitaria del valorado - curso de postgrado
+    Route::post('getInputCourse', 'ResourceController@getInputCourse');
+    
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend
