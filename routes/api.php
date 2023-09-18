@@ -131,7 +131,7 @@ Route::group([
     Route::post('storeRequestSaleInLine', 'TreasureController@storeRequestSaleInLine');
     //  *  T42. Guardar las verificaciones realizadas cada solicitud
     Route::post('getTransactionsByDay', 'TreasureController@getTransactionsByDay');
-    
+
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
     Route::post('getDataOfStudentById', 'TreasureController@getDataOfStudentById');
@@ -221,7 +221,7 @@ Route::group([
     Route::get('getReportBooking/', 'ArchiveController@getReportBooking');
     //  * A27. Muestra el reporte de la reserva
     Route::get('getReportBorrowed/', 'ArchiveController@getReportBorrowed');
-    
+
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes
     //  |--------------------------------------------------------------------------
@@ -288,15 +288,18 @@ Route::group([
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Recursos Propios
-    //  |--------------------------------------------------------------------------    
-    //  * RP1. Obtener la lista de cursos de posgrado.    
+    //  |--------------------------------------------------------------------------
+    //  * RP1. Obtener la lista de cursos de posgrado.
     Route::post('courses', 'ResourceController@getCoursesOfPostgraduate');
-    //  * RP2. Guardar un curso de postgrado.    
+    //  * RP2. Guardar un curso de postgrado.
     Route::post('storeCourseOfPostgraduate', 'ResourceController@storeCourseOfPostgraduate');
     //  * RP3. Obtiene las transacciones realizadas en caja universitaria del valorado - curso de postgrado
     Route::post('getInputCourse', 'ResourceController@getInputCourse');
+    //  * RP4. Guarda las transacciones conciliadas del curso de postgrado
+    Route::post('storeInputCourse', 'ResourceController@storeInputCourse');
+    //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
+    Route::post('getInputTransactionsOfCourse', 'ResourceController@getInputTransactionsOfCourse');
     
-
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend
     //  |--------------------------------------------------------------------------

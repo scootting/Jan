@@ -32,4 +32,21 @@ class Resource extends Model
         return $data;
     }
 
+    //  * RP4. Guarda las transacciones conciliadas del curso de postgrado
+    public static function StoreInputCourse($id, $ci_per, $cod_val, $des_per, $fec_tra, $gestion, $id_tran, $imp_val, $id_dia, $tip_tra, $usuario, $obs)
+    {
+        $query = "select * from rec.ff_registrar_ingreso_curso(" . $id . ",'" . $ci_per . "','" . $cod_val . "','" . $des_per . "','" . $fec_tra ."','" 
+                 . $gestion . "'," . $id_tran . "," . $imp_val . "," . $id_dia . "," . $tip_tra . ",'" . $usuario ."','" . $obs . "')";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
+    public static function getInputTransactionsOfCourse($id, $gestion)
+    {
+        $query = "select * from rec.concepto_flujo f where f.id_concepto = " . $id .  " and f.gestion = '" . $gestion . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }

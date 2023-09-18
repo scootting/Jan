@@ -8,42 +8,37 @@
             <el-row :gutter="50">
                 <el-col :span="24">
                     <div>
+                        <el-table :data="dataInputsCourse" border style="width: 100%" height="400" size="small">
+                            <el-table-column prop="ci_per" label="ci" width="120">
+                                <template slot-scope="scope">
+                                    <el-tag size="small" type="primary">{{ scope.row.ci_per }}</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="glosa" label="apellidos y nombres" width="250"></el-table-column>
+                            <el-table-column prop="fec_tra" label="fecha"></el-table-column>
+                            <el-table-column prop="imp_val" label="importe">
+                                <template slot-scope="scope">
+                                    <el-tag size="small" type="default">{{ scope.row.imp_val }}</el-tag>
+                                </template>
+                            </el-table-column>
+                            <el-table-column align="right-center" label="operaciones" width="180">
+                                <template slot-scope="scope">
+                                    <el-button :disabled="scope.row.guardado === true" type="primary" plain size="mini"
+                                        @click="initEditDocumentOfArchive(scope.$index, scope.row)">revertir</el-button>
+                                </template>
+                            </el-table-column>
+                        </el-table>
                         <!--
-              <el-table :data="documentsArchive" border style="width: 100%" size="small">
-                <el-table-column prop="indice" label="indice" align="right" width="100">
-                </el-table-column>
-                <el-table-column prop="fecha" label="fecha" width="100" align="center">
-                </el-table-column>
-                <el-table-column prop="numeral" label="no. documento" width="100" align="right">
-                </el-table-column>
-                <el-table-column prop="descr" label="documento" width="250" align="center">
-                  <template slot-scope="scope">
-                    <el-tag size="medium">{{
-                      scope.row.descr
-                    }}</el-tag>
-                  </template>
-                </el-table-column>
-                <el-table-column prop="glosa" label="descripcion" width="650">
-                </el-table-column>
-                <el-table-column align="right-center" label="operaciones" width="180">
-                  <template slot-scope="scope">
-                    <el-button :disabled="scope.row.guardado === true" type="primary" plain size="mini"
-                      @click="initEditDocumentOfArchive(scope.$index, scope.row)">editar</el-button>
-                    <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
-                      @click="DeleteDocumentOfArchive(scope.$index, scope.row)">quitar</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
                 -->
                     </div>
                 </el-col>
             </el-row>
             <el-button type="primary" @click="initAddInputCourse" size="small">Agregar ingreso automaticamente</el-button>
             <el-button type="success" @click="initAddInputManualCourse" size="small">Agregar ingreso manualmente</el-button>
-            <!-- Form Add Document to Archive-->
-            <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
-                <el-form :model="document" label-width="220px" size="small">
 
+            <!-- Form Add Register Input Manual-->
+            <el-dialog title="detalle" :visible.sync="dialogFormVisible2">
+                <el-form :model="document" label-width="220px" size="small">
                     <el-form-item label="tipo de documento">
                         <el-select v-model="document.descr" value-key="descr" size="small"
                             placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument">
@@ -61,15 +56,37 @@
                     <el-form-item label="glosa o descripcion">
                         <el-input type="textarea" v-model="document.glosa" autocomplete="off"></el-input>
                     </el-form-item>
-                    <!--
-            -->
                 </el-form>
                 <span slot="footer" class="dialog-footer">
                     <el-button type="primary" size="small" plain @click="AddArchiveToDocument">Confirmar</el-button>
                     <el-button type="danger" size="small" plain @click="dialogFormVisible = false">Cancelar</el-button>
                 </span>
             </el-dialog>
-            <!-- Form Add Document to Archive-->
+            <!-- Form Add Register Input Manual-->
+
+            <!-- Form Add Register Input Auto-->
+            <el-dialog title="detalle de transacciones no conciliadas" :visible.sync="dialogFormVisible">
+                <el-table :data="dataInputs" style="width: 100%" height="250" @selection-change="handleSelectionChange">
+                    <el-table-column type="selection"> </el-table-column>
+                    <el-table-column prop="ci_per" label="ci" width="120">
+                        <template slot-scope="scope">
+                            <el-tag size="small" type="primary">{{ scope.row.ci_per }}</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="des_per" label="apellidos y nombres" width="250"></el-table-column>
+                    <el-table-column prop="fec_tra" label="fecha"></el-table-column>
+                    <el-table-column prop="imp_val" label="importe">
+                        <template slot-scope="scope">
+                            <el-tag size="small" type="default">{{ scope.row.imp_val }}</el-tag>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" size="small" plain @click="initStoreInputCourse">Agregar</el-button>
+                    <el-button type="danger" size="small" plain @click="dialogFormVisible = false">Cancelar</el-button>
+                </span>
+            </el-dialog>
+            <!-- Form Add Register Input Auto-->
         </el-card>
     </div>
 </template>
@@ -81,11 +98,16 @@ export default {
         return {
             user: this.$store.state.user,
             id: null,                    //identificador del curso de postgrado
-            dataInputs: [],
-            
+            dataInputs: [],             //transacciones no conciliadas
+            dataSelected: [],             //para las transacciones seleccionadas
+            dataInputsCourse: [],       //ingresos conciliados
+
+            dialogFormVisible: false,   //para el dialogo
+            dialogFormVisible2: false,   //para el dialogo
+
+
             documentsArchive: [],       //lista de archivos pertenecientes a un documento
             typesDocument: [],          //diferentes tipos de archivos que pertenecen a un documento
-            dialogFormVisible: false,   //para el dialogo
             stateStore: "",             //estado para ver si se aniade o se edita
             document: {
                 id_doc: "",
@@ -103,15 +125,30 @@ export default {
     mounted() {
         let app = this;
         app.id = app.$route.params.id;
-        app.getTypesDocument();
+        console.log(this.user);
+        app.getDataInputsCourse();
     },
     methods: {
         test() {
             alert("test");
         },
 
-    //  * RP3. Obtiene las transacciones realizadas en caja universitaria del valorado - curso de postgrado
-        async initAddInputCourse(){
+        //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
+        async getDataInputsCourse() {
+            let app = this;
+            try {
+                let response = await axios.post("/api/getInputTransactionsOfCourse", {
+                    year: this.user.gestion,
+                    id: this.id,
+                });
+                app.dataInputsCourse = response.data;
+            } catch (error) {
+                console.log(error);
+            }
+
+        },
+        //  * RP3. Obtiene las transacciones realizadas en caja universitaria del valorado - curso de postgrado
+        async initAddInputCourse() {
             let app = this;
             try {
                 let response = await axios.post("/api/getInputCourse", {
@@ -119,13 +156,47 @@ export default {
                     id: this.id,
                 });
                 app.dataInputs = response.data;
+                app.dialogFormVisible = true;
                 console.log(app.dataInputs);
             } catch (error) {
                 console.log(error);
             }
         },
 
+        //  * RP4. Guarda las transacciones conciliadas del curso de postgrado
+        async initStoreInputCourse() {
+            var app = this;
+            try {
+                app.dataInputsCourse = app.dataSeleted;
+                let response = axios
+                    .post("/api/storeInputCourse", {
+                        id: app.id,
+                        dataSelected: app.dataSelected,
+                        user: app.user,
+                        marker: "registrar", //editar
+                    });
+                app.dialogFormVisible = false;
+                app.dataSelected = {};
+                app.getDataInputsCourse();
+                app.$alert("Se ha registrado correctamente los archivos del documento", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+            } catch (error) {
+                console.log(error);
+                app.$alert("No se registro nada", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+            };
+        },
 
+        handleSelectionChange(val) {
+            this.dataSelected = val;
+            console.log(this.dataSelected);
+        },
+
+        initAddInputManualCourse() {
+
+        },
 
 
 
