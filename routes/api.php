@@ -299,7 +299,23 @@ Route::group([
     Route::post('storeInputCourse', 'ResourceController@storeInputCourse');
     //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
     Route::post('getInputTransactionsOfCourse', 'ResourceController@getInputTransactionsOfCourse');
-    
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Elecciones
+    //  |--------------------------------------------------------------------------
+    //  * E1 . Obtener la persona por su carnet de identidad y la mesa donde deberia realizar su boto
+    Route::post('getAuthorizedPerson', 'ElectionController@getAuthorizedPerson');
+    //  * E2 . Obtener la persona por su carnet de identidad y si se encuentra habilitado
+    Route::post('getTableElection', 'ElectionController@getTableElection');
+    //  * E3 . Obtener la lista de mesas habilitadas para la eleccion
+    Route::post('getInformationTablets', 'ElectionController@getInformationTablets');
+    //  * E4 . Obtener la lista de candidatos habilitados para la eleccion
+    Route::post('getInformationCandidates', 'ElectionController@getInformationCandidates');
+    //  * E5 . Guardar las votaciones por candidatos y mesa
+    Route::post('storeVotesForCandidates', 'ElectionController@storeVotesForCandidates');
+    //  * E6 . Muestra el reporte de los datos por mesa
+    Route::get('getReportTablet/', 'ElectionController@getReportTablet');
+
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend
     //  |--------------------------------------------------------------------------

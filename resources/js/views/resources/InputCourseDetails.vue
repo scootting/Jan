@@ -38,23 +38,30 @@
 
             <!-- Form Add Register Input Manual-->
             <el-dialog title="detalle" :visible.sync="dialogFormVisible2">
-                <el-form :model="document" label-width="220px" size="small">
-                    <el-form-item label="tipo de documento">
-                        <el-select v-model="document.descr" value-key="descr" size="small"
-                            placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument">
-                            <el-option v-for="item in typesDocument" :key="item.id" :label="item.descr" :value="item.id">
-                            </el-option>
-                        </el-select>
+                <el-form :model="dataInput" label-width="220px" size="small">
+                    <el-form-item label="CI" prop="ci_per" :rules="[
+                        { required: true, message: 'el carnet de identidad es requerido' },
+                    ]">
+                        <el-input placeholder="" v-model="dataInput.ci_per">
+                            <el-button slot="append" icon="el-icon-search" @click="initSearchPerson">BUSCAR</el-button>
+                        </el-input>
                     </el-form-item>
-                    <el-form-item label="Numero del documento">
-                        <el-input v-model="document.numeral" autocomplete="off"></el-input>
+                    <el-form-item label="apellidos y nombres" >
+                        <el-input v-model="dataInput.des_per" autocomplete="off" :disabled="true"></el-input>
                     </el-form-item>
+                    <el-form-item label="monto" prop="imp_val" :rules="[
+                        { required: true, message: 'el monto es requerido' },
+                        { type: 'number', message: 'el monto deberia ser un numero' }
+                    ]">
+                        <el-input v-model.number="dataInput.imp_val" autocomplete="off"></el-input>
+                    </el-form-item>
+
                     <el-form-item label="fecha del registro">
-                        <el-date-picker type="date" v-model="document.fecha" placeholder="seleccione una fecha"
+                        <el-date-picker type="date" v-model="dataInput.fec_tra" placeholder="seleccione una fecha"
                             style="width: 100%" format="yyyy/MM/dd" value-format="yyyy-MM-dd"></el-date-picker>
                     </el-form-item>
-                    <el-form-item label="glosa o descripcion">
-                        <el-input type="textarea" v-model="document.glosa" autocomplete="off"></el-input>
+                    <el-form-item label="observacion">
+                        <el-input type="textarea" v-model="dataInput.obs" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <span slot="footer" class="dialog-footer">
@@ -92,6 +99,7 @@
 </template>
     
 <script>
+import information from "../components/Information.vue";
 export default {
     name: "",
     data() {
@@ -105,6 +113,13 @@ export default {
             dialogFormVisible: false,   //para el dialogo
             dialogFormVisible2: false,   //para el dialogo
 
+            dataInput: {
+                ci_per:"",
+                des_per:"",
+                imp_val:0,
+                fec_tra:null,
+                obs:"",
+            },
 
             documentsArchive: [],       //lista de archivos pertenecientes a un documento
             typesDocument: [],          //diferentes tipos de archivos que pertenecen a un documento
@@ -189,12 +204,31 @@ export default {
             };
         },
 
+        async initSearchPerson() {
+            let app = this;
+            let persona = {};
+            
+            try {
+                let response = await axios.get("/api/person/" + this.dataInput.ci_per);
+                persona = response.data[0];
+                app.dataInput.des_per = persona.des_per;
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
+
+        },
+
+
         handleSelectionChange(val) {
             this.dataSelected = val;
             console.log(this.dataSelected);
         },
 
         initAddInputManualCourse() {
+            this.dialogFormVisible2 = true;
 
         },
 

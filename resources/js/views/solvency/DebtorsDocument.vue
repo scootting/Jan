@@ -13,17 +13,15 @@
                 </el-input>
             </div>
             <div>
-                <el-table v-loading="loading" :data="dataDebtors" style="width: 100%">
+                <el-table v-loading="loading" :data="dataDebtors" style="width: 100%" size="medium">
                     <el-table-column prop="fecha" label="fecha" width="100"></el-table-column>
                     <el-table-column prop="idc" label="no." width="100" align="center">
                         <template slot-scope="scope">
-                            <el-tag size="medium">{{
-                                scope.row.idc
-                            }}</el-tag>
+                            <el-tag size="medium">{{ scope.row.idc }}</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="unidad" label="unidad" width="220"></el-table-column>
-                    <el-table-column prop="ci_per" label="carnet" width="150" align="center">
+                    <el-table-column prop="unidad" label="unidad" width="250"></el-table-column>
+                    <el-table-column prop="ci_per" label="carnet" width="130" align="center">
                         <template slot-scope="scope">
                             <el-tag size="medium">{{
                                 scope.row.ci_per
@@ -32,14 +30,20 @@
                     </el-table-column>
                     <el-table-column prop="des_per" label="apellidos y nombres" width="250"></el-table-column>
                     <el-table-column prop="detalle" label="detalle" width="400"></el-table-column>
-                    <el-table-column align="right" width="120">
+                    <el-table-column fixed="right" width="100">
                         <template slot-scope="scope">
-                            <el-button @click="initEditDebts(scope.$index, scope.row)" type="primary" size="mini"
-                                plain>Editar</el-button>
-                            <!--
-                            -->
-                            <el-button @click="initRegularizeDocument(scope.$index, scope.row)" type="warning" plain
-                                size="mini">Regularizar</el-button>
+                            <div v-if="scope.row.estado2 !== 'Regularizado'">
+                                <el-tag type="danger" effect="dark">{{ scope.row.estado2 }}</el-tag>
+                            </div>
+                            <div v-else>
+                                <el-tag type="success" effect="dark">{{ scope.row.estado2 }}</el-tag>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column fixed="right" width="120">
+                        <template slot-scope="scope">
+                            <el-button @click="initRegularizeDocument(scope.$index, scope.row)" type="primary"
+                                :disabled="scope.row.estado2 === 'Regularizado'" size="small">Regularizar</el-button>
                         </template>
                     </el-table-column>
 
@@ -65,7 +69,7 @@ export default {
         };
     },
     mounted() {
-        this.getDebtorsDocument();
+        this.getDebtorsDocument(1);
     },
     methods: {
 
@@ -95,7 +99,7 @@ export default {
             });
         },
 
-        initEditDebts(idx, row){
+        initEditDebts(idx, row) {
             this.$router.push({
                 name: "editdebts",
                 params: {

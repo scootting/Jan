@@ -11,18 +11,6 @@
                         <div class="grid-content bg-purple">
                             <p>datos de la solicitud</p>
                             <el-form ref="form" :model="debtorDocument" label-width="120px" size="small">
-                                <el-form-item label="cite" prop="id">
-                                    <el-input v-model="debtorDocument.id"></el-input>
-                                </el-form-item>
-                                <el-form-item label="referencia" prop="referencia">
-                                    <el-input type="textarea" autosize placeholder="Ingrese una referencia"
-                                        v-model="debtorDocument.referencia">
-                                    </el-input>
-                                </el-form-item>
-                                <el-form-item label="fecha" prop="fecha">
-                                    <el-date-picker type="date" placeholder="seleccione una fecha"
-                                        v-model="debtorDocument.fecha" style="width: 100%"></el-date-picker>
-                                </el-form-item>
                                 <el-form-item label="unidad" prop="details">
                                     <el-input placeholder="" v-model="prg.details" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"
@@ -33,6 +21,15 @@
                                     <el-input placeholder="" v-model="manager.details" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"
                                             @click="initSearchManager">BUSCAR</el-button>
+                                    </el-input>
+                                </el-form-item>
+                                <el-form-item label="fecha" prop="fecha">
+                                    <el-date-picker type="date" placeholder="seleccione una fecha"
+                                        v-model="debtorDocument.fecha" style="width: 100%"></el-date-picker>
+                                </el-form-item>
+                                <el-form-item label="referencia" prop="referencia">
+                                    <el-input type="textarea" autosize placeholder="Ingrese una referencia"
+                                        v-model="debtorDocument.referencia">
                                     </el-input>
                                 </el-form-item>
                             </el-form>
@@ -47,8 +44,8 @@
                                 <el-table-column prop="des_per" label="descripcion"></el-table-column>
                                 <el-table-column align="right">
                                     <template slot-scope="scope">
-                                        <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary"
-                                            plain size="small">Quitar</el-button>
+                                        <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
+                                            size="small">Quitar</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -88,7 +85,7 @@ export default {
             },                          //documento de deuda
         };
     },
-    mounted() { 
+    mounted() {
         console.log(this.user);
     },
     methods: {

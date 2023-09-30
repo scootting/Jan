@@ -6,6 +6,12 @@ Vue.use(VueRouter)
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
 import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
 
+
+//Sistema de Votaciones
+import Tablets from './views/election/Tablets.vue'
+import TabletDetails from './views/election/TabletDetails.vue'
+
+
 import EditDebts from './views/solvency/EditDebts.vue'
 import AddDebts from './views/solvency/AddDebts.vue'
 import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
@@ -309,6 +315,13 @@ const router = new VueRouter({
                 { path: 'requestMemorial', name: 'requestmemorial', component: RequestMemorial },
                 //  * M2. Obtener la lista de memoriales para su verificacion 
                 { path: 'requestMemorial/:id', name: 'requestmemorialdetail', component: RequestMemorialDetail },
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Modulo de Elecciones
+                //  |--------------------------------------------------------------------------    
+                //  * M1. Obtener una lista de los memoriales solicitados.
+                { path: 'tablets', name: 'tablets', component: Tablets },
+                //  * M2. Obtener la lista de memoriales para su verificacion 
+                { path: 'tablets/:id', name: 'tabletdetails', component: TabletDetails },
 
             ],
             meta: {
