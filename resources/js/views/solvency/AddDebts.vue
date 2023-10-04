@@ -56,6 +56,9 @@
                     </el-col>
                 </el-row>
             </div>
+            <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
+            </el-button>
+
             <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
         </el-card>
     </div>
@@ -78,11 +81,7 @@ export default {
             debtors: [],                //deudores
             manager: {},                //responsable (director de carrera, jefe de division)
             prg: {},                    //categoria programatica
-            debtorDocument: {
-                id: "",
-                referencia: "",
-                fecha: "",
-            },                          //documento de deuda
+            debtorDocument: {},                          //documento de deuda
         };
     },
     mounted() {
@@ -92,13 +91,11 @@ export default {
         //  * S2. Guardar la informacion de un nuevo documento de deuda.
         async storeDebtorDocument() {
             var app = this;
-            var newPerson = app.person;
             try {
                 let response = await axios.post("/api/storeDebtorDocument", {
                     usuario: app.user,
                     documento: app.debtorDocument,
                     deudores: app.debtors,
-                    deudas: app.debts,
                     responsable: app.manager,
                     programa: app.prg,
                     marker: "registrar",
@@ -137,18 +134,20 @@ export default {
             this.isVisible = visible;
             this.data = data;
             console.log(this.isVisible + " " + this.data);
-            switch (this.flag) {
-                case 'categoria':
-                    this.prg = data;
-                    break;
-                case 'deudor':
-                    this.debtors.push(data);
-                    break;
-                case 'responsable':
-                    this.manager = data;
-                    break;
-                default:
-                    break;
+            if (data != null) {
+                switch (this.flag) {
+                    case 'categoria':
+                        this.prg = data;
+                        break;
+                    case 'deudor':
+                        this.debtors.push(data);
+                        break;
+                    case 'responsable':
+                        this.manager = data;
+                        break;
+                    default:
+                        break;
+                }
             }
         },
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog title="buscar" :visible.sync="visible" width="36%" center :before-close="closeModal" size="small">
+    <el-dialog title="buscar" :visible.sync="visible" width="36%" center :before-close="handleClose" size="small">
       <div style="margin-top: 15px">
         <el-input placeholder="inserte una descripcion" v-model="writtenTextParameter" class="input-with-select">
           <el-button type="success" slot="append" icon="el-icon-search" @click="getDataByDescription"></el-button>
@@ -53,19 +53,22 @@ export default {
     },
   },
   mounted() {
-    console.log("estado de la propiedad visible:" + this.visible);
-    console.log("estado de la propiedad tag:" + this.tag);
   },
   methods: {
     closeModal(row) {
       let isVisible = this.visible;
       isVisible = false;
       this.$emit("update-visible", isVisible, row);
+      this.writtenTextParameter = '';      
+      this.data = [];
     },
-    closeModalWithInfo(row){
+    handleClose(done){
       let isVisible = this.visible;
+      alert("hola");
       isVisible = false;
-      this.$emit("update-info", isVisible, row);
+      this.$emit("update-visible", isVisible, null);
+      this.writtenTextParameter = '';      
+      this.data = [];
     },
     //  * Obtener datos que coincidan con la descripcion.
     async getDataByDescription() {
@@ -109,6 +112,4 @@ export default {
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

@@ -7,7 +7,7 @@
             </div>
             <el-row>
                 <p>
-                    <el-button type="primary" size="small" @click="storeVotesForCandidates">Guardar Resultados</el-button>                    
+                    <el-button type="primary" size="small" @click="storeVotesForCandidates">Guardar Resultados</el-button>
                 </p>
             </el-row>
             <el-row :gutter="20">
@@ -36,7 +36,7 @@ export default {
     name: "",
     data() {
         return {
-            id : 0,
+            id: 0,
             loading: true,
             dataCandidates: [],
         };
@@ -67,7 +67,7 @@ export default {
                 });
             }
         },
-        async storeVotesForCandidates(){
+        async storeVotesForCandidates() {
             var app = this;
             console.log(this.dataCandidates);
             try {
@@ -76,6 +76,13 @@ export default {
                     dataCandidates: app.dataCandidates,
                 });
                 console.log(response);
+                app.$alert("Se ha registrado correctamente los votos", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+                this.$router.push({
+                    name: "tablets",
+                });
+
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {

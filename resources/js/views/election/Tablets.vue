@@ -5,7 +5,9 @@
             <div slot="header" class="clearfix">
                 <span>lista de mesas habilitadas</span>
                 <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-                    @click="getGeneralReport">reporte general</el-button>
+                    @click="getGeneralReport2">resultado general</el-button>
+                <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
+                    @click="getGeneralReport">resultado final</el-button>
             </div>
             <br />
             <div>
@@ -103,7 +105,44 @@ export default {
             });
         },
         getGeneralReport(){
-            
+            var app = this;
+            let id_election = 2;
+            axios({
+                url: "/api/getReportGeneralTablet/",
+                params: {
+                    id_election: id_election,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });            
+        },
+        getGeneralReport2(){
+            var app = this;
+            let id_election = 2;
+            axios({
+                url: "/api/getReportGeneralTablet2/",
+                params: {
+                    id_election: id_election,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });            
         }
     },
 };

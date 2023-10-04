@@ -315,6 +315,9 @@ Route::group([
     Route::post('storeVotesForCandidates', 'ElectionController@storeVotesForCandidates');
     //  * E6 . Muestra el reporte de los datos por mesa
     Route::get('getReportTablet/', 'ElectionController@getReportTablet');
+    //  * E7 . Muestra el reporte general de los datos por mesa
+    Route::get('getReportGeneralTablet/', 'ElectionController@getReportGeneralTablet');
+    Route::get('getReportGeneralTablet2/', 'ElectionController@getReportGeneralTablet2');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para los componentes desarrollados en le frontend
