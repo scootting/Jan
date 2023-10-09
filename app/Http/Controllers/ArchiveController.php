@@ -257,20 +257,23 @@ class ArchiveController extends Controller
 
         //$id_raiz = $contenedor['id'];//array
         //$id_tipo_raiz = $contenedor['id_tipo'];//dato
-
+        $idx = 1;
         $marker = Archive::deleteDocumentsAndContainerFromContainer($id_raiz);
         foreach ($documentos as $item) {
             \log::info($item);
             $id_rama = $item['id'];
             $id_tipo_rama = strtoupper($item['id_tipo']);
-            $marker = Archive::AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion);
+            $marker = Archive::AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion, $idx);
+            $idx = $idx + 1;
             $id_tran = 0;
         }
+        $idx = 1;
         foreach ($contenedores as $item) {
             \log::info($item);
             $id_rama = $item['id'];
             $id_tipo_rama = strtoupper($item['id_tipo']);
-            $marker = Archive::AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion);
+            $marker = Archive::AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion, $idx);
+            $idx = $idx + 1;
             $id_tran = 0;
         }
         return json_encode($marker);
@@ -523,11 +526,22 @@ class ArchiveController extends Controller
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
-    //  * A26. Muestra el reporte del documento
+    //  * A27. Muestra el reporte de la reserva
     public function getReportBorrowed(Request $request)
     {
         $nreport = 'BorrowedDocumentLetter';
         $p_id = '';
+        $controls = array(
+            'p_id' => $p_id,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+    //  * A28. Muestra el reporte del contenedor y los documentos que contiene
+    public function getReportDocumentsAndContainers(Request $request)
+    {
+        $nreport = 'ArchiveResumeFileContainer';
+        $p_id = $request->get('id');
         $controls = array(
             'p_id' => $p_id,
         );

@@ -125,23 +125,28 @@ class Archive extends Model
     //  * parametros {id: identificador del contenedor raiz }
     public static function GetDataDocumentById($id)
     {
-        $query = "select a.id, a.glosa, a.fecha, a.id_doc, a.id_tipo, b.id_raiz, b.id as id_cd from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
-        where b.id_raiz = '" . $id . "' and b.tipo_rama = 'A'";
+        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo, e.id_raiz, e.id as id_cd, e.id_rama, g.descr, f.numeral, f.fecha as fecha2 " .
+                 "from arch.doc d left join arch.doc_con e on d.id = e.id_rama inner join arch.doc2 f on f.id_doc = d.id inner join arch.tipos g ".
+                 "on f.id_arch = g.id where e.id_raiz = '" . $id . "' and e.tipo_rama = 'A' and f.indice = 1 order by orden asc";        
+        /*
+                 select a.id, a.glosa, a.fecha, a.id_doc, a.id_tipo, b.id_raiz, b.id as id_cd from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
+                where b.id_raiz = '" . $id . "' and b.tipo_rama = 'A' order by orden asc";*/
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     public static function GetDetaFileContainerById($id)
     {
         $query = "select a.id, a.glosa, a.fecha, a.id_doc, a.id_tipo, b.id_raiz, b.id as id_cd from arch.doc a inner join arch.doc_con b on a.id = b.id_rama
-        where b.id_raiz = '" . $id . "' and b.tipo_rama <> 'A'";
+        where b.id_raiz = '" . $id . "' and b.tipo_rama <> 'A' order by orden asc";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     //  * A13. Obtiene la lista de documentos y contenedores que estan libres para su registro
     public static function GetDocumentFree($id)
     {
-        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo from arch.doc d left join arch.doc_con e on d.id = e.id_rama where e.id_rama is null " .
-            "and id_tipo = 'A'";
+        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo, g.descr, f.numeral, f.fecha as fecha2 from arch.doc d left join arch.doc_con e " .
+                 "on d.id = e.id_rama inner join arch.doc2 f on f.id_doc = d.id inner join arch.tipos g on f.id_arch = g.id ".
+                 "where e.id_rama is null and d.id_tipo = 'A' and f.indice = 1";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -166,11 +171,11 @@ class Archive extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-    public static function AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion)
+    public static function AddDocumentsAndContainers($id_rama, $id_tipo_rama, $id_raiz, $id_tipo_raiz, $usuario, $gestion, $orden)
     {
         //$query = "SELECT * FROM arch.ff_registrar_detalle_documento('" . $descripcion . "','" . $tipo . "')";
         $query = "INSERT INTO arch.doc_con(id_rama, tipo_rama, id_raiz, tipo_raiz, usr_cre, gestion, orden) VALUES " .
-            "('" . $id_rama . "','" . $id_tipo_rama . "','" . $id_raiz . "','" . $id_tipo_raiz . "','" . $usuario . "','" . $gestion . "', 1)";
+            "('" . $id_rama . "','" . $id_tipo_rama . "','" . $id_raiz . "','" . $id_tipo_raiz . "','" . $usuario . "','" . $gestion . "', ". $orden.")";
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;

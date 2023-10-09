@@ -224,7 +224,6 @@ export default {
         let url = window.URL.createObjectURL(blob);
         window.open(url);
       });
-
     },
 
     //  * A25. Quita el enlace al contenedor

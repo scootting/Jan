@@ -221,7 +221,9 @@ Route::group([
     Route::get('getReportBooking/', 'ArchiveController@getReportBooking');
     //  * A27. Muestra el reporte de la reserva
     Route::get('getReportBorrowed/', 'ArchiveController@getReportBorrowed');
-
+    //  * A28. Muestra el reporte del contenedor y los documentos que contiene
+    Route::get('getReportDocumentsAndContainers/', 'ArchiveController@getReportDocumentsAndContainers');
+  
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes
     //  |--------------------------------------------------------------------------

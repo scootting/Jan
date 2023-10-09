@@ -46,21 +46,24 @@
           <div class="grid-content bg-purple">
             <span>documentos</span>
             <div>
-              <el-table :data="documents" border style="width: 100%" size="small">
-                <el-table-column prop="fecha" label="fecha" width="100" align="center">
-                </el-table-column>
-                <el-table-column prop="id_doc" label="codigo" width="100" align="center">
+              <el-table :data="documents" border style="width: 100%" size="small" max-height="450">
+                <el-table-column prop="fecha2" label="fecha" width="100" align="center">
                   <template slot-scope="scope">
-                    <el-tag size="medium">{{
-                      scope.row.id_doc
-                    }}</el-tag>
+                    <el-tag size="medium" type="info">{{ scope.row.fecha2 }}</el-tag>
                   </template>
                 </el-table-column>
-                <el-table-column prop="glosa" label="glosa" width="300" align="right">
-                </el-table-column>
-                <el-table-column align="right-center" label="operaciones" width="120">
+                <el-table-column prop="numeral" label="documento" width="90" align="center">
                   <template slot-scope="scope">
-                    <el-button :disabled="scope.row.guardado === true" type="danger" plain size="mini"
+                    <el-tag size="medium" type="" effect="dark">{{ scope.row.numeral }}</el-tag>
+                  </template>
+                </el-table-column>
+                <el-table-column prop="descr" label="tipo" width="290"></el-table-column>
+                <!--
+                <el-table-column prop="glosa" label="glosa"></el-table-column>
+                -->
+                <el-table-column align="right-center" label="operaciones" width="120" fixed="right">
+                  <template slot-scope="scope">
+                    <el-button :disabled="scope.row.guardado === true" type="success" size="mini"
                       @click="initCheckDocuments(scope.$index, scope.row)">ver archivos</el-button>
                   </template>
                 </el-table-column>
@@ -72,7 +75,7 @@
           <div class="grid-content bg-purple">
             <span>contenedores</span>
             <div>
-              <el-table :data="fileContainer" border style="width: 100%" size="small">
+              <el-table :data="fileContainer" border style="width: 100%" size="small" max-height="250">
                 <el-table-column prop="fecha" label="fecha" width="100" align="center">
                 </el-table-column>
                 <el-table-column prop="id_doc" label="codigo" width="250" align="center">
@@ -100,11 +103,17 @@
       <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
         <el-table :data="data" style="width: 100%" border @selection-change="handleSelectionChange">
           <el-table-column type="selection"> </el-table-column>
-          <el-table-column prop="id_doc" label="no. de documento">
+          <el-table-column prop="numeral" label="documento" width="100px">
             <template slot-scope="scope">
-              <el-tag size="success" type="info">{{ scope.row.id_doc }}</el-tag>
+              <el-tag size="medium" type="" effect="dark">{{ scope.row.numeral }}</el-tag>
             </template>
           </el-table-column>
+          <el-table-column prop="fecha" label="fecha" width="100px">
+            <template slot-scope="scope">
+              <el-tag size="medium" type="success" effect="dark">{{ scope.row.fecha2 }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column prop="descr" label="tipo"></el-table-column>
           <el-table-column prop="glosa" label="glosa"></el-table-column>
         </el-table>
         <span slot="footer" class="dialog-footer">
@@ -117,6 +126,7 @@
       <el-button type="success" @click="initAddContainer" size="small">Agregar contenedor</el-button>
       <el-button type="warning" @click="initStoreDocumentsAndContainers" size="small">Guardar cambios en el
         contenedor</el-button>
+      <el-button type="danger" @click="initReportDocumentsAndContainers" size="small">Imprimir detalle</el-button>
     </el-card>
   </div>
 </template>
@@ -189,7 +199,7 @@ export default {
     },
     //va a ver los archivos de un documento
     initCheckDocuments(idx, row) {
-      alert(row);
+      //alert(row);
       this.$router.push({
         name: "archivedetails",
         params: {
@@ -289,7 +299,26 @@ export default {
         });
       };
     },
-
+    //  * A28. Muestra el reporte del contenedor y los documentos que contiene
+    initReportDocumentsAndContainers() {
+      let app = this;
+      axios({
+        url: "/api/getReportDocumentsAndContainers/",
+        params: {
+          id: app.id,
+        },
+        method: "GET",
+        responseType: "arraybuffer",
+      }).then((response) => {
+        let blob = new Blob([response.data], {
+          type: "application/pdf",
+        });
+        let link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        let url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
+    }
   },
 };
 </script>
