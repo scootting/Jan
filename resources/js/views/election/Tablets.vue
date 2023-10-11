@@ -43,7 +43,9 @@
                             <el-button @click="getDigitalActOfVotes(scope.row.id)" type="info" plain size="mini">digitalizar
                                 acta
                             </el-button>
-                            <el-button @click="getReportTablet(scope.row.id)" type="info" plain size="mini">generar reporte
+                            <el-button @click="getReportTablet(scope.row.id)" type="info" plain size="mini">reporte
+                            </el-button>
+                            <el-button @click="getReportTablet2(scope.row.id)" type="info" plain size="mini">reporte mini
                             </el-button>
                         </template>
                     </el-table-column>
@@ -104,6 +106,27 @@ export default {
             let id_election = 2;
             axios({
                 url: "/api/getReportTablet/",
+                params: {
+                    id_tablet: id,
+                    id_election: id_election,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+        },
+        getReportTablet2(id) {
+            var app = this;
+            let id_election = 2;
+            axios({
+                url: "/api/getReportTablet2/",
                 params: {
                     id_tablet: id,
                     id_election: id_election,

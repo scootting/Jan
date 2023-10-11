@@ -83,6 +83,19 @@ class ElectionController extends Controller
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
+    //  * E6 . Muestra el reporte de los datos por mesa
+    public function getReportTablet2(Request $request)
+    {
+        $nreport = 'EconInformationPerson2';
+        $id_tablet = (int)$request->get('id_tablet');
+        $id_election = 2;//$request->get('id_election');
+        $controls = array(
+            'id_mesa' => $id_tablet,
+            'id_eleccion' => $id_election,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
     //  * E7 . Muestra el reporte general de los datos por mesa
     public function getReportGeneralTablet(Request $request)
     {
