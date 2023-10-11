@@ -4,18 +4,34 @@
         <el-card class="box-card">
             <div slot="header" class="clearfix">
                 <span>lista de mesas habilitadas</span>
-                <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-                    @click="getGeneralReport2">resultado general</el-button>
-                <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-                    @click="getGeneralReport">resultado final</el-button>
+                <el-button style="text-align: right; float: right" size="small" icon="el-icon-plus"
+                    @click="getGeneralReport2('DOCENTES')">RESUMEN GENERAL DOCENTES</el-button>
+                <el-button style="text-align: right; float: right" size="small" icon="el-icon-plus"
+                    @click="getGeneralReport2('ESTUDIANTES')">RESUMEN GENERAL ESTUDIANTES</el-button>
+                <el-button style="text-align: right; float: right" size="small" icon="el-icon-plus"
+                    @click="getGeneralReport">RESUMEN DE VOTACION DE TODAS LAS MESAS</el-button>
             </div>
             <br />
             <div>
                 <el-table v-loading="loading" :data="dataTablets" style="width: 100%">
-                    <el-table-column width="90" label="mesa no.">
+                    <el-table-column width="130" label="estamento">
                         <template slot-scope="scope">
                             <div slot="reference" class="name-wrapper">
-                                <el-tag size="medium" effect="dark">{{ scope.row.numero }}</el-tag>
+                                <h3>{{ scope.row.estamento }}</h3>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column width="190" label="mesa">
+                        <template slot-scope="scope">
+                            <div slot="reference" class="name-wrapper">
+                                <h3> MESA NO. {{ scope.row.numero }}</h3>
+                            </div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column width="190" label="votos contabilizados" align="right">
+                        <template slot-scope="scope">
+                            <div slot="reference" class="name-wrapper">
+                                <h3>{{ scope.row.votos }}</h3>
                             </div>
                         </template>
                     </el-table-column>
@@ -80,10 +96,10 @@ export default {
                 },
             });
         },
-        getDigitalActOfVotes(id){
+        getDigitalActOfVotes(id) {
 
         },
-        getReportTablet(id){
+        getReportTablet(id) {
             var app = this;
             let id_election = 2;
             axios({
@@ -104,7 +120,7 @@ export default {
                 window.open(url);
             });
         },
-        getGeneralReport(){
+        getGeneralReport() {
             var app = this;
             let id_election = 2;
             axios({
@@ -122,15 +138,16 @@ export default {
                 link.href = window.URL.createObjectURL(blob);
                 let url = window.URL.createObjectURL(blob);
                 window.open(url);
-            });            
+            });
         },
-        getGeneralReport2(){
+        getGeneralReport2(stament) {
             var app = this;
             let id_election = 2;
             axios({
                 url: "/api/getReportGeneralTablet2/",
                 params: {
                     id_election: id_election,
+                    stament: stament,
                 },
                 method: "GET",
                 responseType: "arraybuffer",
@@ -142,7 +159,7 @@ export default {
                 link.href = window.URL.createObjectURL(blob);
                 let url = window.URL.createObjectURL(blob);
                 window.open(url);
-            });            
+            });
         }
     },
 };

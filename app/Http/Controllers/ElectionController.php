@@ -30,7 +30,7 @@ class ElectionController extends Controller
         $id_election = $request->get('id_election');
         $id_election = 2;
         $dataTablets = Election::GetInformationTablets($id_election);
-        return json_encode(['dataTablets' => $dataTablets]);
+        return json_encode(['dataTablets' => $dataTablets] );
     }
 
     //  * E4 . Obtener la lista de candidatos habilitados para la eleccion
@@ -59,7 +59,7 @@ class ElectionController extends Controller
                     $votos = $item['votos'];
                     $id_claustro = $item['id_claustro'];
                     $response = Election::StoreVotesForCandidates($id_mesa, $id_candidato, $votos, $id_claustro, $fecha);
-                    $documento = $response[0]->{'ff_registrar_votos'};
+                    //$documento = $response[0]->{'ff_registrar_votos'};
                 }
             case 'editar':
                 //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
@@ -104,9 +104,11 @@ class ElectionController extends Controller
         $nreport = 'Econ_Resume_Votes_General';
         //$id_tablet = (int)$request->get('id_tablet');
         $id_election = 2;//$request->get('id_election');
+        $stament = $request->get('stament');
         $controls = array(
             //'id_mesa' => $id_tablet,
             'id_eleccion' => $id_election,
+            'p_estamento' => $stament,
         );
         \log::info($nreport);
         \log::info("entra");

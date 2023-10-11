@@ -254,11 +254,12 @@ export default {
             id_type: app.container.id_tipo,
             //container: app.container,
             marker: "registrar",
-          });
-        console.log(response);
+          });        
         app.$alert("Se ha registrado correctamente los archivos del documento", 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
         });
+        app.getDocumentAndFilesContainerById();
+        app.getDocumentAndContainerFree();
       } catch (error) {
         console.log(error);
         app.$alert("No se registro nada", 'Gestor de mensajes', {

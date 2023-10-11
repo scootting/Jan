@@ -125,7 +125,7 @@ class Archive extends Model
     //  * parametros {id: identificador del contenedor raiz }
     public static function GetDataDocumentById($id)
     {
-        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo, e.id_raiz, e.id as id_cd, e.id_rama, g.descr, f.numeral, f.fecha as fecha2 " .
+        $query = "select d.id, d.glosa, d.fecha, d.id_doc, d.id_tipo, e.id_raiz, e.id as id_cd, e.id_rama, g, f.numeral, f.fecha as fecha2 " .
                  "from arch.doc d left join arch.doc_con e on d.id = e.id_rama inner join arch.doc2 f on f.id_doc = d.id inner join arch.tipos g ".
                  "on f.id_arch = g.id where e.id_raiz = '" . $id . "' and e.tipo_rama = 'A' and f.indice = 1 order by orden asc";        
         /*

@@ -36,9 +36,12 @@ class Election extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
     public static function StoreVotesForCandidates($id_mesa, $id_candidato, $votos, $id_claustro, $fecha)
     {
         $query = "select * from econ.ff_registrar_votos('" . $fecha . "'," . $id_mesa . "," . $id_candidato . "," . $votos . "," . $id_claustro . ")";
+        $data = collect(DB::select(DB::raw($query)));
+        $query = "select * from econ.ff_valorar_votos_mesa(" . $id_claustro . "," . $id_mesa . ")";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -49,4 +52,11 @@ class Election extends Model
         return $data;
     }
 
+    //  * E4 . Obtener la votacion de las mesas por candidato
+    public static function GetVotesForTablet($id_election)
+    {
+        $query = "select * from econ.mesas where id_claustro = '" . $id_election . "' order by numero";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }

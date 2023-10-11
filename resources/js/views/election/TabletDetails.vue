@@ -2,8 +2,11 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>conteo de votos para la mesa {{ id }}</span>
+                <h4>conteo de votos para la mesa {{ id }}</h4>
+                    <!--
                 <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
+
+                    -->
             </div>
             <el-row>
                 <p>
@@ -14,13 +17,21 @@
                 <el-col :span="24">
                     <div class="grid-content bg-purple">
                         <el-row>
-                            <el-col :span="4" v-for="(item, index) in dataCandidates" :key="index">
-                                <div style="align-items: center;">
-                                    <el-card>
-                                        <h4>{{ item.sigla }}</h4>
-                                        <h1>{{ item.detalle }}</h1>
-                                        <el-input placeholder="Please input" v-model="item.votos"></el-input>
+                            <el-col :span="4" :offset='1'  v-for="(item, index) in dataCandidates" :key="index">
+                                <div>
+                                    <el-card :body-style="{ height: '280px' }">
+                                        <div style="height: 200px; margin-auto: auto">
+                                            <el-image :src=item.sigla style="width: 80%; height: 80%">
+                                            </el-image>
+                                        </div>
+                                        <div style="height: 60px; margin-auto: auto">
+                                            <h1>{{ item.detalle }}</h1>
+
+                                        </div>
                                     </el-card>
+                                    <p>
+                                        <el-input placeholder="Please input" v-model="item.votos"></el-input>
+                                    </p>
                                 </div>
                             </el-col>
                         </el-row>
@@ -50,6 +61,7 @@ export default {
             alert("Hola, como estas hoy?");
         },
 
+        //  * E4 . Obtener la lista de candidatos habilitados para la eleccion
         async getInformationCandidates() {
             var app = this;
             try {
