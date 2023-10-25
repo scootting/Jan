@@ -59,4 +59,13 @@ class Election extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    public static function ValueTotalVotes($id_claustro)
+    {
+        $query = "select * from econ.ff_valorar_votos_finales(". $id_claustro . ")";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
 }

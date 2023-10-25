@@ -82,6 +82,7 @@ export default {
             manager: {},                //responsable (director de carrera, jefe de division)
             prg: {},                    //categoria programatica
             debtorDocument: {},                          //documento de deuda
+            numero: 0,
         };
     },
     mounted() {
@@ -100,7 +101,26 @@ export default {
                     programa: app.prg,
                     marker: "registrar",
                 });
-                alert("se ha creado el registro de la persona");
+                app.numero = response.data;
+                console.log(response);
+                this.$confirm('Cuenta con la documentacion que corresponde a la deuda?', 'Proceso de Verificacion', {
+                    confirmButtonText: 'Continuar',
+                    cancelButtonText: 'Cancelar',
+                    type: 'success'
+                }).then(() => {
+                    /*pasa directamente al editar*/
+                    this.$router.push({
+                        name: "editdebts",
+                        params: {
+                            id: response.data,
+                        },
+                    });
+
+                }).catch(() => {
+                    /*pasa directamente a la lista de deudas*/
+                    this.$router.push({ name: "DebtorsDocument" });
+                });
+
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {

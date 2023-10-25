@@ -114,6 +114,8 @@ class ElectionController extends Controller
 
     public function getReportGeneralTablet2(Request $request)
     {
+        $id_claustro = 2;
+        $response = Election::ValueTotalVotes($id_claustro);
         $nreport = 'Econ_Resume_Votes_General';
         //$id_tablet = (int)$request->get('id_tablet');
         $id_election = 2;//$request->get('id_election');

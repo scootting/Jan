@@ -292,7 +292,7 @@ const router = new VueRouter({
                 //{ path: 'debtordocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
 
                 //  * SO3. Editar un nuevo documento de deudor
-                //{ path: 'debts/:id', name: 'editdebts', component: EditDebts },
+                { path: 'debts/verify/:id', name: 'editdebts', component: EditDebts },
                 //  * SO4. Agregar Deudas 
                 { path: 'debts/add', name: 'adddebts', component: AddDebts },
                 //  * SO5. Regularizar Deudas

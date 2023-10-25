@@ -23,19 +23,18 @@ class Solvency extends Model
     }
 
     //  * SO2. Guardar la informacion de un nuevo documento de deuda.
-    public static function AddDebtorDocument($gestion, $fecha, $detalle, $cod_prg, $des_prg, $usr_cre, $ci_resp, $ci_elab, $id_ref)
+    public static function AddDebtorDocument($tipo, $fecha, $ci_elab, $ci_resp, $ci_vobo, $usr_cre, $gestion)
     {
         //sol.ff_nuevo_documento_deuda (...)
-        $query = "select * from sol.ff_nuevo_documento_deuda('" . $gestion . "','" . $fecha . "','" . $detalle . "','" . $cod_prg . "','" . $des_prg
-            . "','" . $usr_cre . "','" . $ci_resp . "','" . $ci_elab . "','" . $id_ref . "')";
+        $query = "select * from sol.ff_nuevo_documento_deuda('" . $tipo . "','" . $fecha . "','" . $ci_elab . "','" . $ci_resp . "','" . $ci_vobo . "','" . $usr_cre . "'," . $gestion . ")";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     //  * SO2. Guardar la informacion de un nuevo documento de deuda.
-    public static function AddDebtorToDocument($id_conceptos, $ci_per, $des_per, $des_per1)
+    public static function AddDebtorToDocument($id_documento, $gestion, $fecha, $ci_per, $des_per, $des_per1, $referencia, $cod_prg, $des_prg, $usr_cre, $tipo)
     {
-        $query = "INSERT INTO sol.con_deudor(id_con, ci_per, des_per, des_per1) " .
-            "VALUES('" . $id_conceptos . "','" . $ci_per . "','" . $des_per . "','" . $des_per1 . "')";
+        $query = "select * from sol.ff_deudor_documento(" . $id_documento . ",'" . $gestion . "','" . $fecha . "','" . $ci_per . "','" . $des_per . "','" . $des_per1 . "','" . $referencia .
+            "','" . $cod_prg . "','" . $des_prg . "','" . $usr_cre . "','" . $tipo . "')";
         $data = collect(DB::select(DB::raw($query)));
     }
 

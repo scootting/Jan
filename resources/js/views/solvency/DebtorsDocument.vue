@@ -40,13 +40,19 @@
                             </div>
                         </template>
                     </el-table-column>
+
+                    <el-table-column fixed="right" width="120">
+                        <template slot-scope="scope">
+                            <el-button @click="initVerifyDocument(scope.$index, scope.row)" type="Warning"
+                                :disabled="scope.row.estado2 === 'Regularizado'" size="small">Editar</el-button>
+                        </template>
+                    </el-table-column>
                     <el-table-column fixed="right" width="120">
                         <template slot-scope="scope">
                             <el-button @click="initRegularizeDocument(scope.$index, scope.row)" type="primary"
                                 :disabled="scope.row.estado2 === 'Regularizado'" size="small">Regularizar</el-button>
                         </template>
                     </el-table-column>
-
                 </el-table>
                 <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
                     :current-page="pagination.current_page" :total="pagination.total"
@@ -115,6 +121,9 @@ export default {
                     id: row.id_concepto,
                 },
             });
+        },
+        initinitVerifyDocument(idx, row){
+
         }
     },
 };
