@@ -82,9 +82,10 @@ class SolvencyController extends Controller
         return json_encode($id_documento);
     }
 
-    public function getDebtsById(Request $request){
+    public function getDebtorDocument(Request $request){
         $id_concepto = $request->get('id');
-        $data = Solvency::getDebtsById($id_concepto);
+        $dataDocument = Solvency::GetDebtorDocument($id_concepto);
+        $debtsDocument = Solvency::GetDebtorOfDocument($id_concepto);
         return json_encode($data);
     }
 }

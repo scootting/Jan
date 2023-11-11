@@ -105,7 +105,7 @@ export default {
             });
         },
 
-        initEditDebts(idx, row) {
+        initVerifyDocument(idx, row) {
             this.$router.push({
                 name: "editdebts",
                 params: {

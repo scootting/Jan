@@ -9,42 +9,15 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="grid-content bg-purple">
-              <p>datos del documento de deuda</p>
-              <el-form ref="form" :model="debts" label-width="120px" size="small">
-                <el-form-item label="numero" prop="numero">
-                  <el-input v-model="debts.idc" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="fecha" prop="fecha">
-                  <el-input v-model="debts.fecha" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="carnet" prop="ci_per">
-                  <el-input v-model="debts.ci_per" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="apellidos y nombres" prop="des_per">
-                  <el-input v-model="debts.des_per" disabled></el-input>
-                </el-form-item>
-                <el-form-item label="detalle" prop="detalle">
-                  <el-input type="textarea" autosize placeholder="Ingrese una referencia" v-model="debts.detalle">
-                  </el-input>
-                </el-form-item>
-              </el-form>
-            </div>
-          </el-col>
-          <el-col :span="12">
-            <div class="grid-content bg-purple">
-              <p>datos para actualizar la deuda</p>
-              <el-form ref="form" :model="prg" label-width="120px" size="small">
-                <el-form-item label="cite" prop="id">
-                  <el-input v-model="prg.id"></el-input>
+              <p>datos de la solicitud</p>
+              <el-form ref="form" :model="debtorDocument" label-width="120px" size="small">
+                <el-form-item label="numero" prop="idc">
+                  {{ debtorDocument.idc }}
                 </el-form-item>
                 <el-form-item label="referencia" prop="referencia">
                   <el-input type="textarea" autosize placeholder="Ingrese una referencia"
-                    v-model="prg.referencia">
+                    v-model="debtorDocument.referencia">
                   </el-input>
-                </el-form-item>
-                <el-form-item label="fecha" prop="fecha">
-                  <el-date-picker type="date" placeholder="seleccione una fecha" v-model="prg.fecha"
-                    style="width: 100%"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="unidad" prop="details">
                   <el-input placeholder="" v-model="prg.details" class="input-with-select">
@@ -52,15 +25,46 @@
                   </el-input>
                 </el-form-item>
                 <el-form-item label="responsable" prop="resp">
-                  <el-input placeholder="" v-model="person.details" class="input-with-select">
+                  <el-input placeholder="" v-model="manager.details" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search" @click="initSearchManager">BUSCAR</el-button>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="fecha" prop="fecha">
+                  <el-date-picker type="date" placeholder="seleccione una fecha" v-model="debtorDocument.fecha"
+                    style="width: 100%"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="referencia" prop="referencia">
+                  <el-input type="textarea" autosize placeholder="Ingrese una referencia"
+                    v-model="debtorDocument.referencia">
                   </el-input>
                 </el-form-item>
               </el-form>
             </div>
+            <p></p>
+          </el-col>
+          <el-col :span="12">
+            <div class="grid-content bg-purple">
+              <p>deudores</p>
+              <el-table :data="debtors" style="width: 100%" size="small">
+                <el-table-column prop="nro_dip" label="dni"></el-table-column>
+                <el-table-column prop="des_per" label="descripcion"></el-table-column>
+                <el-table-column align="right">
+                  <template slot-scope="scope">
+                    <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
+                      size="small">Quitar</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <p></p>
+              <el-button @click="initSearchDebtor" type="primary" size="small" plain>Buscar
+              </el-button>
+            </div>
           </el-col>
         </el-row>
       </div>
+      <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
+      </el-button>
+
       <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
     </el-card>
   </div>
@@ -76,52 +80,55 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
-      id: '',
-      debts: {}, //deuda
       isVisible: false,           //componente campo visible
       tag: '',                    //componente que informacion desea traer
       flag: '',                   //deudor, responsable, categoria programatica
-      person: {},                //responsable (director de carrera, jefe de division)
+      dialogFormVisible: false,   //hace visible el formulario de cosas adeudadas
+      debtors: [],                //deudores
+      manager: {},                //responsable (director de carrera, jefe de division)
       prg: {},                    //categoria programatica
-
+      debtorDocument: {},                          //documento de deuda
+      numero: 0,
     };
   },
   mounted() {
-    let app = this;
-    app.id = app.$route.params.id;
-    this.getDebtsById();
+    console.log(this.user);
   },
   methods: {
 
-    //  * SO3. Obtiene la informacion necesario del recurso solicitado por su id
-    async getDebtsById() {
-      let app = this;
-      try {
-        let response = await axios.post("/api/getDebtsById", {
-          id: app.id,
-        });
-        app.debts = response.data[0];
-        console.log(app.debts);
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
+    //
     //  * S2. Guardar la informacion de un nuevo documento de deuda.
     async storeDebtorDocument() {
       var app = this;
-      var newPerson = app.person;
       try {
         let response = await axios.post("/api/storeDebtorDocument", {
           usuario: app.user,
           documento: app.debtorDocument,
           deudores: app.debtors,
-          deudas: app.debts,
           responsable: app.manager,
           programa: app.prg,
           marker: "registrar",
         });
-        alert("se ha creado el registro de la persona");
+        app.numero = response.data;
+        console.log(response);
+        this.$confirm('Cuenta con la documentacion que corresponde a la deuda?', 'Proceso de Verificacion', {
+          confirmButtonText: 'Continuar',
+          cancelButtonText: 'Cancelar',
+          type: 'success'
+        }).then(() => {
+          /*pasa directamente al editar*/
+          this.$router.push({
+            name: "editdebts",
+            params: {
+              id: response.data,
+            },
+          });
+
+        }).catch(() => {
+          /*pasa directamente a la lista de deudas*/
+          this.$router.push({ name: "DebtorsDocument" });
+        });
+
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {
@@ -155,37 +162,26 @@ export default {
       this.isVisible = visible;
       this.data = data;
       console.log(this.isVisible + " " + this.data);
-      switch (this.flag) {
-        case 'categoria':
-          this.prg = data;
-          break;
-        case 'deudor':
-          this.debtors.push(data);
-          break;
-        case 'responsable':
-          this.manager = data;
-          break;
-        default:
-          break;
+      if (data != null) {
+        switch (this.flag) {
+          case 'categoria':
+            this.prg = data;
+            break;
+          case 'deudor':
+            this.debtors.push(data);
+            break;
+          case 'responsable':
+            this.manager = data;
+            break;
+          default:
+            break;
+        }
       }
     },
 
     /* remueve de la lista de deudores */
     initRemoveDebtors(index, row) {
       this.debtors.splice(index, 1);
-    },
-
-    /* agrega una cosa que se adeuda */
-    storeNewDebt() {
-      let variable = this.debt;
-      this.debt = { tipo: "fisica", cant: 1, desc: "" };
-      this.debts.push(variable);
-    },
-
-    /* quita la cosa que se adeuda */
-    initRemoveDebt(index, row) {
-      this.dialogFormVisible = false;
-      this.debts.splice(index, 1);
     },
 
   },

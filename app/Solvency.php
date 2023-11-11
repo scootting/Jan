@@ -48,7 +48,15 @@ class Solvency extends Model
 
     }
 
-    public static function getDebtsById($id_concepto)
+    // * SO3. Obtiene la informacion para editar el documento de deuda
+    public static function GetDebtorDocument($id_concepto)
+    {
+        $query = "select * from sol.do a where a.id_conceptos = '" . $id_concepto . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    // * SO3. Obtiene la informacion para editar el documento de deuda
+    public static function GetDebtorOfDocument($id_concepto)
     {
         $query = "select * from sol.conceptos a where a.id_conceptos = '" . $id_concepto . "'";
         $data = collect(DB::select(DB::raw($query)));
