@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>nuevo documento de deuda</span>
+        <span>VERIFICAR DOCUMENTO DE DEUDA</span>
         <el-button style="float: right; padding: 3px 0" type="text">ayuda</el-button>
       </div>
       <div>
@@ -13,11 +13,6 @@
               <el-form ref="form" :model="debtorDocument" label-width="120px" size="small">
                 <el-form-item label="numero" prop="idc">
                   {{ debtorDocument.idc }}
-                </el-form-item>
-                <el-form-item label="referencia" prop="referencia">
-                  <el-input type="textarea" autosize placeholder="Ingrese una referencia"
-                    v-model="debtorDocument.referencia">
-                  </el-input>
                 </el-form-item>
                 <el-form-item label="unidad" prop="details">
                   <el-input placeholder="" v-model="prg.details" class="input-with-select">
@@ -46,15 +41,15 @@
             <div class="grid-content bg-purple">
               <p>deudores</p>
               <el-table :data="debtors" style="width: 100%" size="small">
-                <el-table-column prop="nro_dip" label="dni"></el-table-column>
-                <el-table-column prop="des_per" label="descripcion"></el-table-column>
-                <el-table-column align="right">
-                  <template slot-scope="scope">
-                    <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
-                      size="small">Quitar</el-button>
-                  </template>
-                </el-table-column>
-              </el-table>
+                                <el-table-column prop="ci_per" label="ci" width="120"></el-table-column>
+                                <el-table-column prop="des_per" label="apellidos y nombres" width="220"></el-table-column>
+                                <el-table-column align="right">
+                                    <template slot-scope="scope">
+                                        <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
+                                            size="small">Quitar</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
               <p></p>
               <el-button @click="initSearchDebtor" type="primary" size="small" plain>Buscar
               </el-button>
@@ -80,6 +75,7 @@ export default {
   data() {
     return {
       user: this.$store.state.user,
+      id: this.$route.params.id,
       isVisible: false,           //componente campo visible
       tag: '',                    //componente que informacion desea traer
       flag: '',                   //deudor, responsable, categoria programatica
@@ -87,16 +83,36 @@ export default {
       debtors: [],                //deudores
       manager: {},                //responsable (director de carrera, jefe de division)
       prg: {},                    //categoria programatica
-      debtorDocument: {},                          //documento de deuda
+      debtorDocument: {},         //documento de deuda
       numero: 0,
     };
   },
   mounted() {
     console.log(this.user);
+    this.getDocumentDetails();
   },
   methods: {
+    async getDocumentDetails(){
+      var app = this;
+      try {
+        let response = await axios.post("/api/getDocumentDetails", {
+          id: app.id,
+          typed: 'D',
+        });
+        console.log(response);
+        app.debtors = response.data.documentDetails;
+        app.pr
+        app.debtorDocument = response.data.document[0];
+        console.log("recibido");
+        console.log(app.documentsArchive);
 
-    //
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
+    },
     //  * S2. Guardar la informacion de un nuevo documento de deuda.
     async storeDebtorDocument() {
       var app = this;
@@ -128,7 +144,6 @@ export default {
           /*pasa directamente a la lista de deudas*/
           this.$router.push({ name: "DebtorsDocument" });
         });
-
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {

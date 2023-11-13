@@ -23,17 +23,17 @@ class Solvency extends Model
     }
 
     //  * SO2. Guardar la informacion de un nuevo documento de deuda.
-    public static function AddDebtorDocument($tipo, $fecha, $ci_elab, $ci_resp, $ci_vobo, $usr_cre, $gestion)
+    public static function AddDocument($tipo, $fecha, $ci_elab, $ci_resp, $ci_vobo, $usr_cre, $gestion)
     {
         //sol.ff_nuevo_documento_deuda (...)
-        $query = "select * from sol.ff_nuevo_documento_deuda('" . $tipo . "','" . $fecha . "','" . $ci_elab . "','" . $ci_resp . "','" . $ci_vobo . "','" . $usr_cre . "'," . $gestion . ")";
+        $query = "select * from sol.ff_registrar_documento('" . $tipo . "','" . $fecha . "','" . $ci_elab . "','" . $ci_resp . "','" . $ci_vobo . "','" . $usr_cre . "'," . $gestion . ")";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     //  * SO2. Guardar la informacion de un nuevo documento de deuda.
-    public static function AddDebtorToDocument($id_documento, $gestion, $fecha, $ci_per, $des_per, $des_per1, $referencia, $cod_prg, $des_prg, $usr_cre, $tipo)
+    public static function AddDebtorDocument($id_documento, $gestion, $fecha, $ci_per, $des_per, $des_per1, $referencia, $cod_prg, $des_prg, $usr_cre, $tipo)
     {
-        $query = "select * from sol.ff_deudor_documento(" . $id_documento . ",'" . $gestion . "','" . $fecha . "','" . $ci_per . "','" . $des_per . "','" . $des_per1 . "','" . $referencia .
+        $query = "select * from sol.ff_registrar_deudor_documento(" . $id_documento . ",'" . $gestion . "','" . $fecha . "','" . $ci_per . "','" . $des_per . "','" . $des_per1 . "','" . $referencia .
             "','" . $cod_prg . "','" . $des_prg . "','" . $usr_cre . "','" . $tipo . "')";
         $data = collect(DB::select(DB::raw($query)));
     }
@@ -49,17 +49,33 @@ class Solvency extends Model
     }
 
     // * SO3. Obtiene la informacion para editar el documento de deuda
-    public static function GetDebtorDocument($id_concepto)
+    public static function GetDocument($id, $typed)
     {
-        $query = "select * from sol.do a where a.id_conceptos = '" . $id_concepto . "'";
+        $query = "select * from sol.documentos d where d.id = '" . $id . "' and d.tipo = '". $typed . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     // * SO3. Obtiene la informacion para editar el documento de deuda
-    public static function GetDebtorOfDocument($id_concepto)
+    public static function GetDocumentDetails($id, $typed)
     {
-        $query = "select * from sol.conceptos a where a.id_conceptos = '" . $id_concepto . "'";
+        $query = "select c.* from sol.conceptos c inner join sol.documentos d on c.id_documentos = d.id where d.id = '" . $id . "' and d.tipo = '". $typed . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    // * SO4 Guarda los documentos digitalizados de las deudas
+    public static function StoreDigitalDocument($id, $des_doc, $escaped)
+    {
+        $query = "INSERT INTO sol.digitales(id_documentos, descripcion, digital) VALUES (". $id .",'". $des_doc. "', '{$escaped}') ";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    // * SO5 Obtiene los documentos digitalizados de las deudas
+    public static function GetDigitalDocument($id){
+        $query = "SELECT digital as pdf_data FROM sol.digitales d WHERE d.id_documentos = ?";
+        $data = DB::select($query, [$id]);
+        return $data;
+    }
+
 }

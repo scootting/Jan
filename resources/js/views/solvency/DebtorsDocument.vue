@@ -4,7 +4,7 @@
             <div slot="header" class="clearfix">
                 <span>Lista de deudores</span>
                 <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-                    @click="initAddDebtorDocument">nueva documento de deuda</el-button>
+                    @click="initAddDebtorDocument">nuevo documento de deuda</el-button>
             </div>
             <br />
             <div style="margin-top: 15px">
@@ -14,8 +14,8 @@
             </div>
             <div>
                 <el-table v-loading="loading" :data="dataDebtors" style="width: 100%" size="medium">
-                    <el-table-column prop="fecha" label="fecha" width="100"></el-table-column>
-                    <el-table-column prop="idc" label="no." width="100" align="center">
+                    <el-table-column prop="fecha" label="fecha" width="90"></el-table-column>
+                    <el-table-column prop="idc" label="no." width="90" align="center">
                         <template slot-scope="scope">
                             <el-tag size="medium">{{ scope.row.idc }}</el-tag>
                         </template>
@@ -43,8 +43,8 @@
 
                     <el-table-column fixed="right" width="120">
                         <template slot-scope="scope">
-                            <el-button @click="initVerifyDocument(scope.$index, scope.row)" type="Warning"
-                                :disabled="scope.row.estado2 === 'Regularizado'" size="small">Editar</el-button>
+                            <el-button @click="initEditDocument(scope.$index, scope.row)" type="Warning"
+                                :disabled="scope.row.estado2 === 'Regularizado'" size="small">Editable</el-button>
                         </template>
                     </el-table-column>
                     <el-table-column fixed="right" width="120">
@@ -105,11 +105,11 @@ export default {
             });
         },
 
-        initVerifyDocument(idx, row) {
+        initEditDocument(idx, row) {
             this.$router.push({
                 name: "editdebts",
                 params: {
-                    id: row.id_concepto,
+                    id: row.id_documento,
                 },
             });
         },

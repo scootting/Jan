@@ -250,7 +250,11 @@ Route::group([
     //  * SO2. Agregar un nuevo documento de deudor
     Route::post('storeDebtorDocument', 'SolvencyController@storeDebtorDocument');
     //  * SO3. Obtiene la informacion necesario del recurso solicitado por su id
-    Route::post('getDebtorDocument', 'SolvencyController@getDebtorDocument');
+    Route::post('getDocumentDetails', 'SolvencyController@getDocumentDetails');
+    // *  SO4. Guarda los documentos digitalizados de las deudas
+    Route::post('storeDigitalDocumentSolvency', 'SolvencyController@storeDigitalDocument');
+    // * SO5. Obtiene los documentos digitalizados de las deudas
+    Route::get('getDigitalDocumentSolvency', 'SolvencyController@getDigitalDocument');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Granjas

@@ -40,8 +40,8 @@
                         <div class="grid-content bg-purple">
                             <p>deudores</p>
                             <el-table :data="debtors" style="width: 100%" size="small">
-                                <el-table-column prop="nro_dip" label="dni"></el-table-column>
-                                <el-table-column prop="des_per" label="descripcion"></el-table-column>
+                                <el-table-column prop="nro_dip" label="ci" width="120"></el-table-column>
+                                <el-table-column prop="des_per" label="apellidos y nombres" width="220"></el-table-column>
                                 <el-table-column align="right">
                                     <template slot-scope="scope">
                                         <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
@@ -55,10 +55,12 @@
                         </div>
                     </el-col>
                 </el-row>
-            </div>
-            <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
+                <el-row>
+                    <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
             </el-button>
 
+                </el-row>
+            </div>
             <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
         </el-card>
     </div>
