@@ -33,6 +33,10 @@
                     v-model="debtorDocument.referencia">
                   </el-input>
                 </el-form-item>
+                <el-form-item>
+                  <el-button @click="test" type="primary" size="small" plain>Agregar documento digitalizado
+                  </el-button>
+                </el-form-item>
               </el-form>
             </div>
             <p></p>
@@ -41,20 +45,23 @@
             <div class="grid-content bg-purple">
               <p>deudores</p>
               <el-table :data="debtors" style="width: 100%" size="small">
-                                <el-table-column prop="ci_per" label="ci" width="120"></el-table-column>
-                                <el-table-column prop="des_per" label="apellidos y nombres" width="220"></el-table-column>
-                                <el-table-column align="right">
-                                    <template slot-scope="scope">
-                                        <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
-                                            size="small">Quitar</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
+                <el-table-column prop="ci_per" label="ci" width="120"></el-table-column>
+                <el-table-column prop="des_per" label="apellidos y nombres" width="220"></el-table-column>
+                <el-table-column align="right">
+                  <template slot-scope="scope">
+                    <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
+                      size="small">Quitar</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
               <p></p>
               <el-button @click="initSearchDebtor" type="primary" size="small" plain>Buscar
               </el-button>
             </div>
           </el-col>
+        </el-row>
+        <el-row>
+
         </el-row>
       </div>
       <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
@@ -92,7 +99,7 @@ export default {
     this.getDocumentDetails();
   },
   methods: {
-    async getDocumentDetails(){
+    async getDocumentDetails() {
       var app = this;
       try {
         let response = await axios.post("/api/getDocumentDetails", {
