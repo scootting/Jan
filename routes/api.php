@@ -152,6 +152,15 @@ Route::group([
     Route::post('getSaleOfDayById', 'TreasureController@getSaleOfDayById');
     Route::post('getValueById', 'TreasureController@getValueById');
 
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Ventas en Linea de la Division de Tesoro
+    //  |--------------------------------------------------------------------------
+    //  * T30. Obtienes los dias de venta en linea para manhattan, nottingham, vancouber
+    Route::post('getOnlineSalesDays', 'TreasureController@getOnlineSalesDays');
+    //  * T31. Imprime el detalle de ventas en linea para manhattan, nottingham, vancouber
+    Route::get('reportOnlineSales', 'TreasureController@reportOnlineSales');
+
+
     // *** - Obtener las transacciones por gestion - ***
     Route::post('getAllTransactionsByYear', 'TreasureController@getAllTransactionsByYear');
     // *** - Anula la transaccion - ***

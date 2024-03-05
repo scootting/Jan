@@ -129,6 +129,7 @@ const router = new VueRouter({
     mode: 'history',
     linkActiveClass: 'is-active',
     routes: [
+        /*
         {
             path: '/',
             name: 'home',
@@ -137,8 +138,9 @@ const router = new VueRouter({
                 { path: '', name: 'layout', component: Layout },
             ],
         },
+        */
         {
-            path: '/login',
+            path: '/', //path: '/login',
             name: 'login',
             component: Login,
         },

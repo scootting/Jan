@@ -144,6 +144,20 @@ class Treasure extends Model
         return $data;
     }
 
+    //  * T30. Obtienes los dias de venta en linea para manhattan, nottingham, vancouber
+    public static function GetOnlineSalesDays($description, $year)
+    {
+        //select * from val.diario vd where vd.usr_cre = 'rcallizaya' and vd.gestion = '2020'
+        if ($description == '') {
+            $query = "select * from val.diario vd where vd.usr_cre in ('manhattan', 'nottingham', 'vancouver') and vd.gestion = '" . $year . "' order by vd.fec_tra, vd.id_dia desc";
+        } else {
+            //$query = "select * from val.diario vd where vd.usr_cre = '" . $user . "' and vd.gestion = '" . $year . "' order by vd.id_dia desc";
+        }
+
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
     //  * Encontrar los valores de un tramite a traves de su descripcion.
     //  * {description: descripcion de la busqueda}
     //  * {user: usuario}

@@ -296,6 +296,44 @@ class TreasureController extends Controller
         return json_encode($paginate);
     }
 
+    //  * T30. Obtienes los dias de venta en linea para manhattan, nottingham, vancouber
+    public function getOnlineSalesDays(Request $request)
+    {
+        $descripcion = $request->get('description'); // '' cadena vacia
+        $gestion = $request->get('year');
+        $data = Treasure::GetOnlineSalesDays($descripcion, $gestion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getDaysOfSale')]
+        );
+        return json_encode($paginate);
+    }
+
+    //  * T31. Imprime el detalle de ventas en linea para manhattan, nottingham, vancouber
+    //Route::get('reportOnlineSales', 'TreasureController@reportOnlineSales');
+    public function reportOnlineSales(Request $request)
+    {
+        $id_dia = $request->get('id');
+        $usuario = $request->get('user');
+        $gestion = $request->get('year');
+        $nreport = 'Treasure_OnlineSalesDetails_Letter';
+        //$nreport = 'test_details_1';
+        $controls = array(
+            'id' => $id_dia,
+            'usuario' => trim($usuario),
+            'gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+
+    }
+
+
     public function getSaleOfDayById(Request $request)
     {
         $id = $request->get('id'); // '' cadena vacia

@@ -9,44 +9,23 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>login</span>
-              <el-button
-                style="float: right; padding: 3px 0"
-                type="text"
-                @click.native="drawer = true"
-                >ayuda</el-button
-              >
+              <el-button style="float: right; padding: 3px 0" type="text" @click.native="drawer = true">ayuda</el-button>
             </div>
             <div>
-              <el-form
-                ref="form"
-                class="login-form"
-                :model="model"
-                :rules="rules"
-                @submit.native.prevent="login"
-              >
+              <el-form ref="form" class="login-form" :model="model" :rules="rules" @submit.native.prevent="login">
                 <el-form-item prop="username">
                   <el-input v-model="model.username" placeholder="Usuario">
                     <i slot="prefix" class="el-input__icon el-icon-user"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <el-input
-                    v-model="model.password"
-                    placeholder="Contaseña"
-                    type="password"
-                  >
+                  <el-input v-model="model.password" placeholder="Contaseña" type="password">
                     <i slot="prefix" class="el-input__icon el-icon-lock"></i>
                   </el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button
-                    :loading="loading"
-                    class="login-button"
-                    type="primary"
-                    native-type="submit"
-                    block
-                    >acceder</el-button
-                  >
+                  <el-button :loading="loading" class="login-button" type="primary" native-type="submit"
+                    block>acceder</el-button>
                 </el-form-item>
               </el-form>
             </div>
@@ -59,11 +38,9 @@
       <!-- *** Formulario de Ayuda al Usuario *** -->
       <el-drawer title="Ayuda" :visible.sync="drawer" :with-header="false">
         <span>Hola te puedo ayudar?</span> <br /><br />
-        <span
-          >Se encuentra en la pantalla de ingreso por favor ingrese su nombre de
+        <span>Se encuentra en la pantalla de ingreso por favor ingrese su nombre de
           usuario que puede ser la inicial de su primer nombre y primer apellido
-          y contraseña asignado por el encargado de sistemas </span
-        ><br />
+          y contraseña asignado por el encargado de sistemas </span><br />
         <h4>EJ: Jesus Pérez -> JPEREZ</h4>
         <br />
         <h4>contraseña -> 123456</h4>
@@ -138,19 +115,23 @@ export default {
   display: flex;
   justify-content: center;
 }
+
 .clearfix:before,
 .clearfix:after {
   display: table;
   content: "";
 }
+
 .clearfix:after {
   clear: both;
 }
+
 /*estilo aprobado para su uso*/
 .login-button {
   width: 100%;
   margin-top: 20px;
 }
+
 .header,
 .footer {
   padding: 20px 20px;
@@ -159,6 +140,7 @@ export default {
   flex-direction: column;
   align-items: center;
 }
+
 .footer .version {
   font-family: "Open Sans";
   padding: 0 10px;
