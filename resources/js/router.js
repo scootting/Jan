@@ -22,6 +22,9 @@ import AddCourse from './views/resources/AddCourse.vue'
 import InputCourseDetails from './views/resources/InputCourseDetails.vue'
 import OutputCourseDetails from './views/resources/OutputCourseDetails.vue'
 
+import CoursesPostgraduate from './views/resources/CoursesPostgraduate.vue'
+import AddCoursePostgraduate from './views/resources/AddCoursePostgraduate.vue'
+
 //documentacion: memoriales
 import RequestMemorial from './views/document/RequestMemorial.vue'
 import RequestMemorialDetail from './views/document/RequestMemorialDetail.vue'
@@ -225,6 +228,11 @@ const router = new VueRouter({
                 { path: 'courses/add', name: 'addcourse', component: AddCourse },
                 { path: 'courses/input/:id', name: 'inputcoursedetails', component: InputCourseDetails },
                 { path: 'courses/output/:id', name: 'outputcoursedetails', component: OutputCourseDetails },
+                { path: 'CoursesPostgraduate', name: 'coursesPostgraduate', component: CoursesPostgraduate },
+                { path: 'CoursesPostgraduate/add', name: 'addCoursePostgraduate', component: AddCoursePostgraduate },
+
+                
+
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Tesoro
