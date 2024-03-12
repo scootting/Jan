@@ -34,6 +34,8 @@ import FarmSaleDays from './views/farm/FarmSaleDays.vue'
 import AddFarmSaleDay from './views/farm/AddFarmSaleDay.vue'
 import StoreCustomerSaleDetail from './views/farm/StoreCustomerSaleDetail.vue'
 import SaleDetailReport from './views/farm/SaleDetailReport.vue'
+import FarmIncomeDays from './views/farm/FarmIncomeDays.vue'
+import AddFarmIncomeDay from './views/farm/AddFarmIncomeDay.vue'
 
 
 
@@ -290,6 +292,10 @@ const router = new VueRouter({
                 { path: 'farmsaledays/sale/:id', name: 'storecustomersaledetail', component: StoreCustomerSaleDetail },
                 //  * G4. Detalle del dia de venta de los productos de la granja
                 { path: 'farmsaledays/saledetail/:id', name: 'saledetailreport', component: SaleDetailReport },
+                //  * G5. Agregar dia de ingreso de producto de la granja
+                { path: 'farmincomedays', name: 'farmincomedays', component: FarmIncomeDays },
+                //  * G6. Detalle del dia de los ingresos de los productos de la granja
+                { path: 'farmincomedays/add', name: 'addfarmincomeday', component: AddFarmIncomeDay },
 
 
                 //  |--------------------------------------------------------------------------
