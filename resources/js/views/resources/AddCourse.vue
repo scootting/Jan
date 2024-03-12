@@ -45,9 +45,6 @@
 import information from "../components/Information.vue";
 
 export default {
-  components: {
-    information,
-  },
   data() {
     return {
       user: this.$store.state.user,
