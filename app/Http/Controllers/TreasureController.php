@@ -321,7 +321,11 @@ class TreasureController extends Controller
         $id_dia = $request->get('id');
         $usuario = $request->get('user');
         $gestion = $request->get('year');
-        $nreport = 'Treasure_OnlineSalesDetails_Letter';
+        if($usuario == 'vancouver')
+            $nreport = 'Treasure_OnlineValuesDetails_Letter';
+        else
+            $nreport = 'Treasure_OnlineSalesDetails_Letter';
+
         //$nreport = 'test_details_1';
         $controls = array(
             'id' => $id_dia,
