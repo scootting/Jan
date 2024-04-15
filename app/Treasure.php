@@ -158,6 +158,20 @@ class Treasure extends Model
         return $data;
     }
 
+    //  * T40. Obtienes los pagos
+    public static function GetGatewayPayments($description, $fecha_inicial, $fecha_final)
+    {
+        //select * from val.diario vd where vd.usr_cre = 'rcallizaya' and vd.gestion = '2020'
+        $year = 'PROCESADO';
+            $query = "SELECT * FROM ppe.ff_filtrar_pagos('" . $description . "', '". $fecha_inicial . "', '" . $fecha_final . "')";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
+
+
     //  * Encontrar los valores de un tramite a traves de su descripcion.
     //  * {description: descripcion de la busqueda}
     //  * {user: usuario}

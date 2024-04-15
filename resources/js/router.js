@@ -37,8 +37,6 @@ import SaleDetailReport from './views/farm/SaleDetailReport.vue'
 import FarmIncomeDays from './views/farm/FarmIncomeDays.vue'
 import AddFarmIncomeDay from './views/farm/AddFarmIncomeDay.vue'
 
-
-
 //Almancenes
 import Material from './views/store/Material'
 import AddMaterial from './views/store/AddMaterial'
@@ -118,6 +116,10 @@ import TransactionsPersonal from './views/treasure/TransactionsPersonal'
 import SaleInLine from './views/treasure/SaleInLine'
 import SaleInLineDetail from './views/treasure/SaleInLineDetail'
 import VerifySaleInLineDetail from './views/treasure/VerifySaleInLineDetail'
+
+import GatewayPayments from './views/treasure/GatewayPayments'
+
+
 
 //presupuestos individuales
 import SinglesBudget from './views/singlebudget/SinglesBudget'
@@ -244,6 +246,7 @@ const router = new VueRouter({
                 { path: 'saleinline', name: 'saleinline', component: SaleInLine },// lista de dias disponibles para crear las solicitudes
                 { path: 'saleinline/:id', name: 'saleinlinedetail', component: SaleInLineDetail }, //lista de solicitudes por dia 
                 { path: 'saleinline/:id/:request', name: 'verifysaleinlinedetail', component: VerifySaleInLineDetail }, //lista de solicitudes por dia 
+                { path: 'gatewaypayments', name: 'gatewaypayments', component: GatewayPayments }, //lista de solicitudes por dia 
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Archivos

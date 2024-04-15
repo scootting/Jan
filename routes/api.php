@@ -160,6 +160,12 @@ Route::group([
     //  * T31. Imprime el detalle de ventas en linea para manhattan, nottingham, vancouber
     Route::get('reportOnlineSales', 'TreasureController@reportOnlineSales');
 
+    //  * T40. Obtienes los pagos
+    Route::post('getGatewayPayments', 'TreasureController@getGatewayPayments');
+    //  * T41. Imprime el detalle de ventas en linea para manhattan, nottingham, vancouber
+    Route::get('getReportGatewayPayments', 'TreasureController@getReportGatewayPayments');
+
+    
 
     // *** - Obtener las transacciones por gestion - ***
     Route::post('getAllTransactionsByYear', 'TreasureController@getAllTransactionsByYear');

@@ -338,6 +338,46 @@ class TreasureController extends Controller
     }
 
 
+    //  * T40. Obtienes los pagos
+    public function getGatewayPayments(Request $request)
+    {
+        $descripcion = $request->get('description'); // '' cadena vacia
+        $fecha_inicial = $request->get('fecha_inicial');
+        $fecha_final = $request->get('fecha_final');
+        $data = Treasure::GetGatewayPayments($descripcion, $fecha_inicial, $fecha_final);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getGatewayPayments')]
+        );
+        return json_encode($paginate);
+    }
+
+    //  * T41. Imprime el detalle de ventas en linea para manhattan, nottingham, vancouber
+    //Route::get('reportOnlineSales', 'TreasureController@reportOnlineSales');
+    public function getReportGatewayPayments(Request $request)
+    {
+        $descripcion = $request->get('description');
+        $fecha_inicial = $request->get('fecha_inicial');
+        $fecha_final = $request->get('fecha_final');
+        $nreport = 'Treasure_OnlinePayments_Letter';
+        $controls = array(
+            'p_descripcion' => $descripcion,
+            'p_inicial' => $fecha_inicial,
+            'p_final' => $fecha_final,
+        );
+        $report = JSRClient::GetReportWithParametersXLS($nreport, $controls);
+        return $report;
+
+    }
+
+
+
+
     public function getSaleOfDayById(Request $request)
     {
         $id = $request->get('id'); // '' cadena vacia
