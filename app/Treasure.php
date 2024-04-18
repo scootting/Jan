@@ -138,6 +138,14 @@ class Treasure extends Model
     //  * {year: gestion}
     public static function getValuesProcedure($description, $year)
     {
+        \Log::info('holas en este estado:'.$year);
+        \Log::info('hazme caso');
+        \Log::info('hazme caso');
+        \Log::info('hazme caso');
+        \Log::info('hazme caso');
+        \Log::info('hazme caso');
+        \Log::info('hazme caso');
+        \Log::info('hazme caso');
         //select * from trap.ff_valores_tramite_nuevos('EXCELENCIA', '2020')
         $query = "select * from trap.ff_valores_tramite_nuevos('" . $description . "','" . $year . "')";
         $data = collect(DB::select(DB::raw($query)));

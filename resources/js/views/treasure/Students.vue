@@ -160,6 +160,7 @@ export default {
       axios
         .post("/api/getDataOfStudentById", {
           id: app.writtenTextParameter,
+          user: app.user.usuario,
           year: app.user.gestion,
         })
         .then((response) => {
