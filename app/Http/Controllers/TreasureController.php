@@ -87,7 +87,7 @@ class TreasureController extends Controller
         $usr_cre = 'linea';
         $gestion = '2023';
         \Log::info($request);
-        
+
         $id_request = $request->get('request');
         $dataRequest = $request->get('dataRequest');
         $dataDetailRequest = $request->get('dataDetailRequest');
@@ -120,12 +120,12 @@ class TreasureController extends Controller
         $data = Treasure::storeChangeStateRequest($id_request, 'Verificado');
         return json_encode($marker);
     }
-    public function getTransactionsByDay(Request $request){
+    public function getTransactionsByDay(Request $request)
+    {
         $id_dia = $request->get('id');
         $data = Treasure::GetTransactionsByDay($id_dia);
         return json_encode($data);
     }
-
 
     //  * Encontrar a un estudiante nuevo a traves de su carnet de identidad y el año de ingreso.
     //  * {id: numero de carnet de identidad}
@@ -166,6 +166,9 @@ class TreasureController extends Controller
             case 46: //DEFENSA CIVIL
                 $description = 'DEFENSA_CIVIL';
                 break;
+            case 47: //ADMISION DIRECTA  POR CONVENIO LLICA
+                $description = 'LLICA';
+                break;
             case 10: //simultanea
                 $description = 'SIMULTANEA';
                 break;
@@ -184,10 +187,14 @@ class TreasureController extends Controller
             default:
                 $description = 'SIN_TRAMITE';
         }
+        IF ($description = 'LLICA'){
+            $year = '2023';
+        }
         /*
         10461608
         $description = 'SIMULTANEA';
          */
+
         $data = Treasure::getValuesProcedure($description, $year);
         return json_encode($data);
     }
@@ -321,10 +328,11 @@ class TreasureController extends Controller
         $id_dia = $request->get('id');
         $usuario = $request->get('user');
         $gestion = $request->get('year');
-        if($usuario == 'vancouver')
+        if ($usuario == 'vancouver') {
             $nreport = 'Treasure_OnlineValuesDetails_Letter';
-        else
+        } else {
             $nreport = 'Treasure_OnlineSalesDetails_Letter';
+        }
 
         //$nreport = 'test_details_1';
         $controls = array(
@@ -336,7 +344,6 @@ class TreasureController extends Controller
         return $report;
 
     }
-
 
     //  * T40. Obtienes los pagos
     public function getGatewayPayments(Request $request)
@@ -374,9 +381,6 @@ class TreasureController extends Controller
         return $report;
 
     }
-
-
-
 
     public function getSaleOfDayById(Request $request)
     {
