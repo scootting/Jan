@@ -135,8 +135,6 @@ class TreasureController extends Controller
         $id = $request->get('id');
         $year = $request->get('year');
         $user = $request->get('user');
-        if($user = 'rmoreira')
-            $year = '2023';
         $data = Treasure::getDataOfStudentById($id, $year);
         return json_encode($data);
     }
