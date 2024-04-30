@@ -25,12 +25,17 @@
             <template slot-scope="scope">
               <div v-if="scope.row.usr_cre === 'manhattan      '">
                 <el-tag size="medium" type="success" effect="dark">{{
-                  'MATRICULAS REGULARES'
+                  'MATRICULAS PARA REGULARES'
                 }}</el-tag>
               </div>
               <div v-if="scope.row.usr_cre === 'vancouver      '">
                 <el-tag size="medium" type="" effect="dark">{{
                   'VALORES UNIVERSITARIOS'
+                }}</el-tag>
+              </div>
+              <div v-if="scope.row.usr_cre === 'nottingham     '">
+                <el-tag size="medium" type="warning" effect="dark">{{
+                  'MATRICULAS PARA NUEVOS'
                 }}</el-tag>
               </div>
             </template>

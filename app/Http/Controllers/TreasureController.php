@@ -328,9 +328,13 @@ class TreasureController extends Controller
         $gestion = $request->get('year');
         if ($usuario == 'vancouver') {
             $nreport = 'Treasure_OnlineValuesDetails_Letter';
-        } else {
+        } 
+        if ($usuario == 'manhattan') {
             $nreport = 'Treasure_OnlineSalesDetails_Letter';
-        }
+        } 
+        if ($usuario == 'nottingham') {
+            $nreport = 'Treasure_OnlineStudentsDetails_Letter';
+        } 
 
         //$nreport = 'test_details_1';
         $controls = array(
