@@ -75,7 +75,7 @@ export default {
             alert("en proceso de desarrollo");
         },
 
-        //  * M1. Obtener la lista de memoriales para su verificacion 
+        //  * ME1. Obtener la lista de memoriales para su verificacion 
         async getRequestsMemorial(page) {
             let app = this;
             try {

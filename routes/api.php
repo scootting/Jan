@@ -165,8 +165,6 @@ Route::group([
     //  * T41. Imprime el detalle de ventas en linea para manhattan, nottingham, vancouber
     Route::get('getReportGatewayPayments', 'TreasureController@getReportGatewayPayments');
 
-    
-
     // *** - Obtener las transacciones por gestion - ***
     Route::post('getAllTransactionsByYear', 'TreasureController@getAllTransactionsByYear');
     // *** - Anula la transaccion - ***
@@ -238,7 +236,7 @@ Route::group([
     Route::get('getReportBorrowed/', 'ArchiveController@getReportBorrowed');
     //  * A28. Muestra el reporte del contenedor y los documentos que contiene
     Route::get('getReportDocumentsAndContainers/', 'ArchiveController@getReportDocumentsAndContainers');
-  
+
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Almacenes
     //  |--------------------------------------------------------------------------
@@ -300,12 +298,28 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales
     //  |--------------------------------------------------------------------------
-    //  * M1. Obtener la lista de memoriales para su verificacion
+    //  * ME1. Obtener la lista de memoriales para su verificacion
     Route::post('getRequestsMemorial', 'DocumentController@getRequestsMemorial');
-    //  * M2. Obtiene el memorial por su id y gestion
+    //  * ME2. Obtiene el memorial por su id y gestion
     Route::post('getRequestMemorialById', 'DocumentController@getRequestMemorialById');
-    //  * M3. Imprimir el memorial seleccionado
+    //  * ME3. Imprimir el memorial seleccionado
     Route::get('reportRequestMemorial', 'DocumentController@reportRequestMemorial');
+    //  * EF4. Obtener documentos digitalizados
+    Route::get('getDigitalDocumentById/', 'DocumentController@getDigitalDocumentById');
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Estados Financieros
+    //  |--------------------------------------------------------------------------
+    //  * EF1. Obtener la lista de estados financieros
+    Route::post('getFinancialStatements', 'DocumentController@getFinancialStatements');
+    //  * EF2. Obtener la lista de documentos subidos para cada estado financiero
+    Route::post('getDocumentsbyFinalcialStatemet', 'DocumentController@getDocumentsbyFinalcialStatemet');
+    //  * EF3. Guarda los documentos digitalizados
+    Route::post('storeDigitalDocument', 'DocumentController@storeDigitalDocument');
+    //  * EF4. Obtener documentos digitalizados
+    Route::get('getDigitalFinancialDocument/', 'DocumentController@getDigitalFinancialDocument');
+    //  * EF5. Elimina un documento mal subido
+    Route::post('setDeleteDigitalDocument', 'DocumentController@setDeleteDigitalDocument');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Recursos Propios

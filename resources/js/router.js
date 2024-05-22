@@ -7,6 +7,11 @@ import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
 import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
 
 
+//Estados Financieros
+
+import FinancialStatements from './views/document/FinancialStatements.vue'
+import FinancialStatementDetails from './views/document/FinancialStatementDetails.vue'
+
 //Sistema de Votaciones
 import Tablets from './views/election/Tablets.vue'
 import TabletDetails from './views/election/TabletDetails.vue'
@@ -235,9 +240,14 @@ const router = new VueRouter({
                 { path: 'CoursesPostgraduate', name: 'coursesPostgraduate', component: CoursesPostgraduate },
                 { path: 'CoursesPostgraduate/add', name: 'addCoursePostgraduate', component: AddCoursePostgraduate },
 
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Estados Financieros
+                //  |--------------------------------------------------------------------------    
+                //  * EF1. Obtener la lista de estados financieros 
+                { path: 'financialStatements', name: 'financialstatements', component: FinancialStatements },
+                //  * M2. Obtener la lista de memoriales para su verificacion 
+                { path: 'financialStatements/:id', name: 'financialstatementdetails', component: FinancialStatementDetails },
                 
-
-
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Tesoro
                 //  |--------------------------------------------------------------------------    
