@@ -118,4 +118,29 @@ class ResourceController extends Controller
         return json_encode($data);
     }
 
+
+    //  * RP10. Obtener la lista de programas academicos 
+    public function getPrograms(Request $request)
+    {
+        //$descripcion = strtoupper($request->get('description'));
+        $gestion = $request->get('year');
+        $data = Resource::GetPrograms($gestion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 5;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getPrograms')]
+        );
+        return json_encode($paginate);
+    }
+
+    //  * RP11. Obtener la lista de programas academicos 
+    public static function getTypesOfProgram(Request $request)
+    {
+        $data = Resource::GetTypesOfProgram();
+        return json_encode($data);
+    }
 }

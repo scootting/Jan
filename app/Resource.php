@@ -49,4 +49,21 @@ class Resource extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //  * RP10. Obtener la lista de programas academicos 
+    public static function GetPrograms($gestion)
+    {
+        $query = "select * from rec.programas c WHERE c.gestion = '" . $gestion . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  * RP11. Obtener la lista de programas academicos 
+    public static function GetTypesOfProgram()
+    {
+        $query = "select * from rec.tipos c";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    
 }

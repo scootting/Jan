@@ -39,7 +39,6 @@
   
 <script>
 export default {
-    name: "lista_de_solicitudes_para_la_venta_en_linea",
     data() {
         return {
             loading: true,
@@ -79,7 +78,7 @@ export default {
                 app.loading = false;
             }
         },
-        //  * M2. Obtener la lista de memoriales para su verificacion 
+        //  * 
         initFinancialStatementDetails(index, row) {
             console.log(index, row);
             let id = row.id;

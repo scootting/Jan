@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>AGREGAR CURSO</span>
+        <span>agregar programa academico</span>
         <el-button style="float: right; padding: 3px 0" type="text">ayuda</el-button>
       </div>
       <div>
@@ -11,35 +11,30 @@
             <div class="grid-content bg-purple">
 
               <el-form ref="form" :model="form" label-width="220px" size="small">
-                <el-form-item label="Nombre del curso" >
-                 
-                  <el-input v-model="form.nomb"></el-input>
+                <el-form-item label="Nombre del curso">
+                  <el-input v-model="form.descripcion"></el-input>
                 </el-form-item>
-                <el-form-item label="monto" >
-                 
-                 <el-input v-model="form.mont"></el-input>
-               </el-form-item>
-               <el-form-item label="Tipo">
-                <el-select v-model="form.tip" placeholder="selecciona el tipo de curso">
-                  <el-option label="curso 1" value="shanghai"></el-option>
-                  <el-option label="curso 2" value="beijing"></el-option>
-                </el-select>
-              </el-form-item>
-              
-              <el-form-item size="small" label="fecha" prop="nacimiento">
-                <el-date-picker size="small" type="date" placeholder="seleccione una fecha"
-                  v-model="form.fec" style="width: 100%"></el-date-picker>
-              </el-form-item>
-              <el-form-item>
-                <el-button size="small" type="primary" @click.prevent="saveForm" plain>Guardar</el-button>
-               
-                <el-button size="small" type="danger" @click="noForm" plain>Cancelar</el-button>
-              </el-form-item>
+                <el-form-item label="monto">
 
+                  <el-input v-model="form.monto"></el-input>
+                </el-form-item>
+                <el-form-item label="tipo de programa">
+                  <el-select v-model="form.detalle" value-key="detalle" size="small"
+                    placeholder="seleccione el tipo de programa" @change="OnchangeTypeProgram">
+                    <el-option v-for="item in typesPrograms" :key="item.id" :label="item.detalle" :value="item.id">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
+
+                <el-form-item size="small" label="fecha">
+                  <el-date-picker size="small" type="date" placeholder="seleccione una fecha" v-model="form.fecha_inscripcion"
+                    style="width: 100%"></el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                  <el-button size="small" type="primary" @click.prevent="initStoreProgram" plain>Guardar</el-button>
+                  <el-button size="small" type="danger" @click="test" plain>Cancelar</el-button>
+                </el-form-item>
               </el-form>
-              
-
-
             </div>
           </el-col>
         </el-row>
@@ -51,28 +46,55 @@
 <script>
 
 export default {
-    data() {
-      return {
-        mensaje: {},
-        form: {
-          nomb: "",
-          mont: "",
-          tip: "",
-          fec:"",
-        },
-      };
-    },
-    mounted() { },
-    methods: {
-      test() {
-        alert("bienvenido al modulo");
+  data() {
+    return {
+      mensaje: {},
+      form: {
+        descripcion: "",
+        costo: 0.00,
+        fecha_inscripcion: "",
+        metodo_pago: "",
+        tipo_pago: "",
+        detalle: "",
+        id_tipo: "",
       },
+      typesPrograms: [],          //diferentes tipos de archivos que pertenecen a un documento
+
+    };
+  },
+  mounted() {
+
+    this.getTypesOfProgram();
+  },
+  methods: {
+    test() {
+      alert("bienvenido al modulo");
     },
-  };
-  </script>
+    //  * RP11. Obtener la lista de programas academicos 
+    async getTypesOfProgram() {
+      let app = this;
+      try {
+        let response = await axios.post("/api/getTypesOfProgram", {
+        });
+        app.typesPrograms = response.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    //  * RP12. Guarda un programas academicos 
+    initStoreProgram(){
+
+    },
+    //* actualizar un componente al hacer la seleccion nueva *//
+    OnchangeTypeProgram(idx) {
+      let resultado = this.typesPrograms.find(tipo => tipo.id == idx);
+      this.form.id_tipo = resultado.id;
+    }
+  },
+};
+</script>
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
+<style scoped></style>

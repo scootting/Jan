@@ -334,7 +334,10 @@ Route::group([
     Route::post('storeInputCourse', 'ResourceController@storeInputCourse');
     //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
     Route::post('getInputTransactionsOfCourse', 'ResourceController@getInputTransactionsOfCourse');
-
+    //  * RP10. Obtener la lista de programas academicos 
+    Route::post('getPrograms', 'ResourceController@getPrograms');
+    //  * RP11. Obtener la lista de programas academicos 
+    Route::post('getTypesOfProgram', 'ResourceController@getTypesOfProgram');
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Elecciones
     //  |--------------------------------------------------------------------------
