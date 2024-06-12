@@ -294,6 +294,10 @@ Route::group([
     Route::get('customerSaleDetailDayReport/', 'FarmController@customerSaleDetailDayReport');
     //  * G11. Cerrar el reporte de ventas del dia.
     Route::post('setCloseSaleDetailDay', 'FarmController@setCloseSaleDetailDay');
+    //  * G12. Anular la transaccion de una venta erronea.
+    Route::post('updateCancelTransaction', 'FarmController@updateCancelTransaction');
+    //  * G13. Imprimir el reporte del ingreso actual.
+    Route::get('customerIncomeDetailReport/', 'FarmController@customerIncomeDetailReport');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales

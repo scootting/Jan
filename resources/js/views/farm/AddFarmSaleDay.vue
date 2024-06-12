@@ -7,12 +7,13 @@
             </div>
             <div>
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <el-col :span="18">
                         <div class="grid-content bg-purple">
                             <p>datos del dia</p>
                             <el-form ref="form" :model="farmSaleDays" label-width="120px" size="small">
                                 <el-form-item label="tipo">
                                     <el-radio-group v-model="farmSaleDays.tip_tra" size="small">
+                                        <el-radio-button label="2">ingreso de productos</el-radio-button>
                                         <el-radio-button label="1">ventas en efectivo</el-radio-button>
                                         <el-radio-button label="14">ventas al credito</el-radio-button>
                                         <el-radio-button label="0">regularizacion de ventas al creditos</el-radio-button>
@@ -66,13 +67,6 @@ export default {
                     dangerouslyUseHTMLString: true,
                 });
             }
-        },
-
-        /* agrega una cosa que se adeuda */
-        storeNewDebt() {
-            let variable = this.debt;
-            this.debt = { tipo: "fisica", cant: 1, desc: "" };
-            this.debts.push(variable);
         },
 
     },

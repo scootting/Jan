@@ -1,13 +1,13 @@
 <template>
-    <div>
-      <el-card class="box-card">  
-        <div slot="header" class="clearfix">
-        <span>Diario de ingreso de productos de la granja universitaria</span>
+  <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>Ingreso de productos de la granja universitaria</span>
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-          @click="initAddFarmSaleDay">Nuevo Ingreso</el-button>
-        </div>
+          @click="initAddFarmIncomeDay">Nuevo Ingreso de productos</el-button>
+      </div>
 
-        <div>
+      <div>
         <el-table v-loading="loading" :data="dataSaleDays" style="width: 100%" size="medium">
           <el-table-column prop="fec_tra" label="fecha" :min-width="100">
             <template slot-scope="scope">
@@ -24,38 +24,93 @@
           <el-table-column align="right" :min-width="320">
             <template slot-scope="scope">
               <el-button :disabled="dataSaleDays[scope.$index].estado == 'V'"
-                @click="initCustomerSaleDetail(scope.$index, scope.row)" type="warning" size="small" plain>realizar
-                venta</el-button>
-              <el-button @click="initSaleDetailReport(scope.$index, scope.row)" type="primary" size="small" plain>detalle
-                de la venta</el-button>
+                @click="initCustomerIncomeDetail(scope.$index, scope.row)" type="warning" size="small" plain>realizar
+                ingresos</el-button>
+              <el-button @click="initIncomeDetailReport(scope.$index, scope.row)" type="primary" size="small"
+                plain>detalle
+                del ingreso de productos</el-button>
             </template>
           </el-table-column>
-        </el-table>      
-        </div>
-      </el-card>
-    </div>
-  </template>
-  
-  <script>
-  
-  export default {
-    data() {
-      return {
-        mensaje: '',
-        data: {},
-      };
-    },
-    mounted() { },
-    methods: {
-      test() {
-        alert("bienvenido al modulo");
+        </el-table>
+      </div>
+    </el-card>
+  </div>
+</template>
+<script>
+export default {
+  data() {
+    return {
+      user: this.$store.state.user,
+      dataSaleDays: [],
+      tip_tra: 2,
+      pagination: {
+        page: 1,
       },
+      loading: true,
+      writtenTextParameter: '',
+    };
+  },
+  mounted() {
+    this.getFarmSaleDays();
+  },
+  methods: {
+    test() {
+      alert("bienvenido al modulo");
+      this.getFarmSaleDays(this.pagination.page);
     },
-  };
-  </script>
-  
-  <!-- Add "scoped" attribute to limit CSS to this component only -->
-  <style scoped>
-  
-  </style>
-  
+    //  * G1. Obtiene la lista de los dias de venta de los productos de la granja
+    async getFarmSaleDays(page) {
+      this.loading = true;
+      alert("hola mundo!!!");
+      let app = this;
+      try {
+        let response = await axios.post("/api/getFarmSaleDays", {
+          gestion: app.user.gestion,
+          transaccion: app.tip_tra,
+          page: page,
+        });
+        app.dataSaleDays = Object.values(response.data.data);
+        app.pagination = response.data;
+        console.log(app.dataSaleDays);
+        app.loading = false;
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
+    },
+    initCustomerIncomeDetail(idx, row) {
+      this.$router.push({
+        name: "addfarmincomeday",
+      });
+    },
+
+    //  * G13. Imprimir el reporte del ingreso actual.
+    initIncomeDetailReport(index, row) {
+      let transaccion = row;
+      axios({
+        url: "/api/customerIncomeDetailReport/",
+        params: {
+          id: transaccion.id,
+          tipo: transaccion.tip_tra,
+          gestion: transaccion.gestion,
+        },
+        method: "GET",
+        responseType: "arraybuffer",
+      }).then((response) => {
+        let blob = new Blob([response.data], {
+          type: "application/pdf",
+        });
+        let link = document.createElement("a");
+        link.href = window.URL.createObjectURL(blob);
+        let url = window.URL.createObjectURL(blob);
+        window.open(url);
+      });
+    },
+  },
+};
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped></style>

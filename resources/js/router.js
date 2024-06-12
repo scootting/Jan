@@ -302,13 +302,13 @@ const router = new VueRouter({
                 //  * G2. Agregar un nuevo dia de venta de los productos de la granja
                 { path: 'farmsaledays/add', name: 'addfarmsaleday', component: AddFarmSaleDay },
                 //  * G3. Agregar ventas al dia de venta de los productos de la granja
-                { path: 'farmsaledays/sale/:id', name: 'storecustomersaledetail', component: StoreCustomerSaleDetail },
+                { path: 'farmdays/sale/:id', name: 'storecustomersaledetail', component: StoreCustomerSaleDetail },
                 //  * G4. Detalle del dia de venta de los productos de la granja
-                { path: 'farmsaledays/saledetail/:id', name: 'saledetailreport', component: SaleDetailReport },
+                { path: 'farmdays/saledetail/:id', name: 'saledetailreport', component: SaleDetailReport },
                 //  * G5. Agregar dia de ingreso de producto de la granja
                 { path: 'farmincomedays', name: 'farmincomedays', component: FarmIncomeDays },
                 //  * G6. Detalle del dia de los ingresos de los productos de la granja
-                { path: 'farmincomedays/add', name: 'addfarmincomeday', component: AddFarmIncomeDay },
+                { path: 'farmdays/income/:id', name: 'addfarmincomeday', component: AddFarmIncomeDay },
 
 
                 //  |--------------------------------------------------------------------------

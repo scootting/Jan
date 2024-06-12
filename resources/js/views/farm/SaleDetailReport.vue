@@ -19,7 +19,7 @@
                     <el-table-column prop="imp_pro" label="importe" width="100" align="right"></el-table-column>
                     <el-table-column align="right-center" fixed="right" width="200">
                         <template slot-scope="scope">
-                            <el-button :disabled="scope.row.tip_tra== 9" 
+                            <el-button :disabled="scope.row.tip_tra == 9"
                                 @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
                                 plain>anular
                             </el-button>
@@ -31,8 +31,8 @@
                     </el-table-column>
                 </el-table>
                 <div style="margin-top: 15px">
-                    <el-button size="small" type="primary" icon="el-icon-switch-button" @click="initCloseSaleDetailDay" :disabled="dataSaleDay.estado == 'V'" 
-                        plain>
+                    <el-button size="small" type="primary" icon="el-icon-switch-button" @click="initCloseSaleDetailDay"
+                        :disabled="dataSaleDay.estado == 'V'" plain>
                         cerrar el dia de ventas</el-button>
                     <el-button size="small" type="primary" icon="el-icon-printer"
                         @click="initCustomerSaleDetailDayReport" plain>
@@ -69,7 +69,7 @@ export default {
                 id: app.id,
             });
             app.dataSaleDay = response.data[0];
-            console.log(app.dataSaleDay);
+            console.log(app.data);
         },
 
         //  * G9. obtener todas las ventas correspondientes a un dia en especifico
@@ -89,10 +89,27 @@ export default {
             }
         },
 
-        //G11 Anular una transaccion o un comprobante
+        //  * G12. Anular la transaccion de una venta erronea.
         async initCancelTransaction(index, row) {
-
-
+            let app = this;
+            let transaccion = row;
+            console.log(row);
+            try {
+                let response = await axios.post("/api/updateCancelTransaction", {
+                    id: transaccion.id_tran,
+                    voucher: transaccion.nro_com,
+                    tipo: transaccion.tip_tra,
+                    gestion: transaccion.gestion,
+                });
+                console.log(response);
+                alert("se anulo correctamente la transaccion");
+                app.getFarmSaleDetailById();
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
         },
         //  * G8. Imprimir el reporte de la venta actual.
         initCustomerSaleDetailReport(index, row) {
@@ -158,7 +175,7 @@ export default {
         },
         tableRowStyle({ row, rowIndex }) {
             if (row.tip_tra == 9)
-                return {'background': '#FFB9B9'}
+                return { 'background': '#FFB9B9' }
         },
     }
 };

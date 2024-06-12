@@ -46,6 +46,7 @@ export default {
     return {
       user: this.$store.state.user,
       dataSaleDays: [],
+      tip_tra: 1,
       pagination: {
         page: 1,
       },
@@ -60,12 +61,15 @@ export default {
     test() {
       alert("bienvenido al modulo");
     },
+
+    //  * G1. Obtiene la lista de los dias de venta de los productos de la granja
     async getFarmSaleDays(page) {
       this.loading = true;
       let app = this;
       try {
         let response = await axios.post("/api/getFarmSaleDays", {
           gestion: app.user.gestion,
+          transaccion: app.tip_tra,
           page: page,
         });
         app.dataSaleDays = Object.values(response.data.data);
@@ -79,11 +83,13 @@ export default {
         });
       }
     },
+    
     initAddFarmSaleDay() {
       this.$router.push({
         name: "addfarmsaleday",
       });
     },
+
     initCustomerSaleDetail(index, row) {
       console.log(index, row);
       let id_dia = row.id;
@@ -94,6 +100,7 @@ export default {
         },
       });
     },
+
     initSaleDetailReport(index, row) {
       console.log(index, row);
       let id_dia = row.id;

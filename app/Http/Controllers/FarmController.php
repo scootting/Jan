@@ -14,8 +14,9 @@ class FarmController extends Controller
     //  * Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
     public function getFarmSaleDays(Request $request)
     {
-        $year = strtoupper($request->get('gestion')); // '' cadena vacia
-        $data = Farm::GetFarmSaleDays($year);
+        $type_transaction = $request->get('transaccion'); 
+        $year = strtoupper($request->get('gestion'));
+        $data = Farm::GetFarmSaleDays($type_transaction, $year);
         $page = ($request->get('page') ? $request->get('page') : 1);
         $perPage = 10;
         $paginate = new LengthAwarePaginator(
@@ -167,5 +168,32 @@ class FarmController extends Controller
         $data = Farm::SetCloseSaleDetailDay($id_dia, $gestion);
         return json_encode($data);
     }
+    //  * G12. Anular la transaccion de una venta erronea.
+    public function updateCancelTransaction(Request $request){
+        $id = $request->get('id');
+        $nro_com = $request->get('voucher');
+        $tip_tra = $request->get('tipo');
+        $gestion = $request->get('gestion');//$dataDays['gestion'];
+        $data = Farm::UpdateCancelTransaction($id, $nro_com, $tip_tra, $gestion);
+        return json_encode($data);
+    }
+
+    //  * G13. Imprimir el reporte del ingreso actual.
+    public function customerIncomeDetailReport(Request $request)
+    {
+        $nro_com = $request->get('voucher');
+        $tip_tra = $request->get('tipo');
+        $gestion = $request->get('gestion');//$dataDays['gestion'];
+        \Log::info("DATOS PARA LA IMPRESION DE BOUCHER");
+        $nreport = 'DetailIncomeLetter';
+        $controls = array(
+            'p_id' => $id,
+            'p_tip_tra' => $tip_tra,
+            'p_gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+
 
 }

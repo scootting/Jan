@@ -9,9 +9,24 @@ class Farm extends Model
 {
     //  * G1. Obtiene la lista de los dias de venta de los productos de la granja
     //  * Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
-    public static function GetFarmSaleDays($gestion)
+    public static function GetFarmSaleDays($tipo_transaccion, $gestion)
     {
-        $query = "select * from vgra.diario where gestion = '" . $gestion . "' order by fec_tra, idx";
+        
+        switch ($tipo_transaccion) {
+            case 1: //venta al contado
+            case 14: //venta al credito
+                $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (1, 14) order by fec_tra, idx";
+                break;
+            case 2: //ingreso
+                $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (2) order by fec_tra, idx";
+                break;
+            case 10: //baja
+                $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (10) order by fec_tra, idx";
+                break;
+            default:
+                $query = "select * from vgra.diario where gestion = '" . $gestion . "' order by fec_tra, idx";
+        }
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -79,7 +94,7 @@ class Farm extends Model
     //  * G9. obtener todas las ventas correspondientes a un dia en especifico
     public static function GetFarmSaleDetailById($id)
     {
-        $query = "select * from vgra.dia_des a inner join vgra.producto b on a.cod_pro = b.cod_prd where id_dia = '" . $id . "' order by nro_com";
+        $query = "select *, a.id as id_tran from vgra.dia_des a inner join vgra.producto b on a.cod_pro = b.cod_prd where id_dia = '" . $id . "' order by nro_com";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -95,5 +110,15 @@ class Farm extends Model
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
+    }
+    //  * G12. Anular la transaccion de una venta erronea.
+    public static function UpdateCancelTransaction($id, $nro_com, $tip_tra, $gestion)
+    {
+        $query = "update vgra.dia_des set tip_tra = '9' " .
+            "where id = " . $id . " and nro_com = '" . $nro_com . "' and tip_tra = " . $tip_tra . " and gestion = '" . $gestion . "'";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+
     }
 }
