@@ -11,7 +11,7 @@ class Farm extends Model
     //  * Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
     public static function GetFarmSaleDays($tipo_transaccion, $gestion)
     {
-        
+
         switch ($tipo_transaccion) {
             case 1: //venta al contado
             case 14: //venta al credito
@@ -119,6 +119,22 @@ class Farm extends Model
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
-
     }
+
+    //  * G14. Obtiene la cantidad de productos registrados
+    public static function GetCurrentProductsById($id)
+    {
+        $query = "select a.can_pro as can, a.cod_pro, b.des_prd as des_prd, b.id as id, a.uni_pro as pre_uni, b.tip_prd as tip_prd, b.uni_prd as uni_prd from vgra.dia_des a inner join vgra.producto b on a.cod_pro = b.cod_prd where id_dia = '" . $id . "' and a.tip_tra <> 9";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
+    public static function RemoveCurrentProductById($id){
+        $query = "delete from vgra.dia_des where id_dia = '" . $id . "'";
+        \Log::info($query);
+        //$data = collect(DB::select(DB::raw($query)));
+        //return $data;
+    }
+
 }

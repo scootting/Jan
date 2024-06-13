@@ -72,7 +72,7 @@
                             <el-button slot="append" icon="el-icon-search" @click="getProductForSale">BUSCAR</el-button>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="unidad" prop="id">
+                    <el-form-item label="descripcion" prop="id">
                         <el-input v-model="dataProduct.des_prd"></el-input>
                     </el-form-item>
                     <el-form-item label="unidad" prop="id">
@@ -125,9 +125,11 @@ export default {
         //  * S2. Guardar la informacion de un nuevo documento de deuda.
         async StoreCustomerSaleDetail() {
             var app = this;
+            console.log(" -----------------");
             console.log(app.dataSaleDay);
             console.log(app.client);
             console.log(app.products);
+            console.log(" -----------------");
             try {
                 let response = await axios.post("/api/storeCustomerSaleDetail", {
                     general: app.dataSaleDay,

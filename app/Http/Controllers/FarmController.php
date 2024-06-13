@@ -57,12 +57,10 @@ class FarmController extends Controller
     //  * Route::post('storeCustomerSaleDetail', 'FarmController@storeCustomerSaleDetail');
     public function storeCustomerSaleDetail(Request $request)
     {
-
         $id_tran = 0;
         $dataDays = $request->get('general');
         $dataClient = $request->get('cliente');
         $dataProducts = $request->get('productos');
-        $nro_com = $request->get('voucher');
 
         $id_dia = $dataDays['id']; //manda la key y no el el id_dia
         $fec_tra = $dataDays['fec_tra'];
@@ -70,8 +68,12 @@ class FarmController extends Controller
         $gestion = $dataDays['gestion'];
         $tip_tra = $dataDays['tip_tra'];
 
-        $ci_per = strtoupper($dataClient['nro_dip']);
-        $des_per = strtoupper($dataClient['des_per']);
+        if($tip_tra = 2)
+            $nro_com = '000000';
+        else
+            $nro_com = $request->get('voucher');
+        $ci_per = strtoupper($dataClient['id']);
+        $des_per = strtoupper($dataClient['details']);
 
         foreach ($dataProducts as $item) {
             # code...
@@ -195,5 +197,12 @@ class FarmController extends Controller
         return $report;
     }
 
-
+    //  * G14. Obtiene la cantidad de productos registrados
+    public function GetCurrentProductsById(Request $request)
+    {
+        $id_dia = $request->get('id_dia');
+        $data = Farm::GetCurrentProductsById($id_dia);
+        \Log::info($data);
+        return json_encode($data);
+    }
 }

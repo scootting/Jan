@@ -51,17 +51,14 @@ export default {
     };
   },
   mounted() {
-    this.getFarmSaleDays();
+    this.getFarmSaleDays(this.pagination.page);
   },
   methods: {
     test() {
-      alert("bienvenido al modulo");
-      this.getFarmSaleDays(this.pagination.page);
     },
     //  * G1. Obtiene la lista de los dias de venta de los productos de la granja
     async getFarmSaleDays(page) {
       this.loading = true;
-      alert("hola mundo!!!");
       let app = this;
       try {
         let response = await axios.post("/api/getFarmSaleDays", {
@@ -80,12 +77,23 @@ export default {
         });
       }
     },
-    initCustomerIncomeDetail(idx, row) {
+
+    initCustomerIncomeDetail(index, row) {
+      console.log(index, row);
+      let id_dia = row.id;
       this.$router.push({
         name: "addfarmincomeday",
+        params: {
+          id: id_dia,
+        },
       });
     },
 
+    initAddFarmIncomeDay() {
+      this.$router.push({
+        name: "addfarmsaleday",
+      });
+    },
     //  * G13. Imprimir el reporte del ingreso actual.
     initIncomeDetailReport(index, row) {
       let transaccion = row;

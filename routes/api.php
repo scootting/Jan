@@ -298,6 +298,8 @@ Route::group([
     Route::post('updateCancelTransaction', 'FarmController@updateCancelTransaction');
     //  * G13. Imprimir el reporte del ingreso actual.
     Route::get('customerIncomeDetailReport/', 'FarmController@customerIncomeDetailReport');
+    //  * G14. Obtiene la cantidad de productos registrados
+    Route::post('getCurrentProductsById', 'FarmController@getCurrentProductsById');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales
