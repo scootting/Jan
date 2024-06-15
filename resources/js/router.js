@@ -41,6 +41,8 @@ import StoreCustomerSaleDetail from './views/farm/StoreCustomerSaleDetail.vue'
 import SaleDetailReport from './views/farm/SaleDetailReport.vue'
 import FarmIncomeDays from './views/farm/FarmIncomeDays.vue'
 import AddFarmIncomeDay from './views/farm/AddFarmIncomeDay.vue'
+import AddFarmRegularizeDay from './views/farm/AddFarmRegularizeDay.vue'
+import FarmRegularizeDays from './views/farm/FarmRegularizeDays.vue'
 
 //Almancenes
 import Material from './views/store/Material'
@@ -309,6 +311,10 @@ const router = new VueRouter({
                 { path: 'farmincomedays', name: 'farmincomedays', component: FarmIncomeDays },
                 //  * G6. Detalle del dia de los ingresos de los productos de la granja
                 { path: 'farmdays/income/:id', name: 'addfarmincomeday', component: AddFarmIncomeDay },
+                //  * G7. Agregar transacciones de las regularizaciones 
+                { path: 'farmregularizedays', name: 'farmregularizedays', component: FarmRegularizeDays },
+                //  * G8. Detalle de los dias de las regularizaciones de los productos a credito
+                { path: 'farmdays/regularize/:id', name: 'addfarmregularizeday', component: AddFarmRegularizeDay },
 
 
                 //  |--------------------------------------------------------------------------

@@ -23,6 +23,9 @@ class Farm extends Model
             case 10: //baja
                 $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (10) order by fec_tra, idx";
                 break;
+            case 0: //baja
+                $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (0) order by fec_tra, idx";
+                break;
             default:
                 $query = "select * from vgra.diario where gestion = '" . $gestion . "' order by fec_tra, idx";
         }
@@ -129,12 +132,18 @@ class Farm extends Model
         return $data;
     }
 
-
-    public static function RemoveCurrentProductById($id){
+    public static function RemoveCurrentProductById($id)
+    {
         $query = "delete from vgra.dia_des where id_dia = '" . $id . "'";
         \Log::info($query);
         //$data = collect(DB::select(DB::raw($query)));
         //return $data;
     }
 
+    //  * G14. Obtiene la cantidad de productos registrados
+    public static function GetClientsForRegularize($descripcion){
+        $query = "select * from vgra.ff_datos_deudor('" . $descripcion . "') limit 1";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }

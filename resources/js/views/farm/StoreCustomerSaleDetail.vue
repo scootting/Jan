@@ -125,11 +125,6 @@ export default {
         //  * S2. Guardar la informacion de un nuevo documento de deuda.
         async StoreCustomerSaleDetail() {
             var app = this;
-            console.log(" -----------------");
-            console.log(app.dataSaleDay);
-            console.log(app.client);
-            console.log(app.products);
-            console.log(" -----------------");
             try {
                 let response = await axios.post("/api/storeCustomerSaleDetail", {
                     general: app.dataSaleDay,

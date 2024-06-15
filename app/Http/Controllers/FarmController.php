@@ -205,4 +205,52 @@ class FarmController extends Controller
         \Log::info($data);
         return json_encode($data);
     }
+
+    //  * G14. Obtiene la cantidad de productos registrados
+    public function getClientsForRegularize(Request $request)
+    {
+        $descripcion = $request->get('description');
+        $data = Farm::GetClientsForRegularize($descripcion);
+        \Log::info($data);
+        return json_encode($data);
+    }
+    
+
+    //  * G15. Agregar detalle de las regularizaciones del cliente de los productos de la granja
+    public function storeCustomerRegularizeDetail(Request $request)
+    {
+        $id_tran = 0;
+        $dataDays = $request->get('general');
+        //$dataClient = $request->get('cliente');
+        //$dataProducts = $request->get('productos');
+        $dataClients = $request->get('clientes');
+
+
+        $id_dia = $dataDays['id']; //manda la key y no el el id_dia
+        $fec_tra = $dataDays['fec_tra'];
+        $usr_cre = $dataDays['usr_cre'];
+        $gestion = $dataDays['gestion'];
+        $tip_tra = $dataDays['tip_tra'];
+
+        if($tip_tra = 2 and $tip_tra = 0)
+            $nro_com = '000000';
+        else
+            $nro_com = $request->get('voucher');
+
+
+        foreach ($dataClients as $item) {
+            # code...
+            $ci_per = strtoupper($item['ci_per']);
+            $des_per = strtoupper($item['des_per']);
+            $cod_prd = '0000';
+            $can_prd = 1;
+            $pre_uni = $item['total_pago'];
+            $imp_total = $can_prd * $pre_uni;
+            $data = Farm::StoreCustomerSaleDetail($id_dia, $fec_tra, $gestion, $usr_cre, $ci_per, $des_per, $nro_com, $cod_prd, $can_prd, $pre_uni, $tip_tra, $imp_total);
+        }
+        return json_encode($id_tran);
+    }
+
+
+
 }

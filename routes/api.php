@@ -300,7 +300,13 @@ Route::group([
     Route::get('customerIncomeDetailReport/', 'FarmController@customerIncomeDetailReport');
     //  * G14. Obtiene la cantidad de productos registrados
     Route::post('getCurrentProductsById', 'FarmController@getCurrentProductsById');
+    //  * G15. buscar a los deudores registrados
+    Route::post('getClientsForRegularize', 'FarmController@getClientsForRegularize');
+    //  * G16. Agregar detalle de las regularizaciones del cliente de los productos de la granja
+    Route::post('storeCustomerRegularizeDetail', 'FarmController@storeCustomerRegularizeDetail');
 
+    
+    
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales
     //  |--------------------------------------------------------------------------
