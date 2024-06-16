@@ -304,8 +304,10 @@ Route::group([
     Route::post('getClientsForRegularize', 'FarmController@getClientsForRegularize');
     //  * G16. Agregar detalle de las regularizaciones del cliente de los productos de la granja
     Route::post('storeCustomerRegularizeDetail', 'FarmController@storeCustomerRegularizeDetail');
-
-    
+    //  * G17. Imprimir el reporte de ingresos del dia.
+    Route::get('customerIncomeDetailDayReport/', 'FarmController@customerIncomeDetailDayReport');
+    //  * G18. Imprimir la baja de ingresos del dia.
+    Route::get('customerDropDetailReport/', 'FarmController@customerDropDetailReport');
     
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales

@@ -68,10 +68,13 @@ class FarmController extends Controller
         $gestion = $dataDays['gestion'];
         $tip_tra = $dataDays['tip_tra'];
 
-        if($tip_tra = 2)
+        if($tip_tra = 2){
             $nro_com = '000000';
-        else
+            Farm::RemoveCurrentProductById($id_dia);
+        }
+        else{
             $nro_com = $request->get('voucher');
+        }
         $ci_per = strtoupper($dataClient['id']);
         $des_per = strtoupper($dataClient['details']);
 
@@ -251,6 +254,34 @@ class FarmController extends Controller
         return json_encode($id_tran);
     }
 
+    //  * G17. Imprimir el reporte de ingresos del dia.
+    public function customerIncomeDetailDayReport(Request $request){
+        $id = $request->get('id');
+        $gestion = $request->get('gestion');
+        \Log::info($id);
+        \Log::info($gestion);
+        $nreport = 'FarmIncomeDetailsDay_Letter';
+        $controls = array(
+            'p_id' => $id,
+            'p_gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 
+    //  * G18. Imprimir la baja de ingresos del dia.
+    public function customerDropDetailReport(Request $request){
+        $id = $request->get('id');
+        $gestion = $request->get('gestion');
+        \Log::info($id);
+        \Log::info($gestion);
+        $nreport = 'FarmDropDetailsDay_Letter';
+        $controls = array(
+            'p_id' => $id,
+            'p_gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 
 }

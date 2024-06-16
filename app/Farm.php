@@ -20,10 +20,10 @@ class Farm extends Model
             case 2: //ingreso
                 $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (2) order by fec_tra, idx";
                 break;
-            case 10: //baja
-                $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (10) order by fec_tra, idx";
+            case 8: //baja
+                $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (8) order by fec_tra, idx";
                 break;
-            case 0: //baja
+            case 0: //regularizacion
                 $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (0) order by fec_tra, idx";
                 break;
             default:
@@ -127,17 +127,17 @@ class Farm extends Model
     //  * G14. Obtiene la cantidad de productos registrados
     public static function GetCurrentProductsById($id)
     {
-        $query = "select a.can_pro as can, a.cod_pro, b.des_prd as des_prd, b.id as id, a.uni_pro as pre_uni, b.tip_prd as tip_prd, b.uni_prd as uni_prd from vgra.dia_des a inner join vgra.producto b on a.cod_pro = b.cod_prd where id_dia = '" . $id . "' and a.tip_tra <> 9";
+        $query = "select a.can_pro as can, b.cod_prd, b.des_prd as des_prd, b.id as id, a.uni_pro as pre_uni, b.tip_prd as tip_prd, b.uni_prd as uni_prd from vgra.dia_des a inner join vgra.producto b on a.cod_pro = b.cod_prd where id_dia = '" . $id . "' and a.tip_tra <> 9";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
     public static function RemoveCurrentProductById($id)
     {
-        $query = "delete from vgra.dia_des where id_dia = '" . $id . "'";
+        $query = "update vgra.dia_des set tip_tra = '9' where id_dia = '" . $id . "'";
         \Log::info($query);
-        //$data = collect(DB::select(DB::raw($query)));
-        //return $data;
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
     }
 
     //  * G14. Obtiene la cantidad de productos registrados

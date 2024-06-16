@@ -20,15 +20,17 @@
             </template>
           </el-table-column>
           <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>
-          <el-table-column align="right" prop="com_fin" label="operaciones" :min-width="200"></el-table-column>
-          <el-table-column align="right" :min-width="320">
+          <!--
+          <el-table-column align="right" prop="com_fin" label="operaciones" :min-width="200"></el-table-column>          
+          -->
+          <el-table-column align="right" :min-width="350" fixed="right">
             <template slot-scope="scope">
               <el-button :disabled="dataSaleDays[scope.$index].estado == 'V'"
                 @click="initCustomerIncomeDetail(scope.$index, scope.row)" type="warning" size="small" plain>realizar
-                ingresos</el-button>
-              <el-button @click="initIncomeDetailReport(scope.$index, scope.row)" type="primary" size="small"
-                plain>detalle
-                del ingreso de productos</el-button>
+                ingresos</el-button>                
+                <el-button @click="initCustomerIncomeDetail(scope.$index, scope.row)" type="primary" size="small"
+                :disabled="dataSaleDays[scope.$index].estado != 'V'"
+                plain>resumen ingreso de productos</el-button>
             </template>
           </el-table-column>
         </el-table>
