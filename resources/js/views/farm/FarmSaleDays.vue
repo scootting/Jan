@@ -7,7 +7,7 @@
           @click="initAddFarmSaleDay">nuevo dia de venta de productos</el-button>
       </div>
       <div>
-        <el-table v-loading="loading" :data="dataSaleDays" style="width: 100%" size="medium">
+        <el-table v-loading="loading" :data="dataSaleDays" style="width: 100%" size="medium" fixed>
           <el-table-column prop="fec_tra" label="fecha" :min-width="100">
             <template slot-scope="scope">
               <el-tag type="info">{{ scope.row.fec_tra }}</el-tag>
@@ -19,9 +19,9 @@
             </template>
           </el-table-column>
           <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>
-          <el-table-column prop="com_ini" label="com. inicial" :min-width="100"></el-table-column>
-          <el-table-column prop="com_fin" label="com. final" :min-width="100"></el-table-column>
-          <el-table-column align="right" :min-width="320">
+          <el-table-column prop="com_ini" label="com. inicial" :min-width="85"></el-table-column>
+          <el-table-column prop="com_fin" label="com. final" :min-width="85"></el-table-column>
+          <el-table-column align="right" :min-width="320" fixed="right">
             <template slot-scope="scope">
               <el-button :disabled="dataSaleDays[scope.$index].estado == 'V'"
                 @click="initCustomerSaleDetail(scope.$index, scope.row)" type="warning" size="small" plain>realizar

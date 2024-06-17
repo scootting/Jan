@@ -6,24 +6,24 @@
             </div>
             <div class="grid-content bg-purple" style="margin-top: 15px">
                 <el-table v-loading="loading" :data="data" height="450" style="width: 100%" :row-style="tableRowStyle">
-                    <el-table-column prop="nro_com" label="no." width="120">
+                    <el-table-column prop="nro_com" label="no." width="100">
                         <template slot-scope="scope">
                             <el-tag>{{ scope.row.nro_com }}</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column prop="ci_per" label="c.i." width="100"></el-table-column>
                     <el-table-column prop="des_per" label="descripcion" width="250"></el-table-column>
-                    <el-table-column prop="des_prd" label="producto"></el-table-column>
-                    <el-table-column prop="can_pro" label="cantidad" width="100" align="right"></el-table-column>
+                    <el-table-column prop="des_prd" label="producto" width="150"></el-table-column>
+                    <el-table-column prop="can_pro" label="cantidad" width="85" align="right"></el-table-column>
                     <el-table-column prop="uni_pro" label="p.u." width="100" align="right"></el-table-column>
                     <el-table-column prop="imp_pro" label="importe" width="100" align="right"></el-table-column>
                     <el-table-column align="right-center" fixed="right" width="200">
                         <template slot-scope="scope">
-                            <el-button :disabled="scope.row.tip_tra == 9"
+                            <el-button :disabled="scope.row.tip_tra == 9 || dataSaleDay.estado == 'V'"
                                 @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
                                 plain>anular
                             </el-button>
-                            <el-button :disabled="scope.row.tip_tra == 9"
+                            <el-button :disabled="scope.row.tip_tra == 9 || dataSaleDay.estado == 'V'"
                                 @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
                                 type="success" plain>reinprimir
                             </el-button>
