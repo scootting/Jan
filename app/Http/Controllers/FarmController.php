@@ -292,4 +292,47 @@ class FarmController extends Controller
         \Log::info($data);
         return json_encode($data);
     }
+
+    //  * G20. Lista de dias en el rango
+    public function getTransactionsSaleByDays(Request $request)
+    {
+        $dataDays = $request->get('range');
+        $fecha_inicial = $dataDays['initial'];
+        $fecha_final = $dataDays['final'];
+        $data = Farm::GetTransactionsSaleByDays($fecha_inicial, $fecha_final);
+        \Log::info($data);
+        return json_encode($data);
+    }
+
+    //  * G21. Imprimir el reporte de movimientos de las ventas de los dias.
+    public function customerResumeSaleDetailDaysReport(Request $request)
+    {
+        $id = $request->get('id');
+        $gestion = $request->get('gestion');
+        \Log::info($id);
+        \Log::info($gestion);
+        $nreport = 'FarmResumeSaleDetailsDay_Letter';
+        $controls = array(
+            'p_id' => $id,
+            'p_gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+
+    //  * G22. Imprimir el kardex de un producto.
+    public function customerKardexDetailReport(Request $request)
+    {
+        $id = $request->get('id');
+        $gestion = $request->get('gestion');
+        \Log::info($id);
+        \Log::info($gestion);
+        $nreport = 'FarmKardexDetailsDay_Letter';
+        $controls = array(
+            'p_id' => $id,
+            'p_gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 }

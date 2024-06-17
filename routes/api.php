@@ -310,6 +310,12 @@ Route::group([
     Route::get('customerDropDetailReport/', 'FarmController@customerDropDetailReport');
     //  * G19. Obtiene los clientes registrados
     Route::post('getCurrentRegularizeClientById', 'FarmController@getCurrentRegularizeClientById');
+    //  * G20. Lista de dias en el rango
+    Route::post('getTransactionsSaleByDays', 'FarmController@getTransactionsSaleByDays');
+    //  * G21. Imprimir el reporte de movimientos de las ventas de los dias.
+    Route::get('customerResumeSaleDetailDaysReport/', 'FarmController@customerResumeSaleDetailDaysReport');
+    //  * G22. Imprimir el kardex de un producto.
+    Route::get('customerKardexDetailReport/', 'FarmController@customerKardexDetailReport');
 
     
     //  |--------------------------------------------------------------------------

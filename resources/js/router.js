@@ -45,6 +45,9 @@ import FarmDropDays from './views/farm/FarmDropDays.vue'
 import AddFarmDropDay from './views/farm/AddFarmDropDay.vue'
 import AddFarmRegularizeDay from './views/farm/AddFarmRegularizeDay.vue'
 import FarmRegularizeDays from './views/farm/FarmRegularizeDays.vue'
+import FarmResumeDays from './views/farm/FarmResumeDays.vue'
+import FarmKardexProduct from './views/farm/FarmKardexProduct.vue'
+
 
 //Almancenes
 import Material from './views/store/Material'
@@ -283,9 +286,7 @@ const router = new VueRouter({
                 { path: 'requestdocument/:id', name: 'requestdocumentdetails', component: RequestDocumentDetails },
                 //  * A. Modulo para realizar la transferencia de archivos o de contenedores
                 { path: 'transfercontainerdetails', name: 'transfercontainerdetails', component: TransferContainerDetails },
-
                 { path: 'addtypearchive', name: 'addtypearchive', component: AddTypeArchive },
-                
                 { path: 'edittypearchive/:id', name: 'edittypearchive', component: EditTypeArchive, },
                 { path: 'archive3/:id', name: 'archivedigitaldetails', component: ArchiveDigitalDetails, },
                 //  |--------------------------------------------------------------------------
@@ -321,6 +322,10 @@ const router = new VueRouter({
                 { path: 'farmdropdays', name: 'farmdropdays', component: FarmDropDays },
                 //  * G10. Detalle del dia de bajas de los productos de la granja
                 { path: 'farmdays/drop/:id', name: 'addfarmdropday', component: AddFarmDropDay },
+                //  * G11. Movimiento de ventas entre fechas
+                { path: 'farmkardexproduct', name: 'farmkardexproduct', component: FarmKardexProduct },
+                //  * G12. Movimiento de ingreso,ventas,bajas de productos
+                { path: 'farmresumedays', name: 'farmresumedays', component: FarmResumeDays },
 
 
                 //  |--------------------------------------------------------------------------

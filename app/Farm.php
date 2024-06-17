@@ -163,4 +163,12 @@ class Farm extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+    
+    //  * G19. Obtiene los clientes registrados
+    public static function GetTransactionsSaleByDays($inicial, $final)
+    {
+        $query = "select * from vgra.diario where fec_tra >= '" . $inicial . "' and fec_tra <='". $final ."' and tip_tra in (1, 14)";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }
