@@ -140,9 +140,26 @@ class Farm extends Model
         return $data;
     }
 
+    public static function RemoveCurrentClientById($id)
+    {
+        $query = "update vgra.dia_des set tip_tra = '9' where id_dia = '" . $id . "'";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
     //  * G14. Obtiene la cantidad de productos registrados
     public static function GetClientsForRegularize($descripcion){
         $query = "select * from vgra.ff_datos_deudor('" . $descripcion . "') limit 1";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  * G19. Obtiene los clientes registrados
+    public static function GetCurrentRegularizeClientById($id)
+    {
+        $query = "select * from vgra.ff_amortizaciones_dia('" . $id . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

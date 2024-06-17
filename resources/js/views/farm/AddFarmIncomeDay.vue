@@ -111,7 +111,7 @@ export default {
             dataProduct: { can: 1 }, //datos del producto en venta
             products: [], //lista de productos adquiridos
             dataSaleDay: {}, //dia de venta
-            voucher: "000001",
+            voucher: "000000",
             client: { id: "", details: "" }, //cliente
         };
     },
@@ -218,7 +218,6 @@ export default {
                 app.$router.push({
                     name: "farmincomedays"
                 });
-
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {

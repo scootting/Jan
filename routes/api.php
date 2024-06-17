@@ -308,6 +308,9 @@ Route::group([
     Route::get('customerIncomeDetailDayReport/', 'FarmController@customerIncomeDetailDayReport');
     //  * G18. Imprimir la baja de ingresos del dia.
     Route::get('customerDropDetailReport/', 'FarmController@customerDropDetailReport');
+    //  * G19. Obtiene los clientes registrados
+    Route::post('getCurrentRegularizeClientById', 'FarmController@getCurrentRegularizeClientById');
+
     
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales

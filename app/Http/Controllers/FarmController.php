@@ -14,7 +14,7 @@ class FarmController extends Controller
     //  * Route::post('getFarmSaleDays', 'FarmController@getFarmSaleDays');
     public function getFarmSaleDays(Request $request)
     {
-        $type_transaction = $request->get('transaccion'); 
+        $type_transaction = $request->get('transaccion');
         $year = strtoupper($request->get('gestion'));
         $data = Farm::GetFarmSaleDays($type_transaction, $year);
         $page = ($request->get('page') ? $request->get('page') : 1);
@@ -68,11 +68,10 @@ class FarmController extends Controller
         $gestion = $dataDays['gestion'];
         $tip_tra = $dataDays['tip_tra'];
 
-        if($tip_tra = 2){
+        if ($tip_tra = 2) {
             $nro_com = '000000';
             Farm::RemoveCurrentProductById($id_dia);
-        }
-        else{
+        } else {
             $nro_com = $request->get('voucher');
         }
         $ci_per = strtoupper($dataClient['id']);
@@ -152,7 +151,8 @@ class FarmController extends Controller
     }
 
     //  * G10. Imprimir el reporte de ventas del dia.
-    public function customerSaleDetailDayReport(Request $request){
+    public function customerSaleDetailDayReport(Request $request)
+    {
         $id = $request->get('id');
         $gestion = $request->get('gestion');
         \Log::info($id);
@@ -173,8 +173,10 @@ class FarmController extends Controller
         $data = Farm::SetCloseSaleDetailDay($id_dia, $gestion);
         return json_encode($data);
     }
+
     //  * G12. Anular la transaccion de una venta erronea.
-    public function updateCancelTransaction(Request $request){
+    public function updateCancelTransaction(Request $request)
+    {
         $id = $request->get('id');
         $nro_com = $request->get('voucher');
         $tip_tra = $request->get('tipo');
@@ -217,7 +219,6 @@ class FarmController extends Controller
         \Log::info($data);
         return json_encode($data);
     }
-    
 
     //  * G15. Agregar detalle de las regularizaciones del cliente de los productos de la granja
     public function storeCustomerRegularizeDetail(Request $request)
@@ -235,11 +236,8 @@ class FarmController extends Controller
         $gestion = $dataDays['gestion'];
         $tip_tra = $dataDays['tip_tra'];
 
-        if($tip_tra = 2 and $tip_tra = 0)
-            $nro_com = '000000';
-        else
-            $nro_com = $request->get('voucher');
-
+        $nro_com = '000000';
+        Farm::RemoveCurrentClientById($id_dia);
 
         foreach ($dataClients as $item) {
             # code...
@@ -255,7 +253,8 @@ class FarmController extends Controller
     }
 
     //  * G17. Imprimir el reporte de ingresos del dia.
-    public function customerIncomeDetailDayReport(Request $request){
+    public function customerIncomeDetailDayReport(Request $request)
+    {
         $id = $request->get('id');
         $gestion = $request->get('gestion');
         \Log::info($id);
@@ -270,7 +269,8 @@ class FarmController extends Controller
     }
 
     //  * G18. Imprimir la baja de ingresos del dia.
-    public function customerDropDetailReport(Request $request){
+    public function customerDropDetailReport(Request $request)
+    {
         $id = $request->get('id');
         $gestion = $request->get('gestion');
         \Log::info($id);
@@ -284,4 +284,12 @@ class FarmController extends Controller
         return $report;
     }
 
+    //  * G19. Obtiene los clientes registrados
+    public function getCurrentRegularizeClientById(Request $request)
+    {
+        $id_dia = $request->get('id_dia');
+        $data = Farm::GetCurrentRegularizeClientById($id_dia);
+        \Log::info($data);
+        return json_encode($data);
+    }
 }

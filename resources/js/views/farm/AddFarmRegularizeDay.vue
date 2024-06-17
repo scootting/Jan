@@ -6,21 +6,22 @@
                 <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
                     @click="initAddRegularize">agregar regularizacion</el-button>
             </div>
-            <div class="grid-content bg-purple" style="margin-top: 15px">
+            <div class="grid-content bg-purple" style="margin-top: 15px; margin-left: 45px; margin-right: 45px;">
                 <el-table v-loading="loading" :data="dataClients" height="450" style="width: 100%"
                     :row-style="tableRowStyle">
                     <!--
                     this.client = { ci_per: "", des_per: "", imp_deuda: 0, imp_amortizacion: 0, total_deuda: 0, total_pago: 0 };
                     -->
-                    <el-table-column prop="ci_per" label="c.i." width="100"></el-table-column>
+                    <el-table-column prop="ci_per" label="c.i." width="120"></el-table-column>
                     <el-table-column prop="des_per" label="apellidos y nombres" width="250"></el-table-column>
-                    <el-table-column prop="total_deuda" label="deuda" width="100" align="right"></el-table-column>
-                    <el-table-column prop="total_pago" label="amortizacion" width="100" align="right"></el-table-column>
-                    <el-table-column align="right-center" label="operaciones" width="180">
+                    <el-table-column prop="total_deuda" label="deuda" width="150" align="right"></el-table-column>
+                    <el-table-column prop="total_pago" label="amortizacion" width="150" align="right"></el-table-column>
+                    <el-table-column align="right-center" label="" width="280">
                         <template slot-scope="scope">
-                            <el-button :disabled="scope.row.tip_tra == 9" type="primary" plain size="mini"
-                                @click="initEditDocumentOfArchive(scope.$index, scope.row)">editar</el-button>
-                            <el-button :disabled="scope.row.tip_tra == 9" type="danger" plain size="mini"
+                            <el-button :disabled="dataSaleDay.estado == 'V'" type="primary" plain size="mini"
+                                @click="initEditDocumentOfArchive(scope.$index, scope.row)"
+                                >editar regularizacion</el-button>
+                            <el-button :disabled="dataSaleDay.estado == 'V'" type="danger" plain size="mini"
                                 @click="DeleteDocumentOfArchive(scope.$index, scope.row)">quitar</el-button>
                         </template>
                     </el-table-column>
@@ -50,20 +51,20 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item label="Numero del documento">
-                    <el-input v-model="client.ci_per" autocomplete="off"></el-input>
+                    <el-input v-model="client.ci_per" autocomplete="off" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="apellidos y nombres">
-                    <el-input v-model="client.des_per" autocomplete="off"></el-input>
+                    <el-input v-model="client.des_per" autocomplete="off" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="deuda">
-                    <el-input v-model="client.total_deuda" autocomplete="off"></el-input>
+                    <el-input v-model="client.total_deuda" autocomplete="off" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="amortizacion">
                     <el-input v-model="client.total_pago" autocomplete="off"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" size="small" plain @click="AddClientToList">Agregar</el-button>
+                <el-button type="primary" size="small" plain @click="AddClientToList">Agregar regularizacion</el-button>
                 <el-button type="danger" size="small" plain @click="dialogFormVisible = false">Cancelar</el-button>
             </span>
         </el-dialog>
@@ -90,7 +91,7 @@ export default {
     mounted() {
         this.loading = true;
         this.getFarmSaleDayById();
-        //this.getFarmSaleDetailById();
+        this.getCurrentRegularizeClientById();
         this.loading = false;
     },
     methods: {
@@ -104,7 +105,7 @@ export default {
             console.log(app.data);
         },
 
-        //  * G14. Buscar a los deudores
+        //  * G15. Buscar a los deudores
         async getClientsForRegularize() {
             var app = this;
             try {
@@ -120,6 +121,20 @@ export default {
                 });
             }
         },
+
+        //  * G19. Obtiene los clientes registrados
+        async getCurrentRegularizeClientById() {
+            var app = this;
+            console.log(app.dataSaleDay.tip_tra);
+            let response = await axios.post("/api/getCurrentRegularizeClientById", {
+                id_dia: app.id,
+                usr_cre: app.user.usuario,
+                tip_tra: app.dataSaleDay.tip_tra
+            });
+            this.dataClients = response.data;
+        },
+
+
 
         //  * Iniciar el cuadro de dialogo para insertar un nuevo deudor
         initAddRegularize() {
@@ -139,7 +154,6 @@ export default {
             console.log(this.dataClients);
             //this.OnUpdateIndex();
         },
-
 
         //  * Guarda los cambios de un nuevo documento sea nuevo o uno ya existente
         AddClientToList() {
@@ -209,6 +223,10 @@ export default {
                 });
                 console.log(response);
                 alert("acaba de cerrar el dia de ventas, puede imprimir el resumen");
+                app.$router.push({
+                    name: "farmregularizedays"
+                });
+
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {
