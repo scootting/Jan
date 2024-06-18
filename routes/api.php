@@ -175,6 +175,8 @@ Route::group([
     Route::post('getValueById', 'TreasureController@getValueById');
     //  * TE2. Obtiene las transacciones de un valor que se vende de acuerdo a un rango de fechas
     Route::post('getValueTransactionsById', 'TreasureController@getValueTransactionsById');
+    //  * TE3. Resumen
+    Route::get('getValueTransactionsReport/', 'TreasureController@getValueTransactionsReport');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Activos Fijos

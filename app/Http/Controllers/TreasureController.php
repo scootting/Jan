@@ -480,4 +480,21 @@ class TreasureController extends Controller
         return json_encode($dataValueTransactions);
     }
 
+    //  * TE3. Imprime el resumen
+    public function getValueTransactionsReport(Request $request)
+    {
+        $id = $request->get('codigo');
+        $inicial = $request->get('inicial');
+        $final = $request->get('final');
+        $usuario = $request->get('usuario');
+        $nreport = 'Treasure_Value_Transactions';
+        $controls = array(
+            'p_id' => $id,
+            'p_inicial' => $inicial,
+            'p_final' => $final,
+            'p_usuario' => $usuario,            
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 }

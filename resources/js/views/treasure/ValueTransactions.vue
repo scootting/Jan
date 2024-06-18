@@ -117,8 +117,29 @@ export default {
             }
         },
 
-        //  * Imprime el reporte de las transacciones de un valor que se vende de acuerdo a un rango especifico
+        //  * TE3. Imprime el resumen
         initGetValueTransactionsReport() {
+            let app = this;
+            console.log(app.dataSaleDay);
+            axios({
+                url: "/api/getValueTransactionsReport/",
+                params: {
+                    codigo: app.dataValue.cod_val,
+                    inicial: app.dataRange.initial,
+                    final: app.dataRange.final,
+                    usuario: app.user.usuario,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
         },
     },
 };
