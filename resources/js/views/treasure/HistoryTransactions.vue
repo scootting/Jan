@@ -5,85 +5,34 @@
         <span>historial de transacciones</span>
       </div>
       <div style="margin-top: 15px">
-        <el-input
-          placeholder="INSERTE UNA DESCRIPCION"
-          v-model="writtenTextParameter"
-          class="input-with-select"
-        >
-          <el-button
-            slot="append"
-            icon="el-icon-search"
-            @click="initSearchTransactions"
-          ></el-button>
+        <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter" class="input-with-select">
+          <el-button slot="append" icon="el-icon-search" @click="initSearchTransactions"></el-button>
         </el-input>
       </div>
       <br />
       <div>
         <el-table v-loading="loading" :data="transactions" style="width: 100%" border>
-          <el-table-column
-            prop="fec_tra"
-            label="fecha"
-            :min-width="8"
-          ></el-table-column>
-          <el-table-column
-            prop="id_tran"
-            label="id"
-            :min-width="6"
-          ></el-table-column>
-          <el-table-column
-            prop="cod_val"
-            label="cod"
-            :min-width="4"
-          ></el-table-column>
-          <el-table-column
-            prop="des_val"
-            label="descripcion"
-            :min-width="30"
-          ></el-table-column>
-          <el-table-column
-            prop="imp_val"
-            label="bs."
-            :min-width="6"
-          ></el-table-column>
-          <el-table-column
-            prop="ci_per"
-            label="CARNET"
-            :min-width="8"
-            width="100"
-          ></el-table-column>
-          <el-table-column
-            prop="des_per"
-            label="apellidos y nombres"
-            :min-width="22"
-          ></el-table-column>
+          <el-table-column prop="fec_tra" label="fecha" :min-width="8"></el-table-column>
+          <el-table-column prop="id_tran" label="id" :min-width="6"></el-table-column>
+          <el-table-column prop="cod_val" label="cod" :min-width="4"></el-table-column>
+          <el-table-column prop="des_val" label="descripcion" :min-width="30"></el-table-column>
+          <el-table-column prop="imp_val" label="bs." :min-width="6"></el-table-column>
+          <el-table-column prop="ci_per" label="CARNET" :min-width="8" width="100"></el-table-column>
+          <el-table-column prop="des_per" label="apellidos y nombres" :min-width="22"></el-table-column>
           <el-table-column align="right" :min-width="20" label="anulacion">
             <template slot-scope="scope">
-              <el-button
-                :disabled="transactions[scope.$index].tip_tra == 9"
-                @click="initEditTransaction(scope.$index, scope.row)"
-                type="primary"
-                size="mini"
-                plain
-                >con papeleta</el-button
-              >
-              <el-button
-                :disabled="transactions[scope.$index].tip_tra == 9"
-                @click="initCancelTransaction(scope.$index, scope.row)"
-                type="danger"
-                plain
-                size="mini"
-                >sin papeleta</el-button
-              >
+              <el-button :disabled="transactions[scope.$index].tip_tra == 9"
+                @click="initEditTransaction(scope.$index, scope.row)" type="primary" size="mini" plain>con
+                papeleta</el-button>
+              <el-button :disabled="transactions[scope.$index].tip_tra == 9"
+                @click="initCancelTransaction(scope.$index, scope.row)" type="danger" plain size="mini">sin
+                papeleta</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          :page-size="pagination.per_page"
-          layout="prev, pager, next"
-          :current-page="pagination.current_page"
-          :total="pagination.total"
-          @current-change="getDataPageSelected"
-        ></el-pagination>
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
+          :current-page="pagination.current_page" :total="pagination.total"
+          @current-change="getDataPageSelected"></el-pagination>
       </div>
     </el-card>
   </div>

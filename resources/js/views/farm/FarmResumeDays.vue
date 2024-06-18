@@ -83,12 +83,12 @@ export default {
         //  * G21. Imprimir el reporte de movimientos de las ventas de los dias.
         initCustomerResumeSaleDetailDaysReport() {
             let app = this;
-            console.log(app.dataSaleDay);
+            console.log(app.range);
             axios({
-                url: "/api/customerSaleDetailDayReport/",
+                url: "/api/customerResumeSaleDetailDaysReport/",
                 params: {
-                    id: app.dataSaleDay.id,
-                    gestion: app.dataSaleDay.gestion,
+                    initial: app.range.initial,
+                    final: app.range.final,
                 },
                 method: "GET",
                 responseType: "arraybuffer",

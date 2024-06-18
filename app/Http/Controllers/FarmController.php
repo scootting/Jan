@@ -131,8 +131,7 @@ class FarmController extends Controller
         $nro_com = $request->get('voucher');
         $tip_tra = $request->get('tipo');
         $gestion = $request->get('gestion');//$dataDays['gestion'];
-        \Log::info("DATOS PARA LA IMPRESION DE BOUCHER");
-        $nreport = 'DetailCreditSaleLetter';
+        $nreport = 'DetailCreditSale';
         $controls = array(
             'p_nro_com' => trim($nro_com),
             'p_tip_tra' => $tip_tra,
@@ -155,8 +154,6 @@ class FarmController extends Controller
     {
         $id = $request->get('id');
         $gestion = $request->get('gestion');
-        \Log::info($id);
-        \Log::info($gestion);
         $nreport = 'FarmSaleDetailsDay_Letter';
         $controls = array(
             'p_id' => $id,
@@ -307,14 +304,15 @@ class FarmController extends Controller
     //  * G21. Imprimir el reporte de movimientos de las ventas de los dias.
     public function customerResumeSaleDetailDaysReport(Request $request)
     {
-        $id = $request->get('id');
-        $gestion = $request->get('gestion');
-        \Log::info($id);
-        \Log::info($gestion);
+        $fecha_inicial = $request->get('initial');
+        $fecha_final = $request->get('final');
         $nreport = 'FarmResumeSaleDetailsDay_Letter';
+        \Log::info($fecha_inicial);
+        \Log::info($fecha_final);
         $controls = array(
-            'p_id' => $id,
-            'p_gestion' => $gestion,
+            'p_id' => 1,
+            'p_final' => $fecha_final,
+            'p_inicial' => $fecha_inicial,
         );
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
@@ -335,4 +333,14 @@ class FarmController extends Controller
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
+
+    //  * G23. Kardex fisico valorado
+    public function getKardexById(Request $request)
+    {
+        $id = $request->get('id');
+        $gestion = $request->get('year');
+        $data = Farm::GetKardexById($id, $gestion);
+        return json_encode($data);
+    }
+
 }

@@ -403,6 +403,7 @@ class TreasureController extends Controller
         return json_encode($id_dia);
     }
 
+    /*
     public function getValueById(Request $request)
     {
         $valor = $request->get('id');
@@ -410,6 +411,7 @@ class TreasureController extends Controller
         $data = Treasure::getValueById($valor, $gestion);
         return json_encode($data);
     }
+        */
 
     //  * T1. Buscar transacciones hechas por una persona a traves de su carnet de identidad.
     //  * {id: numero de carnet de identidad}
@@ -456,4 +458,26 @@ class TreasureController extends Controller
         return null;
         return json_encode($data);
     }
+    //  * TE1. Obtiene el valor
+    public function getValueById(Request $request)
+    {
+        $valor = $request->get('dataValue');
+        $codigo_valor  = $valor['cod_val'];
+        $dataValue = Treasure::GetValueById($codigo_valor);
+        return json_encode($dataValue);
+    }
+    //  * TE2. Obtiene las transacciones de un valor que se vende de acuerdo a un rango de fechas
+    public function getValueTransactionsById(Request $request)
+    {
+        $valor = $request->get('dataValue');
+        $rango = $request->get('dataRange');
+
+        $codigo_valor  = $valor['cod_val'];
+        $fecha_inicial = $rango['initial'];
+        $fecha_final = $rango['final'];
+
+        $dataValueTransactions = Treasure::GetValueTransactionsById($codigo_valor, $fecha_inicial, $fecha_final);
+        return json_encode($dataValueTransactions);
+    }
+
 }

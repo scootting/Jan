@@ -3,33 +3,19 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span>identificador del dia {{ day }}</span>
-        <el-button
-          style="float: right; padding: 3px 0"
-          type="text"
-          @click="test"
-          >ayuda</el-button
-        >
+        <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
       </div>
       <br />
       <!--
         <el-tag type="success">{{ texto }}</el-tag>        
       -->
       <el-row :gutter="20">
-        <el-col :span="24"
-          ><div class="grid-content bg-purple">
-            <el-form
-              ref="form"
-              :model="this.debtor"
-              label-width="200px"
-              size="mini"
-            >
+        <el-col :span="24">
+          <div class="grid-content bg-purple">
+            <el-form ref="form" :model="this.debtor" label-width="200px" size="mini">
               <el-form-item label="codigo del valor">
                 <el-col :span="8">
-                  <el-input
-                    v-model="debtor.cod_val"
-                    ref="cod_val"
-                    @keyup.enter.native="initSearchValue"
-                  ></el-input>
+                  <el-input v-model="debtor.cod_val" ref="cod_val" @keyup.enter.native="initSearchValue"></el-input>
                 </el-col>
                 <el-col :span="16">
                   <el-input v-model="debtor.des_val" disabled></el-input>
@@ -37,11 +23,7 @@
               </el-form-item>
               <el-form-item label="carnet de identidad">
                 <el-col :span="8">
-                  <el-input
-                    v-model="debtor.nro_dip"
-                    ref="nro_dip"
-                    @keyup.enter.native="initSearchPerson"
-                  ></el-input>
+                  <el-input v-model="debtor.nro_dip" ref="nro_dip" @keyup.enter.native="initSearchPerson"></el-input>
                 </el-col>
                 <el-col :span="16">
                   <el-input v-model="debtor.des_per" disabled></el-input>
@@ -65,46 +47,31 @@
                   <el-input v-model="debtor.importe" ref="importe"></el-input>
                 </el-col>
               </el-form-item>
-            </el-form></div
-        ></el-col>
-      </el-row>
-      <el-row :gutter="20">
-        <el-col :span="24">
-          <el-button type="success" size="small" @click="appendDebtor()"
-            >agregar</el-button
-          >
+            </el-form>
+          </div>
         </el-col>
       </el-row>
       <el-row :gutter="20">
-        <el-col :span="24"
-          ><div class="grid-content bg-purple">
-            <el-table
-              :data="dataDebtors"
-              border
-              show-summary
-              style="width: 100%"
-              size="small"
-            >
+        <el-col :span="24">
+          <el-button type="success" size="small" @click="appendDebtor()">agregar</el-button>
+        </el-col>
+      </el-row>
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <div class="grid-content bg-purple">
+            <el-table :data="dataDebtors" border show-summary style="width: 100%" size="small">
               <el-table-column prop="cod_val" label="cod." width="65">
               </el-table-column>
               <el-table-column prop="des_val" label="descripcion" width="550">
               </el-table-column>
-              <el-table-column
-                prop="pre_uni_val"
-                sortable
-                label="Precio"
-                align="right"
-              >
+              <el-table-column prop="pre_uni_val" sortable label="Precio" align="right">
               </el-table-column>
-            </el-table></div
-        ></el-col>
+            </el-table>
+          </div>
+        </el-col>
       </el-row>
-      <el-button type="success" size="small" @click="saveTransaction()"
-        >guardar</el-button
-      >
-      <el-button type="primary" size="small" @click="printTransactions()"
-        >imprimir</el-button
-      >
+      <el-button type="success" size="small" @click="saveTransaction()">guardar</el-button>
+      <el-button type="primary" size="small" @click="printTransactions()">imprimir</el-button>
       <el-button size="small" @click="resetTransaction()">nuevo</el-button>
       <el-row> </el-row>
     </el-card>
@@ -172,8 +139,8 @@ export default {
           console.log(response.data);
           app.selectedPerson = response.data[0];
           app.debtor.des_per =
-            app.selectedPerson.paterno +" "+
-            app.selectedPerson.materno +","+
+            app.selectedPerson.paterno + " " +
+            app.selectedPerson.materno + "," +
             app.selectedPerson.nombres;
           app.$nextTick(() => app.$refs.nro_cta.focus());
         })
@@ -188,8 +155,8 @@ export default {
     saveTransaction() {
       var app = this;
     },
-    printTransactions() {},
-    resetTransaction() {},
+    printTransactions() { },
+    resetTransaction() { },
   },
 };
 </script>
@@ -198,23 +165,29 @@ export default {
 .el-row {
   margin-bottom: 20px;
 }
+
 .el-col {
   border-radius: 4px;
 }
+
 .bg-purple-dark {
   background: #99a9bf;
 }
+
 .bg-purple {
   background: #d3dce6;
 }
+
 .bg-purple-light {
   background: #e5e9f2;
 }
+
 .grid-content {
   border-radius: 4px;
   padding: 15px;
   min-height: 36px;
 }
+
 .row-bg {
   padding: 10px 0;
   background-color: #f9fafc;

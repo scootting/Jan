@@ -5,7 +5,6 @@
                 <span>movimiento de ventas diarias</span>
             </div>
             <div class="grid-content bg-purple" style="margin-top: 15px; margin-left: 45px; margin-right: 45px;">
-
                 <el-form :model="dataProduct" label-width="220px" size="small">
                     <el-form-item label="buscar">
                         <el-input placeholder="inserte el codigo del producto" v-model="dataProduct.cod_prd"
@@ -21,17 +20,17 @@
                         <el-input v-model="dataProduct.uni_prd" disabled></el-input>
                     </el-form-item>
                 </el-form>
-                <el-table v-loading="loading" :data="dataDays" height="450" style="width: 100%"
+                <el-table v-loading="loading" :data="dataTransactions" height="450" style="width: 100%"
                     :row-style="tableRowStyle">
-                    <el-table-column align="right-center" label="" width="280">
-                        <template slot-scope="scope">
-                            <el-button :disabled="dataSaleDay.estado == 'V'" type="primary" plain size="mini"
-                                @click="initEditDocumentOfArchive(scope.$index, scope.row)">editar
-                                regularizacion</el-button>
-                            <el-button :disabled="dataSaleDay.estado == 'V'" type="danger" plain size="mini"
-                                @click="DeleteDocumentOfArchive(scope.$index, scope.row)">quitar</el-button>
-                        </template>
-                    </el-table-column>
+                    <el-table-column prop="fecha" label="fecha" width="120"></el-table-column>
+                    <el-table-column prop="des_tip_tra" label="transaccion" width="120"></el-table-column>
+                    <el-table-column prop="pre_uni" label="p.u." width="120"></el-table-column>
+                    <el-table-column prop="can_entrada" label="ingreso cantidad" width="120"></el-table-column>
+                    <el-table-column prop="imp_entrada" label="ingreso importe" width="120"></el-table-column>
+                    <el-table-column prop="can_salida" label="egreso cantidad" width="120"></el-table-column>
+                    <el-table-column prop="imp_salida" label="egreso importe" width="120"></el-table-column>
+                    <el-table-column prop="can_saldo" label="saldo cantidad" width="120"></el-table-column>
+                    <el-table-column prop="imp_saldo" label="saldo importe" width="120"></el-table-column>
                 </el-table>
                 <div style="margin-top: 15px">
                     <el-button size="small" type="primary" icon="el-icon-printer"
@@ -51,7 +50,7 @@ export default {
             user: this.$store.state.user,
             writtenTextParameter: '',
             dataProduct: {},
-            dataDays: [],
+            dataTransactions: [],
             loading: false,                                       //dia de venta
         };
     },
@@ -61,13 +60,19 @@ export default {
 
         //  * G6. Obtiene un producto a traves de su codigo 
         async getProductForSale() {
+            console.log(this.user);
             var app = this;
             try {
                 let response = await axios.post("/api/getProductForSale", {
                     codigo: app.dataProduct.cod_prd,
                 });
                 app.dataProduct = { ...app.dataProduct, ...response.data[0] };
-                console.log(app.dataProduct);
+                let responseKardex = await axios.post("/api/getKardexById", {
+                    id: app.dataProduct.cod_prd,
+                    year: app.user.gestion,
+                });
+                app.dataTransactions = responseKardex.data;
+                console.log(app.dataTransactions);
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {

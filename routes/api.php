@@ -150,7 +150,8 @@ Route::group([
     Route::post('addSaleOfDay', 'TreasureController@addSaleOfDay');
     // *** - Obtener los dias para la venta de valores de un usuario - ***
     Route::post('getSaleOfDayById', 'TreasureController@getSaleOfDayById');
-    Route::post('getValueById', 'TreasureController@getValueById');
+    
+    //Route::post('getValueById', 'TreasureController@getValueById');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Ventas en Linea de la Division de Tesoro
@@ -170,7 +171,15 @@ Route::group([
     // *** - Anula la transaccion - ***
     Route::post('cancelTransactionById', 'TreasureController@cancelTransactionById');
 
-    // *** -  - ***
+    //  * TE1. Obtiene el valor
+    Route::post('getValueById', 'TreasureController@getValueById');
+    //  * TE2. Obtiene las transacciones de un valor que se vende de acuerdo a un rango de fechas
+    Route::post('getValueTransactionsById', 'TreasureController@getValueTransactionsById');
+
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Activos Fijos
+    //  |--------------------------------------------------------------------------
+    //  * A1. Obtiene la lista de documentos archivados con una breve descripcion
     Route::post('documentFixedAssets', 'FixedAssetController@getDocumentFixedAssetByYear');
     // *** -  - ***
     Route::post('selectedFixedAssetsbyDocument', 'FixedAssetController@getFixedAssetsbyDocument');
@@ -316,8 +325,9 @@ Route::group([
     Route::get('customerResumeSaleDetailDaysReport/', 'FarmController@customerResumeSaleDetailDaysReport');
     //  * G22. Imprimir el kardex de un producto.
     Route::get('customerKardexDetailReport/', 'FarmController@customerKardexDetailReport');
+    //  * G23. Kardex fisico valorado
+    Route::post('getKardexById', 'FarmController@getKardexById');
 
-    
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales
     //  |--------------------------------------------------------------------------
@@ -357,9 +367,9 @@ Route::group([
     Route::post('storeInputCourse', 'ResourceController@storeInputCourse');
     //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
     Route::post('getInputTransactionsOfCourse', 'ResourceController@getInputTransactionsOfCourse');
-    //  * RP10. Obtener la lista de programas academicos 
+    //  * RP10. Obtener la lista de programas academicos
     Route::post('getPrograms', 'ResourceController@getPrograms');
-    //  * RP11. Obtener la lista de programas academicos 
+    //  * RP11. Obtener la lista de programas academicos
     Route::post('getTypesOfProgram', 'ResourceController@getTypesOfProgram');
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Elecciones

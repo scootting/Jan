@@ -117,6 +117,8 @@ import DocumentsFixedAssets from './views/fixedasset/DocumentsFixedAssets'
 import SelectedFixedAssetsByDocument from './views/fixedasset/SelectedFixedAssetsByDocument'
 
 //tesoreria
+import ValueTransactions from './views/treasure/ValueTransactions'
+
 import Solvency from './views/treasure/Solvency'
 import SaleStudents from './views/treasure/SaleStudents'    //lista de dias de alumnos nuevos
 import Students from './views/treasure/Students'            //alumnos nuevos
@@ -254,7 +256,7 @@ const router = new VueRouter({
                 { path: 'financialStatements', name: 'financialstatements', component: FinancialStatements },
                 //  * M2. Obtener la lista de memoriales para su verificacion 
                 { path: 'financialStatements/:id', name: 'financialstatementdetails', component: FinancialStatementDetails },
-                
+
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Tesoro
                 //  |--------------------------------------------------------------------------    
@@ -264,6 +266,9 @@ const router = new VueRouter({
                 { path: 'saleinline/:id', name: 'saleinlinedetail', component: SaleInLineDetail }, //lista de solicitudes por dia 
                 { path: 'saleinline/:id/:request', name: 'verifysaleinlinedetail', component: VerifySaleInLineDetail }, //lista de solicitudes por dia 
                 { path: 'gatewaypayments', name: 'gatewaypayments', component: GatewayPayments }, //lista de solicitudes por dia 
+
+                //  * TE1. Obtiene las transacciones de un valor que se vende de acuerdo a un rango de fechas
+                { path: 'ValueTransactions', name: 'valuetransactions', component: ValueTransactions },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Archivos

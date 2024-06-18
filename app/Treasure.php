@@ -139,13 +139,6 @@ class Treasure extends Model
     public static function getValuesProcedure($description, $year)
     {
         \Log::info('holas en este estado:'.$year);
-        \Log::info('hazme caso');
-        \Log::info('hazme caso');
-        \Log::info('hazme caso');
-        \Log::info('hazme caso');
-        \Log::info('hazme caso');
-        \Log::info('hazme caso');
-        \Log::info('hazme caso');
         //select * from trap.ff_valores_tramite_nuevos('EXCELENCIA', '2020')
         $query = "select * from trap.ff_valores_tramite_nuevos('" . $description . "','" . $year . "')";
         $data = collect(DB::select(DB::raw($query)));
@@ -176,9 +169,6 @@ class Treasure extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-
-
-
 
     //  * Encontrar los valores de un tramite a traves de su descripcion.
     //  * {description: descripcion de la busqueda}
@@ -267,8 +257,20 @@ class Treasure extends Model
         return $data;
     }
 
-    public static function storeValuesOfUniversity()
+    public static function GetValueById($valueCode)
     {
-
+        $query = "select * from val.valores a where a.cod_val = '" . $valueCode . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
     }
+
+    public static function GetValueTransactionsById($valueCode, $initialDate, $finalDate)
+    {
+        $query = "select * from val.tra_dia a inner join val.tip_tra b on a.tip_tra = b.tip_tra " .
+                 "where  a.cod_val = '" . $valueCode . "' and a.fec_tra >= '" . $initialDate . "'::date and a.fec_tra <='" . $finalDate . "'::date ";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
 }

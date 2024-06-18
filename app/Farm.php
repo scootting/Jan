@@ -171,4 +171,11 @@ class Farm extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //  * G23. Kardex fisico valorado
+    public static function GetKardexById($id, $year){
+        $query = "select * from vgra.ff_kardex_fisico('" . $id . "','" . $year . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }
