@@ -34,7 +34,7 @@
                 </el-table>
                 <div style="margin-top: 15px">
                     <el-button size="small" type="primary" icon="el-icon-printer"
-                        @click="initCustomerSaleDetailDayReport" plain>
+                        @click="initFarmKardexByProductReport" plain>
                         imprimir el movimiento del producto seleccionado</el-button>
                 </div>
             </div>
@@ -83,14 +83,14 @@ export default {
 
 
     //  * G22. Imprimir el kardex de un producto.
-        initCustomerSaleDetailDayReport() {
+        initFarmKardexByProductReport() {
             let app = this;
             console.log(app.dataSaleDay);
             axios({
-                url: "/api/customerSaleDetailDayReport/",
+                url: "/api/farmKardexByProductReport/",
                 params: {
-                    id: app.dataSaleDay.id,
-                    gestion: app.dataSaleDay.gestion,
+                    codigo: app.dataProduct.cod_prd,
+                    gestion: app.user.gestion,
                 },
                 method: "GET",
                 responseType: "arraybuffer",
@@ -104,8 +104,6 @@ export default {
                 window.open(url);
             });
         },
-
-
 
         //  * G11. Cerrar el reporte de ventas del dia.
         async initCloseSaleDetailDay() {

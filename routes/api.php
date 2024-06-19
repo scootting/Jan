@@ -326,7 +326,7 @@ Route::group([
     //  * G21. Imprimir el reporte de movimientos de las ventas de los dias.
     Route::get('customerResumeSaleDetailDaysReport/', 'FarmController@customerResumeSaleDetailDaysReport');
     //  * G22. Imprimir el kardex de un producto.
-    Route::get('customerKardexDetailReport/', 'FarmController@customerKardexDetailReport');
+    Route::get('farmKardexByProductReport/', 'FarmController@farmKardexByProductReport');
     //  * G23. Kardex fisico valorado
     Route::post('getKardexById', 'FarmController@getKardexById');
 

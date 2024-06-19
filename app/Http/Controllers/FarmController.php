@@ -68,7 +68,7 @@ class FarmController extends Controller
         $gestion = $dataDays['gestion'];
         $tip_tra = $dataDays['tip_tra'];
 
-        if ($tip_tra = 2) {
+        if ($tip_tra == 2 or $tip_tra == 0 or $tip_tra == 8) {
             $nro_com = '000000';
             Farm::RemoveCurrentProductById($id_dia);
         } else {
@@ -131,7 +131,7 @@ class FarmController extends Controller
         $nro_com = $request->get('voucher');
         $tip_tra = $request->get('tipo');
         $gestion = $request->get('gestion');//$dataDays['gestion'];
-        $nreport = 'DetailCreditSale';
+        $nreport = 'DetailCreditSaleLetter';
         $controls = array(
             'p_nro_com' => trim($nro_com),
             'p_tip_tra' => $tip_tra,
@@ -319,15 +319,15 @@ class FarmController extends Controller
     }
 
     //  * G22. Imprimir el kardex de un producto.
-    public function customerKardexDetailReport(Request $request)
+    public function farmKardexByProductReport(Request $request)
     {
-        $id = $request->get('id');
+        $id = $request->get('codigo');
         $gestion = $request->get('gestion');
         \Log::info($id);
         \Log::info($gestion);
-        $nreport = 'FarmKardexDetailsDay_Letter';
+        $nreport = 'FarmKardexByProduct';
         $controls = array(
-            'p_id' => $id,
+            'p_codigo' => $id,
             'p_gestion' => $gestion,
         );
         $report = JSRClient::GetReportWithParameters($nreport, $controls);

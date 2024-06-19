@@ -16,6 +16,7 @@
                     <el-table-column prop="des_per" label="apellidos y nombres" width="250"></el-table-column>
                     <el-table-column prop="total_deuda" label="deuda" width="150" align="right"></el-table-column>
                     <el-table-column prop="total_pago" label="amortizacion" width="150" align="right"></el-table-column>
+                    <el-table-column prop="saldo" label="saldo" width="150" align="right"></el-table-column>
                     <el-table-column align="right-center" label="" width="280">
                         <template slot-scope="scope">
                             <el-button :disabled="dataSaleDay.estado == 'V'" type="primary" plain size="mini"
@@ -160,13 +161,14 @@ export default {
             this.dialogFormVisible = false;
             if (this.stateStore == "añadir") {
                 let variable = this.client;
+                variable.saldo = variable.total_deuda - variable.total_pago;        
                 this.dataClients.push(variable);
             }
             else {
 
             }
             app.writtenTextParameter = '';
-            this.client = { ci_per: "", des_per: "", imp_deuda: 0, imp_amortizacion: 0, total_deuda: 0, total_pago: 0 };
+            this.client = { ci_per: "", des_per: "", imp_deuda: 0, imp_amortizacion: 0, total_deuda: 0, total_pago: 0, saldo:0 };
             console.log(this.dataClients);
             //this.OnUpdateIndex();
         },
