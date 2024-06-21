@@ -250,16 +250,17 @@ class FarmController extends Controller
     }
 
     //  * G17. Imprimir el reporte de ingresos del dia.
-    public function customerIncomeDetailDayReport(Request $request)
+    public function incomeDetailDayReport(Request $request)
     {
         $id = $request->get('id');
+        $tipo_transaccion = $request->get('tipo_transaccion');
         $gestion = $request->get('gestion');
         \Log::info($id);
         \Log::info($gestion);
         $nreport = 'FarmIncomeDetailsDay_Letter';
         $controls = array(
             'p_id' => $id,
-            'p_gestion' => $gestion,
+            'p_tip_tra' => $tipo_transaccion,
         );
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
@@ -343,4 +344,17 @@ class FarmController extends Controller
         return json_encode($data);
     }
 
+    //  * G24. Imprimir el reporte de regularizaciones del dia.
+    public function regularizeDetailDayReport(Request $request)
+    {
+        $id = $request->get('id');
+        $gestion = $request->get('gestion');
+        $nreport = 'FarmRegularizeDetailsDay_Letter';
+        $controls = array(
+            'p_id' => $id,
+            'p_gestion' => $gestion,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 }

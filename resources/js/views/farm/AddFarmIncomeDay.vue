@@ -55,7 +55,7 @@
                 <el-button size="small" type="primary" icon="el-icon-switch-button" @click="initCloseSaleDetailDay"
                     :disabled="dataSaleDay.estado == 'V'" plain>
                     cerrar el dia de ingreso de productos</el-button>
-                <el-button size="small" type="primary" icon="el-icon-printer" @click="initCustomerIncomeDetailDayReport"
+                <el-button size="small" type="primary" icon="el-icon-printer" @click="initIncomeDetailDayReport"
                     plain>
                     imprimir el resumen de ingresos del dia</el-button>
             </div>
@@ -184,13 +184,14 @@ export default {
             this.products = response.data;
         },
 
-        //  * G17. Imprimir el reporte de ventas del dia.
-        initCustomerIncomeDetailDayReport() {
+        //  * G17. Imprimir el reporte de ingresos del dia.
+        initIncomeDetailDayReport() {
             let app = this;
             axios({
-                url: "/api/customerIncomeDetailDayReport/",
+                url: "/api/incomeDetailDayReport/",
                 params: {
                     id: app.dataSaleDay.id,
+                    tipo_transaccion: app.dataSaleDay.tip_tra,
                     gestion: app.dataSaleDay.gestion,
                 },
                 method: "GET",

@@ -316,7 +316,7 @@ Route::group([
     //  * G16. Agregar detalle de las regularizaciones del cliente de los productos de la granja
     Route::post('storeCustomerRegularizeDetail', 'FarmController@storeCustomerRegularizeDetail');
     //  * G17. Imprimir el reporte de ingresos del dia.
-    Route::get('customerIncomeDetailDayReport/', 'FarmController@customerIncomeDetailDayReport');
+    Route::get('incomeDetailDayReport/', 'FarmController@incomeDetailDayReport');
     //  * G18. Imprimir la baja de ingresos del dia.
     Route::get('customerDropDetailReport/', 'FarmController@customerDropDetailReport');
     //  * G19. Obtiene los clientes registrados
@@ -329,6 +329,9 @@ Route::group([
     Route::get('farmKardexByProductReport/', 'FarmController@farmKardexByProductReport');
     //  * G23. Kardex fisico valorado
     Route::post('getKardexById', 'FarmController@getKardexById');
+    //  * G24. Imprimir el reporte de regularizaciones del dia.
+    Route::get('regularizeDetailDayReport/', 'FarmController@regularizeDetailDayReport');
+
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales

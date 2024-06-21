@@ -184,13 +184,14 @@ export default {
             this.products = response.data;
         },
 
-        //  * G10. Imprimir el reporte de ventas del dia.
+        //  * G17. Imprimir el reporte de ingresos del dia.
         initCustomerIncomeDetailDayReport() {
             let app = this;
             axios({
-                url: "/api/customerIncomeDetailDayReport/",
+                url: "/api/incomeDetailDayReport/",
                 params: {
                     id: app.dataSaleDay.id,
+                    tipo_transaccion: app.dataSaleDay.tip_tra,
                     gestion: app.dataSaleDay.gestion,
                 },
                 method: "GET",

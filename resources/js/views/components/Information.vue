@@ -64,7 +64,6 @@ export default {
     },
     handleClose(done){
       let isVisible = this.visible;
-      alert("hola");
       isVisible = false;
       this.$emit("update-visible", isVisible, null);
       this.writtenTextParameter = '';      

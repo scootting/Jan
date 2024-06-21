@@ -20,23 +20,23 @@
                     <el-table-column align="right-center" label="" width="280">
                         <template slot-scope="scope">
                             <el-button :disabled="dataSaleDay.estado == 'V'" type="primary" plain size="mini"
-                                @click="initEditDocumentOfArchive(scope.$index, scope.row)"
-                                >editar regularizacion</el-button>
+                                @click="initEditDocumentOfArchive(scope.$index, scope.row)">editar
+                                regularizacion</el-button>
                             <el-button :disabled="dataSaleDay.estado == 'V'" type="danger" plain size="mini"
                                 @click="DeleteDocumentOfArchive(scope.$index, scope.row)">quitar</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
                 <div style="margin-top: 15px">
-                    <el-button size="small" type="primary" icon="el-icon-switch-button" @click="storeCustomerRegularizeDetail"
-                        :disabled="dataSaleDay.estado == 'V'" plain>
+                    <el-button size="small" type="primary" icon="el-icon-switch-button"
+                        @click="storeCustomerRegularizeDetail" :disabled="dataSaleDay.estado == 'V'" plain>
                         guardar regularizaciones</el-button>
                     <el-button size="small" type="primary" icon="el-icon-switch-button" @click="initCloseSaleDetailDay"
                         :disabled="dataSaleDay.estado == 'V'" plain>
                         cerrar el dia de regularizaciones</el-button>
-                        
-                    <el-button size="small" type="primary" icon="el-icon-printer"
-                        @click="initCustomerSaleDetailDayReport" plain>
+
+                    <el-button size="small" type="primary" icon="el-icon-printer" @click="initRegularizeDetailDayReport"
+                        plain>
                         imprimir el resumen de ventas de regularizaciones del dia</el-button>
                 </div>
             </div>
@@ -61,7 +61,8 @@
                     <el-input v-model="client.total_deuda" autocomplete="off" disabled></el-input>
                 </el-form-item>
                 <el-form-item label="amortizacion">
-                    <el-input v-model="client.total_pago" autocomplete="off"></el-input>
+                    <el-input-number v-model="client.total_pago" controls-position="right" :min="1"
+                        :max="parseFloat(client.total_deuda)" :step="0.5"></el-input-number>
                 </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
@@ -161,14 +162,14 @@ export default {
             this.dialogFormVisible = false;
             if (this.stateStore == "añadir") {
                 let variable = this.client;
-                variable.saldo = variable.total_deuda - variable.total_pago;        
+                variable.saldo = variable.total_deuda - variable.total_pago;
                 this.dataClients.push(variable);
             }
             else {
 
             }
             app.writtenTextParameter = '';
-            this.client = { ci_per: "", des_per: "", imp_deuda: 0, imp_amortizacion: 0, total_deuda: 0, total_pago: 0, saldo:0 };
+            this.client = { ci_per: "", des_per: "", imp_deuda: 0, imp_amortizacion: 0, total_deuda: 0, total_pago: 0, saldo: 0 };
             console.log(this.dataClients);
             //this.OnUpdateIndex();
         },
@@ -190,12 +191,12 @@ export default {
             }
         },
 
-        //  * G10. Imprimir el reporte de ventas del dia.
-        initCustomerSaleDetailDayReport() {
+        //  * G24. Imprimir el reporte de regularizaciones del dia.
+        initRegularizeDetailDayReport() {
             let app = this;
             console.log(app.dataSaleDay);
             axios({
-                url: "/api/customerSaleDetailDayReport/",
+                url: "/api/regularizeDetailDayReport/",
                 params: {
                     id: app.dataSaleDay.id,
                     gestion: app.dataSaleDay.gestion,
@@ -213,8 +214,6 @@ export default {
             });
         },
 
-
-
         //  * G11. Cerrar el reporte de ventas del dia.
         async initCloseSaleDetailDay() {
             var app = this;
@@ -224,7 +223,7 @@ export default {
                     gestion: app.dataSaleDay.gestion,
                 });
                 console.log(response);
-                alert("acaba de cerrar el dia de ventas, puede imprimir el resumen");
+                alert("acaba de cerrar el dia de regularizacion, puede imprimir el resumen");
                 app.$router.push({
                     name: "farmregularizedays"
                 });
