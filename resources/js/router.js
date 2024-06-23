@@ -2,6 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+//recursos propios
+import Programs from './views/resources/Programs.vue'
+import AddProgram from './views/resources/AddProgram.vue'
+import AddStudentProgram from './views/resources/AddStudentProgram.vue'
+import AddSaleProgram from './views/resources/AddSaleProgram.vue'
+//import CoursesPostgraduate from './views/resources/CoursesPostgraduate.vue'
+//import AddCoursePostgraduate from './views/resources/AddCoursePostgraduate.vue'
+
+
 //Solvencias
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
 import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
@@ -21,14 +30,7 @@ import EditDebts from './views/solvency/EditDebts.vue'
 import AddDebts from './views/solvency/AddDebts.vue'
 import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
 
-//recursos propios
-import Courses from './views/resources/Courses.vue'
-import AddCourse from './views/resources/AddCourse.vue'
-import InputCourseDetails from './views/resources/InputCourseDetails.vue'
-import OutputCourseDetails from './views/resources/OutputCourseDetails.vue'
 
-import CoursesPostgraduate from './views/resources/CoursesPostgraduate.vue'
-import AddCoursePostgraduate from './views/resources/AddCoursePostgraduate.vue'
 
 //documentacion: memoriales
 import RequestMemorial from './views/document/RequestMemorial.vue'
@@ -242,13 +244,14 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Recursos Propios
                 //  |--------------------------------------------------------------------------    
-                { path: 'courses', name: 'courses', component: Courses },
-                { path: 'courses/add', name: 'addcourse', component: AddCourse },
-                { path: 'courses/input/:id', name: 'inputcoursedetails', component: InputCourseDetails },
-                { path: 'courses/output/:id', name: 'outputcoursedetails', component: OutputCourseDetails },
+                { path: 'programs', name: 'programs', component: Programs },
+                { path: 'programs/add', name: 'addprogram', component: AddProgram },
+                { path: 'programs/student/:id', name: 'addstudentprogram', component: AddStudentProgram },
+                { path: 'programs/sale/:id', name: 'addsaleprogram', component: AddSaleProgram },
+                /*
                 { path: 'CoursesPostgraduate', name: 'coursesPostgraduate', component: CoursesPostgraduate },
                 { path: 'CoursesPostgraduate/add', name: 'addCoursePostgraduate', component: AddCoursePostgraduate },
-
+                */
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Estados Financieros
                 //  |--------------------------------------------------------------------------    

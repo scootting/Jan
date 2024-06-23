@@ -8,50 +8,33 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class ResourceController extends Controller
 {
-    //
-    //  * RP1. Obtener la lista de cursos de posgrado.
-    //  * parametros {description: descripcion que se esta buscando }
-    public function getCoursesOfPostgraduate(Request $request)
+    //  * RP11. Obtener la lista de programas academicos
+    public static function getTypesOfProgram(Request $request)
     {
-        //$descripcion = strtoupper($request->get('description'));
-        $gestion = $request->get('year');
-        \Log::info($request);
-        \Log::info($gestion);
-        $data = Resource::GetCoursesOfPostgraduate($gestion);
-        $page = ($request->get('page') ? $request->get('page') : 1);
-        $perPage = 5;
-        $paginate = new LengthAwarePaginator(
-            $data->forPage($page, $perPage),
-            $data->count(),
-            $perPage,
-            $page,
-            ['path' => url('api/courses')]
-        );
-        return json_encode($paginate);
+        $data = Resource::GetTypesOfProgram();
+        return json_encode($data);
     }
 
-    //  * RP2. Guardar un curso de postgrado.
-    public function storeCourseOfPostgraduate(Request $request)
+    //  * RP12. Guardar un curso de postgrado.
+    public function storeProgram(Request $request)
     {
-        $curso = $request->get('dataCourse'); //objeto
-        $programa = $request->get('dataProgram'); //objeto
-        $valor = $request->get('dataValue');
+        $programa = $request->get('programa');
+        $usuario = $request->get('usuario');
+        $tutor = $request->get('tutor');
 
-        $curso_detalle = strtoupper($curso['detalle']);
-        $tipo = $programa['cat_sis'];
-        $cod_prg = $programa['cod_prg'];
-        $cod_val = $valor['cod_val'];
-        $pre_val = $valor['pre_uni'];
-
-        if ($curso_detalle == '') {
-            $curso_detalle = $programa['cat_des'];
-        }
-        $gestion = $request->get('year'); //valor entero
+        $descripcion = strtoupper($programa['descripcion']);
+        $costo = $programa['costo'];
+        $fecha = $programa['fecha'];
+        $ci_tutor = $programa['ci_tutor'];
+        $des_tutor = $programa['des_tutor'];
+        $id_tipo = $programa['id_tipo'];
+        $des_tipo = $programa['des_tipo'];
+        $gestion = '2024'; //$usuario['gestion']'';
         $marcador = $request->get('marker');
 
         switch ($marcador) {
             case 'registrar':
-                $response = Resource::StoreCourseOfPostgraduate($curso_detalle, $tipo, $cod_prg, $cod_val, $pre_val, $gestion);
+                $response = Resource::StoreProgram($descripcion, $costo, $fecha, $ci_tutor, $des_tutor, $id_tipo, $gestion);
                 $course = $response[0]->{'ff_registrar_curso'};
                 break;
             case 'editar':
@@ -62,67 +45,11 @@ class ResourceController extends Controller
         }
         return json_encode($course);
     }
-    //  * RP3. Obtiene las transacciones realizadas en caja universitaria del valorado - curso de postgrado
-    public function getInputCourse(Request $request)
-    {
-        $gestion = $request->get('year'); //valor entero
-        $id = $request->get('id');
-        $data = Resource::GetInputCourse($id, $gestion);
-        return json_encode($data);
-    }
 
-    //  * RP4. Guarda las transacciones conciliadas del curso de postgrado
-    //Route::post('storeInputCourse', 'ResourceController@storeInputCourse');
-    public function storeInputCourse(Request $request)
-    {
-        \Log::info($request);
-        $id = $request->get('id');
-        $ingresos = $request->get('dataSelected'); //array
-        $usuario = $request->get('user'); //objeto
-        $marcador = $request->get('marker');
-        $usuario = $usuario['usuario'];
-        //$gestion = $usuario['gestion'];
-        $ingreso = 0;
-        switch ($marcador) {
-            case 'registrar':
-                # code add...
-                foreach ($ingresos as $item) {
-                    $ci_per = $item['ci_per'];
-                    $cod_val = $item['cod_val'];
-                    $des_per = $item['des_per'];
-                    $fec_tra = $item['fec_tra'];
-                    $gestion = $item['gestion'];
-                    $id_tran = $item['id_tran'];
-                    $imp_val = $item['imp_val'];
-                    $id_dia = $item['id_dia'];
-                    $tip_tra = $item['tip_tra'];
-                    $obs = '';
-                    $response = Resource::StoreInputCourse($id, $ci_per, $cod_val, $des_per, $fec_tra, $gestion, $id_tran, $imp_val, $id_dia, $tip_tra, $usuario, $obs);
-                    $ingreso = $response[0]->{'ff_registrar_ingreso_curso'};
-                }
-                break;
-            case 'editar':
-                //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
-                break;
-            default:
-                break;
-        }
-        return json_encode($ingreso);
-    }
-    //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
-    public function getInputTransactionsOfCourse(Request $request)
-    {
-        $gestion = $request->get('year'); //valor entero
-        $id = $request->get('id');
-        $data = Resource::GetInputTransactionsOfCourse($id, $gestion);
-        return json_encode($data);
-    }
-
-
-    //  * RP10. Obtener la lista de programas academicos 
+    //  * RP1. Obtener la lista de cursos de posgrado.
+    //  * parametros {description: descripcion que se esta buscando }
     public function getPrograms(Request $request)
     {
-        //$descripcion = strtoupper($request->get('description'));
         $gestion = $request->get('year');
         $data = Resource::GetPrograms($gestion);
         $page = ($request->get('page') ? $request->get('page') : 1);
@@ -137,10 +64,78 @@ class ResourceController extends Controller
         return json_encode($paginate);
     }
 
-    //  * RP11. Obtener la lista de programas academicos 
-    public static function getTypesOfProgram(Request $request)
+    //  * RP2. Obtener un curso de posgrado.
+    //Route::post('getProgramById', 'ResourceController@getProgramById');
+    public function getProgramById(Request $request)
     {
-        $data = Resource::GetTypesOfProgram();
+        $id = $request->get('id');
+        $data = Resource::GetProgramById($id);
         return json_encode($data);
+    }
+    //  * RP13. Obtener la lista de estudiantes por cursos de posgrado.
+    //Route::post('getStudentsByProgram', 'ResourceController@getStudentsByProgram');
+    public function getStudentsByProgram(Request $request)
+    {
+        $id = $request->get('id');
+        $data = Resource::GetStudentsByProgram($id);
+        return json_encode($data);
+    }
+    //  * RP14. Agregar un grupo de estudiantes al curso.
+    //Route::post('storeStudentByProgram', 'ResourceController@storeStudentByProgram');
+    public function storeStudentByProgram(Request $request)
+    {
+        $estudiante = $request->get('estudiante');
+        $id = $request->get('programa');
+
+        $ci_per = strtoupper($estudiante['ci_per']);
+        $des_per = strtoupper($estudiante['des_per']);
+        $deuda = $estudiante['deuda'];
+        $pago = $estudiante['pago'];
+        $saldo = $estudiante['saldo'];
+        $marcador = $request->get('marker');
+        switch ($marcador) {
+            case 'registrar':
+                $response = Resource::StoreStudentByProgram($id, $ci_per, $des_per, $deuda, $pago, $saldo);
+                $course = $response[0]->{'ff_registrar_curso_persona'};
+                break;
+            case 'editar':
+                //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
+                break;
+            default:
+                break;
+        }
+        return json_encode($course);
+    }
+    //  * RP15. Cerrar el curso.
+    //Route::post('closeFinallyProgram', 'ResourceController@closeFinallyProgram');
+    public function closeFinallyProgram(Request $request)
+    {
+        $id = $request->get('id');
+        $data = Resource::CloseFinallyProgram($id);
+        return json_encode($data);
+    }
+    //  * RP16. mostrar los pagos de un estudiante.
+    //Route::post('getStudentDetails', 'ResourceController@getStudentDetails');
+    public function getStudentDetails(Request $request)
+    {
+        $id = $request->get('id');
+        $id_estudiante = $request->get('id_student');
+        $data = Resource::GetStudentDetails($id, $id_estudiante);
+        return json_encode($data);
+    }
+    //  * RP17. imprimir la certificacion del estudiante
+    //Route::get('studentProgramCertificate/', 'DocumentController@studentProgramCertificate');
+    public function studentProgramCertificate(Request $request)
+    {
+        $id = $request->get('id');
+        $id_estudiante = $request->get('id_student');
+        $nreport = 'ResourceStudentProgramCertificate';
+        $controls = array(
+            'p_programa' => $id,
+            'estudiante' => $id_estudiante,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+
     }
 }

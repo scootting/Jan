@@ -150,7 +150,7 @@ Route::group([
     Route::post('addSaleOfDay', 'TreasureController@addSaleOfDay');
     // *** - Obtener los dias para la venta de valores de un usuario - ***
     Route::post('getSaleOfDayById', 'TreasureController@getSaleOfDayById');
-    
+
     //Route::post('getValueById', 'TreasureController@getValueById');
 
     //  |--------------------------------------------------------------------------
@@ -332,7 +332,6 @@ Route::group([
     //  * G24. Imprimir el reporte de regularizaciones del dia.
     Route::get('regularizeDetailDayReport/', 'FarmController@regularizeDetailDayReport');
 
-
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales
     //  |--------------------------------------------------------------------------
@@ -362,10 +361,27 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Recursos Propios
     //  |--------------------------------------------------------------------------
+    //  * RP11. Obtener la lista de programas academicos
+    Route::post('getTypesOfProgram', 'ResourceController@getTypesOfProgram');
+    //  * RP12. Guardar un curso de postgrado.
+    Route::post('storeProgram', 'ResourceController@storeProgram');
     //  * RP1. Obtener la lista de cursos de posgrado.
-    Route::post('courses', 'ResourceController@getCoursesOfPostgraduate');
-    //  * RP2. Guardar un curso de postgrado.
-    Route::post('storeCourseOfPostgraduate', 'ResourceController@storeCourseOfPostgraduate');
+    Route::post('getPrograms', 'ResourceController@getPrograms');
+    //  * RP2. Obtener un curso de posgrado.
+    Route::post('getProgramById', 'ResourceController@getProgramById');
+    //  * RP13. Obtener la lista de estudiantes por cursos de posgrado.
+    Route::post('getStudentsByProgram', 'ResourceController@getStudentsByProgram');
+    //  * RP14. Agregar un grupo de estudiantes al curso.
+    Route::post('storeStudentByProgram', 'ResourceController@storeStudentByProgram');
+    //  * RP15. Cerrar el curso.
+    Route::post('closeFinallyProgram', 'ResourceController@closeFinallyProgram');
+    //  * RP16. mostrar los pagos de un estudiante.
+    Route::post('getStudentDetails', 'ResourceController@getStudentDetails');
+    //  * RP17. imprimir la certificacion del estudiante
+    Route::get('studentProgramCertificate/', 'DocumentController@studentProgramCertificate');
+
+    
+
     //  * RP3. Obtiene las transacciones realizadas en caja universitaria del valorado - curso de postgrado
     Route::post('getInputCourse', 'ResourceController@getInputCourse');
     //  * RP4. Guarda las transacciones conciliadas del curso de postgrado
@@ -374,8 +390,6 @@ Route::group([
     Route::post('getInputTransactionsOfCourse', 'ResourceController@getInputTransactionsOfCourse');
     //  * RP10. Obtener la lista de programas academicos
     Route::post('getPrograms', 'ResourceController@getPrograms');
-    //  * RP11. Obtener la lista de programas academicos
-    Route::post('getTypesOfProgram', 'ResourceController@getTypesOfProgram');
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Elecciones
     //  |--------------------------------------------------------------------------
