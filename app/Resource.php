@@ -69,33 +69,46 @@ class Resource extends Model
         return $data;
     }
 
-
-
-
-    //  * RP3. Obtiene las transacciones realizadas en caja universitaria del valorado - curso de postgrado
-    public static function GetInputCourse($id, $gestion)
+    //  * RP3. Obtiene un estudiante registrado en un curso.
+    //Route::post('getStudentProgramById', 'DocumentController@getStudentProgramById');
+    public static function GetStudentProgramById($id_programa, $ci_per)
     {
-        $query = "select * from rec.ff_ingresos_curso('" . $id . "','" . $gestion . "')";
+        $query = "select *, c.id as id_programa from rec.programas c inner join rec.programa_personas d on c.id = d.id_programa WHERE c.id = " . $id_programa . " and d.ci_per ='". $ci_per . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    //  * RP4. Obtiene los tipos de pago.
+    //Route::post('getFormSaleProgram', 'DocumentController@getFormSaleProgram');
+    public static function GetFormSaleProgram()
+    {
+        $query = "select * from rec.metodo_pago";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    //  * RP18. Obtener los pagos de un curso de postgrado.
+    //Route::post('getSalesStudentByProgram', 'DocumentController@getSalesStudentByProgram');
+    public static function GetSaleStudentByProgram ($id)
+    {
+        $query = "select * from rec.programa_movimientos c inner join rec.metodo_pago d on d.ids = c.id_metodo WHERE c.id_programa = " . $id . "";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
-    //  * RP4. Guarda las transacciones conciliadas del curso de postgrado
-    public static function StoreInputCourse($id, $ci_per, $cod_val, $des_per, $fec_tra, $gestion, $id_tran, $imp_val, $id_dia, $tip_tra, $usuario, $obs)
+    //  * RP19. Agregar un pago de estudiantes al curso.
+    //Route::post('storeSaleStudentProgram', 'DocumentController@storeSaleStudentProgram');
+    public static function StoreSaleStudentProgram($id_programa, $ci_per, $des_per, $importe, $fecha, $id_metodo, $comprobante)
     {
-        $query = "select * from rec.ff_registrar_ingreso_curso(" . $id . ",'" . $ci_per . "','" . $cod_val . "','" . $des_per . "','" . $fec_tra . "','"
-            . $gestion . "'," . $id_tran . "," . $imp_val . "," . $id_dia . "," . $tip_tra . ",'" . $usuario . "','" . $obs . "')";
+        
+        $query = "select * from rec.ff_registrar_persona_pago(" . $id_programa . ",'". $ci_per . "','" . $des_per . "'," . $importe . ",'" . $fecha . "'," . $id_metodo . ",'" . $comprobante . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    // *RP20. actualizar los pagos, tras guardar un movimiento.
+    public static function UpdateMountStudentProgram($id_programa, $ci_per)
+    {
+        $query = "select * from rec.ff_actualizar_pagos(" . $id_programa . ",'". $ci_per . "')";
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-
-    //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
-    public static function getInputTransactionsOfCourse($id, $gestion)
-    {
-        $query = "select * from rec.concepto_flujo f where f.id_concepto = " . $id . " and f.gestion = '" . $gestion . "'";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-
 }

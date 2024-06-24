@@ -21,7 +21,7 @@
                   <el-input v-model="dataProgram.costo" disabled></el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button size="small" type="primary" @click.prevent="initCloseProgram" plain>Cerrar programa
+                  <el-button size="small" type="primary" @click.prevent="initCloseFinallyProgram" plain>Cerrar programa
                     Academico</el-button>
                 </el-form-item>
               </el-form>
@@ -29,8 +29,9 @@
           </el-col>
         </el-row>
       </div>
-      <div>
-        <el-table v-loading="loading" :data="dataStudents" style="width: 100%" fixed>
+      <br>
+      <div class="grid-content bg-purple">
+        <el-table v-loading="loading" :data="dataStudents" border style="width: 100%" fixed >
           <el-table-column width="120" label="no. de carnet">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
@@ -45,7 +46,6 @@
               </div>
             </template>
           </el-table-column>
-
           <el-table-column prop="deuda" width="100" label="deuda" align="right"></el-table-column>
           <el-table-column prop="pago" width="100" label="cancelado" align="right"></el-table-column>
           <el-table-column prop="saldo" width="100" label="saldo" align="right"></el-table-column>
@@ -53,7 +53,8 @@
             <template slot-scope="scope">
               <el-button @click="initStudentDetails(scope.row.ci_per)" type="primary" size="small">ver pagos
               </el-button>
-              <el-button @click="initStudentCertificate(scope.row.ci_per)" type="danger" size="small">imprimir certificacion
+              <el-button @click="initStudentCertificate(scope.row.ci_per)" type="danger" size="small">imprimir
+                certificacion
               </el-button>
             </template>
           </el-table-column>
@@ -82,11 +83,13 @@ export default {
       loading: true,
       isVisible: false,                                           //componente campo visible
       tag: 'persona',                                             //componente que informacion desea traer      
+      isVisiblePanel: false,
     };
   },
   mounted() {
     this.getProgramById();
     this.getStudentsByProgram();
+    console.log(this.dataProgram);
   },
   methods: {
     addStudentProgram() {
@@ -99,7 +102,8 @@ export default {
       let temporal = data;
       this.student.ci_per = temporal.id;
       this.student.des_per = temporal.details;
-      this.deuda =this.dataProgram.costo;
+      this.student.deuda = this.dataProgram.costo;
+      this.student.saldo = this.dataProgram.costo;
       this.storeStudentProgram();
     },
 
@@ -112,6 +116,7 @@ export default {
         });
         app.loading = false;
         app.dataProgram = response.data[0];
+        console.log(app.dataProgram);
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {
@@ -157,7 +162,7 @@ export default {
     },
 
     //  * RP15. Cerrar el curso.
-    async closeFinallyProgram() {
+    async initCloseFinallyProgram() {
       let app = this;
       try {
         let response = await axios.post("/api/closeFinallyProgram", {
@@ -185,6 +190,12 @@ export default {
         app.loading = false;
         console.log(response);
         app.dataTransactions = Object.values(response.data);
+        if (app.dataTransactions.length == 0) {
+          alert('la persona aun no tiene ningun pago.')
+        }
+        else {
+          isVisiblePanel = true;
+        }
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {

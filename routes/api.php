@@ -378,18 +378,16 @@ Route::group([
     //  * RP16. mostrar los pagos de un estudiante.
     Route::post('getStudentDetails', 'ResourceController@getStudentDetails');
     //  * RP17. imprimir la certificacion del estudiante
-    Route::get('studentProgramCertificate/', 'DocumentController@studentProgramCertificate');
+    Route::get('studentProgramCertificate/', 'ResourceController@studentProgramCertificate');
+    //  * RP3. Obtiene un estudiante registrado en un curso.
+    Route::post('getStudentProgramById', 'ResourceController@getStudentProgramById');
+    //  * RP4. Obtiene los tipos de pago.
+    Route::post('getFormSaleProgram', 'ResourceController@getFormSaleProgram');
+    //  * RP18. Obtener los pagos de un curso de postgrado.
+    Route::post('getSaleStudentByProgram', 'ResourceController@getSaleStudentByProgram');
+    //  * RP19. Agregar un pago de estudiantes al curso.
+    Route::post('storeSaleStudentProgram', 'ResourceController@storeSaleStudentProgram');
 
-    
-
-    //  * RP3. Obtiene las transacciones realizadas en caja universitaria del valorado - curso de postgrado
-    Route::post('getInputCourse', 'ResourceController@getInputCourse');
-    //  * RP4. Guarda las transacciones conciliadas del curso de postgrado
-    Route::post('storeInputCourse', 'ResourceController@storeInputCourse');
-    //  * RP5. obtiene los ingresos  conciliados del curso de postgrado
-    Route::post('getInputTransactionsOfCourse', 'ResourceController@getInputTransactionsOfCourse');
-    //  * RP10. Obtener la lista de programas academicos
-    Route::post('getPrograms', 'ResourceController@getPrograms');
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Elecciones
     //  |--------------------------------------------------------------------------

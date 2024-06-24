@@ -136,6 +136,59 @@ class ResourceController extends Controller
         );
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
+    }
+    //  * RP3. Obtiene un estudiante registrado en un curso.
+    //Route::post('getStudentProgramById', 'DocumentController@getStudentProgramById');
+    public function getStudentProgramById(Request $request)
+    {
+        $id_programa = $request->get('id_programa');
+        $ci_per = $request->get('ci_per');
+        $data = Resource::GetStudentProgramById($id_programa, $ci_per);
+        return json_encode($data);
+    }
+    //  * RP4. Obtiene los tipos de pago.
+    //Route::post('getFormSaleProgram', 'DocumentController@getFormSaleProgram');
+    public function getFormSaleProgram(Request $request)
+    {
+        $data = Resource::GetFormSaleProgram();
+        return json_encode($data);
+    }
+    //  * RP18. Obtener los pagos de un curso de postgrado.
+    //Route::post('getSalesStudentByProgram', 'DocumentController@getSalesStudentByProgram');
+    public function getSaleStudentByProgram (Request $request)
+    {
+        $id = $request->get('id');
+        $data = Resource::GetSaleStudentByProgram($id);
+        return json_encode($data);
+    }
 
+    //  * RP19. Agregar un pago de estudiantes al curso.
+    //Route::post('storeSaleStudentProgram', 'DocumentController@storeSaleStudentProgram');
+    public function storeSaleStudentProgram(Request $request)
+    {
+        $estudiante = $request->get('estudiante');
+        $id_programa = $request->get('programa');
+
+        $ci_per = strtoupper($estudiante['ci_per']);
+        $des_per = strtoupper($estudiante['des_per']);
+        $importe = $estudiante['importe'];
+        $fecha = $estudiante['fecha'];
+        $id_metodo = $estudiante['id_metodo'];
+        $comprobante = $estudiante['comprobante'];
+        $marcador = $request->get('marker');
+        switch ($marcador) {
+            case 'registrar':
+                $response = Resource::StoreSaleStudentProgram($id_programa, $ci_per, $des_per, $importe, $fecha, $id_metodo, $comprobante);
+                $course = $response[0]->{'ff_registrar_persona_pago'};
+                $response = Resource::UpdateMountStudentProgram($id_programa, $ci_per);
+                $course = $response[0]->{'ff_actualizar_pagos'};
+                break;
+            case 'editar':
+                //$data = General::UpdatePerson($personal, $nombres, $paterno, $materno, $sexo, $nacimiento);
+                break;
+            default:
+                break;
+        }
+        return json_encode($course);
     }
 }
