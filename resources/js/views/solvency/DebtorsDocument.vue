@@ -18,7 +18,7 @@
                     <el-table-column prop="idc" label="no." width="90" align="center">
                         <template slot-scope="scope">
                             <el-tag size="medium">{{ scope.row.idc }}</el-tag>
-                        </template>
+                        </template> 
                     </el-table-column>
                     <el-table-column prop="unidad" label="unidad" width="250"></el-table-column>
                     <el-table-column prop="ci_per" label="carnet" width="130" align="center">

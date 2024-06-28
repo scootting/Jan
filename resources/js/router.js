@@ -7,8 +7,9 @@ import Programs from './views/resources/Programs.vue'
 import AddProgram from './views/resources/AddProgram.vue'
 import AddStudentProgram from './views/resources/AddStudentProgram.vue'
 import AddSaleProgram from './views/resources/AddSaleProgram.vue'
-//import CoursesPostgraduate from './views/resources/CoursesPostgraduate.vue'
-//import AddCoursePostgraduate from './views/resources/AddCoursePostgraduate.vue'
+import AddConsumeProgram from './views/resources/AddConsumeProgram.vue'
+import AddTutorProgram from './views/resources/AddTutorProgram.vue'
+import AddAssetProgram from './views/resources/AddAssetProgram.vue'
 
 
 //Solvencias
@@ -248,6 +249,9 @@ const router = new VueRouter({
                 { path: 'programs/add', name: 'addprogram', component: AddProgram },
                 { path: 'programs/student/:id', name: 'addstudentprogram', component: AddStudentProgram },
                 { path: 'programs/sale/:id', name: 'addsaleprogram', component: AddSaleProgram },
+                { path: 'programs/consume', name: 'addtutorprogram', component: AddTutorProgram },
+                { path: 'programs/asset', name: 'addconsumeprogram', component: AddConsumeProgram },
+                { path: 'programs/tutor', name: 'addassetprogram', component: AddAssetProgram },                
                 /*
                 { path: 'CoursesPostgraduate', name: 'coursesPostgraduate', component: CoursesPostgraduate },
                 { path: 'CoursesPostgraduate/add', name: 'addCoursePostgraduate', component: AddCoursePostgraduate },

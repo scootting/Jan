@@ -173,8 +173,9 @@ class Farm extends Model
     }
 
     //  * G23. Kardex fisico valorado
-    public static function GetKardexById($id, $year){
-        $query = "select * from vgra.ff_kardex_fisico('" . $id . "','" . $year . "')";
+    public static function GetKardexById($id, $year, $inicial, $final)
+    {
+        $query = "select * from vgra.ff_kardex_fisico('" . $id . "','" . $year . "','" . $inicial . "','" . $final . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

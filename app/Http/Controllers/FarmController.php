@@ -324,12 +324,16 @@ class FarmController extends Controller
     {
         $id = $request->get('codigo');
         $gestion = $request->get('gestion');
+        $inicial = $request->get('inicial');
+        $final = $request->get('final');
         \Log::info($id);
         \Log::info($gestion);
         $nreport = 'FarmKardexByProduct';
         $controls = array(
             'p_codigo' => $id,
             'p_gestion' => $gestion,
+            'p_inicial' => $inicial,
+            'p_final' => $final,
         );
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
@@ -340,7 +344,10 @@ class FarmController extends Controller
     {
         $id = $request->get('id');
         $gestion = $request->get('year');
-        $data = Farm::GetKardexById($id, $gestion);
+        $dataDays = $request->get('range');
+        $fecha_inicial = $dataDays['initial'];
+        $fecha_final = $dataDays['final'];
+        $data = Farm::GetKardexById($id, $gestion, $fecha_inicial, $fecha_final);
         return json_encode($data);
     }
 

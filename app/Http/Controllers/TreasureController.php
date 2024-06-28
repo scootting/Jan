@@ -145,7 +145,7 @@ class TreasureController extends Controller
     public function getValuesProcedure(Request $request)
     {
         $id_modalidad = $request->get('id');
-        $ci_per = $request->get('ci_per');
+        $id_programa = $request->get('id_programa');
         $year = $request->get('year');
         switch ($id_modalidad) {
             case 1: //EXAMEN PSA
@@ -156,7 +156,10 @@ class TreasureController extends Controller
             case 20: //3ra PSA
             case 13: //TRASPASO
             case 101: //EXAMEN P.S.A. - R027/2022
-                $description = 'NUEVOS';
+                if($id_programa == 'TMF')
+                    $description = 'LLICA';
+                else
+                    $description = 'NUEVOS';
                 break;
             case 39: //CODEMETROP
                 $description = 'CONVENIO_MEDICO';

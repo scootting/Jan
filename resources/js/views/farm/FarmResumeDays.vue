@@ -20,7 +20,6 @@
                             icon="el-icon-search" plain>Buscar movimientos</el-button>
                     </el-form-item>
                 </el-form>
-
                 <el-table v-loading="loading" :data="dataDays" height="450" style="width: 100%" fixed>
                     <el-table-column prop="fec_tra" label="fecha" :min-width="100">
                         <template slot-scope="scope">
