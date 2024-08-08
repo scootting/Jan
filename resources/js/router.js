@@ -2,6 +2,9 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
+
+import ServicesOrder from './views/service/ServicesOrder.vue'
+
 //recursos propios
 import Programs from './views/resources/Programs.vue'
 import AddProgram from './views/resources/AddProgram.vue'
@@ -200,11 +203,12 @@ const router = new VueRouter({
                 //{ path: 'assets', name: 'assets', component: Assets },
                 // enlaces para administrar los usuarios
                 { path: 'users', name: 'users', component: Users },
-                { path: 'user/add', name: 'adduser', component: AddUser },
-                { path: 'user/:id', name: 'edituser', component: EditUser },
-                { path: 'user/show', name: 'showuser', component: ShowUser },
-                { path: 'user/profiles', name: 'edituserprofiles', component: EditUserProfiles },
+                { path: 'users/add', name: 'adduser', component: AddUser },
+                { path: 'users/:id', name: 'edituser', component: EditUser },
+                { path: 'userprofiles', name: 'showuser', component: ShowUser },
+                { path: 'users/profiles', name: 'edituserprofiles', component: EditUserProfiles },
 
+                { path: 'servicesOrder', name: 'servicesorder', component: ServicesOrder },
                 //Modulo para administrar y gestionar inventarios de bienes de uso
                 // Lionel - enlace a la lista de inventarios para la gestion 
                 { path: 'inventory2', name: 'inventory2', component: Inventory2 },

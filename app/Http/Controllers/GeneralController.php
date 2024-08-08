@@ -31,6 +31,17 @@ class GeneralController extends Controller
         return response()->json('Logged out successfully', 200);
     }
 
+    //  *  A3. cambiar la contraseña personal del cliente
+    //  * {pass_ant: password anterior, pass_act: password nuevo, pass_con: password confirmado}
+    public function changePassword(Request $request)
+    {
+        $id = strtoupper($request->get('id'));
+        $pass_actual = $request->get('actual');
+        $pass_nuevo = $request->get('nuevo');
+        $pass_confirma = $request->get('confirma');
+        $data = General::ChangePassword($id, $pass_actual, $pass_nuevo, $pass_confirma);
+        return json_encode($data);
+    }
     //  * Registrar un usuario en el recurso.
     public function storeUser(Request $request)
     {

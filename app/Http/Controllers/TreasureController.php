@@ -174,7 +174,12 @@ class TreasureController extends Controller
                 $description = 'LLICA';
                 break;
             case 10: //simultanea
-                $description = 'SIMULTANEA';
+                if($id_programa == 'TMF')
+                    $description = 'LLICA';
+                else
+                    $description = 'SIMULTANEA';
+                break;
+
                 break;
             case 9: //CAOB
             case 42: //ORIGINARIA 43

@@ -29,6 +29,10 @@ Route::group([
     Route::post('doc/upload', 'GeneralController@uploadPDF');
 
     // *** - rutas para crear, editar, mostrar, buscar a los usuarios del sistema - ***
+    //  *  A3. cambiar la contraseña personal del cliente
+    //  * {pass_ant: password anterior, pass_act: password nuevo, pass_con: password confirmado}
+    Route::post('changePassword', 'GeneralController@changePassword');
+
     Route::post('users', 'GeneralController@getUsersByDescription');
     Route::post('user', 'GeneralController@storeUser');
     Route::get('user/{id}', 'GeneralController@getUserById');

@@ -10,6 +10,17 @@ use App\Libraries\DynamicMenu;
 class General extends Model
 {
 
+    //  *  A3. cambiar la contraseña personal del cliente
+    //  * {pass_ant: password anterior, pass_act: password nuevo, pass_con: password confirmado}    
+    public static function changePassword($card, $pass_actual, $pass_nuevo, $pass_confirma)
+    {
+        $query = "select * from app.ff_cambiar_contrasena('" . $card . "', '" . $pass_actual . "', '" . $pass_nuevo . "', '" . $pass_confirma . "')";
+        //\Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
     //  * S1. Obtiene la informacion de la persona con el numero de carnet
     //  * parametros [id: numero de carnet de identidad ]    
     public static function GetPersonByIdentityCard($identityCard)
