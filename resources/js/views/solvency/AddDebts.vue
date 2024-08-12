@@ -29,7 +29,7 @@
                                 </el-form-item>
                                 <el-form-item label="referencia" prop="referencia">
                                     <el-input type="textarea" autosize placeholder="Ingrese una referencia"
-                                        v-model="debtorDocument.referencia">
+                                        v-model="debtorDocument.detalle">
                                     </el-input>
                                 </el-form-item>
                             </el-form>

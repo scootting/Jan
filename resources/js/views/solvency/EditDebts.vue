@@ -30,7 +30,7 @@
                 </el-form-item>
                 <el-form-item label="referencia" prop="referencia">
                   <el-input type="textarea" autosize placeholder="Ingrese una referencia"
-                    v-model="debtorDocument.referencia">
+                    v-model="debtorDocument.detalle">
                   </el-input>
                 </el-form-item>
                 <el-form-item>
@@ -95,10 +95,12 @@ export default {
     };
   },
   mounted() {
-    console.log(this.user);
     this.getDocumentDetails();
   },
   methods: {
+    test(){
+
+    },
     async getDocumentDetails() {
       var app = this;
       try {
@@ -108,11 +110,11 @@ export default {
         });
         console.log(response);
         app.debtors = response.data.documentDetails;
-        app.pr
         app.debtorDocument = response.data.document[0];
-        console.log("recibido");
-        console.log(app.documentsArchive);
-
+        console.log(app.debtors);
+        app.prg.details = app.debtorDocument.des_prg;
+        console.log("Documento");
+        console.log(app.debtorDocument);
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {
@@ -120,6 +122,7 @@ export default {
         });
       }
     },
+    
     //  * S2. Guardar la informacion de un nuevo documento de deuda.
     async storeDebtorDocument() {
       var app = this;
@@ -133,24 +136,10 @@ export default {
           marker: "registrar",
         });
         app.numero = response.data;
-        console.log(response);
-        this.$confirm('Cuenta con la documentacion que corresponde a la deuda?', 'Proceso de Verificacion', {
-          confirmButtonText: 'Continuar',
-          cancelButtonText: 'Cancelar',
-          type: 'success'
-        }).then(() => {
-          /*pasa directamente al editar*/
-          this.$router.push({
-            name: "editdebts",
-            params: {
-              id: response.data,
-            },
+        this.$router.push({
+            name: "debts",
           });
-
-        }).catch(() => {
-          /*pasa directamente a la lista de deudas*/
-          this.$router.push({ name: "DebtorsDocument" });
-        });
+        console.log(response);
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {

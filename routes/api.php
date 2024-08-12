@@ -275,9 +275,12 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
     Route::post('getDebtorsDocument', 'SolvencyController@getDebtorsDocument');
-    //  * SO2. Agregar un nuevo documento de deudor
+    //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion y gestion
+    Route::post('getDebtorsDocumentByYear', 'SolvencyController@getDebtorsDocumentByYear');    
+        //  * SO2. Agregar un nuevo documento de deudor
     Route::post('storeDebtorDocument', 'SolvencyController@storeDebtorDocument');
     //  * SO3. Obtiene la informacion necesario del recurso solicitado por su id
+    
     Route::post('getDocumentDetails', 'SolvencyController@getDocumentDetails');
     // *  SO4. Guarda los documentos digitalizados de las deudas
     Route::post('storeDigitalDocumentSolvency', 'SolvencyController@storeDigitalDocument');

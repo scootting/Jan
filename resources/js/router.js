@@ -17,8 +17,11 @@ import AddAssetProgram from './views/resources/AddAssetProgram.vue'
 
 //Solvencias
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
-import AddDebtorDocument from './views/solvency/AddDebtorDocument.vue'
-
+import Debts from './views/solvency/Debts.vue'
+import AddDebts from './views/solvency/AddDebts.vue'
+import EditDebts from './views/solvency/EditDebts.vue'
+import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
+import AddRegularizeDebts from './views/solvency/AddRegularizeDebts.vue'
 
 //Estados Financieros
 
@@ -28,13 +31,6 @@ import FinancialStatementDetails from './views/document/FinancialStatementDetail
 //Sistema de Votaciones
 import Tablets from './views/election/Tablets.vue'
 import TabletDetails from './views/election/TabletDetails.vue'
-
-
-import EditDebts from './views/solvency/EditDebts.vue'
-import AddDebts from './views/solvency/AddDebts.vue'
-import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
-
-
 
 //documentacion: memoriales
 import RequestMemorial from './views/document/RequestMemorial.vue'
@@ -349,16 +345,13 @@ const router = new VueRouter({
                 //  |--------------------------------------------------------------------------    
                 //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
                 { path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument },
-                //{ path: 'debtorsdocument', name: 'debtorsdocument', component: DebtorsDocument2 },
-                //  * SO2. Agregar un nuevo documento de deudor
-                //{ path: 'debtordocument/add', name: 'adddebtordocument', component: AddDebtorDocument },
-
-                //  * SO3. Editar un nuevo documento de deudor
-                { path: 'debts/edit/:id', name: 'editdebts', component: EditDebts },
-                //  * SO4. Agregar Deudas 
+                //  * SO2. Agregar Deudas 
+                { path: 'debts', name: 'debts', component: Debts },
                 { path: 'debts/add', name: 'adddebts', component: AddDebts },
-                //  * SO5. Regularizar Deudas
-                { path: 'debts/regularize/:id', name: 'regularizedebts', component: RegularizeDebts },
+                { path: 'debts/:id', name: 'editdebts', component: EditDebts },
+                //  * SO3. Regularizar Deudas
+                { path: 'regularize', name: 'regularizedebts', component: RegularizeDebts },
+                { path: 'regularize/add', name: 'addregularizedebts', component: AddRegularizeDebts },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Modulo de Presupuestos Individuales

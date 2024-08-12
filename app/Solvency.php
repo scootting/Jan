@@ -22,6 +22,19 @@ class Solvency extends Model
         return $data;
     }
 
+    public static function GetDebtorsDocumentByYear($description, $year)
+    {
+        # code...
+        if ($description == '') {
+            $query = "select * from sol.ff_deudor_gestion('','" . $year . "')";
+        } else {
+            $query = "select * from sol.ff_deudor_gestion('" . $description . "','". $year ."')";
+        }
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
     //  * SO2. Guardar la informacion de un nuevo documento de deuda.
     public static function AddDocument($tipo, $fecha, $ci_elab, $ci_resp, $ci_vobo, $usr_cre, $gestion)
     {

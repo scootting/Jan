@@ -28,6 +28,25 @@ class SolvencyController extends Controller
         return json_encode($paginate);
     }
 
+    public function getDebtorsDocumentByYear(Request $request)
+    {
+        $descripcion = strtoupper($request->get('description')); // '' cadena vacia
+        $gestion = strtoupper($request->get('year')); // '' cadena vacia
+        $data = Solvency::GetDebtorsDocumentByYear($descripcion, $gestion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 30;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getDebtorsDocument')]
+        );
+        return json_encode($paginate);
+    }
+
+
+
     //  * S2. Agregar un nuevo documento de deudor
     //  * Route::post('storeDebtorDocument/', 'SolvencyController@storeDebtorDocument');
     public function storeDebtorDocument(Request $request)
@@ -35,7 +54,7 @@ class SolvencyController extends Controller
         //  * Datos para la solicitud de documento de deuda
         \Log::info($request);
         $documento = $request->get('documento');
-        $referencia = strtoupper($documento['referencia']);
+        $referencia = strtoupper($documento['detalle']);
         $fecha = strtoupper($documento['fecha']);
 
         $programa = $request->get('programa');
