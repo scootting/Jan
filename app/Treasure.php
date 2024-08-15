@@ -264,6 +264,7 @@ class Treasure extends Model
         return $data;
     }
 
+    //  * TE2. Obtiene las transacciones de un valor que se vende de acuerdo a un rango de fechas
     public static function GetValueTransactionsById($valueCode, $initialDate, $finalDate)
     {
         $query = "select * from val.tra_dia a inner join val.tip_tra b on a.tip_tra = b.tip_tra " .
@@ -272,5 +273,28 @@ class Treasure extends Model
         return $data;
     }
 
+    //  * TE4. Obtiene la lista de valores asignados a un usuario
+    public static function GetUserValues($id)
+    {
+        //SELECT * FROM bval.ff_transacciones_persona('6600648')
+        $query = "SELECT * FROM bval.ff_valores_usuario('" . $id . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  * TE5. Obtiene las cuotas realizadas para un valorado    
+    public static function getGroupValueTransactionsByCode($valueCode)
+    {
+        $query = "select * from  bval.ff_transacciones_agrupadas('" . $valueCode . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    //  * TE6. Obtiene las cuotas realizadas para un valorado detallado por persona
+    public static function getSingleValueTransactionsByCode($valueCode, $dni)
+    {
+        $query = "select * from  bval.ff_transacciones_detalladas('" . $valueCode . "','" . $dni ."')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
 }

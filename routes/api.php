@@ -181,7 +181,12 @@ Route::group([
     Route::post('getValueTransactionsById', 'TreasureController@getValueTransactionsById');
     //  * TE3. Resumen
     Route::get('getValueTransactionsReport/', 'TreasureController@getValueTransactionsReport');
-
+    //  * TE4. Obtiene el valor
+    Route::post('getUserValues', 'TreasureController@getUserValues');
+    //  * TE5. Obtiene las cuotas realizadas para un valorado
+    Route::post('getGroupValueTransactionsByCode', 'TreasureController@getGroupValueTransactionsByCode');
+    //  * TE6. Obtiene las cuotas realizadas para un valorado detallado por persona
+    Route::post('getSingleValueTransactionsByCode', 'TreasureController@getSingleValueTransactionsByCode');
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Activos Fijos
     //  |--------------------------------------------------------------------------
@@ -276,11 +281,11 @@ Route::group([
     //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
     Route::post('getDebtorsDocument', 'SolvencyController@getDebtorsDocument');
     //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion y gestion
-    Route::post('getDebtorsDocumentByYear', 'SolvencyController@getDebtorsDocumentByYear');    
-        //  * SO2. Agregar un nuevo documento de deudor
+    Route::post('getDebtorsDocumentByYear', 'SolvencyController@getDebtorsDocumentByYear');
+    //  * SO2. Agregar un nuevo documento de deudor
     Route::post('storeDebtorDocument', 'SolvencyController@storeDebtorDocument');
     //  * SO3. Obtiene la informacion necesario del recurso solicitado por su id
-    
+
     Route::post('getDocumentDetails', 'SolvencyController@getDocumentDetails');
     // *  SO4. Guarda los documentos digitalizados de las deudas
     Route::post('storeDigitalDocumentSolvency', 'SolvencyController@storeDigitalDocument');

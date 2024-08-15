@@ -7,15 +7,14 @@
       </div>
       <h1>bienvenido/a</h1>
       <h5>esta pagina a sido intencionalmente puesta en blanco</h5>
+      <!-- 
       <el-button type="primary" @click="test">Mensaje de bienvenida...</el-button>
       <el-button type="primary" @click="buscarPersona">Componente persona</el-button>
       <el-button type="primary" @click="buecarCategoria">Componente categoria</el-button>
       <information :visible="isVisible" :tag='mensaje' @update-visible="updateIsVisible"></information>
-      <!-- 
-      -->
       <h1>{{data.id}}</h1>
       <h2>{{data.details}}</h2>
-
+      -->
     </el-card>
   </div>
 </template>

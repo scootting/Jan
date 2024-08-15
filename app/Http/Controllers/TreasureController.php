@@ -466,6 +466,9 @@ class TreasureController extends Controller
         return null;
         return json_encode($data);
     }
+
+
+
     //  * TE1. Obtiene el valor
     public function getValueById(Request $request)
     {
@@ -505,4 +508,34 @@ class TreasureController extends Controller
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
+
+    //  * TE4. Obtiene la lista de valores asignados a un usuario
+    public function getUserValues(Request $request)
+    {
+        $usuario = $request->get('user');
+        $ci_per  = trim($usuario['nodip']);
+        $dataValue = Treasure::GetUserValues($ci_per);
+        return json_encode($dataValue);
+    }
+
+    //  * TE5. Obtiene las cuotas realizadas para un valorado    
+    public function getGroupValueTransactionsByCode(Request $request)
+    {
+        $valor = $request->get('data');
+        $codigo_valor  = $valor['codigo_asociado'];
+        $dataValueTransactions = Treasure::GetGroupValueTransactionsByCode($codigo_valor);
+        return json_encode($dataValueTransactions);
+    }
+
+    //  * TE5. Obtiene las cuotas realizadas para un valorado    
+    public function getSingleValueTransactionsByCode(Request $request)
+    {
+        $valor = $request->get('data');
+        $ci_per = $request->get('ci_per');
+        $codigo_valor  = $valor['codigo_asociado'];
+        $dataValueTransactions = Treasure::GetSingleValueTransactionsByCode($codigo_valor, $ci_per);
+        return json_encode($dataValueTransactions);
+    }
+
+
 }

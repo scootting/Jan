@@ -120,6 +120,7 @@ import SelectedFixedAssetsByDocument from './views/fixedasset/SelectedFixedAsset
 
 //tesoreria
 import ValueTransactions from './views/treasure/ValueTransactions'
+import TransactionsValue from './views/treasure/TransactionsValue'
 
 import Solvency from './views/treasure/Solvency'
 import SaleStudents from './views/treasure/SaleStudents'    //lista de dias de alumnos nuevos
@@ -276,6 +277,8 @@ const router = new VueRouter({
 
                 //  * TE1. Obtiene las transacciones de un valor que se vende de acuerdo a un rango de fechas
                 { path: 'ValueTransactions', name: 'valuetransactions', component: ValueTransactions },
+                //  * TE2. Obtiene las transacciones de un valor que se vende de acuerdo a un rango de fechas por usuario asignado
+                { path: 'TransactionsValue', name: 'transactionsvalue', component: TransactionsValue },
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Sistema de Archivos
