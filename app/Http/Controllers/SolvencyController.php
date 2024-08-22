@@ -107,7 +107,8 @@ class SolvencyController extends Controller
         $tipo = $request->get('typed');
         $document = Solvency::GetDocument($id, $tipo);
         $documentDetails = Solvency::GetDocumentDetails($id, $tipo);
-        return json_encode(['document' => $document, 'documentDetails' => $documentDetails]);
+        $documentDigital = Solvency::GetDocumentDigital($id, $tipo);
+        return json_encode(['document' => $document, 'documentDetails' => $documentDetails, 'documentDigital' => $documentDigital]);
     }
 
     // * SO4. Guarda los documentos digitalizados de las deudas

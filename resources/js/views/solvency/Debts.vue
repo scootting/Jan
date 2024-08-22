@@ -21,7 +21,7 @@
                             <el-tag size="medium">{{ scope.row.idc }}</el-tag>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="unidad" label="unidad" width="250"></el-table-column>
+                    <el-table-column prop="des_prg" label="unidad" width="220"></el-table-column>
                     <el-table-column prop="ci_per" label="carnet" width="130" align="center">
                         <template slot-scope="scope">
                             <el-tag size="medium">{{
@@ -31,7 +31,7 @@
                     </el-table-column>
                     <el-table-column prop="des_per" label="apellidos y nombres" width="250"></el-table-column>
                     <el-table-column prop="detalle" label="detalle" width="400"></el-table-column>
-                    <el-table-column width="100">
+                    <el-table-column width="100" fixed="right">
                         <template slot-scope="scope">
                             <div v-if="scope.row.estado2 !== 'Regularizado'">
                                 <el-tag type="danger" effect="dark">{{ scope.row.estado2 }}</el-tag>

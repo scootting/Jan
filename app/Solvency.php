@@ -60,21 +60,31 @@ class Solvency extends Model
         return $data;
 
     }
-
+    
     // * SO3. Obtiene la informacion para editar el documento de deuda
     public static function GetDocument($id, $typed)
     {
-        $query = "select * from sol.documentos d where d.id = '" . $id . "' and d.tipo = '". $typed . "'";
+        $query = "select * from sol.ff_datos_documento('" . $id . "', '". $typed . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
     // * SO3. Obtiene la informacion para editar el documento de deuda
     public static function GetDocumentDetails($id, $typed)
     {
-        $query = "select c.* from sol.conceptos c inner join sol.documentos d on c.id_documentos = d.id where d.id = '" . $id . "' and d.tipo = '". $typed . "'";
+        $query = "select * from sol.ff_datos_documento_detalle('" . $id . "', '". $typed . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    // * SO3. Obtiene la informacion para editar el documento de deuda
+    public static function GetDocumentDigital($id, $typed)
+    {
+        $query = "select id, tipo, referencia, id_documento from sol.digitales d where d.id_documento = '" . $id . "' and d.tipo ='". $typed . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
 
     // * SO4 Guarda los documentos digitalizados de las deudas
     public static function StoreDigitalDocument($id, $des_doc, $escaped)

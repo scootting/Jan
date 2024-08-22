@@ -20,6 +20,7 @@ import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
 import Debts from './views/solvency/Debts.vue'
 import AddDebts from './views/solvency/AddDebts.vue'
 import EditDebts from './views/solvency/EditDebts.vue'
+import ShowDebts from './views/solvency/ShowDebts.vue'
 import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
 import AddRegularizeDebts from './views/solvency/AddRegularizeDebts.vue'
 
@@ -352,6 +353,7 @@ const router = new VueRouter({
                 { path: 'debts', name: 'debts', component: Debts },
                 { path: 'debts/add', name: 'adddebts', component: AddDebts },
                 { path: 'debts/:id', name: 'editdebts', component: EditDebts },
+                { path: 'debts/show/:id', name: 'showdebts', component: ShowDebts },
                 //  * SO3. Regularizar Deudas
                 { path: 'regularize', name: 'regularizedebts', component: RegularizeDebts },
                 { path: 'regularize/add', name: 'addregularizedebts', component: AddRegularizeDebts },

@@ -285,7 +285,6 @@ Route::group([
     //  * SO2. Agregar un nuevo documento de deudor
     Route::post('storeDebtorDocument', 'SolvencyController@storeDebtorDocument');
     //  * SO3. Obtiene la informacion necesario del recurso solicitado por su id
-
     Route::post('getDocumentDetails', 'SolvencyController@getDocumentDetails');
     // *  SO4. Guarda los documentos digitalizados de las deudas
     Route::post('storeDigitalDocumentSolvency', 'SolvencyController@storeDigitalDocument');
