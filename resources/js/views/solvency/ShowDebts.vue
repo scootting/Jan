@@ -25,7 +25,7 @@
                 </el-form-item>
               </el-form>
               <el-form ref="form" :model="debt" label-width="160px" size="small">
-                <el-form-item label="estado">
+                <el-form-item label="detalle">
                   {{ debt.detalle }}
                 </el-form-item>
                 <el-form-item label="estado">
