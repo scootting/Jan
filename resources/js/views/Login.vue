@@ -4,7 +4,7 @@
       <el-row :gutter="20">
         <el-col :span="6" :offset="9">
           <div class="header">
-            <h2>Universidad Autonoma "Tomas Frias"</h2>
+            <h3>Universidad Autonoma "Tomas Frias"</h3>
           </div>
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -134,8 +134,8 @@ export default {
 
 .header,
 .footer {
-  padding: 20px 20px;
-  color: #f0f4f8;
+  padding: 20px 10px;
+  color: #A9A9A9;
   display: flex;
   flex-direction: column;
   align-items: center;

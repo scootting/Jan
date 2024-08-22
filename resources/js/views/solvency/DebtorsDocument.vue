@@ -26,8 +26,8 @@
                         </template>
                     </el-table-column>
                     <el-table-column prop="des_per" label="apellidos y nombres" width="250"></el-table-column>
-                    <el-table-column prop="detalle" label="detalle" width="400"></el-table-column>
-                    <el-table-column width="100" fixed="right">
+                    <el-table-column prop="detalle" label="detalle" width="300"></el-table-column>
+                    <el-table-column width="120" fixed="right">
                         <template slot-scope="scope">
                             <div v-if="scope.row.estado2 !== 'Regularizado'">
                                 <el-tag type="danger" effect="dark">{{ scope.row.estado2 }}</el-tag>
