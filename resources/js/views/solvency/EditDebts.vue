@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>VERIFICAR DOCUMENTO DE DEUDA</span>
+        <span>editar documento de deuda no.  {{ id }}</span>
         <el-button style="float: right; padding: 3px 0" type="text">ayuda</el-button>
       </div>
       <div>
@@ -15,12 +15,12 @@
                   {{ debtorDocument.idc }}
                 </el-form-item>
                 <el-form-item label="unidad" prop="details">
-                  <el-input placeholder="" v-model="prg.details" class="input-with-select">
+                  <el-input placeholder="" v-model="debt.des_prg" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search" @click="initSearchPrg">BUSCAR</el-button>
                   </el-input>
                 </el-form-item>
-                <el-form-item label="responsable" prop="resp">
-                  <el-input placeholder="" v-model="manager.details" class="input-with-select">
+                <el-form-item label="responsable" prop="des_resp">
+                  <el-input placeholder="" v-model="debtorDocument.des_resp" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search" @click="initSearchManager">BUSCAR</el-button>
                   </el-input>
                 </el-form-item>
@@ -30,13 +30,15 @@
                 </el-form-item>
                 <el-form-item label="referencia" prop="referencia">
                   <el-input type="textarea" autosize placeholder="Ingrese una referencia"
-                    v-model="debtorDocument.detalle">
+                    v-model="debt.detalle">
                   </el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="test" type="primary" size="small" plain>Agregar documento digitalizado
+                  <el-button @click="test" type="primary" size="small">Guardar Cambios
                   </el-button>
                 </el-form-item>
+                <!--
+                -->
               </el-form>
             </div>
             <p></p>
@@ -55,18 +57,29 @@
                 </el-table-column>
               </el-table>
               <p></p>
-              <el-button @click="initSearchDebtor" type="primary" size="small" plain>Buscar
+              <el-button @click="initSearchDebtor" type="primary" size="small">agregar deudor
+              </el-button>
+              <p>documentacion</p>
+              <el-table :data="digital" style="width: 100%" size="small">
+                <el-table-column prop="des_per" label="referencia" width="220"></el-table-column>
+                <el-table-column align="right">
+                  <template slot-scope="scope">
+                    <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
+                      size="small">Eliminar</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <p></p>
+              <el-button @click="initSearchDebtor" type="primary" size="small">Agregar documento digitalizado
               </el-button>
             </div>
           </el-col>
         </el-row>
-        <el-row>
-
-        </el-row>
       </div>
-      <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
+      <!--
+      <el-button @click="storeDebtorDocument" type="primary" size="small">guardar cambios
       </el-button>
-
+      -->
       <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
     </el-card>
   </div>
@@ -87,10 +100,13 @@ export default {
       tag: '',                    //componente que informacion desea traer
       flag: '',                   //deudor, responsable, categoria programatica
       dialogFormVisible: false,   //hace visible el formulario de cosas adeudadas
+      digital: [],                //deudores
       debtors: [],                //deudores
+      debt: {},                   //un solo deudor
+      debtorDocument: {},         //documento de deuda
+
       manager: {},                //responsable (director de carrera, jefe de division)
       prg: {},                    //categoria programatica
-      debtorDocument: {},         //documento de deuda
       numero: 0,
     };
   },
@@ -108,12 +124,10 @@ export default {
           id: app.id,
           typed: 'D',
         });
-        console.log(response);
-        app.debtors = response.data.documentDetails;
         app.debtorDocument = response.data.document[0];
-        console.log(app.debtors);
-        app.prg.details = app.debtorDocument.des_prg;
-        console.log("Documento");
+        app.debtors = response.data.documentDetails;
+        app.debt = response.data.documentDetails[0];
+        app.digital = response.data.documentDigital;
         console.log(app.debtorDocument);
       } catch (error) {
         this.error = error.response.data;

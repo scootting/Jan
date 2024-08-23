@@ -2,7 +2,7 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>deudores de la presente gestion</span>
+                <span>lista de deudores de la gestion : {{ user.gestion }}</span>
                 <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
                     @click="initAddDebtorDocument">registrar nueva deuda</el-button>
             </div>
@@ -10,7 +10,7 @@
             <div style="margin-top: 15px">
                 <el-input placeholder="INSERTE UNA DESCRIPCION" v-model="writtenTextParameter"
                     class="input-with-select">
-                    <el-button slot="append" icon="el-icon-search" @click="getDebtorsDocument(1)"></el-button>
+                    <el-button slot="append" icon="el-icon-search" @click="getDebtorsDocumentByYear(1)"></el-button>
                 </el-input>
             </div>
             <div>
@@ -31,7 +31,7 @@
                     </el-table-column>
                     <el-table-column prop="des_per" label="apellidos y nombres" width="250"></el-table-column>
                     <el-table-column prop="detalle" label="detalle" width="400"></el-table-column>
-                    <el-table-column width="100" fixed="right">
+                    <el-table-column width="120" fixed="right">
                         <template slot-scope="scope">
                             <div v-if="scope.row.estado2 !== 'Regularizado'">
                                 <el-tag type="danger" effect="dark">{{ scope.row.estado2 }}</el-tag>
@@ -41,21 +41,12 @@
                             </div>
                         </template>
                     </el-table-column>
-
-                    <el-table-column fixed="right" width="220">
+                    <el-table-column fixed="right" width="90">
                         <template slot-scope="scope">
                             <el-button @click="initEditDocument(scope.$index, scope.row)" type="primary"
                                 :disabled="scope.row.estado2 === 'Regularizado'" size="small">Editar</el-button>
-                            <el-button @click="initRegularizeDocument(scope.$index, scope.row)" type="success"
-                                :disabled="scope.row.estado2 === 'Regularizado'" size="small">Regularizar</el-button>
                         </template>
                     </el-table-column>
-                    <!--
-                    <el-table-column fixed="right" width="120">
-                        <template slot-scope="scope">
-                        </template>
-                    </el-table-column>
-P                    -->
                 </el-table>
                 <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
                     :current-page="pagination.current_page" :total="pagination.total"
@@ -127,9 +118,6 @@ export default {
                 },
             });
         },
-        initinitVerifyDocument(idx, row) {
-
-        }
     },
 };
 </script>

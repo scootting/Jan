@@ -26,9 +26,9 @@ class Solvency extends Model
     {
         # code...
         if ($description == '') {
-            $query = "select * from sol.ff_deudor_gestion('','" . $year . "')";
+            $query = "select * from sol.ff_datos_deudor_gestion(''," . $year . ")";
         } else {
-            $query = "select * from sol.ff_deudor_gestion('" . $description . "','". $year ."')";
+            $query = "select * from sol.ff_datos_deudor_gestion('" . $description . "',". $year .")";
         }
         $data = collect(DB::select(DB::raw($query)));
         return $data;

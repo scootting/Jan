@@ -49,11 +49,12 @@
                 <el-table-column align="right">
                 </el-table-column>
               </el-table>
+            <!--
             </div>
           </el-col>
-          <br>
           <el-col :span="12">
             <div class="grid-content bg-purple">
+            -->
               <p>documentacion</p>
               <el-table :data="digital" style="width: 100%" size="small">
                 <el-table-column prop="des_per" label="referencia" width="220"></el-table-column>

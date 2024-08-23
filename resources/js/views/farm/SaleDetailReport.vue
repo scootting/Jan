@@ -23,7 +23,13 @@
                                 @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
                                 plain>anular
                             </el-button>
+                            <!--
                             <el-button :disabled="scope.row.tip_tra == 9 || dataSaleDay.estado == 'V'"
+                                @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
+                                type="success" plain>reinprimir
+                            </el-button>
+                            -->
+                            <el-button
                                 @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
                                 type="success" plain>reinprimir
                             </el-button>
