@@ -24,9 +24,9 @@
           <el-table-column align="right" :min-width="320" fixed="right">
             <template slot-scope="scope">
               <el-button :disabled="dataSaleDays[scope.$index].estado == 'V'"
-                @click="initCustomerSaleDetail(scope.$index, scope.row)" type="warning" size="small" plain>realizar
+                @click="initCustomerSaleDetail(scope.$index, scope.row)" type="warning" size="small">realizar
                 venta</el-button>
-              <el-button @click="initSaleDetailReport(scope.$index, scope.row)" type="primary" size="small" plain>detalle
+              <el-button @click="initSaleDetailReport(scope.$index, scope.row)" type="primary" size="small">detalle
                 de la venta</el-button>
             </template>
           </el-table-column>

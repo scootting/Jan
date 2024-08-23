@@ -21,7 +21,7 @@
                         <template slot-scope="scope">
                             <el-button :disabled="scope.row.tip_tra == 9 || dataSaleDay.estado == 'V'"
                                 @click="initCancelTransaction(scope.$index, scope.row)" size="mini" type="danger"
-                                plain>anular
+                                >anular
                             </el-button>
                             <!--
                             <el-button :disabled="scope.row.tip_tra == 9 || dataSaleDay.estado == 'V'"
@@ -31,7 +31,7 @@
                             -->
                             <el-button
                                 @click="initCustomerSaleDetailReport(scope.$index, scope.row)" size="mini"
-                                type="success" plain>reinprimir
+                                type="success">reinprimir
                             </el-button>
                         </template>
                     </el-table-column>
