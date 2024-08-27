@@ -40,7 +40,6 @@
       <el-button type="primary" @click="initAddDocumentOfArchive" size="small">Agregar nuevo archivo</el-button>
       <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
         <el-form :model="document" label-width="220px" size="small">
-
           <el-form-item label="tipo de documento">
             <el-select v-model="document.descr" value-key="descr" size="small"
               placeholder="seleccione el tipo de documento" @change="OnchangeTypeDocument">

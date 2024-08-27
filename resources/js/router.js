@@ -118,6 +118,8 @@ import ImgDetail from './views/inventory/ImgDetail'
 //activos fijos
 import DocumentsFixedAssets from './views/fixedasset/DocumentsFixedAssets'
 import SelectedFixedAssetsByDocument from './views/fixedasset/SelectedFixedAssetsByDocument'
+import RegularizeFixedAssets from './views/fixedasset/RegularizeFixedAssets'
+import RegularizeFixedAssetsDetails from './views/fixedasset/RegularizeFixedAssetsDetails'
 
 //tesoreria
 import ValueTransactions from './views/treasure/ValueTransactions'
@@ -242,6 +244,11 @@ const router = new VueRouter({
                 { path: 'appenddebtors/:id', name: 'debtors', component: Debtors }, // deudores
                 { path: 'documentsfixedassets', name: 'documentsfixedassets', component: DocumentsFixedAssets }, //lista de documentos de entrega activos fijos
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
+                { path: 'RegularizeFixedAssets', name: 'regularizefixedassets', component: RegularizeFixedAssets }, //lista de documentos de entrega activos fijos
+                { path: 'RegularizeFixedAssets/:id', name: 'regularizefixedassetsdetails', component: RegularizeFixedAssetsDetails }, // documentos de entrega activos fijos impresion
+
+                
+
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
                 //{ path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
                 //  |--------------------------------------------------------------------------

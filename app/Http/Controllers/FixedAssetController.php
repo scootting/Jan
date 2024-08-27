@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\FixedAsset;
+use App\Libraries\JSRClient;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Http;
-use App\Libraries\JSRClient;
 
 class FixedAssetController extends Controller
 {
@@ -47,7 +47,6 @@ class FixedAssetController extends Controller
         $nreport = $request->get('reporte');
 
         $lista = implode(',', $lista);
-        //$nreport = 'FixedAssetsQr_A4';
         $controls = array('p_lista' => $lista);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
@@ -58,5 +57,31 @@ class FixedAssetController extends Controller
         $nreport = 'valores';
         $report = JSRClient::GetReport($nreport);
         return $report;
+    }
+
+    public function getCategoryProgramatic(Request $request)
+    {
+        $year = $request->get('year');
+        $descripcion = strtoupper($request->get('description'));
+        $data = FixedAsset::GetCategoryProgramatic($year, $descripcion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getCategoryProgramatic')]
+        );
+        return json_encode($paginate);
+    }
+
+    public function getFixedAssetsDetails(Request $request)
+    {
+        $gestion = $request->get('year');
+        $dataBudgetItem= FixedAsset::GetBudgetItem($gestion);
+        $dataAccountingItem = FixedAsset::GetAccountingItem($gestion);
+        $dataMeasurement = FixedAsset::GetMeasurement($gestion);
+        return json_encode(['dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem,'dataMeasurement' => $dataMeasurement]);
     }
 }

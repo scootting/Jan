@@ -198,6 +198,11 @@ Route::group([
     Route::get('reportSelectedFixedAssets/', 'FixedAssetController@getReportSelectedFixedAssets');
     Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@getReportSelectedFixedAssets2');
 
+    //gategorias programaticas
+    Route::post('getCategoryProgramatic', 'FixedAssetController@getCategoryProgramatic');
+    //documento de regularizacion
+    Route::post('getFixedAssetsDetails', 'FixedAssetController@getFixedAssetsDetails');
+
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Archivos
     //  |--------------------------------------------------------------------------
