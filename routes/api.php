@@ -202,7 +202,9 @@ Route::group([
     Route::post('getCategoryProgramatic', 'FixedAssetController@getCategoryProgramatic');
     //documento de regularizacion
     Route::post('getFixedAssetsDetails', 'FixedAssetController@getFixedAssetsDetails');
-
+    //guardar documento de regularizacion
+    Route::post('storeDataRegularize', 'FixedAssetController@storeDataRegularize');
+    
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Archivos
     //  |--------------------------------------------------------------------------

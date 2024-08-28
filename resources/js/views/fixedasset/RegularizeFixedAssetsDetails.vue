@@ -284,24 +284,21 @@ export default {
         async storeDebtorDocument() {
             var app = this;
             try {
-                let response = await axios.post("/api/storeDebtorDocument", {
+                let response = await axios.post("/api/storeDataRegularize", {
                     usuario: app.user,
-                    documento: app.debtorDocument,
-                    deudores: app.debtors,
-                    responsable: app.manager,
-                    programa: app.prg,
+                    documento: app.dataRegularize,
                     marker: "registrar",
                 });
                 app.numero = response.data;
                 console.log(response);
-                this.$confirm('Cuenta con la documentacion que corresponde a la deuda?', 'Proceso de Verificacion', {
+                this.$confirm('Desea agregar algunas series?', 'Proceso de Verificacion', {
                     confirmButtonText: 'Continuar',
                     cancelButtonText: 'Cancelar',
                     type: 'success'
                 }).then(() => {
                     /*pasa directamente al editar*/
                     this.$router.push({
-                        name: "editdebts",
+                        name: "EditFixedAssetsDetails",
                         params: {
                             id: response.data,
                         },
@@ -309,7 +306,7 @@ export default {
 
                 }).catch(() => {
                     /*pasa directamente a la lista de deudas*/
-                    this.$router.push({ name: "DebtorsDocument" });
+                    this.$router.push({ name: "RegularizeFixedAssets" });
                 });
 
             } catch (error) {

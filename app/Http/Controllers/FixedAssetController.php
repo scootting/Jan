@@ -84,4 +84,58 @@ class FixedAssetController extends Controller
         $dataMeasurement = FixedAsset::GetMeasurement($gestion);
         return json_encode(['dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem,'dataMeasurement' => $dataMeasurement]);
     }
+
+    public function storeDataRegularize(Request $request)
+    {
+        \Log::info($request);
+        $documento = $request->get('documento');
+        $referencia = strtoupper($documento['detalle']);
+        $fecha = strtoupper($documento['fecha']);
+
+        $programa = $request->get('programa');
+        $cod_prg = strtoupper($programa['cod_prg']);
+        $des_prg = strtoupper($programa['cat_des']);
+
+        $responsable = $request->get('responsable');
+        $ci_resp = strtoupper($responsable['nro_dip']);
+        $des_resp = strtoupper($responsable['des_per']);
+
+
+        $ci_vobo = $ci_resp;
+
+        $usuario = $request->get('usuario');
+        $ci_elab = trim(strtoupper($usuario['nodip']));
+        $gestion = strtoupper($usuario['gestion']);
+        $usr_cre = $usuario['usuario'];
+        $tipo = 'D';
+
+        //$deudas = $request->get('deudas');
+        $deudores = $request->get('deudores');
+
+        $marcador = $request->get('marker');
+        switch ($marcador) {
+            case 'registrar':
+                $id = Solvency::AddDocument($tipo, $fecha, $ci_elab, $ci_resp, $ci_vobo, $usr_cre, $gestion);
+                $id_documento = $id[0]->{'ff_registrar_documento'};
+                \Log::info("este es el id de la nueva solicitud" . $id);
+                //  * Deudores
+                foreach ($deudores as $item) {
+                    # code...
+                    $ci_per = strtoupper($item['id']);
+                    $des_per = strtoupper($item['des_per']);
+                    $des_per1 = strtoupper($item['des_per1']);
+                    $data = Solvency::AddDebtorDocument($id_documento,$gestion, $fecha, $ci_per, $des_per, $des_per1, $referencia, $cod_prg, $des_prg, $usr_cre, $tipo);                    
+                }
+                return json_encode($id_documento);
+                break;
+            case 'editar':
+                //$data = Solvency::UpdateDebtorDocument($id, $gestion, $fecha, $detalle, $cod_prg, $des_prg, $usr_cre, $ci_resp, $ci_elab, $id_ref);
+                break;
+            default:
+                break;
+        }
+        return json_encode($id_documento);
+    }
+
+
 }
