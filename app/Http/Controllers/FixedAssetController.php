@@ -87,40 +87,48 @@ class FixedAssetController extends Controller
 
     public function storeDataRegularize(Request $request)
     {
-        \Log::info($request);
+
+        codigo VARCHAR(20),
+        codigo_anterior VARCHAR(20),
+        des_general VARCHAR,
+        des_detallada TEXT DEFAULT ''::text,
+        medida VARCHAR,
+        cantidad INTEGER,
+        importe NUMERIC(12,2),
+        fecha_adquisicion DATE,
+        id_contable INTEGER,
+        id_presupuesto INTEGER,
+        estado VARCHAR(20) DEFAULT ''::character varying,
+        cod_prg VARCHAR(8),
+        des_prg VARCHAR,
+        ci_resp VARCHAR,
+        id_regularizacion INTEGER
+
         $documento = $request->get('documento');
-        $referencia = strtoupper($documento['detalle']);
-        $fecha = strtoupper($documento['fecha']);
-
-        $programa = $request->get('programa');
-        $cod_prg = strtoupper($programa['cod_prg']);
-        $des_prg = strtoupper($programa['cat_des']);
-
-        $responsable = $request->get('responsable');
-        $ci_resp = strtoupper($responsable['nro_dip']);
-        $des_resp = strtoupper($responsable['des_per']);
-
-
-        $ci_vobo = $ci_resp;
+        $des_general = strtoupper($documento['des_general']);
+        $des_detallada = strtoupper($documento['des_detallada']);
+        $medida = strtoupper($documento['medida']);
+        $cantidad = strtoupper($programa['cantidad']);
+        $importe = strtoupper($programa['importe']);
+        $fecha_adquisicion = strtoupper($responsable['fecha_adquisicion']);
+        $id_contable = strtoupper($responsable['id_contable']);
+        $id_presupuesto = strtoupper($responsable['id_presupuesto']);
+        $estado = strtoupper($responsable['estado']);
+        $cod_prg = strtoupper($responsable['cod_prg']);
+        $des_prg = strtoupper($responsable['des_prg']);
+        $ci_resp = strtoupper($responsable['ci_resp']);
 
         $usuario = $request->get('usuario');
-        $ci_elab = trim(strtoupper($usuario['nodip']));
-        $gestion = strtoupper($usuario['gestion']);
-        $usr_cre = $usuario['usuario'];
-        $tipo = 'D';
-
-        //$deudas = $request->get('deudas');
-        $deudores = $request->get('deudores');
 
         $marcador = $request->get('marker');
         switch ($marcador) {
             case 'registrar':
-                $id = Solvency::AddDocument($tipo, $fecha, $ci_elab, $ci_resp, $ci_vobo, $usr_cre, $gestion);
+                $id = FixedAsset::AddRegularizeDocument($des_general, $fecha_adquisicion, $cod_prg, $des_prg);
                 $id_documento = $id[0]->{'ff_registrar_documento'};
-                \Log::info("este es el id de la nueva solicitud" . $id);
                 //  * Deudores
                 foreach ($deudores as $item) {
                     # code...
+                    $id = FixedAsset::AddRegularizeFixedAssets($des_general, $des_detallada, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $id_presupuesto, $estado, $cod_prg, $des_prg, $ci_per);
                     $ci_per = strtoupper($item['id']);
                     $des_per = strtoupper($item['des_per']);
                     $des_per1 = strtoupper($item['des_per1']);

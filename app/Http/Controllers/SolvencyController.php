@@ -93,6 +93,7 @@ class SolvencyController extends Controller
                 }
                 return json_encode($id_documento);
                 break;
+                
             case 'editar':
                 //$data = Solvency::UpdateDebtorDocument($id, $gestion, $fecha, $detalle, $cod_prg, $des_prg, $usr_cre, $ci_resp, $ci_elab, $id_ref);
                 break;
