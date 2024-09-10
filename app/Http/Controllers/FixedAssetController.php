@@ -88,6 +88,7 @@ class FixedAssetController extends Controller
     public function storeDataRegularize(Request $request)
     {
 
+        /*
         codigo VARCHAR(20),
         codigo_anterior VARCHAR(20),
         des_general VARCHAR,
@@ -103,6 +104,7 @@ class FixedAssetController extends Controller
         des_prg VARCHAR,
         ci_resp VARCHAR,
         id_regularizacion INTEGER
+        */
 
         $documento = $request->get('documento');
         $des_general = strtoupper($documento['des_general']);

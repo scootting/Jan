@@ -140,6 +140,7 @@ export default {
     //  * S2. Guardar la informacion de un nuevo documento de deuda.
     async storeDebtorDocument() {
       var app = this;
+
       try {
         let response = await axios.post("/api/storeDebtorDocument", {
           usuario: app.user,
@@ -147,13 +148,12 @@ export default {
           deudores: app.debtors,
           responsable: app.manager,
           programa: app.prg,
-          marker: "registrar",
+          marker: "editar",
         });
-        app.numero = response.data;
-        this.$router.push({
-            name: "debts",
-          });
-        console.log(response);
+        console.log(app.debtorDocument);
+        console.log(app.debtors);
+        console.log(app.manager);
+        console.log(app.prg);
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {
