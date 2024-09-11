@@ -84,8 +84,6 @@ class Solvency extends Model
         return $data;
     }
 
-
-
     // * SO4 Guarda los documentos digitalizados de las deudas
     public static function StoreDigitalDocument($id, $des_doc, $escaped)
     {
@@ -100,5 +98,15 @@ class Solvency extends Model
         $data = DB::select($query, [$id]);
         return $data;
     }
+
+    //  * SO6. Actualiza la informacion de un nuevo documento de deuda.
+    public static function UpdateDebtorDocument($id_documento, $gestion, $fecha, $ci_per, $des_per, $des_per1, $referencia, $cod_prg, $des_prg, $usr_cre, $tipo, $id_persona)
+    {
+        $query = "select * from sol.ff_editar_deudor_documento(" . $id_documento . ",'" . $gestion . "','" . $fecha . "','" . $ci_per . "','" . $des_per . "','" . $des_per1 . "','" . $referencia .
+            "','" . $cod_prg . "','" . $des_prg . "','" . $usr_cre . "','" . $tipo ."','" . $id_persona . "')";
+        $data = collect(DB::select(DB::raw($query)));
+    }
+
+
 
 }

@@ -78,7 +78,7 @@ class General extends Model
     //  * COM1. Obtener una lista de personas que coinciden con la descripcion.
     public static function GetPersonsByDescriptionWithPagination($description)
     {
-        $query = "select * from pub.ff_datos_persona('" . $description . "')";
+        $query = "select *, nro_dip as ci_per from pub.ff_datos_persona('" . $description . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

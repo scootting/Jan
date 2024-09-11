@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>editar documento de deuda no.  {{ id }}</span>
+        <span>editar documento de deuda no. {{ id }}</span>
         <el-button style="float: right; padding: 3px 0" type="text">ayuda</el-button>
       </div>
       <div>
@@ -14,7 +14,7 @@
                 <el-form-item label="numero" prop="idc">
                   {{ debtorDocument.idc }}
                 </el-form-item>
-                <el-form-item label="unidad" prop="details">
+                <el-form-item label="unidad" prop="des_prg">
                   <el-input placeholder="" v-model="debt.des_prg" class="input-with-select">
                     <el-button slot="append" icon="el-icon-search" @click="initSearchPrg">BUSCAR</el-button>
                   </el-input>
@@ -29,12 +29,11 @@
                     style="width: 100%"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="referencia" prop="referencia">
-                  <el-input type="textarea" autosize placeholder="Ingrese una referencia"
-                    v-model="debt.detalle">
+                  <el-input type="textarea" autosize placeholder="Ingrese una referencia" v-model="debt.detalle">
                   </el-input>
                 </el-form-item>
                 <el-form-item>
-                  <el-button @click="test" type="primary" size="small">Guardar Cambios
+                  <el-button @click="storeDebtorDocument" type="primary" size="small">Guardar cambios
                   </el-button>
                 </el-form-item>
                 <!--
@@ -114,7 +113,7 @@ export default {
     this.getDocumentDetails();
   },
   methods: {
-    test(){
+    test() {
 
     },
     async getDocumentDetails() {
@@ -124,9 +123,9 @@ export default {
           id: app.id,
           typed: 'D',
         });
-        app.debtorDocument = response.data.document[0];
-        app.debtors = response.data.documentDetails;
-        app.debt = response.data.documentDetails[0];
+        app.debtorDocument = response.data.document[0];   //documento
+        app.debtors = response.data.documentDetails;      //detalle del documento
+        app.debt = response.data.documentDetails[0];      //la primera fila del deudor
         app.digital = response.data.documentDigital;
         console.log(app.debtorDocument);
       } catch (error) {
@@ -136,24 +135,26 @@ export default {
         });
       }
     },
-    
+
     //  * S2. Guardar la informacion de un nuevo documento de deuda.
     async storeDebtorDocument() {
       var app = this;
-
+      console.log(app.debtorDocument);
+      console.log("Deudores");
+      console.log(app.debtors);
+      console.log(app.debt);
+      console.log(app.manager);
+      console.log(app.prg);
       try {
         let response = await axios.post("/api/storeDebtorDocument", {
           usuario: app.user,
           documento: app.debtorDocument,
+          parcial: app.debt,
           deudores: app.debtors,
           responsable: app.manager,
           programa: app.prg,
           marker: "editar",
         });
-        console.log(app.debtorDocument);
-        console.log(app.debtors);
-        console.log(app.manager);
-        console.log(app.prg);
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {
