@@ -198,13 +198,13 @@ Route::group([
     Route::get('reportSelectedFixedAssets/', 'FixedAssetController@getReportSelectedFixedAssets');
     Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@getReportSelectedFixedAssets2');
 
-    //gategorias programaticas
-    Route::post('getCategoryProgramatic', 'FixedAssetController@getCategoryProgramatic');
-    //documento de regularizacion
-    Route::post('getFixedAssetsDetails', 'FixedAssetController@getFixedAssetsDetails');
-    //guardar documento de regularizacion
-    Route::post('storeDataRegularize', 'FixedAssetController@storeDataRegularize');
-    
+    //  *  AC1. Obtiene la lista de categorias programaticas
+    Route::post('getDataPrograms', 'FixedAssetController@getDataPrograms');
+    //  *  AC2. Obtiene la lista de asignaciones
+    Route::post('getAssignments', 'FixedAssetController@getAssignments');
+    //  * AC3. Guardar la nueva asignacion
+    Route::post('storeAssignments', 'FixedAssetController@storeAssignments');
+
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Archivos
     //  |--------------------------------------------------------------------------

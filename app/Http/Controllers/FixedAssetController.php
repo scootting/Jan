@@ -148,4 +148,62 @@ class FixedAssetController extends Controller
     }
 
 
+    //  *  AC1. Obtiene la lista de categorias programaticas
+    //  * {year: gestion en la que se desarrolla}
+    public function getDataPrograms(Request $request){
+        $gestion = $request->get('year');
+        $data = FixedAsset::GetDataPrograms($gestion);
+        return json_encode($data);
+    }
+
+    //  *  AC2. Obtiene la lista de asignaciones
+    //  * {year: gestion en la que se desarrolla}
+    public function getAssignments(Request $request){
+        $descripcion = $request->get('description');
+        $tipo = 0;
+        $gestion = $request->get('year');
+        $data = FixedAsset::GetAssignments($descripcion, $tipo, $gestion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 30;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getAssignments')]
+        );
+        return json_encode($paginate);
+    }
+
+    //  * AC3. Guardar la nueva asignacion
+    public function storeAssignments(Request $request)
+    {
+
+        $documento = $request->get('document');
+        $usuario = $request->get('user');
+        $tipo = 0;
+        $fecha = $documento['fecha'];
+        $cod_prg = strtoupper($documento['cod_prg']);
+        $des_prg = strtoupper($documento['des_prg']);
+        $ci_resp = strtoupper($usuario['nro_dip']);
+        $ci_elab = strtoupper($usuario['nro_dip']);
+        $usuario = strtoupper($usuario['usuario']);
+        $gestion = strtoupper($usuario['gestion']);
+
+        $marcador = $request->get('marker');
+        switch ($marcador) {
+            case 'registrar':
+                $id = FixedAsset::StoreAssignments($tipo, $fecha, $cod_prg, $des_prg, $ci_resp, $ci_elab, $usuario, $gestion);
+                $id_documento = $id[0]->{'ff_registrar_asignacion'};
+                return json_encode($id_documento);
+                break;
+            case 'editar':
+                //$data = Solvency::UpdateDebtorDocument($id, $gestion, $fecha, $detalle, $cod_prg, $des_prg, $usr_cre, $ci_resp, $ci_elab, $id_ref);
+                break;
+            default:
+                break;
+        }
+        return json_encode($id_documento);
+    }
+
 }
