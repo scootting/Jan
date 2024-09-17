@@ -11,11 +11,8 @@
                         <div class="grid-content bg-purple">
                             <p>datos generales de la solicitud</p>
                             <el-form ref="form" :model="dataRegularize" label-width="180px" size="small">
-                                <el-form-item label="categoria programatica" prop="cod_prg">
-                                    <el-input placeholder="" v-model="dataRegularize.cod_prg" class="input-with-select">
-                                        <el-button slot="append" icon="el-icon-search"
-                                            @click="initSearchPrg">BUSCAR</el-button>
-                                    </el-input>
+                                <el-form-item label="descripcion de la unidad" prop="idc">
+                                    {{ dataRegularize.cod_prg }}
                                 </el-form-item>
                                 <el-form-item label="descripcion de la unidad" prop="idc">
                                     {{ dataRegularize.des_prg }}
@@ -160,10 +157,12 @@ export default {
                 id_contable: '',
                 id_presupuesto: '',
                 medida: '',
+                cod_prg: '',
                 des_prg: '',
                 des_per: '',
                 des_detallada: [],
             },         //documento de regularizacion
+            dataDocument:{},
             dataBudgetItem: [],         //partida presupuestaria
             dataAccountingItem: [],     //partida contable
             dataMeasurement: [],        //unidades de medida
@@ -190,11 +189,15 @@ export default {
             var app = this;
             try {
                 let response = await axios.post("/api/getFixedAssetsDetails", {
+                    id: app.id,
+                    typea: 0,
                     year: app.user.gestion,
                 });
+                app.dataDocument = response.data.dataDocument[0];
                 app.dataBudgetItem = response.data.dataBudgetItem;
                 app.dataAccountingItem = response.data.dataAccountingItem;
                 app.dataMeasurement = response.data.dataMeasurement;
+                console.log(app.dataDocument);
                 console.log(app.dataBudgetItem);
                 console.log(app.dataAccountingItem);
                 console.log(app.dataMeasurement);

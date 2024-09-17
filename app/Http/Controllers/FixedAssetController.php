@@ -78,11 +78,14 @@ class FixedAssetController extends Controller
 
     public function getFixedAssetsDetails(Request $request)
     {
+        $id = $request->get('id');
+        $tipo = $request->get('typea');
         $gestion = $request->get('year');
+        $dataDocument = FixedAsset::GetAssignmentsById($id, $tipo, $gestion);
         $dataBudgetItem= FixedAsset::GetBudgetItem($gestion);
         $dataAccountingItem = FixedAsset::GetAccountingItem($gestion);
         $dataMeasurement = FixedAsset::GetMeasurement($gestion);
-        return json_encode(['dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem,'dataMeasurement' => $dataMeasurement]);
+        return json_encode(['dataDocument' => $dataDocument, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem,'dataMeasurement' => $dataMeasurement]);
     }
 
     public function storeDataRegularize(Request $request)
@@ -152,6 +155,7 @@ class FixedAssetController extends Controller
     //  * {year: gestion en la que se desarrolla}
     public function getDataPrograms(Request $request){
         $gestion = $request->get('year');
+        \Log::info("Ingresa aca");
         $data = FixedAsset::GetDataPrograms($gestion);
         return json_encode($data);
     }
@@ -174,7 +178,6 @@ class FixedAssetController extends Controller
         );
         return json_encode($paginate);
     }
-
     //  * AC3. Guardar la nueva asignacion
     public function storeAssignments(Request $request)
     {
@@ -185,10 +188,10 @@ class FixedAssetController extends Controller
         $fecha = $documento['fecha'];
         $cod_prg = strtoupper($documento['cod_prg']);
         $des_prg = strtoupper($documento['des_prg']);
-        $ci_resp = strtoupper($usuario['nro_dip']);
-        $ci_elab = strtoupper($usuario['nro_dip']);
-        $usuario = strtoupper($usuario['usuario']);
-        $gestion = strtoupper($usuario['gestion']);
+        $ci_resp = strtoupper($usuario['nodip']);
+        $ci_elab = strtoupper($usuario['nodip']);
+        $usuario = $usuario['usuario'];
+        $gestion = 2024;//$usuario['gestion'];
 
         $marcador = $request->get('marker');
         switch ($marcador) {

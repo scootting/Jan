@@ -39,7 +39,7 @@
 
     <!-- Form Add Document to Archive-->
     <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible">
-      <el-form :model="document" label-width="220px" size="small">
+      <el-form :model="document" label-width="270px" size="small">
         <el-form-item label="Unidad academica o administrativa">
           <el-autocomplete class="inline-input" v-model="document.des_prg" :fetch-suggestions="querySearch"
             style="width: 100%;" placeholder="ingrese: la descripcion y seleccione" :trigger-on-focus="false"
@@ -75,13 +75,10 @@ export default {
     };
   },
   mounted() {
-    this.getAssignments(1);
     this.getDataPrograms();
-    console.log("Programas");
-    console.log(this.dataPrograms);
+    this.getAssignments(1);
   },
   methods: {
-
     test() {
       alert("bienvenido al modulo");
     },
@@ -89,22 +86,18 @@ export default {
     //  * AC3. Guardar la nueva asignacion
     async initStoreAssignments() {
       var app = this;
-      var newFileContainer = app.filecontainer;
-      var newYear = app.user.gestion;
       try {
-        console.log(newFileContainer);
         let response = axios
           .post("/api/storeAssignments", {
             document: app.document, 
             user: app.user,
             marker: "registrar",
           });
-        app.$alert("Se ha registrado correctamente los archivos del documento", 'Gestor de mensajes', {
+        app.$alert("Se ha registrado correctamente la documentacion", 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
         });
-        this.$router.push({
-          name: "filecontainer",
-        });
+        app.dialogFormVisible = false;
+        app.getAssignments();
       } catch (error) {
         app.$alert("No se registro nada", 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
@@ -139,20 +132,21 @@ export default {
       var app = this;
       try {
         let response = await axios.post("/api/getDataPrograms", {
-          year: app.client.gestion,
+          year: app.user.gestion,
         });
-        app.loading = false;
         app.dataPrograms = response.data;
         console.log(app.dataPrograms);
       } catch (error) {
         this.error = error.response.data;
+        alert(error);
         app.$alert(this.error.message, "Gestor de errores", {
           dangerouslyUseHTMLString: true,
         });
       }
     },
+
     querySearch(queryString, cb) {
-      var links = this.dataCareer;
+      var links = this.dataPrograms;
       var results = queryString ? links.filter(this.createFilter(queryString)) : links;
       cb(results);
     },
@@ -179,7 +173,7 @@ export default {
       this.$router.push({
         name: "assignmentsdetails",
         params: {
-          id: row.cod_prg,
+          id: row.id,
         },
       });
     },

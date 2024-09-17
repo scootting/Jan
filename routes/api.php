@@ -199,11 +199,13 @@ Route::group([
     Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@getReportSelectedFixedAssets2');
 
     //  *  AC1. Obtiene la lista de categorias programaticas
-    Route::post('getDataPrograms', 'FixedAssetController@getDataPrograms');
+    Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
     //  *  AC2. Obtiene la lista de asignaciones
-    Route::post('getAssignments', 'FixedAssetController@getAssignments');
+    Route::post('getAssignments/', 'FixedAssetController@getAssignments');
     //  * AC3. Guardar la nueva asignacion
     Route::post('storeAssignments', 'FixedAssetController@storeAssignments');
+    //  *  AC4. Obtiene la lista de asignaciones detallado
+    Route::post('getFixedAssetsDetails/', 'FixedAssetController@getFixedAssetsDetails');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Archivos

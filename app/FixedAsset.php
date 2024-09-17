@@ -69,6 +69,7 @@ class FixedAsset extends Model
     public static function GetDataPrograms($year)
     {
         $query = "select *, cat_des as value from public.sis_cat_pro d where d.cat_ano = '" . $year . "' and d.cat_sis = 'ACTIVIDAD'";
+        \Log::info($query);
         //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
@@ -84,6 +85,16 @@ class FixedAsset extends Model
         return $data;
     }
 
+    //  *  AC4. Obtiene la lista de asignaciones detallado
+    public static function GetAssignmentsById($id, $typea, $year)
+    {
+        $query = "select * from actx.ff_datos_asignacion_id('" . $id . "'," . $typea . ",'" . $year . "')";
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
     //  * AC3. Guardar la nueva asignacion
     public static function StoreAssignments($tipo, $fecha, $cod_prg, $des_prg, $ci_resp, $ci_elab, $user, $gestion)
     {
@@ -93,3 +104,5 @@ class FixedAsset extends Model
         return $data;
     }
 }
+
+
