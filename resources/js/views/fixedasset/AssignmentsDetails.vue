@@ -10,25 +10,58 @@
                     <el-col :span="12">
                         <div class="grid-content bg-purple">
                             <p>datos generales de la solicitud</p>
-                            <el-form ref="form" :model="dataRegularize" label-width="180px" size="small">
-                                <el-form-item label="descripcion de la unidad" prop="idc">
-                                    {{ dataRegularize.cod_prg }}
+                            <el-form ref="form" :model="dataDocument" label-width="180px" size="small">
+                                <el-form-item label="codigo programatico" prop="idc">
+                                    {{ dataDocument.cod_prg }}
                                 </el-form-item>
                                 <el-form-item label="descripcion de la unidad" prop="idc">
-                                    {{ dataRegularize.des_prg }}
+                                    {{ dataDocument.des_prg }}
                                 </el-form-item>
+                                <el-form-item label="codigo del documento" prop="idc">
+                                    {{ dataDocument.idc }}
+                                </el-form-item>
+                            </el-form>
+                            <p>activos registrados de anteriores gestiones</p>
+                            <el-input placeholder="ingrese una descripcion" v-model="description"
+                                class="input-with-select" size="small">
+                                <el-button slot="append" icon="el-icon-search"
+                                    @click="getSearchFixedAssets">BUSCAR</el-button>
+                            </el-input>
+                            <p></p>
+                            <el-table :data="dataSearched" style="width: 100%" height="400">
+                                <el-table-column prop="des_prg" label="des_prg"></el-table-column>
+                                <el-table-column label="codigo">
+                                    <template slot-scope="scope">
+                                        <div slot="reference" class="name-wrapper">
+                                            <el-tag size="medium">{{ scope.row.codigo }}</el-tag>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                                <el-table-column prop="descripcion" label="descripcion"></el-table-column>
+                                <el-table-column align="right" width="120">
+                                    <template slot-scope="scope">
+                                        <el-button @click="initSelectedFixedAssets(scope.$index, scope.row)"
+                                            type="primary" size="small"> agregar</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </div>
+                    </el-col>
+                    <el-col :span="12">
+                        <div class="grid-content bg-purple">
+                            <el-form ref="form" :model="fixedAsset" label-width="180px" size="small">
+                                <p>datos generales del activo</p>
                                 <el-form-item label="numero de carnet" prop="ci_resp">
-                                    <el-input placeholder="" v-model="dataRegularize.ci_resp" class="input-with-select">
+                                    <el-input placeholder="" v-model="fixedAsset.ci_resp" class="input-with-select">
                                         <el-button slot="append" icon="el-icon-search"
                                             @click="initSearchManager">BUSCAR</el-button>
                                     </el-input>
                                 </el-form-item>
                                 <el-form-item label="apellidos y nombres" prop="idc">
-                                    {{ dataRegularize.des_resp }}
+                                    {{ fixedAsset.des_resp }}
                                 </el-form-item>
-                                <p>datos generales del activo</p>
                                 <el-form-item label="partida contable">
-                                    <el-select v-model="dataRegularize.id_contable" value-key="id_contable" size="small"
+                                    <el-select v-model="fixedAsset.id_contable" value-key="id_contable" size="small"
                                         placeholder="seleccione la partida contable" @change="OnchangeContable">
                                         <el-option v-for="item in dataAccountingItem" :key="item.con_cod"
                                             :label="item.con_des" :value="item.con_cod">
@@ -36,7 +69,7 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="partida presupuestaria">
-                                    <el-select v-model="dataRegularize.id_presupuesto" value-key="id_presupuesto"
+                                    <el-select v-model="fixedAsset.id_presupuesto" value-key="id_presupuesto"
                                         size="small" placeholder="seleccione la partida presupuestaria"
                                         @change="OnchangePresupuesto">
                                         <el-option v-for="item in dataBudgetItem" :key="item.act_par_cod"
@@ -46,10 +79,10 @@
                                 </el-form-item>
                                 <el-form-item label="fecha de registro" prop="fecha">
                                     <el-date-picker type="date" placeholder="seleccione una fecha"
-                                        v-model="dataRegularize.fecha_adquisicion" style="width: 100%"></el-date-picker>
+                                        v-model="fixedAsset.fecha_adquisicion" style="width: 100%"></el-date-picker>
                                 </el-form-item>
                                 <el-form-item label="unidad de medida">
-                                    <el-select v-model="dataRegularize.medida" value-key="medida" size="small"
+                                    <el-select v-model="fixedAsset.medida" value-key="medida" size="small"
                                         placeholder="seleccione el tipo de medida" @change="OnchangeMedida">
                                         <el-option v-for="item in dataMeasurement" :key="item.uni_des_cor"
                                             :label="item.uni_des_det" :value="item.uni_des_cor">
@@ -57,34 +90,28 @@
                                     </el-select>
                                 </el-form-item>
                                 <el-form-item label="cantidad">
-                                    <el-input v-model="dataRegularize.cantidad" autocomplete="off"></el-input>
+                                    <el-input v-model="fixedAsset.cantidad" autocomplete="off"></el-input>
                                 </el-form-item>
                                 <el-form-item label="precio unitario">
-                                    <el-input v-model="dataRegularize.importe" autocomplete="off"></el-input>
+                                    <el-input v-model="fixedAsset.importe" autocomplete="off"></el-input>
                                 </el-form-item>
-
                                 <el-form-item label="descripcion general" prop="des_general">
                                     <el-input type="textarea" autosize
                                         placeholder="Ingrese una descripcion general del activo"
-                                        v-model="dataRegularize.des_general">
+                                        v-model="fixedAsset.des_general">
                                     </el-input>
                                 </el-form-item>
                             </el-form>
-                        </div>
-                        <p></p>
-                    </el-col>
-                    <el-col :span="12">
-                        <div class="grid-content bg-purple">
-                            <p>datos detallados del bien de uso</p>
-                            <el-table :data="dataRegularize.des_detallada" style="width: 100%" size="small">
+                            <p>informacion adicional del activo fijo</p>
+                            <el-table :data="fixedAsset.aditional" style="width: 100%" size="small">
                                 <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
                                 <el-table-column prop="descripcion" label="descripcion" width="220"></el-table-column>
                                 <el-table-column align="right">
                                     <template slot-scope="scope">
                                         <el-button @click="initEditAditionalDescription(scope.$index, scope.row)"
-                                            type="primary"  size="small">Editar</el-button>
+                                            type="primary" size="small">Editar</el-button>
                                         <el-button @click="initRemoveDetails(scope.$index, scope.row)" type="primary"
-                                             size="small">Quitar</el-button>
+                                            size="small">Quitar</el-button>
                                     </template>
                                 </el-table-column>
                             </el-table>
@@ -94,9 +121,15 @@
                         </div>
                     </el-col>
                 </el-row>
-                <el-row>
-                    <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
-                    </el-button>
+                <el-row :gutter="20">
+                    <el-col :span="24">
+                        <div class="grid-content bg-purple">
+                            <p>Activos fijos</p>
+                            <table></table>
+                            <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
+                            </el-button>
+                        </div>
+                    </el-col>
                 </el-row>
             </div>
             <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
@@ -117,8 +150,6 @@
             </span>
         </el-dialog>
         <!-- Form Add Document to Archive-->
-
-
     </div>
 </template>
 
@@ -131,38 +162,30 @@ export default {
     },
     data() {
         return {
-            /*
-            --realizado
-              medida VARCHAR,
-              id_contable INTEGER,
-              id_presupuesto INTEGER,
-              ci_resp VARCHAR,
-              des_general VARCHAR,
-              cod_prg VARCHAR(8),
-              des_prg VARCHAR,
-
-              --no realizado
-              codigo VARCHAR(20),
-              codigo_anterior VARCHAR(20),
-              des_detallada TEXT DEFAULT ''::text,
-              cantidad INTEGER,
-              importe NUMERIC(12,2),
-              fecha_adquisicion DATE,
-              estado VARCHAR(20) DEFAULT ''::character varying,
-              id_regularizacion INTEGER
-            */
             user: this.$store.state.user,
             id: this.$route.params.id,
-            dataRegularize: {
-                id_contable: '',
-                id_presupuesto: '',
+            fixedAsset: {
+                idx: 0,
+                codigo: '',
+                codigo_anterior: '',
+                des_general: '',
+                des_detallada: '',
                 medida: '',
+                cantidad: 0,
+                importe: 0,
+                fecha_adquisicion: '',
+                id_contable: 0,
+                id_presupuesto: '',
+                estado: '',
                 cod_prg: '',
                 des_prg: '',
-                des_per: '',
-                des_detallada: [],
+                ci_resp: '',
+                id_asignaciones: '',
+                aditional: [],
             },         //documento de regularizacion
-            dataDocument:{},
+            description: '',
+            dataSearched: [],
+            dataDocument: {},
             dataBudgetItem: [],         //partida presupuestaria
             dataAccountingItem: [],     //partida contable
             dataMeasurement: [],        //unidades de medida
@@ -209,17 +232,35 @@ export default {
             }
         },
 
+        async getSearchFixedAssets() {
+            var app = this;
+            try {
+                let response = await axios.post("/api/getSearchFixedAssets", {
+                    description: app.description,
+                    year: app.user.gestion,
+                });
+                app.dataSearched = response.data.dataSearched;
+                console.log(app.dataSearched);
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
+
+        },
+
         OnchangeContable(idx) {
             let resultado = this.dataAccountingItem.find(tipo => tipo.con_cod == idx);
-            this.dataRegularize.id_contable = resultado.con_cod;
+            this.fixedAsset.id_contable = resultado.con_cod;
         },
         OnchangePresupuesto(idx) {
             let resultado = this.dataBudgetItem.find(tipo => tipo.act_par_cod == idx);
-            this.dataRegularize.id_presupuesto = resultado.act_par_cod;
+            this.fixedAsset.id_presupuesto = resultado.act_par_cod;
         },
         OnchangeMedida(idx) {
             let resultado = this.dataMeasurement.find(tipo => tipo.uni_des_cor == idx);
-            this.dataRegularize.medida = resultado.uni_des_det;
+            this.fixedAsset.medida = resultado.uni_des_det;
         },
 
         initSearchPrg() {
@@ -240,13 +281,13 @@ export default {
             if (data != null) {
                 switch (this.flag) {
                     case 'categoria':
-                        this.dataRegularize.cod_prg = data.id;
-                        this.dataRegularize.des_prg = data.details;
+                        this.fixedAsset.cod_prg = data.id;
+                        this.fixedAsset.des_prg = data.details;
                         break;
                     case 'responsable':
                         this.manager = data;
-                        this.dataRegularize.ci_resp = data.id;
-                        this.dataRegularize.des_resp = data.details;
+                        this.fixedAsset.ci_resp = data.id;
+                        this.fixedAsset.des_resp = data.details;
                         console.log(data);
                         break;
                     default:
@@ -269,7 +310,7 @@ export default {
             this.dialogFormVisible = false;
             if (this.stateStore == "añadir") {
                 let variable = this.aditionalDetails;
-                this.dataRegularize.des_detallada.push(variable);
+                this.fixedAsset.aditional.push(variable);
             }
             else {
             }
@@ -280,7 +321,7 @@ export default {
         },
 
         initRemoveDetails(idx, row) {
-            this.dataRegularize.des_detallada.splice(idx, 1);
+            this.fixedAsset.aditional.splice(idx, 1);
         },
 
         //  * S2. Guardar la informacion de un nuevo documento de deuda.
@@ -289,7 +330,7 @@ export default {
             try {
                 let response = await axios.post("/api/storeDataRegularize", {
                     usuario: app.user,
-                    documento: app.dataRegularize,
+                    documento: app.fixedAsset,
                     marker: "registrar",
                 });
                 app.numero = response.data;
@@ -318,11 +359,6 @@ export default {
                     dangerouslyUseHTMLString: true,
                 });
             }
-        },
-
-        /* remueve de la lista de deudores */
-        initRemoveDebtors(index, row) {
-            this.debtors.splice(index, 1);
         },
 
     },

@@ -32,9 +32,9 @@
                 <el-col :span="24">
                     <div class="grid-content bg-purple">
                         <el-table :data="dataValueTransactions" border style="width: 100%" size="small">
-                            <el-table-column prop="ci_per" label="numero de carnet" width="100">
+                            <el-table-column prop="ci_per" label="numero de carnet" width="120">
                             </el-table-column>
-                            <el-table-column prop="des_per" label="apellidos y nombres" width="250">
+                            <el-table-column prop="des_per" label="apellidos y nombres" width="350">
                             </el-table-column>
                             <el-table-column prop="can_val" label="coutas canceladas" align="right">
                             </el-table-column>
@@ -45,7 +45,7 @@
                             <el-table-column align="right">
                                 <template slot-scope="scope">
                                     <el-button @click="getSingleValueTransactionsByCode(scope.$index, scope.row)"
-                                        type="warning" size="mini">ver transacciones
+                                        type="primary" size="mini">ver transacciones
                                     </el-button>
                                 </template>
                             </el-table-column>
@@ -74,6 +74,12 @@
                 <el-table-column property="pre_uni" label="precio unitario" width="200"></el-table-column>
                 <el-table-column property="imp_val" label="importe"></el-table-column>
                 <el-table-column property="obs" label="papeleta"></el-table-column>
+                <el-table-column align="right">
+                    <template slot-scope="scope">
+                        <el-button @click="initPrintBoucher(scope.$index, scope.row)" type="primary"
+                            size="small">Imprimir papeleta</el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-dialog>
     </div>
@@ -136,6 +142,7 @@ export default {
                     data: app.data,
                 });
                 this.dataValueTransactions = response.data;
+                console.log(this.dataValueTransactions);
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {
@@ -163,7 +170,26 @@ export default {
             }
         },
 
-
+        initPrintBoucher(idx, row) {
+            axios({
+                url: "/api/initPrintBoucher/",
+                params: {
+                    id_tran: row.id_tran,
+                    codigo: row.cod_val,
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+        },
+        //},
         //  * TE3. Imprime el resumen
         initGetValueTransactionsReport() {
             let app = this;

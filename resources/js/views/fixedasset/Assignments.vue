@@ -181,17 +181,4 @@ export default {
 };
 </script>
 
-id SERIAL,
-tipo INTEGER,
-fecha DATE DEFAULT now(),
-idx INTEGER,
-idc VARCHAR(6),
-cod_prg VARCHAR,
-des_prg VARCHAR,
-ci_resp VARCHAR,
-ci_vobo VARCHAR,
-usuario VARCHAR,
-gestion SMALLINT
-
-
 <style></style>

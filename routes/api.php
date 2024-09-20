@@ -135,6 +135,8 @@ Route::group([
     Route::post('storeRequestSaleInLine', 'TreasureController@storeRequestSaleInLine');
     //  *  T42. Guardar las verificaciones realizadas cada solicitud
     Route::post('getTransactionsByDay', 'TreasureController@getTransactionsByDay');
+    //  * T43 reimprime un comprobante de pago
+    Route::get('initPrintBoucher/', 'TreasureController@initPrintBoucher');
 
     // *** - Tesoreria - Rutas para la venta de alumnos nuevos - ***
     // *** - Buscar por su carnet de identidad - ***
@@ -206,7 +208,10 @@ Route::group([
     Route::post('storeAssignments', 'FixedAssetController@storeAssignments');
     //  *  AC4. Obtiene la lista de asignaciones detallado
     Route::post('getFixedAssetsDetails/', 'FixedAssetController@getFixedAssetsDetails');
+    //  *  AC5. Obtiene la lista de activos ya registrados
+    Route::post('getSearchFixedAssets/', 'FixedAssetController@getSearchFixedAssets');
 
+    
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Archivos
     //  |--------------------------------------------------------------------------

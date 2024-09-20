@@ -87,6 +87,14 @@ class FixedAssetController extends Controller
         $dataMeasurement = FixedAsset::GetMeasurement($gestion);
         return json_encode(['dataDocument' => $dataDocument, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem,'dataMeasurement' => $dataMeasurement]);
     }
+    
+    public function getSearchFixedAssets(Request $request)
+    {
+        $descripcion = strtoupper($request->get('description'));
+        $gestion = $request->get('year');
+        $dataSearched = FixedAsset::GetSearchFixedAssets($descripcion, $gestion);
+        return json_encode(['dataSearched' => $dataSearched]);
+    }
 
     public function storeDataRegularize(Request $request)
     {

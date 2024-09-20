@@ -536,6 +536,16 @@ class TreasureController extends Controller
         $dataValueTransactions = Treasure::GetSingleValueTransactionsByCode($codigo_valor, $ci_per);
         return json_encode($dataValueTransactions);
     }
-
-
+    //  * T43 reimprime un comprobante de pago
+    public function initPrintBoucher(Request $request)
+    {
+        $id = $request->get('id_tran');
+        $cod_val = $request->get('codigo');
+        $nreport = 'Treasure_Values';
+        $controls = array(
+            'id_tran' => $id,
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 }
