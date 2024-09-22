@@ -125,7 +125,19 @@
                     <el-col :span="24">
                         <div class="grid-content bg-purple">
                             <p>Activos fijos</p>
-                            <table></table>
+                            <el-table :data="dataFixedAssets" style="width: 100%" size="small">
+                                <el-table-column prop="codigo" label="codigo" width="90"></el-table-column>
+                                <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
+                                <el-table-column prop="descripcion" label="descripcion" width="220"></el-table-column>
+                                <el-table-column align="right">
+                                    <template slot-scope="scope">
+                                        <el-button @click="initEditAditionalDescription(scope.$index, scope.row)"
+                                            type="primary" size="small">Editar</el-button>
+                                        <el-button @click="initRemoveDetails(scope.$index, scope.row)" type="primary"
+                                            size="small">Quitar</el-button>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
                             <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
                             </el-button>
                         </div>
@@ -164,6 +176,7 @@ export default {
         return {
             user: this.$store.state.user,
             id: this.$route.params.id,
+            dataFixedAssets: [],
             fixedAsset: {
                 idx: 0,
                 codigo: '',
@@ -306,6 +319,16 @@ export default {
             this.stateStore = "editar";
         },
 
+        initSelectedFixedAssets(idx, row){
+            console.log(row);
+            this.fixedAsset.codigo_anterior = row.codigo;
+            this.fixedAsset.codigo = row.codigo;
+            let variable = this.fixedAsset;
+            this.dataFixedAssets.push(variable);
+        },
+        initRemoveSelectedFixedAssets(idx, row){
+            this.dataFixedAssets.splice(idx, 1);
+        },
         initStoreAditionalDescription() {
             this.dialogFormVisible = false;
             if (this.stateStore == "añadir") {
