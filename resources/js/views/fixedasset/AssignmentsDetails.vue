@@ -101,6 +101,9 @@
                                         v-model="fixedAsset.des_general">
                                     </el-input>
                                 </el-form-item>
+                                <el-form-item label="estado">
+                                    <el-input v-model="fixedAsset.estado" autocomplete="off"></el-input>
+                                </el-form-item>
                             </el-form>
                             <p>informacion adicional del activo fijo</p>
                             <el-table :data="fixedAsset.aditional" style="width: 100%" size="small">
@@ -114,9 +117,12 @@
                                             size="small">Quitar</el-button>
                                     </template>
                                 </el-table-column>
-                            </el-table>
-                            <p></p>
+                            </el-table>  
+                            <p></p>                          
                             <el-button @click="initAddAditionalDescription" type="primary" size="small">agregar
+                            </el-button>
+                            <p></p>
+                            <el-button @click="initAddActiveFixed2" type="success" size="small">agregar activos
                             </el-button>
                         </div>
                     </el-col>
@@ -128,7 +134,7 @@
                             <el-table :data="dataFixedAssets" style="width: 100%" size="small">
                                 <el-table-column prop="codigo" label="codigo" width="90"></el-table-column>
                                 <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
-                                <el-table-column prop="descripcion" label="descripcion" width="220"></el-table-column>
+                                <el-table-column prop="des_general" label="descripcion" width="220"></el-table-column>
                                 <el-table-column align="right">
                                     <template slot-scope="scope">
                                         <el-button @click="initEditAditionalDescription(scope.$index, scope.row)"
@@ -138,6 +144,7 @@
                                     </template>
                                 </el-table-column>
                             </el-table>
+                            <p></p>
                             <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
                             </el-button>
                         </div>
@@ -184,7 +191,7 @@ export default {
                 des_general: '',
                 des_detallada: '',
                 medida: '',
-                cantidad: 0,
+                cantidad: 1,
                 importe: 0,
                 fecha_adquisicion: '',
                 id_contable: 0,
@@ -318,13 +325,53 @@ export default {
             this.aditionalDetails = row;
             this.stateStore = "editar";
         },
-
+        initAddActiveFixed2(){
+            this.dataFixedAssets.push(this.fixedAsset);
+            this.fixedAsset ={
+                idx: 0,
+                codigo: '',
+                codigo_anterior: '',
+                des_general: '',
+                des_detallada: '',
+                medida: '',
+                cantidad: 0,
+                importe: 0,
+                fecha_adquisicion: '',
+                id_contable: 0,
+                id_presupuesto: '',
+                estado: '',
+                cod_prg: '',
+                des_prg: '',
+                ci_resp: '',
+                id_asignaciones: '',
+                aditional: [],
+            };         //documento de regularizacion
+        },
         initSelectedFixedAssets(idx, row){
             console.log(row);
             this.fixedAsset.codigo_anterior = row.codigo;
             this.fixedAsset.codigo = row.codigo;
-            let variable = this.fixedAsset;
-            this.dataFixedAssets.push(variable);
+            this.fixedAsset.des_general = row.descripcion;
+            this.dataFixedAssets.push(this.fixedAsset);
+            this.fixedAsset ={
+                idx: 0,
+                codigo: '',
+                codigo_anterior: '',
+                des_general: '',
+                des_detallada: '',
+                medida: '',
+                cantidad: 0,
+                importe: 0,
+                fecha_adquisicion: '',
+                id_contable: 0,
+                id_presupuesto: '',
+                estado: '',
+                cod_prg: '',
+                des_prg: '',
+                ci_resp: '',
+                id_asignaciones: '',
+                aditional: [],
+            };         //documento de regularizacion
         },
         initRemoveSelectedFixedAssets(idx, row){
             this.dataFixedAssets.splice(idx, 1);
