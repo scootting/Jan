@@ -7,7 +7,7 @@
             </div>
             <div>
                 <el-row :gutter="20">
-                    <el-col :span="12">
+                    <el-col :span="24">
                         <div class="grid-content bg-purple">
                             <p>datos generales de la solicitud</p>
                             <el-form ref="form" :model="dataDocument" label-width="180px" size="small">
@@ -21,135 +21,169 @@
                                     {{ dataDocument.idc }}
                                 </el-form-item>
                             </el-form>
-                            <p>activos registrados de anteriores gestiones</p>
-                            <el-input placeholder="ingrese una descripcion" v-model="description"
-                                class="input-with-select" size="small">
-                                <el-button slot="append" icon="el-icon-search"
-                                    @click="getSearchFixedAssets">BUSCAR</el-button>
-                            </el-input>
-                            <p></p>
-                            <el-table :data="dataSearched" style="width: 100%" height="400">
-                                <el-table-column prop="des_prg" label="des_prg"></el-table-column>
-                                <el-table-column label="codigo">
-                                    <template slot-scope="scope">
-                                        <div slot="reference" class="name-wrapper">
-                                            <el-tag size="medium">{{ scope.row.codigo }}</el-tag>
-                                        </div>
-                                    </template>
-                                </el-table-column>
-                                <el-table-column prop="descripcion" label="descripcion"></el-table-column>
-                                <el-table-column align="right" width="120">
-                                    <template slot-scope="scope">
-                                        <el-button @click="initSelectedFixedAssets(scope.$index, scope.row)"
-                                            type="primary" size="small"> agregar</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
                         </div>
                     </el-col>
-                    <el-col :span="12">
-                        <div class="grid-content bg-purple">
-                            <el-form ref="form" :model="fixedAsset" label-width="180px" size="small">
-                                <p>datos generales del activo</p>
-                                <el-form-item label="numero de carnet" prop="ci_resp">
-                                    <el-input placeholder="" v-model="fixedAsset.ci_resp" class="input-with-select">
+                </el-row>
+                <el-tabs type="border-card" v-model="activeTab">
+                    <!-- Pestaña para buscar activos-->
+                    <el-tab-pane name="tab1">
+                        <span slot="label"><i class="el-icon-search"></i> Buscar</span>
+                        <el-row :gutter="20">
+                            <el-col :span="24">
+                                <div class="grid-content bg-purple">
+                                    <p>activos registrados de anteriores gestiones</p>
+                                    <el-input placeholder="ingrese una descripcion" v-model="description"
+                                        class="input-with-select" size="small">
                                         <el-button slot="append" icon="el-icon-search"
-                                            @click="initSearchManager">BUSCAR</el-button>
+                                            @click="getSearchFixedAssets">BUSCAR</el-button>
                                     </el-input>
-                                </el-form-item>
-                                <el-form-item label="apellidos y nombres" prop="idc">
-                                    {{ fixedAsset.des_resp }}
-                                </el-form-item>
-                                <el-form-item label="partida contable">
-                                    <el-select v-model="fixedAsset.id_contable" value-key="id_contable" size="small"
-                                        placeholder="seleccione la partida contable" @change="OnchangeContable">
-                                        <el-option v-for="item in dataAccountingItem" :key="item.con_cod"
-                                            :label="item.con_des" :value="item.con_cod">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                                <el-form-item label="partida presupuestaria">
-                                    <el-select v-model="fixedAsset.id_presupuesto" value-key="id_presupuesto"
-                                        size="small" placeholder="seleccione la partida presupuestaria"
-                                        @change="OnchangePresupuesto">
-                                        <el-option v-for="item in dataBudgetItem" :key="item.act_par_cod"
-                                            :label="item.par_des" :value="item.act_par_cod">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                                <el-form-item label="fecha de registro" prop="fecha">
-                                    <el-date-picker type="date" placeholder="seleccione una fecha"
-                                        v-model="fixedAsset.fecha_adquisicion" style="width: 100%"></el-date-picker>
-                                </el-form-item>
-                                <el-form-item label="unidad de medida">
-                                    <el-select v-model="fixedAsset.medida" value-key="medida" size="small"
-                                        placeholder="seleccione el tipo de medida" @change="OnchangeMedida">
-                                        <el-option v-for="item in dataMeasurement" :key="item.uni_des_cor"
-                                            :label="item.uni_des_det" :value="item.uni_des_cor">
-                                        </el-option>
-                                    </el-select>
-                                </el-form-item>
-                                <el-form-item label="cantidad">
-                                    <el-input v-model="fixedAsset.cantidad" autocomplete="off"></el-input>
-                                </el-form-item>
-                                <el-form-item label="precio unitario">
-                                    <el-input v-model="fixedAsset.importe" autocomplete="off"></el-input>
-                                </el-form-item>
-                                <el-form-item label="descripcion general" prop="des_general">
-                                    <el-input type="textarea" autosize
-                                        placeholder="Ingrese una descripcion general del activo"
-                                        v-model="fixedAsset.des_general">
-                                    </el-input>
-                                </el-form-item>
-                                <el-form-item label="estado">
-                                    <el-input v-model="fixedAsset.estado" autocomplete="off"></el-input>
-                                </el-form-item>
-                            </el-form>
-                            <p>informacion adicional del activo fijo</p>
-                            <el-table :data="fixedAsset.aditional" style="width: 100%" size="small">
-                                <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
-                                <el-table-column prop="descripcion" label="descripcion" width="220"></el-table-column>
-                                <el-table-column align="right">
-                                    <template slot-scope="scope">
-                                        <el-button @click="initEditAditionalDescription(scope.$index, scope.row)"
-                                            type="primary" size="small">Editar</el-button>
-                                        <el-button @click="initRemoveDetails(scope.$index, scope.row)" type="primary"
-                                            size="small">Quitar</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>  
-                            <p></p>                          
-                            <el-button @click="initAddAditionalDescription" type="primary" size="small">agregar
-                            </el-button>
-                            <p></p>
-                            <el-button @click="initAddActiveFixed2" type="success" size="small">agregar activos
-                            </el-button>
-                        </div>
-                    </el-col>
-                </el-row>
-                <el-row :gutter="20">
-                    <el-col :span="24">
-                        <div class="grid-content bg-purple">
-                            <p>Activos fijos</p>
-                            <el-table :data="dataFixedAssets" style="width: 100%" size="small">
-                                <el-table-column prop="codigo" label="codigo" width="90"></el-table-column>
-                                <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
-                                <el-table-column prop="des_general" label="descripcion" width="220"></el-table-column>
-                                <el-table-column align="right">
-                                    <template slot-scope="scope">
-                                        <el-button @click="initEditAditionalDescription(scope.$index, scope.row)"
-                                            type="primary" size="small">Editar</el-button>
-                                        <el-button @click="initRemoveDetails(scope.$index, scope.row)" type="primary"
-                                            size="small">Quitar</el-button>
-                                    </template>
-                                </el-table-column>
-                            </el-table>
-                            <p></p>
-                            <el-button @click="storeDebtorDocument" type="primary" size="small">guardar informacion
-                            </el-button>
-                        </div>
-                    </el-col>
-                </el-row>
+                                    <p></p>
+                                    <el-table :data="dataSearched" style="width: 100%" height="400">
+                                        <el-table-column prop="des_prg" label="des_prg"></el-table-column>
+                                        <el-table-column label="codigo">
+                                            <template slot-scope="scope">
+                                                <div slot="reference" class="name-wrapper">
+                                                    <el-tag size="medium">{{ scope.row.codigo }}</el-tag>
+                                                </div>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column prop="descripcion" label="descripcion"></el-table-column>
+                                        <el-table-column align="right" width="120">
+                                            <template slot-scope="scope">
+                                                <el-button @click="initSelectedFixedAssets(scope.$index, scope.row)"
+                                                    type="primary" size="small"> agregar</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                    <br>
+                                    <el-button @click="toggleTab" type="success" size="small">guardar activos
+                                        seleccionados
+                                    </el-button>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </el-tab-pane>
+                    <!-- Pestaña para editar o agregar activos-->
+                    <el-tab-pane name="tab2" :disabled="isTabDisabled">
+                        <span slot="label"><i class="el-icon-s-tools"></i> Editar</span>
+                        <el-row :gutter="20">
+                            <el-col :span="12">
+                                <div class="grid-content bg-purple">
+                                    <el-form ref="form" :model="fixedAsset" label-width="180px" size="small">
+                                        <p>datos generales del activo</p>
+                                        <el-form-item label="numero de carnet" prop="ci_resp">
+                                            <el-input placeholder="" v-model="fixedAsset.ci_resp"
+                                                class="input-with-select">
+                                                <el-button slot="append" icon="el-icon-search"
+                                                    @click="initSearchManager">BUSCAR</el-button>
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="apellidos y nombres" prop="idc">
+                                            {{ fixedAsset.des_resp }}
+                                        </el-form-item>
+                                        <el-form-item label="partida contable">
+                                            <el-select v-model="fixedAsset.id_contable" value-key="id_contable"
+                                                size="small" placeholder="seleccione la partida contable"
+                                                @change="OnchangeContable">
+                                                <el-option v-for="item in dataAccountingItem" :key="item.con_cod"
+                                                    :label="item.con_des" :value="item.con_cod">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                        <el-form-item label="partida presupuestaria">
+                                            <el-select v-model="fixedAsset.id_presupuesto" value-key="id_presupuesto"
+                                                size="small" placeholder="seleccione la partida presupuestaria"
+                                                @change="OnchangePresupuesto">
+                                                <el-option v-for="item in dataBudgetItem" :key="item.act_par_cod"
+                                                    :label="item.par_des" :value="item.act_par_cod">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                        <el-form-item label="fecha de registro" prop="fecha">
+                                            <el-date-picker type="date" placeholder="seleccione una fecha"
+                                                v-model="fixedAsset.fecha_adquisicion"
+                                                style="width: 100%"></el-date-picker>
+                                        </el-form-item>
+                                        <el-form-item label="unidad de medida">
+                                            <el-select v-model="fixedAsset.medida" value-key="medida" size="small"
+                                                placeholder="seleccione el tipo de medida" @change="OnchangeMedida">
+                                                <el-option v-for="item in dataMeasurement" :key="item.uni_des_cor"
+                                                    :label="item.uni_des_det" :value="item.uni_des_cor">
+                                                </el-option>
+                                            </el-select>
+                                        </el-form-item>
+                                        <el-form-item label="cantidad">
+                                            <el-input v-model="fixedAsset.cantidad" autocomplete="off"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="precio unitario">
+                                            <el-input v-model="fixedAsset.importe" autocomplete="off"></el-input>
+                                        </el-form-item>
+                                        <el-form-item label="descripcion general" prop="des_general">
+                                            <el-input type="textarea" autosize
+                                                placeholder="Ingrese una descripcion general del activo"
+                                                v-model="fixedAsset.des_general">
+                                            </el-input>
+                                        </el-form-item>
+                                        <el-form-item label="estado">
+                                            <el-input v-model="fixedAsset.estado" autocomplete="off"></el-input>
+                                        </el-form-item>
+                                    </el-form>
+                                    <p>informacion adicional del activo fijo</p>
+                                    <el-table :data="fixedAsset.aditional" style="width: 100%" size="small">
+                                        <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
+                                        <el-table-column prop="descripcion" label="descripcion"
+                                            width="220"></el-table-column>
+                                        <el-table-column align="right">
+                                            <template slot-scope="scope">
+                                                <el-button
+                                                    @click="initEditAditionalDescription(scope.$index, scope.row)"
+                                                    type="primary" size="small">Editar</el-button>
+                                                <el-button @click="initRemoveDetails(scope.$index, scope.row)"
+                                                    type="primary" size="small">Quitar</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                    <p></p>
+                                    <el-button @click="initAddAditionalDescription" type="primary" size="small">agregar
+                                    </el-button>
+                                    <p></p>
+                                    <el-button @click="initAddActiveFixed2" type="success" size="small">agregar activos
+                                    </el-button>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </el-tab-pane>
+                    <!-- Pestaña para editar o agregar activos-->
+                    <el-tab-pane name="tab3" :disabled="isTabDisabled">
+                        <span slot="label"><i class="el-icon-paperclip"></i> imprimir</span>
+                        <el-row :gutter="20">
+                            <el-col :span="24">
+                                <div class="grid-content bg-purple">
+                                    <p>Activos fijos</p>
+                                    <el-table :data="dataFixedAssets" style="width: 100%" size="small">
+                                        <el-table-column prop="codigo" label="codigo" width="90"></el-table-column>
+                                        <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
+                                        <el-table-column prop="des_general" label="descripcion"
+                                            width="220"></el-table-column>
+                                        <el-table-column align="right">
+                                            <template slot-scope="scope">
+                                                <el-button
+                                                    @click="initEditAditionalDescription(scope.$index, scope.row)"
+                                                    type="primary" size="small">Editar</el-button>
+                                                <el-button @click="initRemoveDetails(scope.$index, scope.row)"
+                                                    type="primary" size="small">Quitar</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                    <p></p>
+                                    <el-button @click="storeDebtorDocument" type="primary" size="small">guardar
+                                        informacion
+                                    </el-button>
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </el-tab-pane>
+                </el-tabs>
             </div>
             <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
         </el-card>
@@ -183,6 +217,9 @@ export default {
         return {
             user: this.$store.state.user,
             id: this.$route.params.id,
+            activeTab: "tab1", // Controla qué pestaña está activa
+            isTabDisabled: true,
+
             dataFixedAssets: [],
             fixedAsset: {
                 idx: 0,
@@ -226,8 +263,13 @@ export default {
         this.getFixedAssetsDetails();
     },
     methods: {
-
         test() { },
+
+        toggleTab() {
+            // Alternar entre habilitar y deshabilitar la pestaña 2
+            this.isTabDisabled = !this.isTabDisabled;
+            this.activeTab = 'tab2';
+        },
         async getFixedAssetsDetails() {
             var app = this;
             try {
@@ -325,9 +367,9 @@ export default {
             this.aditionalDetails = row;
             this.stateStore = "editar";
         },
-        initAddActiveFixed2(){
+        initAddActiveFixed2() {
             this.dataFixedAssets.push(this.fixedAsset);
-            this.fixedAsset ={
+            this.fixedAsset = {
                 idx: 0,
                 codigo: '',
                 codigo_anterior: '',
@@ -347,13 +389,13 @@ export default {
                 aditional: [],
             };         //documento de regularizacion
         },
-        initSelectedFixedAssets(idx, row){
+        initSelectedFixedAssets(idx, row) {
             console.log(row);
             this.fixedAsset.codigo_anterior = row.codigo;
             this.fixedAsset.codigo = row.codigo;
             this.fixedAsset.des_general = row.descripcion;
             this.dataFixedAssets.push(this.fixedAsset);
-            this.fixedAsset ={
+            this.fixedAsset = {
                 idx: 0,
                 codigo: '',
                 codigo_anterior: '',
@@ -373,7 +415,7 @@ export default {
                 aditional: [],
             };         //documento de regularizacion
         },
-        initRemoveSelectedFixedAssets(idx, row){
+        initRemoveSelectedFixedAssets(idx, row) {
             this.dataFixedAssets.splice(idx, 1);
         },
         initStoreAditionalDescription() {
