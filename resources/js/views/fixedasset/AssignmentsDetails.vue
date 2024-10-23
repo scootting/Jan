@@ -39,7 +39,7 @@
                                     </el-input>
                                     <p></p>
                                     <el-table :data="dataSearched" style="width: 100%" height="400"
-                                    @selection-change="handleSelectionChange">
+                                        @selection-change="handleSelectionChange">
                                         <el-table-column type="selection"> </el-table-column>
                                         <el-table-column prop="des_prg" label="des_prg"></el-table-column>
                                         <el-table-column label="codigo">
@@ -57,7 +57,7 @@
                                             </template>
                                         </el-table-column>
                                     </el-table>
-                                    <br>
+                                    <p>cantidad de activos seleccionados: {{ itemSelected }}</p>
                                     <el-button @click="toggleTab" type="success" size="small">guardar activos
                                         seleccionados
                                     </el-button>
@@ -130,6 +130,10 @@
                                             <el-input v-model="fixedAsset.estado" autocomplete="off"></el-input>
                                         </el-form-item>
                                     </el-form>
+                                </div>
+                            </el-col>
+                            <el-col :span="12">
+                                <div class="grid-content bg-purple">
                                     <p>informacion adicional del activo fijo</p>
                                     <el-table :data="fixedAsset.aditional" style="width: 100%" size="small">
                                         <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
@@ -222,6 +226,9 @@ export default {
             activeTab: "tab1", // Controla qué pestaña está activa
             isTabDisabled: true,
             selectedFixedAssets: [],
+            itemSelected: 0,
+            editFixedAssets: [],
+
             dataFixedAssets: [],
             fixedAsset: {
                 idx: 0,
@@ -269,27 +276,35 @@ export default {
 
         toggleTab() {
             // Alternar entre habilitar y deshabilitar la pestaña 2
-            this.isTabDisabled = !this.isTabDisabled;
-            this.activeTab = 'tab2';
+            const descripciones = this.selectedFixedAssets.map(obj => obj.descripcion.trim());
+            console.log(descripciones);
+            const todasIguales = descripciones.every((descripcion, _, arr) => descripcion === arr[0]);
+            if (!todasIguales) {
+                // true si hay al menos una diferente, false si todas son iguales          
+                this.$alert('Debe solo seleccionar activos que cuenten con la misma descripcion', 'Alerta', {
+                    confirmButtonText: 'OK',
+                    callback: action => {
+                        //aca la siguiente accion
+                    }
+                });
+            } else {
+                //false
+                this.isTabDisabled = !this.isTabDisabled;
+                this.activeTab = 'tab2';
+                this.editFixedAssets = this.selectedFixedAssets;
+                this.selectedFixedAssets = [];
+                console.log(this.editFixedAssets);
+                console.log(this.selectedFixedAssets);
+            }
         },
 
         handleSelectionChange(val) {
             this.selectedFixedAssets = val;
-            console.log(this.selectedFixedAssets);/*
-            this.selectedFixedAssets.forEach(this.selectedFixedAssets => {
-                this.selectedFixedAssets.descripcion = this.selectedFixedAssets.descripcion.trim();
-            });            */
-              // Extraer las descripciones en un nuevo array
-            const descripciones = this.selectedFixedAssets.map(obj => this.selectedFixedAssets.descripcion.trim());
-            // Verificar si hay al menos una descripción diferente
-            const tieneDescripcionesDiferentes = descripciones.some((descripcion, index, arr) => arr.indexOf(descripcion) !== arr.lastIndexOf(descripcion));
-
-            console.log(tieneDescripcionesDiferentes);
-            //const todasIguales = descripciones.every((descripcion, _, arr) => descripcion === arr[0]);
-
-            //console.log(!todasIguales); // true si hay al menos una diferente, false si todas son iguales            
+            val = [];
+            this.itemSelected = this.selectedFixedAssets.length;
+            // Extraer las descripciones en un nuevo array
         },
-        
+
         async getFixedAssetsDetails() {
             var app = this;
             try {
