@@ -38,7 +38,9 @@
                                             @click="getSearchFixedAssets">BUSCAR</el-button>
                                     </el-input>
                                     <p></p>
-                                    <el-table :data="dataSearched" style="width: 100%" height="400">
+                                    <el-table :data="dataSearched" style="width: 100%" height="400"
+                                    @selection-change="handleSelectionChange">
+                                        <el-table-column type="selection"> </el-table-column>
                                         <el-table-column prop="des_prg" label="des_prg"></el-table-column>
                                         <el-table-column label="codigo">
                                             <template slot-scope="scope">
@@ -219,7 +221,7 @@ export default {
             id: this.$route.params.id,
             activeTab: "tab1", // Controla qué pestaña está activa
             isTabDisabled: true,
-
+            selectedFixedAssets: [],
             dataFixedAssets: [],
             fixedAsset: {
                 idx: 0,
@@ -270,6 +272,24 @@ export default {
             this.isTabDisabled = !this.isTabDisabled;
             this.activeTab = 'tab2';
         },
+
+        handleSelectionChange(val) {
+            this.selectedFixedAssets = val;
+            console.log(this.selectedFixedAssets);/*
+            this.selectedFixedAssets.forEach(this.selectedFixedAssets => {
+                this.selectedFixedAssets.descripcion = this.selectedFixedAssets.descripcion.trim();
+            });            */
+              // Extraer las descripciones en un nuevo array
+            const descripciones = this.selectedFixedAssets.map(obj => this.selectedFixedAssets.descripcion.trim());
+            // Verificar si hay al menos una descripción diferente
+            const tieneDescripcionesDiferentes = descripciones.some((descripcion, index, arr) => arr.indexOf(descripcion) !== arr.lastIndexOf(descripcion));
+
+            console.log(tieneDescripcionesDiferentes);
+            //const todasIguales = descripciones.every((descripcion, _, arr) => descripcion === arr[0]);
+
+            //console.log(!todasIguales); // true si hay al menos una diferente, false si todas son iguales            
+        },
+        
         async getFixedAssetsDetails() {
             var app = this;
             try {
