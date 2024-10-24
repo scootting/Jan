@@ -300,7 +300,6 @@ export default {
 
         handleSelectionChange(val) {
             this.selectedFixedAssets = val;
-            val = [];
             this.itemSelected = this.selectedFixedAssets.length;
             // Extraer las descripciones en un nuevo array
         },
