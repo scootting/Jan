@@ -169,7 +169,7 @@
                                     <el-table :data="dataFixedAssets" style="width: 100%" size="small">
                                         <el-table-column prop="codigo" label="codigo" width="90"></el-table-column>
                                         <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
-                                        <el-table-column prop="des_general" label="descripcion"
+                                        <el-table-column prop="descripcion" label="descripcion"
                                             width="220"></el-table-column>
                                         <el-table-column align="right">
                                             <template slot-scope="scope">
@@ -241,7 +241,9 @@ export default {
                 importe: 0,
                 fecha_adquisicion: '',
                 id_contable: 0,
+                des_contable: '',
                 id_presupuesto: '',
+                des_presupuesto: '', 
                 estado: '',
                 cod_prg: '',
                 des_prg: '',
@@ -293,8 +295,16 @@ export default {
                 this.activeTab = 'tab2';
                 this.editFixedAssets = this.selectedFixedAssets;
                 this.selectedFixedAssets = [];
+                //pasar informacion para su tabulacion
+                this.fixedAsset.cantidad = this.itemSelected;
+                this.fixedAsset.descripcion = this.editFixedAssets[0].descripcion;
+                this.fixedAsset.importe = this.editFixedAssets[0].importe;
+                this.fixedAsset.id_contable = this.editFixedAssets[0].id_contable;
+                this.fixedAsset.des_contable = this.editFixedAssets[0].des_contable;
+                this.fixedAsset.id_presupuesto = this.editFixedAssets[0].id_presupuesto;
+                this.fixedAsset.des_presupuesto = this.editFixedAssets[0].des_presupuesto;
                 console.log(this.editFixedAssets);
-                console.log(this.selectedFixedAssets);
+                console.log(this.fixedAsset);
             }
         },
 
@@ -407,8 +417,8 @@ export default {
                 idx: 0,
                 codigo: '',
                 codigo_anterior: '',
-                des_general: '',
-                des_detallada: '',
+                descripcion: '',
+                detalle: '',
                 medida: '',
                 cantidad: 0,
                 importe: 0,
