@@ -120,6 +120,7 @@ import DocumentsFixedAssets from './views/fixedasset/DocumentsFixedAssets'
 import SelectedFixedAssetsByDocument from './views/fixedasset/SelectedFixedAssetsByDocument'
 import Assignments from './views/fixedasset/Assignments'
 import AssignmentsDetails from './views/fixedasset/AssignmentsDetails'
+import EditAssignmentsDetails from './views/fixedasset/EditAssignmentsDetails'
 
 //tesoreria
 import ValueTransactions from './views/treasure/ValueTransactions'
@@ -246,8 +247,7 @@ const router = new VueRouter({
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
                 { path: 'assignments', name: 'assignments', component: Assignments }, //lista de documentos de entrega activos fijos
                 { path: 'assignments/:id', name: 'assignmentsdetails', component: AssignmentsDetails }, // documentos de entrega activos fijos impresion
-
-                
+                { path: 'assignments/edit/:id', name: 'editassignmentsdetails', component: EditAssignmentsDetails }, // documentos de entrega activos fijos impresion
 
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
                 //{ path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento

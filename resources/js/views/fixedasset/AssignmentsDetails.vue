@@ -58,8 +58,9 @@
                                         </el-table-column>
                                     </el-table>
                                     <p>cantidad de activos seleccionados: {{ itemSelected }}</p>
-                                    <el-button @click="toggleTab" type="success" size="small">guardar activos
-                                        seleccionados
+                                    <el-button @click="toggleTab" type="success" size="small">seleccionar activos
+                                    </el-button>
+                                    <el-button @click="toggleTab2" type="info" size="small">agregar nuevos activos
                                     </el-button>
                                 </div>
                             </el-col>
@@ -120,14 +121,19 @@
                                         <el-form-item label="precio unitario">
                                             <el-input v-model="fixedAsset.importe" autocomplete="off"></el-input>
                                         </el-form-item>
-                                        <el-form-item label="descripcion general" prop="des_general">
-                                            <el-input type="textarea" autosize
-                                                placeholder="Ingrese una descripcion general del activo"
-                                                v-model="fixedAsset.des_general">
+                                        <el-form-item label="descripcion general">
+                                            <el-input type="textarea" placeholder="Ingrese una descripcion general"
+                                                v-model="fixedAsset.descripcion">
                                             </el-input>
                                         </el-form-item>
                                         <el-form-item label="estado">
                                             <el-input v-model="fixedAsset.estado" autocomplete="off"></el-input>
+                                            <el-select slot-scope="scope" v-model="fixedAsset.estado" value-key="estado"
+                                                placeholder="seleccione el estado" size="mini">
+                                                <el-option v-for="item in estados" :key="item.id" :label="item.desc"
+                                                    :value="item.id">
+                                                </el-option>
+                                            </el-select>
                                         </el-form-item>
                                     </el-form>
                                 </div>
@@ -139,55 +145,25 @@
                                         <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
                                         <el-table-column prop="descripcion" label="descripcion"
                                             width="220"></el-table-column>
-                                        <el-table-column align="right">
+                                        <el-table-column align="right" width="120">
                                             <template slot-scope="scope">
                                                 <el-button
                                                     @click="initEditAditionalDescription(scope.$index, scope.row)"
-                                                    type="primary" size="small">Editar</el-button>
+                                                    type="primary" size="mini">Editar</el-button>
                                                 <el-button @click="initRemoveDetails(scope.$index, scope.row)"
-                                                    type="primary" size="small">Quitar</el-button>
+                                                    type="primary" size="mini">Quitar</el-button>
                                             </template>
                                         </el-table-column>
                                     </el-table>
                                     <p></p>
                                     <el-button @click="initAddAditionalDescription" type="primary" size="small">agregar
                                     </el-button>
-                                    <p></p>
-                                    <el-button @click="initAddActiveFixed2" type="success" size="small">agregar activos
-                                    </el-button>
                                 </div>
                             </el-col>
                         </el-row>
-                    </el-tab-pane>
-                    <!-- Pestaña para editar o agregar activos-->
-                    <el-tab-pane name="tab3" :disabled="isTabDisabled">
-                        <span slot="label"><i class="el-icon-paperclip"></i> imprimir</span>
-                        <el-row :gutter="20">
-                            <el-col :span="24">
-                                <div class="grid-content bg-purple">
-                                    <p>Activos fijos</p>
-                                    <el-table :data="dataFixedAssets" style="width: 100%" size="small">
-                                        <el-table-column prop="codigo" label="codigo" width="90"></el-table-column>
-                                        <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
-                                        <el-table-column prop="descripcion" label="descripcion"
-                                            width="220"></el-table-column>
-                                        <el-table-column align="right">
-                                            <template slot-scope="scope">
-                                                <el-button
-                                                    @click="initEditAditionalDescription(scope.$index, scope.row)"
-                                                    type="primary" size="small">Editar</el-button>
-                                                <el-button @click="initRemoveDetails(scope.$index, scope.row)"
-                                                    type="primary" size="small">Quitar</el-button>
-                                            </template>
-                                        </el-table-column>
-                                    </el-table>
-                                    <p></p>
-                                    <el-button @click="storeDebtorDocument" type="primary" size="small">guardar
-                                        informacion
-                                    </el-button>
-                                </div>
-                            </el-col>
-                        </el-row>
+                        <p></p>
+                        <el-button @click="initStoreActiveFixed2" type="success" size="small">guardar activos
+                        </el-button>
                     </el-tab-pane>
                 </el-tabs>
             </div>
@@ -223,19 +199,20 @@ export default {
         return {
             user: this.$store.state.user,
             id: this.$route.params.id,
+            marker: 'agregar',
             activeTab: "tab1", // Controla qué pestaña está activa
             isTabDisabled: true,
             selectedFixedAssets: [],
             itemSelected: 0,
             editFixedAssets: [],
 
+            estados: [], // lista de estados disponibles por activo fijo
             dataFixedAssets: [],
             fixedAsset: {
                 idx: 0,
                 codigo: '',
                 codigo_anterior: '',
-                des_general: '',
-                des_detallada: '',
+                descripcion: '',
                 medida: '',
                 cantidad: 1,
                 importe: 0,
@@ -243,7 +220,7 @@ export default {
                 id_contable: 0,
                 des_contable: '',
                 id_presupuesto: '',
-                des_presupuesto: '', 
+                des_presupuesto: '',
                 estado: '',
                 cod_prg: '',
                 des_prg: '',
@@ -272,6 +249,7 @@ export default {
     mounted() {
         console.log(this.user);
         this.getFixedAssetsDetails();
+        this.getStatesByActive();
     },
     methods: {
         test() { },
@@ -297,15 +275,27 @@ export default {
                 this.selectedFixedAssets = [];
                 //pasar informacion para su tabulacion
                 this.fixedAsset.cantidad = this.itemSelected;
-                this.fixedAsset.descripcion = this.editFixedAssets[0].descripcion;
+                this.fixedAsset.descripcion = this.editFixedAssets[0].descripcion.trim();
                 this.fixedAsset.importe = this.editFixedAssets[0].importe;
                 this.fixedAsset.id_contable = this.editFixedAssets[0].id_contable;
                 this.fixedAsset.des_contable = this.editFixedAssets[0].des_contable;
                 this.fixedAsset.id_presupuesto = this.editFixedAssets[0].id_presupuesto;
                 this.fixedAsset.des_presupuesto = this.editFixedAssets[0].des_presupuesto;
+                this.fixedAsset.fecha_adquisicion = this.editFixedAssets[0].fecha_adquisicion;
                 console.log(this.editFixedAssets);
                 console.log(this.fixedAsset);
             }
+            this.marker = 'regularizar';
+        },
+
+        toggleTab2() {
+            // Alternar entre habilitar y deshabilitar la pestaña 2
+            this.isTabDisabled = !this.isTabDisabled;
+            this.activeTab = 'tab2';
+            this.editFixedAssets = this.selectedFixedAssets;
+            this.selectedFixedAssets = [];
+            console.log(this.fixedAsset);
+            this.marker = 'registrar';
         },
 
         handleSelectionChange(val) {
@@ -330,6 +320,21 @@ export default {
                 console.log(app.dataBudgetItem);
                 console.log(app.dataAccountingItem);
                 console.log(app.dataMeasurement);
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
+        },
+
+        //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
+        async getStatesByActive() {
+            let app = this;
+            try {
+                let response = await axios.get("/api/getStatesByActive", {
+                });
+                app.estados = response.data;
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {
@@ -411,28 +416,33 @@ export default {
             this.aditionalDetails = row;
             this.stateStore = "editar";
         },
-        initAddActiveFixed2() {
-            this.dataFixedAssets.push(this.fixedAsset);
-            this.fixedAsset = {
-                idx: 0,
-                codigo: '',
-                codigo_anterior: '',
-                descripcion: '',
-                detalle: '',
-                medida: '',
-                cantidad: 0,
-                importe: 0,
-                fecha_adquisicion: '',
-                id_contable: 0,
-                id_presupuesto: '',
-                estado: '',
-                cod_prg: '',
-                des_prg: '',
-                ci_resp: '',
-                id_asignaciones: '',
-                aditional: [],
-            };         //documento de regularizacion
+
+        //  *  AC6. Guarda y regulariza los activos ya registrados en gestiones anteriores
+        async initStoreActiveFixed2() {
+            console.log(this.fixedAsset);
+            var app = this;
+            try {
+                let response = axios
+                    .post("/api/storeActiveFixed2", {
+                        fixedAsset: app.fixedAsset,
+                        document: app.dataDocument,
+                        editFixedAssets: app.editFixedAssets,
+                        user: app.user,
+                        marker: app.marker,
+                    });
+                app.$alert("Se ha registrado correctamente los activos", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+                app.dialogFormVisible = false;
+                app.getAssignments();
+            } catch (error) {
+                app.$alert("No se registro nada", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+            };
+
         },
+
         initSelectedFixedAssets(idx, row) {
             console.log(row);
             this.fixedAsset.codigo_anterior = row.codigo;

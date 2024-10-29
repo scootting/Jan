@@ -198,7 +198,6 @@ Route::group([
     Route::post('selectedFixedAssetsbyDocument', 'FixedAssetController@getFixedAssetsbyDocument');
     //Route::get('reportSelectedFixedAssets/{id}', 'FixedAssetController@getReportSelectedFixedAssets');
     Route::get('reportSelectedFixedAssets/', 'FixedAssetController@getReportSelectedFixedAssets');
-    Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@getReportSelectedFixedAssets2');
 
     //  *  AC1. Obtiene la lista de categorias programaticas
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
@@ -210,7 +209,10 @@ Route::group([
     Route::post('getFixedAssetsDetails/', 'FixedAssetController@getFixedAssetsDetails');
     //  *  AC5. Obtiene la lista de activos ya registrados
     Route::post('getSearchFixedAssets/', 'FixedAssetController@getSearchFixedAssets');
-
+    //  *  AC6. Guarda y regulariza los activos ya registrados en gestiones anteriores
+    Route::post('storeActiveFixed2/', 'FixedAssetController@storeActiveFixed2');
+    //  *  AC6. Imprimir activos seleccionados
+    Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@getReportSelectedFixedAssets2');
     
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Archivos

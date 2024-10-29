@@ -16,7 +16,7 @@
       <div>
         <el-table v-loading="loading" :data="data" style="width: 100%">
           <el-table-column prop="fecha" label="fecha"></el-table-column>
-          <el-table-column label="unidad academica o administrativa">
+          <el-table-column label="unidad academica o administrativa" width="320">
             <template slot-scope="scope">
               <div slot="reference" class="name-wrapper">
                 <el-tag size="medium">{{ scope.row.des_prg }}</el-tag>
@@ -24,10 +24,10 @@
             </template>
           </el-table-column>
           <el-table-column prop="idc" label="no. documento"></el-table-column>
-          <el-table-column align="right" width="220">
+          <el-table-column align="right" width="320">
             <template slot-scope="scope">
-              <el-button @click="initAddFixedAssets(scope.$index, scope.row)" type="primary" size="small">Asignar bienes
-                de uso</el-button>
+              <el-button @click="initAddFixedAssets(scope.$index, scope.row)" type="primary" size="small">Asignar</el-button>
+                <el-button @click="initEditFixedAssets(scope.$index, scope.row)" type="info" size="small">editar e imprimir </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -172,6 +172,14 @@ export default {
     initAddFixedAssets(idx, row) {
       this.$router.push({
         name: "assignmentsdetails",
+        params: {
+          id: row.id,
+        },
+      });
+    },
+    initEditFixedAssets(idx, row) {
+      this.$router.push({
+        name: "editassignmentsdetails",
         params: {
           id: row.id,
         },

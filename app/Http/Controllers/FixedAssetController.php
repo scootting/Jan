@@ -52,6 +52,20 @@ class FixedAssetController extends Controller
         return $report;
     }
 
+    //reporte para la impresion de ticketes de activos fijos
+    public function reportSelectedFixedAssets2(Request $request)
+    {
+        $lista = $request->get('lista');
+        $nreport = $request->get('reporte');
+
+        $lista = implode(',', $lista);
+        $controls = array('p_lista' => $lista);
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+
+
+
     public function getReportSelectedFixedAssets2(Request $request)
     {
         $nreport = 'valores';
@@ -82,12 +96,13 @@ class FixedAssetController extends Controller
         $tipo = $request->get('typea');
         $gestion = $request->get('year');
         $dataDocument = FixedAsset::GetAssignmentsById($id, $tipo, $gestion);
-        $dataBudgetItem= FixedAsset::GetBudgetItem($gestion);
+        $dataBudgetItem = FixedAsset::GetBudgetItem($gestion);
         $dataAccountingItem = FixedAsset::GetAccountingItem($gestion);
         $dataMeasurement = FixedAsset::GetMeasurement($gestion);
-        return json_encode(['dataDocument' => $dataDocument, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem,'dataMeasurement' => $dataMeasurement]);
+        $dataFixedAssets = FixedAsset::GetFixedAssetsAssignment($id);
+        return json_encode(['dataDocument' => $dataDocument, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem, 'dataMeasurement' => $dataMeasurement, 'dataFixedAssets' => $dataFixedAssets]);
     }
-    
+
     public function getSearchFixedAssets(Request $request)
     {
         $descripcion = strtoupper($request->get('description'));
@@ -96,72 +111,139 @@ class FixedAssetController extends Controller
         return json_encode(['dataSearched' => $dataSearched]);
     }
 
-    public function storeDataRegularize(Request $request)
+    public function storeActiveFixed2(Request $request)
     {
-
-        /*
-        codigo VARCHAR(20),
-        codigo_anterior VARCHAR(20),
-        des_general VARCHAR,
-        des_detallada TEXT DEFAULT ''::text,
-        medida VARCHAR,
-        cantidad INTEGER,
-        importe NUMERIC(12,2),
-        fecha_adquisicion DATE,
-        id_contable INTEGER,
-        id_presupuesto INTEGER,
-        estado VARCHAR(20) DEFAULT ''::character varying,
-        cod_prg VARCHAR(8),
-        des_prg VARCHAR,
-        ci_resp VARCHAR,
-        id_regularizacion INTEGER
-        */
-
-        $documento = $request->get('documento');
-        $des_general = strtoupper($documento['des_general']);
-        $des_detallada = strtoupper($documento['des_detallada']);
-        $medida = strtoupper($documento['medida']);
-        $cantidad = strtoupper($programa['cantidad']);
-        $importe = strtoupper($programa['importe']);
-        $fecha_adquisicion = strtoupper($responsable['fecha_adquisicion']);
-        $id_contable = strtoupper($responsable['id_contable']);
-        $id_presupuesto = strtoupper($responsable['id_presupuesto']);
-        $estado = strtoupper($responsable['estado']);
-        $cod_prg = strtoupper($responsable['cod_prg']);
-        $des_prg = strtoupper($responsable['des_prg']);
-        $ci_resp = strtoupper($responsable['ci_resp']);
-
+        $id_activo = 0;
+        $id_adicional = 0;
         $usuario = $request->get('usuario');
-
         $marcador = $request->get('marker');
         switch ($marcador) {
-            case 'registrar':
-                $id = FixedAsset::AddRegularizeDocument($des_general, $fecha_adquisicion, $cod_prg, $des_prg);
-                $id_documento = $id[0]->{'ff_registrar_documento'};
-                //  * Deudores
-                foreach ($deudores as $item) {
+            case 'regularizar':
+                $documento = $request->get('document');
+                $activos = $request->get('fixedAsset');
+                $regulares = $request->get('editFixedAssets');
+                $adicional = $activos['aditional'];
+
+                $idx = 1;
+                $medida = strtoupper($activos['medida']);
+                $cantidad = 1;
+                $id_contable = strtoupper($activos['id_contable']);
+                $id_presupuesto = strtoupper($activos['id_presupuesto']);
+                $estado = strtoupper($activos['estado']);
+                $cod_prg = strtoupper($documento['cod_prg']);
+                $des_prg = strtoupper($documento['des_prg']);
+                $ci_resp = strtoupper($documento['ci_resp']);
+                $id_asignaciones = strtoupper($documento['id']);
+
+                for ($i = 0; $i < count($regulares); $i++) {
                     # code...
-                    $id = FixedAsset::AddRegularizeFixedAssets($des_general, $des_detallada, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $id_presupuesto, $estado, $cod_prg, $des_prg, $ci_per);
-                    $ci_per = strtoupper($item['id']);
-                    $des_per = strtoupper($item['des_per']);
-                    $des_per1 = strtoupper($item['des_per1']);
-                    $data = Solvency::AddDebtorDocument($id_documento,$gestion, $fecha, $ci_per, $des_per, $des_per1, $referencia, $cod_prg, $des_prg, $usr_cre, $tipo);                    
+                    $codigo = 'codigo';
+                    $codigo_anterior = strtoupper($regulares[$i]['codigo']);
+                    $descripcion = strtoupper($activos['descripcion']);
+                    $medida = strtoupper($activos['medida']);
+                    $importe = strtoupper($activos['importe']);
+                    $fecha_adquisicion = $activos['fecha_adquisicion'];
+                    $idea = FixedAsset::StoreActiveFixed2(
+                        $codigo,
+                        $codigo_anterior,
+                        $idx,
+                        $descripcion,
+                        $medida,
+                        $cantidad,
+                        $importe,
+                        $fecha_adquisicion,
+                        $id_contable,
+                        $id_presupuesto,
+                        $estado,
+                        $cod_prg,
+                        $des_prg,
+                        $ci_resp,
+                        $id_asignaciones
+                    );
+                    $idx = $idx + 1;
+                    $id_activo = $idea[0]->{'ff_registrar_activos'};
+                    foreach ($adicional as $item) {
+                        # code...
+                        $a_cantidad = $item['cantidad'];
+                        $a_descripcion = strtoupper($item['descripcion']);
+                        $a_serial = '';
+
+                        $ideb = FixedAsset::StoreActiveFixedAditional(
+                            $a_cantidad,
+                            $a_descripcion,
+                            $a_serial,
+                            $id_activo);
+                            $id_adicional = $ideb[0]->{'id'};
+                    }
                 }
-                return json_encode($id_documento);
+                return json_encode($id_activo);
                 break;
-            case 'editar':
-                //$data = Solvency::UpdateDebtorDocument($id, $gestion, $fecha, $detalle, $cod_prg, $des_prg, $usr_cre, $ci_resp, $ci_elab, $id_ref);
+            case 'registrar':
+                $documento = $request->get('document');
+                $activos = $request->get('fixedAsset');
+                $adicional = $activos['aditional'];
+                $idx = 1;
+                $medida = strtoupper($activos['medida']);
+                $cantidad = 1;
+                $id_contable = strtoupper($activos['id_contable']);
+                $id_presupuesto = strtoupper($activos['id_presupuesto']);
+                $estado = strtoupper($activos['estado']);
+                $cod_prg = strtoupper($documento['cod_prg']);
+                $des_prg = strtoupper($documento['des_prg']);
+                $ci_resp = strtoupper($documento['ci_resp']);
+                $id_asignaciones = strtoupper($documento['id']);
+
+                for ($i = 0; $i < $activos['cantidad']; $i++) {
+                    # code...
+                    $codigo = 'codigo';
+                    $codigo_anterior = 0;
+                    $descripcion = strtoupper($activos['descripcion']);
+                    $medida = strtoupper($activos['medida']);
+                    $importe = strtoupper($activos['importe']);
+                    $fecha_adquisicion = $activos['fecha_adquisicion'];
+                    $idea = FixedAsset::StoreActiveFixed2(
+                        $codigo,
+                        $codigo_anterior,
+                        $idx,
+                        $descripcion,
+                        $medida,
+                        $cantidad,
+                        $importe,
+                        $fecha_adquisicion,
+                        $id_contable,
+                        $id_presupuesto,
+                        $estado,
+                        $cod_prg,
+                        $des_prg,
+                        $ci_resp,
+                        $id_asignaciones
+                    );
+                    $idx = $idx + 1;
+                    $id_activo = $idea[0]->{'ff_registrar_activos'};
+                    foreach ($adicional as $item) {
+                        # code...
+                        $a_cantidad = $item['cantidad'];
+                        $a_descripcion = strtoupper($item['descripcion']);
+                        $a_serial = '';
+                        $ideb = FixedAsset::StoreActiveFixedAditional(
+                            $a_cantidad,
+                            $a_descripcion,
+                            $a_serial,
+                            $id_activo);
+                            $id_adicional = $ideb[0]->{'id'};
+                    }
+                }
+                return json_encode($id_activo);
                 break;
             default:
                 break;
         }
-        return json_encode($id_documento);
+        return json_encode($id_activo);
     }
-
-
     //  *  AC1. Obtiene la lista de categorias programaticas
     //  * {year: gestion en la que se desarrolla}
-    public function getDataPrograms(Request $request){
+    public function getDataPrograms(Request $request)
+    {
         $gestion = $request->get('year');
         \Log::info("Ingresa aca");
         $data = FixedAsset::GetDataPrograms($gestion);
@@ -170,7 +252,8 @@ class FixedAssetController extends Controller
 
     //  *  AC2. Obtiene la lista de asignaciones
     //  * {year: gestion en la que se desarrolla}
-    public function getAssignments(Request $request){
+    public function getAssignments(Request $request)
+    {
         $descripcion = $request->get('description');
         $tipo = 0;
         $gestion = $request->get('year');
@@ -199,7 +282,7 @@ class FixedAssetController extends Controller
         $ci_resp = strtoupper($usuario['nodip']);
         $ci_elab = strtoupper($usuario['nodip']);
         $usuario = $usuario['usuario'];
-        $gestion = 2024;//$usuario['gestion'];
+        $gestion = 2024; //$usuario['gestion'];
 
         $marcador = $request->get('marker');
         switch ($marcador) {
@@ -216,5 +299,4 @@ class FixedAssetController extends Controller
         }
         return json_encode($id_documento);
     }
-
 }
