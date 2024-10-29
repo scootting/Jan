@@ -172,8 +172,9 @@ class FixedAssetController extends Controller
                             $a_cantidad,
                             $a_descripcion,
                             $a_serial,
-                            $id_activo);
-                            $id_adicional = $ideb[0]->{'id'};
+                            $id_activo
+                        );
+                        $id_adicional = $ideb[0]->{'id'};
                     }
                 }
                 return json_encode($id_activo);
@@ -229,8 +230,9 @@ class FixedAssetController extends Controller
                             $a_cantidad,
                             $a_descripcion,
                             $a_serial,
-                            $id_activo);
-                            $id_adicional = $ideb[0]->{'id'};
+                            $id_activo
+                        );
+                        $id_adicional = $ideb[0]->{'id'};
                     }
                 }
                 return json_encode($id_activo);
