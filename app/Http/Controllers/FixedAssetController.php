@@ -59,6 +59,11 @@ class FixedAssetController extends Controller
         $nreport = $request->get('reporte');
 
         $lista = implode(',', $lista);
+        \Log::info($lista);
+        \Log::info($lista);
+        \Log::info($lista);
+        \Log::info($lista);
+        \Log::info($lista);
         $controls = array('p_lista' => $lista);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
@@ -66,12 +71,13 @@ class FixedAssetController extends Controller
 
 
 
+    /*
     public function getReportSelectedFixedAssets2(Request $request)
     {
         $nreport = 'valores';
         $report = JSRClient::GetReport($nreport);
         return $report;
-    }
+    }*/
 
     public function getCategoryProgramatic(Request $request)
     {

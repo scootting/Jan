@@ -212,7 +212,7 @@ Route::group([
     //  *  AC6. Guarda y regulariza los activos ya registrados en gestiones anteriores
     Route::post('storeActiveFixed2/', 'FixedAssetController@storeActiveFixed2');
     //  *  AC6. Imprimir activos seleccionados
-    Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@getReportSelectedFixedAssets2');
+    Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@reportSelectedFixedAssets2');
     
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Archivos
