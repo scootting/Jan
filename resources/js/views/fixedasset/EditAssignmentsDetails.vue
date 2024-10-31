@@ -171,6 +171,9 @@
                 <el-form-item label="descripcion">
                     <el-input type="textarea" v-model="aditionalDetails.descripcion" autocomplete="off"></el-input>
                 </el-form-item>
+                <el-form-item label="serial">
+                    <el-input type="textarea" v-model="aditionalDetails.serial" autocomplete="off"></el-input>
+                </el-form-item>
             </el-form>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" size="small" plain @click="initStoreAditionalDescription">agregar</el-button>
@@ -196,13 +199,12 @@ export default {
             activeTab: "tab1", // Controla qué pestaña está activa
             isTabDisabled: true,
             dataFixedAssets: [],
-
-
             selectedFixedAssets: [],
             itemSelected: 0,
 
             estados: [], // lista de estados disponibles por activo fijo
             dataFixedAssets: [],
+            dataAditional: [],
             fixedAsset: {
                 idx: 0,
                 codigo: '',
@@ -255,6 +257,12 @@ export default {
 
         },
 
+        handleSelectionChange(val) {
+            this.selectedFixedAssets = val;
+            this.itemSelected = this.selectedFixedAssets.length;
+            // Extraer las descripciones en un nuevo array
+        },
+
         initPrintSelectedFixedAssets() {
             let list = [];
             for (var item in this.selectedFixedAssets) {
@@ -297,6 +305,8 @@ export default {
                 app.dataAccountingItem = response.data.dataAccountingItem;
                 app.dataMeasurement = response.data.dataMeasurement;
                 app.dataFixedAssets = response.data.dataFixedAssets;
+                app.dataAditional = response.data.dataAditional;
+                console.log(app.dataAditional);
             } catch (error) {
                 this.error = error.response.data;
                 app.$alert(this.error.message, "Gestor de errores", {
@@ -305,6 +315,31 @@ export default {
             }
         },
 
+
+        //  *  AC6. Guarda y regulariza los activos ya registrados en gestiones anteriores
+        async initStoreActiveFixed2() {
+            console.log(this.fixedAsset);
+            var app = this;
+            try {
+                let response = axios
+                    .post("/api/storeActiveFixed2", {
+                        fixedAsset: app.fixedAsset,//el activo a actulizar
+                        document: app.dataDocument,
+                        editFixedAssets: app.dataFixedAssets,
+                        user: app.user,
+                        marker: 'actualizar',
+                    });
+                app.$alert("Se ha registrado correctamente los activos", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+                app.dialogFormVisible = false;
+                app.getAssignments();
+            } catch (error) {
+                app.$alert("No se registro nada", 'Gestor de mensajes', {
+                    dangerouslyUseHTMLString: true
+                });
+            };
+        },
         //  * 4. Obtener una lista de estados por cada activo fijo utilizado.
         async getStatesByActive() {
             let app = this;

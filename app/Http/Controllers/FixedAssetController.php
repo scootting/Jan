@@ -59,25 +59,10 @@ class FixedAssetController extends Controller
         $nreport = $request->get('reporte');
 
         $lista = implode(',', $lista);
-        \Log::info($lista);
-        \Log::info($lista);
-        \Log::info($lista);
-        \Log::info($lista);
-        \Log::info($lista);
         $controls = array('p_lista' => $lista);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
-
-
-
-    /*
-    public function getReportSelectedFixedAssets2(Request $request)
-    {
-        $nreport = 'valores';
-        $report = JSRClient::GetReport($nreport);
-        return $report;
-    }*/
 
     public function getCategoryProgramatic(Request $request)
     {
@@ -106,7 +91,8 @@ class FixedAssetController extends Controller
         $dataAccountingItem = FixedAsset::GetAccountingItem($gestion);
         $dataMeasurement = FixedAsset::GetMeasurement($gestion);
         $dataFixedAssets = FixedAsset::GetFixedAssetsAssignment($id);
-        return json_encode(['dataDocument' => $dataDocument, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem, 'dataMeasurement' => $dataMeasurement, 'dataFixedAssets' => $dataFixedAssets]);
+        $dataAditional = FixedAsset::GetAditionalFixedAssetsAssignment($id);
+        return json_encode(['dataDocument' => $dataDocument, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem, 'dataMeasurement' => $dataMeasurement, 'dataFixedAssets' => $dataFixedAssets, 'dataAditional' => $dataAditional]);
     }
 
     public function getSearchFixedAssets(Request $request)
