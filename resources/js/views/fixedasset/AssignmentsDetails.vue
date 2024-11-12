@@ -50,12 +50,6 @@
                                             </template>
                                         </el-table-column>
                                         <el-table-column prop="descripcion" label="descripcion"></el-table-column>
-                                        <el-table-column align="right" width="120">
-                                            <template slot-scope="scope">
-                                                <el-button @click="initSelectedFixedAssets(scope.$index, scope.row)"
-                                                    type="primary" size="small"> agregar</el-button>
-                                            </template>
-                                        </el-table-column>
                                     </el-table>
                                     <p>cantidad de activos seleccionados: {{ itemSelected }}</p>
                                     <el-button @click="toggleTab" type="success" size="small">seleccionar activos
@@ -436,39 +430,13 @@ export default {
                 app.dialogFormVisible = false;
                 app.getAssignments();
             } catch (error) {
-                app.$alert("No se registro nada", 'Gestor de mensajes', {
+                app.$alert("Se ha registrado correctamente la informacion", 'Gestor de mensajes', {
                     dangerouslyUseHTMLString: true
                 });
             };
 
         },
 
-        initSelectedFixedAssets(idx, row) {
-            console.log(row);
-            this.fixedAsset.codigo_anterior = row.codigo;
-            this.fixedAsset.codigo = row.codigo;
-            this.fixedAsset.des_general = row.descripcion;
-            this.dataFixedAssets.push(this.fixedAsset);
-            this.fixedAsset = {
-                idx: 0,
-                codigo: '',
-                codigo_anterior: '',
-                des_general: '',
-                des_detallada: '',
-                medida: '',
-                cantidad: 0,
-                importe: 0,
-                fecha_adquisicion: '',
-                id_contable: 0,
-                id_presupuesto: '',
-                estado: '',
-                cod_prg: '',
-                des_prg: '',
-                ci_resp: '',
-                id_asignaciones: '',
-                aditional: [],
-            };         //documento de regularizacion
-        },
         initRemoveSelectedFixedAssets(idx, row) {
             this.dataFixedAssets.splice(idx, 1);
         },
@@ -489,44 +457,6 @@ export default {
         initRemoveDetails(idx, row) {
             this.fixedAsset.aditional.splice(idx, 1);
         },
-
-        //  * S2. Guardar la informacion de un nuevo documento de deuda.
-        async storeDebtorDocument() {
-            var app = this;
-            try {
-                let response = await axios.post("/api/storeDataRegularize", {
-                    usuario: app.user,
-                    documento: app.fixedAsset,
-                    marker: "registrar",
-                });
-                app.numero = response.data;
-                console.log(response);
-                this.$confirm('Desea agregar algunas series?', 'Proceso de Verificacion', {
-                    confirmButtonText: 'Continuar',
-                    cancelButtonText: 'Cancelar',
-                    type: 'success'
-                }).then(() => {
-                    /*pasa directamente al editar*/
-                    this.$router.push({
-                        name: "EditFixedAssetsDetails",
-                        params: {
-                            id: response.data,
-                        },
-                    });
-
-                }).catch(() => {
-                    /*pasa directamente a la lista de deudas*/
-                    this.$router.push({ name: "RegularizeFixedAssets" });
-                });
-
-            } catch (error) {
-                this.error = error.response.data;
-                app.$alert(this.error.message, "Gestor de errores", {
-                    dangerouslyUseHTMLString: true,
-                });
-            }
-        },
-
     },
 };
 </script>

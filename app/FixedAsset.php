@@ -110,6 +110,13 @@ class FixedAsset extends Model
         //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
+    }    
+    public static function GetAditionalFixedAssetsAssignment($id)
+    {
+        $query = "select * from actx.activos_adicional b where b.id_activo in (select id from actx.activos a where a.id_asignaciones = " . $id . ")";
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
     }
 
 
