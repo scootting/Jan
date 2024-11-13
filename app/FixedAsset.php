@@ -110,7 +110,7 @@ class FixedAsset extends Model
         //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
-    }    
+    }
     public static function GetAditionalFixedAssetsAssignment($id)
     {
         $query = "select * from actx.activos_adicional b where b.id_activo in (select id from actx.activos a where a.id_asignaciones = " . $id . ")";
@@ -119,6 +119,20 @@ class FixedAsset extends Model
         return $data;
     }
 
+    //  *  AC8. Obtiene la lista de asignaciones detallado por activo
+    public static function GetFixedAssetsById($id, $year)
+    {
+        $query = "select * from actx.ff_datos_activo(" . $id . ", '" . $year . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    public static function GetAditionalFixedAssetsById($id)
+    {
+        $query = "select * from actx.activos_adicional b where b.id_activo =" . $id . "";
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
     //  * AC3. Guardar la nueva asignacion
     public static function StoreAssignments($tipo, $fecha, $cod_prg, $des_prg, $ci_resp, $ci_elab, $user, $gestion)
@@ -128,26 +142,23 @@ class FixedAsset extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
- 
-    public static function StoreActiveFixed2($codigo, $codigo_anterior, $idx ,$descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $id_presupuesto, $estado, $cod_prg, $des_prg, $ci_resp, $id_asignaciones)
+
+    public static function StoreActiveFixed2($codigo, $codigo_anterior, $idx, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $id_presupuesto, $estado, $cod_prg, $des_prg, $ci_resp, $id_asignaciones)
     {
-        $query = "select * from actx.ff_registrar_activos('" . $codigo . "','" . $codigo_anterior . "'," . $idx . ",'" . $descripcion . 
-        "','" . $medida . "'," . $cantidad . "," . $importe . ",'" . $fecha_adquisicion .
-        "'," . $id_contable . ",'" . $id_presupuesto . "'," . $estado . ",'" . $cod_prg .
-        "','" . $des_prg . "','" . $ci_resp . "'," . $id_asignaciones . ")";
-        \Log::info($query); 
+        $query = "select * from actx.ff_registrar_activos('" . $codigo . "','" . $codigo_anterior . "'," . $idx . ",'" . $descripcion .
+            "','" . $medida . "'," . $cantidad . "," . $importe . ",'" . $fecha_adquisicion .
+            "'," . $id_contable . ",'" . $id_presupuesto . "'," . $estado . ",'" . $cod_prg .
+            "','" . $des_prg . "','" . $ci_resp . "'," . $id_asignaciones . ")";
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-    public static function StoreActiveFixedAditional(  $a_cantidad, $a_descripcion, $a_serial, $id_activo)
+    public static function StoreActiveFixedAditional($a_cantidad, $a_descripcion, $a_serial, $id_activo)
     {
         $query = "INSERT INTO actx.activos_adicional(cantidad, descripcion, serial, id_activo) VALUES " .
-            "('" . $a_cantidad . "','" . $a_descripcion . "','" . $a_serial . "'," . $id_activo. ") RETURNING id";
-            \Log::info($query); 
-            $data = collect(DB::select(DB::raw($query)));
+            "('" . $a_cantidad . "','" . $a_descripcion . "','" . $a_serial . "'," . $id_activo . ") RETURNING id";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-    
 }
-
-

@@ -203,7 +203,7 @@ Route::group([
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
     //  *  AC2. Obtiene la lista de asignaciones
     Route::post('getAssignments/', 'FixedAssetController@getAssignments');
-    //  * AC3. Guardar la nueva asignacion
+    //  *  AC3. Guardar la nueva asignacion
     Route::post('storeAssignments', 'FixedAssetController@storeAssignments');
     //  *  AC4. Obtiene la lista de asignaciones detallado
     Route::post('getFixedAssetsDetails/', 'FixedAssetController@getFixedAssetsDetails');
@@ -211,9 +211,10 @@ Route::group([
     Route::post('getSearchFixedAssets/', 'FixedAssetController@getSearchFixedAssets');
     //  *  AC6. Guarda y regulariza los activos ya registrados en gestiones anteriores
     Route::post('storeActiveFixed2/', 'FixedAssetController@storeActiveFixed2');
-    //  *  AC6. Imprimir activos seleccionados
+    //  *  AC7. Imprimir activos seleccionados
     Route::get('reportSelectedFixedAssets2/', 'FixedAssetController@reportSelectedFixedAssets2');
-    
+    //  *  AC8. Obtiene la lista de asignaciones detallado por activo
+    Route::post('getFixedAssetsDetailsById/', 'FixedAssetController@getFixedAssetsDetailsById');
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Archivos
     //  |--------------------------------------------------------------------------
