@@ -211,7 +211,7 @@ export default {
                 cantidad: 1,
                 importe: 0,
                 fecha_adquisicion: '',
-                id_contable: 0,
+                id_contable: '',
                 des_contable: '',
                 id_presupuesto: '',
                 des_presupuesto: '',

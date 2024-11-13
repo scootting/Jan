@@ -60,6 +60,7 @@ class FixedAssetController extends Controller
 
         $lista = implode(',', $lista);
         $controls = array('p_lista' => $lista);
+        \Log::info($request);
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
@@ -93,6 +94,16 @@ class FixedAssetController extends Controller
         $dataFixedAssets = FixedAsset::GetFixedAssetsAssignment($id);
         $dataAditional = FixedAsset::GetAditionalFixedAssetsAssignment($id);
         return json_encode(['dataDocument' => $dataDocument, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem, 'dataMeasurement' => $dataMeasurement, 'dataFixedAssets' => $dataFixedAssets, 'dataAditional' => $dataAditional]);
+    }
+
+    //  *  AC8. Obtiene la lista de asignaciones detallado por activo
+    public function getFixedAssetsDetailsById(Request $request)
+    {
+        $id = $request->get('id');
+        $gestion = $request->get('year');
+        $dataFixedAssets = FixedAsset::GetFixedAssetsById($id, $gestion);
+        $dataAditional = FixedAsset::GetAditionalFixedAssetsById($id);
+        return json_encode(['dataFixedAssets' => $dataFixedAssets, 'dataAditional' => $dataAditional]);
     }
 
     public function getSearchFixedAssets(Request $request)

@@ -249,12 +249,26 @@ export default {
         this.getStatesByActive();
     },
     methods: {
-        initSelectedFixedAssets(index, row) {
+        async initSelectedFixedAssets(index, row) {
             let id = row.id;
             this.isTabDisabled = !this.isTabDisabled;
             this.fixedAsset = row;
-            this.activeTab = 'tab2';
-
+            var app = this;
+            try {
+                let response = await axios.post("/api/getFixedAssetsDetailsById", {
+                    id: row.id,
+                    year: app.user.gestion,
+                });
+                this.activeTab = 'tab2';
+                console.log(response.data);
+                app.fixedAsset = response.data.dataFixedAssets[0];
+                app.fixedAsset.aditional = response.data.dataAditional;
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
         },
 
         handleSelectionChange(val) {
