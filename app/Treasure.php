@@ -150,7 +150,7 @@ class Treasure extends Model
     {
         //select * from val.diario vd where vd.usr_cre = 'rcallizaya' and vd.gestion = '2020'
         if ($description == '') {
-            $query = "select * from val.diario vd where vd.usr_cre in ('manhattan', 'nottingham', 'vancouver') and vd.gestion = '" . $year . "' order by vd.fec_tra, vd.id_dia desc";
+            $query = "select * from val.diario vd where vd.usr_cre in ('manhattan', 'nottingham', 'vancouver', 'petrogrado') and vd.gestion = '" . $year . "' order by vd.fec_tra, vd.id_dia desc";
         } else {
             //$query = "select * from val.diario vd where vd.usr_cre = '" . $user . "' and vd.gestion = '" . $year . "' order by vd.id_dia desc";
         }

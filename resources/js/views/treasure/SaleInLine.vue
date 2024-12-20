@@ -23,6 +23,11 @@
           <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>
           <el-table-column prop="usr_cre" label="tipo" :min-width="150">
             <template slot-scope="scope">
+              <div v-if="scope.row.usr_cre === 'petrogrado     '">
+                <el-tag size="medium" type="danger" effect="dark">{{
+                  'POSTULACIONES'
+                }}</el-tag>
+              </div>
               <div v-if="scope.row.usr_cre === 'manhattan      '">
                 <el-tag size="medium" type="success" effect="dark">{{
                   'MATRICULAS PARA REGULARES'

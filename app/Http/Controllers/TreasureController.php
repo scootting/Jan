@@ -309,7 +309,7 @@ class TreasureController extends Controller
         return json_encode($paginate);
     }
 
-    //  * T30. Obtienes los dias de venta en linea para manhattan, nottingham, vancouber
+    //  * T30. Obtienes los dias de venta en linea para manhattan, nottingham, vancouver
     public function getOnlineSalesDays(Request $request)
     {
         $descripcion = $request->get('description'); // '' cadena vacia
@@ -342,6 +342,9 @@ class TreasureController extends Controller
         } 
         if ($usuario == 'nottingham') {
             $nreport = 'Treasure_OnlineStudentsDetails_Letter';
+        } 
+        if ($usuario == 'petrogrado') {
+            $nreport = 'Treasure_OnlinePostulationDetails_Letter';
         } 
 
         //$nreport = 'test_details_1';
