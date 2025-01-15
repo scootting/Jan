@@ -183,6 +183,8 @@ Route::group([
     Route::post('getValueTransactionsById', 'TreasureController@getValueTransactionsById');
     //  * TE3. Resumen
     Route::get('getValueTransactionsReport/', 'TreasureController@getValueTransactionsReport');
+    //  * TE3. Resumen
+    Route::get('getValueTransactionsReport2/', 'TreasureController@getValueTransactionsReport2');
     //  * TE4. Obtiene el valor
     Route::post('getUserValues', 'TreasureController@getUserValues');
     //  * TE5. Obtiene las cuotas realizadas para un valorado

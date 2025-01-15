@@ -512,6 +512,23 @@ class TreasureController extends Controller
         return $report;
     }
 
+    //  * TE3. Imprime el resumen
+    public function getValueTransactionsReport2(Request $request)
+    {
+        $id = $request->get('codigo');
+        $inicial = $request->get('inicial');
+        $final = $request->get('final');
+        $usuario = $request->get('usuario');
+        $nreport = 'Treasure_Value_Transactions2';
+        $controls = array(
+            'p_id' => $id,
+            'p_inicial' => $inicial,
+            'p_final' => $final,
+            'p_usuario' => $usuario,            
+        );
+        $report = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
     //  * TE4. Obtiene la lista de valores asignados a un usuario
     public function getUserValues(Request $request)
     {
@@ -525,8 +542,9 @@ class TreasureController extends Controller
     public function getGroupValueTransactionsByCode(Request $request)
     {
         $valor = $request->get('data');
+        $gestion = $request->get('gestion');
         $codigo_valor  = $valor['codigo_asociado'];
-        $dataValueTransactions = Treasure::GetGroupValueTransactionsByCode($codigo_valor);
+        $dataValueTransactions = Treasure::GetGroupValueTransactionsByCode($codigo_valor, $gestion);
         return json_encode($dataValueTransactions);
     }
 

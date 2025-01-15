@@ -283,9 +283,9 @@ class Treasure extends Model
     }
 
     //  * TE5. Obtiene las cuotas realizadas para un valorado    
-    public static function getGroupValueTransactionsByCode($valueCode)
+    public static function getGroupValueTransactionsByCode($valueCode, $year)
     {
-        $query = "select * from  bval.ff_transacciones_agrupadas('" . $valueCode . "')";
+        $query = "select * from  bval.ff_transacciones_agrupadas('" . $valueCode . "','".$year."')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

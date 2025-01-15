@@ -32,11 +32,11 @@
                 <el-col :span="24">
                     <div class="grid-content bg-purple">
                         <el-table :data="dataValueTransactions" border style="width: 100%" size="small">
-                            <el-table-column prop="ci_per" label="numero de carnet" width="120">
+                            <el-table-column prop="ci_per" label="id" width="120">
                             </el-table-column>
                             <el-table-column prop="des_per" label="apellidos y nombres" width="350">
                             </el-table-column>
-                            <el-table-column prop="can_val" label="coutas canceladas" align="right">
+                            <el-table-column prop="can_val" label="pagos" align="right">
                             </el-table-column>
                             <el-table-column prop="pre_uni" label="precio unitario" align="right">
                             </el-table-column>
@@ -54,17 +54,18 @@
                 </el-col>
             </el-row>
             <div style="margin-top: 15px">
-                <el-button size="small" type="primary" icon="el-icon-printer" @click="initGetValueTransactionsReport"
+                
+                <el-button size="small" type="primary" icon="el-icon-printer" @click="GetValueTransactionsById()"
                     plain>
                     imprimir los movimientos</el-button>
             </div>
         </el-card>
         <el-dialog title="Datos generales" :visible.sync="dialogTableVisible">
             <el-form :model="dataClient" label-width="220px" size="small">
-                <el-form-item label="apellidos y nombres" disabled>
+                <el-form-item label="carnet de identidad" disabled>
                     <el-input v-model="dataClient.ci_per" disabled></el-input>
                 </el-form-item>
-                <el-form-item label="carnet de identidad" disabled>
+                <el-form-item label="apellidos y nombres" disabled>
                     <el-input v-model="dataClient.des_per" disabled></el-input>
                 </el-form-item>
             </el-form>
@@ -82,6 +83,24 @@
                 </el-table-column>
             </el-table>
         </el-dialog>
+
+        <el-dialog title="Datos generales" :visible.sync="dialogTableVisible2">
+            <el-form :model="dataRange" label-width="220px" size="small">
+                <el-form-item label="rango inicial">
+                    <el-date-picker type="date" v-model="dataRange.initial" placeholder="seleccione una fecha"
+                        style="width: 100%" format="yyyy/MM/dd" value-format="yyyy-MM-dd"></el-date-picker>
+                </el-form-item>
+                <el-form-item label="rango final">
+                    <el-date-picker type="date" v-model="dataRange.final" placeholder="seleccione una fecha"
+                        style="width: 100%" format="yyyy/MM/dd" value-format="yyyy-MM-dd"></el-date-picker>
+                </el-form-item>
+                <el-form-item>
+                    <el-button size="small" icon="el-icon-printer" type="primary" @click.prevent="initGetValueTransactionsReport()"
+                        >imprimir los movimientos</el-button>
+                    </el-button>                        
+                </el-form-item>
+            </el-form>
+        </el-dialog>
     </div>
 </template>
 
@@ -95,7 +114,9 @@ export default {
             dataSingleValueTransactions: [],
             dataValues: [],
             data: {},
+            dataRange:{},
             dialogTableVisible: false,
+            dialogTableVisible2: false,
             dataClient: {},
         };
     },
@@ -140,6 +161,7 @@ export default {
             try {
                 let response = await axios.post("/api/getGroupValueTransactionsByCode", {
                     data: app.data,
+                    gestion: app.user.gestion
                 });
                 this.dataValueTransactions = response.data;
                 console.log(this.dataValueTransactions);
@@ -151,6 +173,10 @@ export default {
             }
         },
 
+
+        GetValueTransactionsById(){
+            this.dialogTableVisible2 = true;
+        },
         //  * TE6. Obtiene las cuotas realizadas para un valorado detallado por persona
         async getSingleValueTransactionsByCode(idx, row) {
             var app = this;
@@ -195,9 +221,9 @@ export default {
             let app = this;
             console.log(app.dataSaleDay);
             axios({
-                url: "/api/getValueTransactionsReport/",
+                url: "/api/getValueTransactionsReport2/",
                 params: {
-                    codigo: app.dataValue.cod_val,
+                    codigo: app.data.codigo_asociado,
                     inicial: app.dataRange.initial,
                     final: app.dataRange.final,
                     usuario: app.user.usuario,
