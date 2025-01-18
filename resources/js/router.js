@@ -15,6 +15,11 @@ import AddTutorProgram from './views/resources/AddTutorProgram.vue'
 import AddAssetProgram from './views/resources/AddAssetProgram.vue'
 
 
+//  |--------------------------------------------------------------------------
+//  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
+//  |--------------------------------------------------------------------------
+import StudentSalesDay from './views/treasure/StudentSalesDay.vue'
+
 //Solvencias
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
 import Debts from './views/solvency/Debts.vue'
@@ -390,6 +395,12 @@ const router = new VueRouter({
                 //  * M2. Obtener la lista de memoriales para su verificacion 
                 { path: 'tablets/:id', name: 'tabletdetails', component: TabletDetails },
 
+
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
+                //  |--------------------------------------------------------------------------
+                { path: 'StudentSalesDay', name: 'studentsalesday', component: StudentSalesDay },
+                
             ],
             meta: {
                 requiresAuth: true,

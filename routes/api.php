@@ -148,7 +148,6 @@ Route::group([
     Route::get('reports/', 'TreasureController@getReportValuesQr');
     // *** - Obtener el reporte correspondiente a los valores vendidos para alumnos nuevos por dia - ***
     Route::get('reportDetailStudents/', 'TreasureController@getReportDetailStudents');
-
     // *** - Almacenar - ***
     Route::post('storeTransactionsByStudents', 'TreasureController@storeTransactionsByStudents');
     // *** - Obtener los dias para la venta de valores de un usuario - ***
@@ -157,7 +156,11 @@ Route::group([
     // *** - Obtener los dias para la venta de valores de un usuario - ***
     Route::post('getSaleOfDayById', 'TreasureController@getSaleOfDayById');
 
-    //Route::post('getValueById', 'TreasureController@getValueById');
+    //  |--------------------------------------------------------------------------
+    //  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
+    //  |--------------------------------------------------------------------------
+    //  * TA1. Lista de dias para la venta de alumnos nuevos  Usuario: nottingham
+    Route::post('getStudentSalesDay', 'TreasureController@getStudentSalesDay');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Ventas en Linea de la Division de Tesoro

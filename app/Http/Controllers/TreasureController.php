@@ -569,4 +569,24 @@ class TreasureController extends Controller
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
+
+
+    //  * TA1. Lista de dias para la venta de alumnos nuevos  Usuario: nottingham
+    public function getStudentSalesDay(Request $request)
+    {
+        $descripcion = $request->get('description'); // '' cadena vacia
+        $usuario = $request->get('user');
+        $gestion = $request->get('year');
+        $data = Treasure::GetStudentSalesDay($descripcion, $usuario, $gestion);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getStudentSalesDay')]
+        );
+        return json_encode($paginate);
+    }
 }
