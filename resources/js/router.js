@@ -19,6 +19,7 @@ import AddAssetProgram from './views/resources/AddAssetProgram.vue'
 //  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
 //  |--------------------------------------------------------------------------
 import StudentSalesDay from './views/treasure/StudentSalesDay.vue'
+import StudentSaleDetails from './views/treasure/StudentSaleDetails.vue'
 
 //Solvencias
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
@@ -400,6 +401,7 @@ const router = new VueRouter({
                 //  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
                 //  |--------------------------------------------------------------------------
                 { path: 'StudentSalesDay', name: 'studentsalesday', component: StudentSalesDay },
+                { path: 'StudentSalesDay/sale/:id', name: 'studentsaledetails', component: StudentSaleDetails }, //alumnos nuevos
                 
             ],
             meta: {

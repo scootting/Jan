@@ -161,6 +161,8 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  * TA1. Lista de dias para la venta de alumnos nuevos  Usuario: nottingham
     Route::post('getStudentSalesDay', 'TreasureController@getStudentSalesDay');
+    //  * TA2. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
+    Route::post('storeDayForSale2', 'TreasureController@storeDayForSale2');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Ventas en Linea de la Division de Tesoro

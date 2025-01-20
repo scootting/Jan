@@ -4,27 +4,27 @@
       <div slot="header" class="clearfix">
         <span>venta de valores para estudiantes nuevos</span>
         <el-button style="text-align: right; float: right" size="mini" type="success" icon="el-icon-plus"
-          @click="initStoreDayForSale">agregar dia para la venta de alumnos nuevos</el-button>
+          @click="initStoreDayForSale">agregar dia para la venta de alumnos admitidos</el-button>
       </div>
       <div>
         <el-table v-loading="loading" :data="days" style="width: 100%">
-          <el-table-column prop="id_dia" label="dia" :min-width="100">
+          <el-table-column prop="id_dia" label="dia" :min-width="70">
             <template slot-scope="scope">
               <el-tag size="medium" type="primary">{{ scope.row.id_dia }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="fec_tra" label="fecha" :min-width="100">
+          <el-table-column prop="fec_tra" label="fecha" :min-width="90">
             <template slot-scope="scope">
               <el-tag size="medium" type="info">{{ scope.row.fec_tra }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="glosa" label="glosa" :min-width="350"></el-table-column>
-          <el-table-column align="right" :min-width="320">
+          <el-table-column prop="glosa" label="glosa" :min-width="390"></el-table-column>
+          <el-table-column align="right" :min-width="450" fixed="right">
             <template slot-scope="scope">
               <el-button :disabled="days[scope.$index].estado == 'V'" @click="initSaleStudents(scope.$index, scope.row)"
                 size="mini" type="success">realizar venta</el-button>
-              <el-button @click="initDetailStudents(scope.$index, scope.row)" size="mini" type="primary">detalle de venta</el-button>
-              <el-button @click="initGroupStudents(scope.$index, scope.row)" size="mini" type="primary" plain>detalle general de venta</el-button>
+              <el-button @click="initDetailStudents(scope.$index, scope.row)" size="mini" type="primary">venta detallada</el-button>
+              <el-button @click="initGroupStudents(scope.$index, scope.row)" size="mini" type="primary" plain>venta general</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -86,7 +86,7 @@ export default {
       this.loading = true;
       let app = this;
       try {
-        let response = await axios.post("/api/storeDayForSale", {
+        let response = await axios.post("/api/storeDayForSale2", {
           user: app.user.usuario,
           year: app.user.gestion,
         });
@@ -98,6 +98,7 @@ export default {
         app.$alert(this.error.message, "Gestor de errores", {
           dangerouslyUseHTMLString: true,
         });
+        app.getSaleOfDays();
       }
     },
 
@@ -126,7 +127,7 @@ export default {
     initSaleStudents(index, row) {
       let id = row.id_dia;
       this.$router.push({
-        name: "students",
+        name: "studentsaledetails",
         params: {
           id: id,
         },

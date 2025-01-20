@@ -589,4 +589,14 @@ class TreasureController extends Controller
         );
         return json_encode($paginate);
     }
+
+    //  * TA2. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
+    public function storeDayForSale2(Request $request)
+    {
+        $usuario = 'nottingham';
+        $gestion = $request->get('year');
+        $data = Treasure::storeDayForSale($usuario, $gestion);
+        $id_dia = $data[0]->{'ff_registrar_dia_venta'};
+        return json_encode($id_dia);
+    }
 }
