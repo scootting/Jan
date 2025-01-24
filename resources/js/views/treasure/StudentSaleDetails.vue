@@ -182,7 +182,7 @@ export default {
       var newUser = app.user;
       var newPostulations = app.postulations;
       var newValuesPostulations = app.valuesPostulations;
-      if ((app.form.kardex >= 87444 && app.form.kardex <=87450) || (app.form.kardex >= 87452 && app.form.kardex <=87460) || (app.form.kardex >= 87524 && app.form.kardex <=87850)) {
+      if ((app.form.kardex >= 87444 && app.form.kardex <=87450) || (app.form.kardex >= 87452 && app.form.kardex <=87460) || (app.form.kardex >= 87524 && app.form.kardex <=87850) || (app.form.kardex >= 88651 && app.form.kardex <=93650)) {
         axios
           .post("/api/storeTransactionsByStudents", {
             dayTransactions: newDayTransactions,
