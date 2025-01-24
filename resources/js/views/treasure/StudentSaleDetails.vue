@@ -93,6 +93,18 @@
       </span>
     </el-dialog>
 
+
+    <el-dialog title="Valores Fisicos" :visible.sync="visibleKardex">
+      <el-form :model="form">
+        <el-form-item label="Numero del folder amarillo">
+          <el-input v-model="form.kardex" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="visibleKardex = false">cancelar</el-button>
+        <el-button type="primary" @click="visibleKardex = false">confirmar</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -108,10 +120,15 @@ export default {
       writtenTextParameter: "",
       user: this.$store.state.user,
       day: "",
-      saleOfDay: [],
+      kardex: 0,
+      saleOfDay: {},
       valuesPostulations: [],
       muchPostulations: [],
       visible: false,
+      visibleKardex: false,
+      form: {
+        kardex: 0,
+      },
       postulations: {
         nro_dip: "",
         paterno: "",
@@ -126,7 +143,7 @@ export default {
   mounted() {
     let app = this;
     app.day = app.$route.params.id;
-    /*
+    console.log(app.user);
     axios
       .post("/api/getSaleOfDayById", {
         id: app.day,
@@ -134,17 +151,13 @@ export default {
         year: app.user.gestion,
       })
       .then(function (response) {
+        console.log(response);
         app.saleOfDay = response.data[0];
         if (app.saleOfDay.estado == "V")
           app.$router.push({
             name: "salestudents",
           });
-        //alert("El dia ya esta verificado");
-      })
-      .catch(function (response) {
-        alert("no se puede crear el registro de los valores del estudiante");
       });
-      */
   },
   methods: {
     test() {
@@ -156,31 +169,46 @@ export default {
     handleClose(done) {
       this.visible = false;
     },
+
+    //coloca la numeracion al kardex
+    initAddNumeration(index, row) {
+      this.visibleKardex = true;
+    },
+
     //Guardar la informacion necesaria para los alumnos nuevos
     saveTransaction() {
       var app = this;
       var newDayTransactions = app.saleOfDay;
+      var newUser = app.user;
       var newPostulations = app.postulations;
       var newValuesPostulations = app.valuesPostulations;
-      axios
-        .post("/api/storeTransactionsByStudents", {
-          dayTransactions: newDayTransactions,
-          postulations: newPostulations,
-          valuesPostulations: newValuesPostulations,
-          marker: "registrar",
-        })
-        .then(function (response) {
-          app.$alert("Se ha registrado correctamente a la persona", 'Gestor de mensajes', {
-            dangerouslyUseHTMLString: true
+      if ((app.form.kardex >= 87444 && app.form.kardex <=87450) || (app.form.kardex >= 87452 && app.form.kardex <=87460) || (app.form.kardex >= 87524 && app.form.kardex <=87850)) {
+        axios
+          .post("/api/storeTransactionsByStudents", {
+            dayTransactions: newDayTransactions,
+            postulations: newPostulations,
+            valuesPostulations: newValuesPostulations,
+            kardex: app.form.kardex,
+            user: newUser,
+            marker: "registrar",
+          })
+          .then(function (response) {
+            app.$alert("Se ha registrado correctamente a la persona", 'Gestor de mensajes', {
+              dangerouslyUseHTMLString: true
+            });
+          })
+          .catch(function (error) {
+            app.$alert("Se ha registrado correctamente a la persona sin errores", 'Gestor de mensajes', {
+              dangerouslyUseHTMLString: true
+            });
           });
-        })
-        .catch(function (error) {
-          app.$alert("Se ha registrado correctamente a la persona sin errores", 'Gestor de mensajes', {
-            dangerouslyUseHTMLString: true
-          });
-        });
-      app.DisabledStore = true;
-      app.DisabledPrint = false;
+        app.DisabledStore = true;
+        app.DisabledPrint = false;
+      }
+      else {
+        this.visibleKardex = true;
+        this.form.kardex = 0;
+      }
     },
 
     //funcion para rescatar la informacion, modalidad de ingreso y valores del estudiante que se va a registrar
@@ -194,6 +222,7 @@ export default {
           year: app.user.gestion,
         })
         .then((response) => {
+          console.log(response.data);
           if (response.data.length > 1) {
             app.visible = true;
             app.muchPostulations = response.data;
@@ -202,24 +231,6 @@ export default {
             app.texto = JSON.stringify(app.postulations);
             app.searchPostulationsValues();
           }
-          /*de acuerdo a la postulacion se debe imprimir los valores*/
-          /*
-          axios
-            .post("/api/valuesprocedure", {
-              id: app.postulations.id_modalidad,
-              year: app.user.gestion,
-            })
-            .then((response) => {
-              app.valuesPostulations = response.data;
-              app.DisabledStore = false;
-              //de acuerdo a la postulacion se debe imprimir los valores
-            })
-            .catch((error) => {
-              this.error = error.response.data;
-              app.$alert(this.error.message, 'Gestor de errores', {
-                dangerouslyUseHTMLString: true
-              });
-            });*/
         })
         .catch((error) => {
           this.error = error.response.data;
@@ -288,6 +299,7 @@ export default {
           modalidad: "",
           id_modalidad: "",
         });
+      app.form.kardex = 0;
       app.DisabledStore = true;
       app.DisabledPrint = true;
     },
