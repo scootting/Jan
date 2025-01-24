@@ -15,7 +15,8 @@
       <el-row :gutter="20">
         <el-col :span="11">
           <div class="grid-content bg-purple">
-            <el-form ref="form" :model="this.postulations" label-width="150px" size="mini">
+            <el-form ref="form" :model="this.postulations" label-width="200px" size="mini">
+              <p>Datos generales</p>
               <el-form-item label="carnet de identidad">
                 {{ postulations.nro_dip }}
               </el-form-item>
@@ -39,9 +40,18 @@
         </el-col>
         <el-col :span="13">
           <div class="grid-content bg-purple">
+            <p>Valores a adquirir</p>
             <el-table :data="valuesPostulations" border show-summary style="width: 100%" size="small">
+              <el-table-column align="left" fixed="left" width="95">
+                <template slot-scope="scope">
+                  <el-button :disabled="valuesPostulations[scope.$index].numerable == 'N'"
+                    @click="initAddNumeration(scope.$index, scope.row)" size="mini" type="danger">agregar</el-button>
+                </template>
+              </el-table-column>
               <el-table-column prop="cod_val" label="cod." width="65"> </el-table-column>
-              <el-table-column prop="des_val" label="descripcion" width="550">
+              <el-table-column prop="des_val" label="descripcion" width="300">
+              </el-table-column>
+              <el-table-column prop="descripcion" label="tipo" width="150">
               </el-table-column>
               <el-table-column prop="pre_uni_val" sortable label="Precio" align="right">
               </el-table-column>
@@ -59,20 +69,18 @@
 
     <el-dialog title="admisiones" :visible.sync="visible" width="50%" center :before-close="handleClose" size="mini">
       <div style="margin-top: 15px">
-      <el-tag type="danger">
-        La persona cuenta con varias admisiones, debe escoger una para continuar con el proceso.
-      </el-tag>
-      <hr>
+        <el-tag type="danger">
+          La persona cuenta con varias admisiones, debe escoger una para continuar con el proceso.
+        </el-tag>
+        <hr>
         <el-table :data="muchPostulations" height="250" style="width: 100%">
           <el-table-column prop="modalidad" label="modalidad">
             <template slot-scope="scope">
               <el-tag>{{ scope.row.modalidad }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column prop="programa" label="programa" ></el-table-column>
+          <el-table-column prop="programa" label="programa"></el-table-column>
           <el-table-column align="right-center" label="">
-          <!--
-          -->
             <template slot-scope="scope">
               <el-button @click="SelectedPostulation(scope.$index, scope.row)" size="mini" type="primary">seleccionar
               </el-button>
@@ -102,7 +110,7 @@ export default {
       day: "",
       saleOfDay: [],
       valuesPostulations: [],
-      muchPostulations:[],
+      muchPostulations: [],
       visible: false,
       postulations: {
         nro_dip: "",
@@ -145,7 +153,7 @@ export default {
     closeModal() {
       this.visible = false;
     },
-    handleClose(done){
+    handleClose(done) {
       this.visible = false;
     },
     //Guardar la informacion necesaria para los alumnos nuevos
@@ -186,12 +194,10 @@ export default {
           year: app.user.gestion,
         })
         .then((response) => {
-          if(response.data.length >1)
-          {
+          if (response.data.length > 1) {
             app.visible = true;
             app.muchPostulations = response.data;
-          }else
-          {
+          } else {
             app.postulations = response.data[0];
             app.texto = JSON.stringify(app.postulations);
             app.searchPostulationsValues();
@@ -222,7 +228,7 @@ export default {
           });
         });
     },
-    async searchPostulationsValues(){
+    async searchPostulationsValues() {
       let app = this;
       try {
         let response = await axios.post("/api/valuesprocedure", {
@@ -263,7 +269,7 @@ export default {
         window.open(url);
       });
     },
-    SelectedPostulation(index, row){
+    SelectedPostulation(index, row) {
       let app = this;
       app.postulations = row;
       app.texto = JSON.stringify(app.postulations);

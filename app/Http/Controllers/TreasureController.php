@@ -200,7 +200,6 @@ class TreasureController extends Controller
         10461608
         $description = 'SIMULTANEA';
          */
-
         $data = Treasure::getValuesProcedure($description, $year);
         return json_encode($data);
     }
@@ -243,6 +242,7 @@ class TreasureController extends Controller
 
     public function storeTransactionsByStudents(Request $request)
     {
+        return 0;
         $id_tran = 0;
         $dataDayTransactions = $request->get('dayTransactions');
         $dataPostulations = $request->get('postulations');
