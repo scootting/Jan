@@ -603,4 +603,14 @@ class TreasureController extends Controller
         $id_dia = $data[0]->{'ff_registrar_dia_venta'};
         return json_encode($id_dia);
     }
+
+    //  * TA3. Revisa el Kardex
+    public function getVerifyKardex(Request $request)
+    {
+        $kardex = $request->get('kardex'); // '' cadena vacia
+        $year = $request->get('gestion');
+        $data = Treasure::GetVerifyKardex($kardex, $year);
+        return json_encode($data);
+    }
+
 }

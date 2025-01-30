@@ -217,7 +217,7 @@ class Treasure extends Model
     {
         //cambiar a tra_dia_2
         //insert into val.tra_dia( ... ) values ( ... ) RETURNING id_tran
-        $query = "INSERT INTO val.tra_dia(id_dia, cod_val, can_val, pre_uni, fec_tra, usr_cre," .
+        $query = "INSERT INTO val.tra_dia_2(id_dia, cod_val, can_val, pre_uni, fec_tra, usr_cre," .
             "nro_com, ci_per, des_per, tip_tra, gestion, desde, hasta, imp_val) VALUES " .
             "('" . $id_dia . "','" . $cod_val . "','" . $can_val . "','" . $pre_uni . "','" . $fec_tra . "','" . $usr_cre . "','" .
             $nro_com . "','" . $ci_per . "','" . $des_per . "','" . $tip_tra . "','" . $gestion . "'," . $desde . "," . $hasta . "," . $pre_uni . ") RETURNING id_tran";
@@ -306,6 +306,14 @@ class Treasure extends Model
     {
         $user  = 'nottingham';
         $query = "select * from val.diario d where d.usr_cre = '" . $user . "' and d.gestion = '" . $year . "' order by d.id_dia desc";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  * TA3. Revisa el Kardex
+    public static function GetVerifyKardex($kardex, $year)
+    {
+        $query = "select * from  valx.ff_verificar_kardex('" . $kardex . "','" . $year . "')";
         $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }

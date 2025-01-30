@@ -129,6 +129,7 @@ export default {
       form: {
         kardex: 0,
       },
+      dataKardex: {},
       postulations: {
         nro_dip: "",
         paterno: "",
@@ -169,20 +170,62 @@ export default {
     handleClose(done) {
       this.visible = false;
     },
-
     //coloca la numeracion al kardex
     initAddNumeration(index, row) {
       this.visibleKardex = true;
     },
 
-    //Guardar la informacion necesaria para los alumnos nuevos
+    async saveTransaction() {
+      var app = this;
+      var newDayTransactions = app.saleOfDay;
+      var newUser = app.user;
+      var newPostulations = app.postulations;
+      var newValuesPostulations = app.valuesPostulations;
+      try {
+        let response = await axios.post("/api/getVerifyKardex", {
+          kardex: app.form.kardex,
+          gestion: app.user.gestion
+        });
+        this.dataKardex = response.data[0];
+        console.log(this.dataKardex);
+        if (app.dataKardex.id = '0' && app.dataKardex.desde != '0' && app.dataKardex.hasta != '0') {
+          //el kardex no se utilizo
+          let response2 = await axios.post("/api/storeTransactionsByStudents", {
+            dayTransactions: newDayTransactions,
+            postulations: newPostulations,
+            valuesPostulations: newValuesPostulations,
+            kardex: app.dataKardex.desde,
+            user: newUser,
+            marker: "registrar",
+          });
+          this.dataKardex = response2.data;
+          console.log(this.dataKardex);
+          app.$alert("Se ha registrado correctamente al estudiante", 'Gestor de mensajes', {
+            dangerouslyUseHTMLString: true
+          });
+          app.DisabledStore = true;
+          app.DisabledPrint = false;
+        } else {
+          //el kardex se utilizo o no esta en el rango  
+          alert(app.dataKardex.mensaje);        
+          this.visibleKardex = true;
+          this.form.kardex = 0;
+        }
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true
+        });
+      }
+    },
+    /*
     saveTransaction() {
       var app = this;
       var newDayTransactions = app.saleOfDay;
       var newUser = app.user;
       var newPostulations = app.postulations;
       var newValuesPostulations = app.valuesPostulations;
-      if ((app.form.kardex >= 87444 && app.form.kardex <=87450) || (app.form.kardex >= 87452 && app.form.kardex <=87460) || (app.form.kardex >= 87524 && app.form.kardex <=87850) || (app.form.kardex >= 88651 && app.form.kardex <=93650)) {
+      if ((app.form.kardex >= 87444 && app.form.kardex <= 87450) || (app.form.kardex >= 87452 && app.form.kardex <= 87460) || (app.form.kardex >= 87524 && app.form.kardex <= 87850) || (app.form.kardex >= 88651 && app.form.kardex <= 93650)) {
         axios
           .post("/api/storeTransactionsByStudents", {
             dayTransactions: newDayTransactions,
@@ -210,6 +253,7 @@ export default {
         this.form.kardex = 0;
       }
     },
+    */
 
     //funcion para rescatar la informacion, modalidad de ingreso y valores del estudiante que se va a registrar
     initGetDataOfStudent() {
