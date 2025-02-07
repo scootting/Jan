@@ -191,7 +191,8 @@ class TreasureController extends Controller
             case 32: //OLIMPIADAS
             case 6: //ADMISION POR EXCELENCIA ACADEMICA
             case 7: //ADMISION EXTRAORDINARIA DEPORTIVA
-                $description = 'EXCELENCIA';
+            case 51: //ADMISION POR TRABAJO DE INVESTIGACION
+                    $description = 'EXCELENCIA';
                 break;
             default:
                 $description = 'SIN_TRAMITE';
