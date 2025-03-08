@@ -2,9 +2,11 @@
   <div>
     <el-card class="box-card">
       <div slot="header" class="clearfix">
-        <span>asignaciones</span>
+        <span>Documentos</span>
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
           @click="initAddAssignment">nuevo documento</el-button>
+          <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
+          @click="initAddAssignment2">no funcionara asi</el-button>
       </div>
       <div style="margin-top: 15px">
         <el-input placeholder="ingrese una descripcion" v-model="writtenTextParameter" class="input-with-select"
@@ -160,10 +162,19 @@ export default {
       this.document.des_prg = item.cat_des;
       console.log(this.document);
     },
-    initAddAssignment() {
+
+    initAddAssignment2() {
       this.dialogFormVisible = true;
     },
 
+    initAddAssignment() {
+      this.$router.push({
+        name: "addassignment",
+        params: {
+          id: '',
+        },
+      });
+    },
 
     storeAssignment() {
 

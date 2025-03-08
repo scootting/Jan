@@ -124,7 +124,10 @@ import ImgDetail from './views/inventory/ImgDetail'
 //activos fijos
 import DocumentsFixedAssets from './views/fixedasset/DocumentsFixedAssets'
 import SelectedFixedAssetsByDocument from './views/fixedasset/SelectedFixedAssetsByDocument'
+
+
 import Assignments from './views/fixedasset/Assignments'
+import AddAssignment from './views/fixedasset/AddAssignment'
 import AssignmentsDetails from './views/fixedasset/AssignmentsDetails'
 import EditAssignmentsDetails from './views/fixedasset/EditAssignmentsDetails'
 
@@ -249,10 +252,18 @@ const router = new VueRouter({
                 { path: 'salestudents/:id', name: 'students', component: Students }, //alumnos nuevos
                 { path: 'appenddebtors', name: 'appenddebtors', component: AppendDebtors }, //dia de deudores
                 { path: 'appenddebtors/:id', name: 'debtors', component: Debtors }, // deudores
+
                 { path: 'documentsfixedassets', name: 'documentsfixedassets', component: DocumentsFixedAssets }, //lista de documentos de entrega activos fijos
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
+
+
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para Activos Fijos
+                //  |--------------------------------------------------------------------------    
+
                 { path: 'assignments', name: 'assignments', component: Assignments }, //lista de documentos de entrega activos fijos
                 { path: 'assignments/:id', name: 'assignmentsdetails', component: AssignmentsDetails }, // documentos de entrega activos fijos impresion
+                { path: 'assignments/Add/:id', name: 'addassignment', component: AddAssignment }, // documentos de entrega activos fijos impresion
                 { path: 'assignments/edit/:id', name: 'editassignmentsdetails', component: EditAssignmentsDetails }, // documentos de entrega activos fijos impresion
 
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
