@@ -260,7 +260,7 @@ class FixedAssetController extends Controller
     public function getAssignments(Request $request)
     {
         $descripcion = $request->get('description');
-        $tipo = 0;
+        $tipo = 'C';
         $gestion = $request->get('year');
         $data = FixedAsset::GetAssignments($descripcion, $tipo, $gestion);
         $page = ($request->get('page') ? $request->get('page') : 1);

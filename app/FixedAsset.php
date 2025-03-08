@@ -79,7 +79,7 @@ class FixedAsset extends Model
     //  * {year: gestion en la que se desarrolla}
     public static function GetAssignments($description, $typea, $year)
     {
-        $query = "select * from actx.ff_datos_asignacion('" . $description . "'," . $typea . ",'" . $year . "')";
+        $query = "select * from actx.ff_datos_asignacion('" . $description . "','" . $typea . "','" . $year . "')";
         //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;

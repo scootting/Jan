@@ -263,7 +263,7 @@ const router = new VueRouter({
 
                 { path: 'assignments', name: 'assignments', component: Assignments }, //lista de documentos de entrega activos fijos
                 { path: 'assignments/:id', name: 'assignmentsdetails', component: AssignmentsDetails }, // documentos de entrega activos fijos impresion
-                { path: 'assignments/Add/:id', name: 'addassignment', component: AddAssignment }, // documentos de entrega activos fijos impresion
+                { path: 'assignment/add/:id', name: 'addassignment', component: AddAssignment }, // documentos de entrega activos fijos impresion
                 { path: 'assignments/edit/:id', name: 'editassignmentsdetails', component: EditAssignmentsDetails }, // documentos de entrega activos fijos impresion
 
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona

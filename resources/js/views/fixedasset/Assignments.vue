@@ -171,7 +171,7 @@ export default {
       this.$router.push({
         name: "addassignment",
         params: {
-          id: '',
+          id: '0',
         },
       });
     },

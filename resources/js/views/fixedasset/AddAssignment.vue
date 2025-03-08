@@ -5,9 +5,9 @@
                 <span>Nuevo Documento</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="test">ayuda</el-button>
             </div>
-            <el-row :gutter="50">
-                <el-col :span="24">
-                    <div>
+            <el-row :gutter="20">
+                <el-col :span="12">
+                    <div class="grid-content bg-purple">
                         <el-form :model="assignment" label-width="220px" size="small">
                             <el-form-item label="tipo de documento">
                                 <el-select v-model="assignment.descr" value-key="descr" size="small"
@@ -28,7 +28,7 @@
                             <el-form-item label="glosa o descripcion">
                                 <el-input type="textarea" v-model="assignment.glosa" autocomplete="off"></el-input>
                             </el-form-item>
-                            <el-form-item label="glosa o descripcion">
+                            <el-form-item>
                                 <el-button type="primary" size="small" plain @click="test">Confirmar</el-button>
                             </el-form-item>
                         </el-form>
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import Assignments from './Assignments.vue';
 
 export default {
     name: "",
@@ -69,7 +68,7 @@ export default {
     mounted() {
         let app = this;
         app.id = app.$route.params.id;
-        app.getTypesAssignment();
+        app.getDataAssignment();
     },
     methods: {
         test() {
@@ -77,6 +76,26 @@ export default {
         },
 
         //  * AF1. Obtiene la lista de tipos de documentos para activos fijos
+
+        OnchangeTypeDocument() {
+
+        },
+        async getDataAssignment() {
+            var app = this;
+            try {
+                let response = await axios.post("/api/getDataPrograms", {
+                    year: app.user.gestion,
+                });
+                app.typesAssignments = response.data.typesAssignments,          //diferentes tipos de archivos que pertenecen a un documento
+                app.typesPrograms = response.data.typesPrograms,
+
+                console.log(app.typesPrograms);
+            } catch (error) {
+                this.error = error.response.data;
+                alert(error);
+            }
+
+        },
     }
 };
 </script>
