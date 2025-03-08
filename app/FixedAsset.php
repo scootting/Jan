@@ -64,8 +64,19 @@ class FixedAsset extends Model
         return $data;
     }
 
-    //  *  AC1. Obtiene la lista de categorias programaticas    
-    //  * {year: gestion en la que se desarrolla}
+    //  *  AF1. Obtiene la informacion necesaria para crear un documento de entrega
+    //  *  Tipos de documentos
+    public static function GetDataTypesAssignments($year)
+    {
+        $query = "select *, cat_des as value from public.sis_cat_pro d where d.cat_ano = '" . $year . "' and d.cat_sis = 'ACTIVIDAD'";
+        \Log::info($query);
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF1. Obtiene la informacion necesaria para crear un documento de entrega
+    //  *  Categorias programaticas
     public static function GetDataPrograms($year)
     {
         $query = "select *, cat_des as value from public.sis_cat_pro d where d.cat_ano = '" . $year . "' and d.cat_sis = 'ACTIVIDAD'";

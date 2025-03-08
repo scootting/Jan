@@ -209,7 +209,10 @@ Route::group([
     //Route::get('reportSelectedFixedAssets/{id}', 'FixedAssetController@getReportSelectedFixedAssets');
     Route::get('reportSelectedFixedAssets/', 'FixedAssetController@getReportSelectedFixedAssets');
 
-    //  *  AC1. Obtiene la lista de categorias programaticas
+    //  *  AF1. Obtiene la informacion necesaria para crear un documento de entrega
+    Route::post('getDataAssignment/', 'FixedAssetController@getDataAssignment');
+        
+
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
     //  *  AC2. Obtiene la lista de asignaciones
     Route::post('getAssignments/', 'FixedAssetController@getAssignments');

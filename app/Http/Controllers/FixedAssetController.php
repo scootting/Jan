@@ -245,6 +245,18 @@ class FixedAssetController extends Controller
         }
         return json_encode($id_activo);
     }
+
+    
+    //  *  AF1. Obtiene la informacion necesaria para crear un documento de entrega
+    public function getDataAssignment(Request $request)
+    {
+        $gestion = $request->get('year');
+        $id = $request->get('id');
+        $typesAssignments = FixedAsset::GetDataTypesAssignments();
+        $typesPrograms = FixedAsset::GetDataPrograms($gestion);
+        return json_encode(['typesAssignments' => $typesAssignments, 'typesPrograms' => $typesPrograms]);
+    }
+
     //  *  AC1. Obtiene la lista de categorias programaticas
     //  * {year: gestion en la que se desarrolla}
     public function getDataPrograms(Request $request)

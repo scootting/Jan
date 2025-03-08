@@ -83,12 +83,12 @@ export default {
         async getDataAssignment() {
             var app = this;
             try {
-                let response = await axios.post("/api/getDataPrograms", {
+                let response = await axios.post("/api/getDataAssignment", {
                     year: app.user.gestion,
+                    id: app.id,
                 });
                 app.typesAssignments = response.data.typesAssignments,          //diferentes tipos de archivos que pertenecen a un documento
                 app.typesPrograms = response.data.typesPrograms,
-
                 console.log(app.typesPrograms);
             } catch (error) {
                 this.error = error.response.data;
