@@ -210,9 +210,9 @@ Route::group([
     Route::get('reportSelectedFixedAssets/', 'FixedAssetController@getReportSelectedFixedAssets');
 
     //  *  AF1. Obtiene la informacion necesaria para crear un documento de entrega
+    //  *  Tipos de documentos de entrega
     Route::post('getDataAssignment/', 'FixedAssetController@getDataAssignment');
-        
-
+    //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
     //  *  AC2. Obtiene la lista de asignaciones
     Route::post('getAssignments/', 'FixedAssetController@getAssignments');

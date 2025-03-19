@@ -90,6 +90,7 @@ export default {
                 app.typesAssignments = response.data.typesAssignments,          //diferentes tipos de archivos que pertenecen a un documento
                 app.typesPrograms = response.data.typesPrograms,
                 console.log(app.typesPrograms);
+                console.log(app.typesAssignments);
             } catch (error) {
                 this.error = error.response.data;
                 alert(error);

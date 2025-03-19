@@ -189,6 +189,7 @@ class TreasureController extends Controller
             case 41: // por convenio
             case 43: //capacidades especiales
             case 51: //ADMISION POR TRABAJO DE INVESTIGACION
+            case 16: //CONVENIO F.S.U.T.C.O.Q.P.
             case 36: //traspaso de universidades
                 $description = 'ORIGINARIA';
                 break;
