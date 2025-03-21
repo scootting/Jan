@@ -10,8 +10,17 @@ use Illuminate\Support\Facades\Http;
 
 class FixedAssetController extends Controller
 {
-    //
 
+    //  *  AF1. Obtiene la informacion necesaria de un documento de entrega
+    public function getDataAssignment(Request $request)
+    {
+        $id = $request->get('id');
+        $gestion = $request->get('year');
+        $types = FixedAsset::GetTypesOfDocument($gestion);
+        $positions = FixedAsset::GetPositionsOfDocument($gestion);
+        $categoryProgramatics = FixedAsset::GetCategoryProgramaticsOfDocument($gestion);
+        return json_encode(['types' => $types, 'positions' => $positions, 'categoryProgramatics' => $categoryProgramatics]);;
+    }
     //  * Obtener una lista de documentos de entrega de el recurso utilizado.
     //  * {year: año , type: tipo del documento}
     public function getDocumentFixedAssetByYear(Request $request)
@@ -246,16 +255,7 @@ class FixedAssetController extends Controller
         return json_encode($id_activo);
     }
 
-    
-    //  *  AF1. Obtiene la informacion necesaria para crear un documento de entrega
-    public function getDataAssignment(Request $request)
-    {
-        $gestion = $request->get('year');
-        $id = $request->get('id');
-        $typesAssignments = FixedAsset::GetDataTypesAssignments();
-        $typesPrograms = FixedAsset::GetDataPrograms($gestion);
-        return json_encode(['typesAssignments' => $typesAssignments, 'typesPrograms' => $typesPrograms]);
-    }
+
 
     //  *  AC1. Obtiene la lista de categorias programaticas
     //  * {year: gestion en la que se desarrolla}

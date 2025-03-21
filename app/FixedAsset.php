@@ -8,6 +8,43 @@ use Illuminate\Support\Facades\DB;
 class FixedAsset extends Model
 {
     //
+    //  *  AF10. Obtiene la informacion necesaria para crear un documento de entrega
+    //  *  Tipos de documentos
+    public static function GetTypesOfDocument($year)
+    {
+        $query = "select * from actx.tipo d order by d.des_tipo";
+        \Log::info($query);
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF10. Obtiene la informacion necesaria para crear un documento de entrega
+    //  *  Tipos de cargo
+    public static function GetPositionsOfDocument($year)
+    {
+        $query = "select * from actx.cargo d order by d.des_cargo";
+        \Log::info($query);
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF10. Obtiene la informacion necesaria para crear un documento de entrega
+    //  *  Tipos de categoria programatica
+    public static function GetCategoryProgramaticsOfDocument($year)
+    {
+        $query = "select * from actx.categoria_programatica d order by d.des_prg";
+        \Log::info($query);
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
+
+
+
     public static function GetDocumentFixedAssetByYear($year, $type)
     {
         //$year = 2020;
@@ -68,7 +105,7 @@ class FixedAsset extends Model
     //  *  Tipos de documentos
     public static function GetDataTypesAssignments($year)
     {
-        $query = "select * from actx.tipos d";
+        $query = "select * from actx.tipo d";
         \Log::info($query);
         //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
         $data = collect(DB::select(DB::raw($query)));
