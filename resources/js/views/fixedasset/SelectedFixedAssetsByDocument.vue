@@ -75,7 +75,7 @@ export default {
           url: "/api/reportSelectedFixedAssets/",
           params: {
             lista: list,
-            reporte: "FixedAssetsQr_B4",
+            reporte: "FixedAssetsQr_A4",
           },
           method: "GET",
           responseType: "arraybuffer",

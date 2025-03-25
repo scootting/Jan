@@ -250,7 +250,7 @@ export default {
                     url: "/api/printDataAssignmentDetails/",
                     params: {
                         lista: list,
-                        reporte: "FixedAssetsQr_A4",
+                        reporte: "FixedAssetsQr_B4",
                     },
                     method: "GET",
                     responseType: "arraybuffer",
