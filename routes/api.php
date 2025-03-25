@@ -209,8 +209,20 @@ Route::group([
     //Route::get('reportSelectedFixedAssets/{id}', 'FixedAssetController@getReportSelectedFixedAssets');
     Route::get('reportSelectedFixedAssets/', 'FixedAssetController@getReportSelectedFixedAssets');
 
-    //  *  AF10. Obtiene la informacion necesaria para crear un documento de entrega
+    //  *  AF10. Obtiene la informacion necesaria para crear un documento
     Route::post('getDataAssignment/', 'FixedAssetController@getDataAssignment');
+    //  *  AF11. Obtiene la informacion necesaria para crear un documento de entrega
+    Route::post('storeDataAssignment/', 'FixedAssetController@storeDataAssignment');
+    //  *  AF12. Obtiene la lista de documentos        
+    Route::post('getDataAssignments/', 'FixedAssetController@getDataAssignments');
+    //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
+    Route::post('getDataAssignmentDetails/', 'FixedAssetController@getDataAssignmentDetails');
+    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
+    Route::post('storeDataAssignmentDetails/', 'FixedAssetController@storeDataAssignmentDetails');
+    //  *  AF15. Verificar un documento       
+    Route::post('verifyDataAssignmentDetails/', 'FixedAssetController@verifyDataAssignmentDetails');
+
+
     //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
     //  *  AC2. Obtiene la lista de asignaciones

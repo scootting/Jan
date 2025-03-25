@@ -50,7 +50,7 @@
                                 </el-select>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" size="small" plain @click="test">Guardar</el-button>
+                                <el-button type="primary" size="small" plain @click="initStoreDataAssignment">Guardar</el-button>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -105,6 +105,7 @@ export default {
         let app = this;
         app.assignment.id = app.$route.params.id;
         app.getDataAssignment();
+        console.log(app.user);
     },
     methods: {
         test() {
@@ -174,14 +175,14 @@ export default {
                     .post("/api/storeDataAssignment", {
                         assignment: app.assignment,
                         user: app.user,
-                        marker: 'agregar',
+                        marker: 'registrar',
                     });
                 app.$alert("Se ha registrado correctamente.", 'Gestor de mensajes', {
                     dangerouslyUseHTMLString: true
                 });
                 // redireccionando a la lista de documentos
-                this.$router.push({
-                    name: "assignment",
+                app.$router.push({
+                    name: "assignments",
                 });
             } catch (error) {
                 console.log(error);

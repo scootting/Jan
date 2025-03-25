@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -41,18 +40,124 @@ class FixedAsset extends Model
         return $data;
     }
 
-
-
-
-
-    public static function GetDocumentFixedAssetByYear($year, $type)
+    //  *  AF11. Obtiene la informacion necesaria para crear un documento de entrega
+    public static function StoreDataAssignment($cod_tipo, $fecha, $cod_prg, $des_prg, $ci_resp, $ci_elab, $des_elab, $gestion, $des_resp, $ref_prg, $id_cargo)
     {
-        //$year = 2020;
-        //$query = "select * from act.asignaciones aa where aa.tip_doc = '".$type."' and aa.gestion = '".$year."' and aa.estado = 'Verificado' order by aa.fec_cre desc";
-        $query = "select * from act.asignaciones aa where aa.tip_doc in (1,3,2,4) and aa.gestion = '" . $year . "' and aa.estado = 'Verificado' order by aa.fec_cre desc";
+        $query = "select * from actx.ff_registrar_asignacion('" . $cod_tipo . "','" . $fecha . "','" . $cod_prg . "','" . $des_prg . "','" . $ci_resp . "','" . $ci_elab . "','" . $des_elab
+            . "'," . $gestion . ",'" . $des_resp . "','" . $ref_prg . "'," . $id_cargo . ")";
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //  *  AF12. Obtiene la lista de documentos    
+    public static function GetDataAssignments($gestion)
+    {
+        $query = "select * from actx.asignaciones where gestion = '" . $gestion . "' order by gestion, idx desc";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function GetDataAssignmentsById($id_asignacion, $gestion)
+    {
+        $query = "select * from actx.asignaciones where gestion ='" . $gestion . "' and id = " . $id_asignacion . "";
+        //$query = "select * from actx.ff_datos_asignacion_id('" . $id_asignacion . "'," . $cod_tipo . ",'" . $gestion . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function GetMeasurement($year)
+    {
+        //unidad de medida
+        $query = "SELECT * from com.f_unidad_medida()";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function GetAccountingItem($year)
+    {
+        //partida contable
+        $query = "SELECT * FROM act.f_b_contable()";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function GetDataAssignmentsDetails($id)
+    {
+
+        $query = "select idx, fecha_adquisicion,des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, ".
+        "id_contable, des_contable, id_presupuesto, des_presupuesto, estado from actx.asignaciones_detallada where id_asignacion = '" . $id . "' order by idx desc";
+        $data = collect(DB::select(DB::raw($query)));
+
+
+        $data->transform(function ($item) {
+            $item->adicional = json_decode($item->adicional, true); // Convertir JSONB a array
+            return $item;
+        });        
+        // Convertimos el campo JSONB en array asociativo para cada fila
+        /*
+        $data = $data->map(function ($item) {
+            return [
+                'idx' => $item->idx,
+                'fecha_adquisicion' => $item->fecha_adquisicion,
+                'des_marca' => $item->des_marca,
+                'des_modelo' => $item->des_modelo,
+                'descripcion' => $item->descripcion,
+                'medida' => $item->medida,
+                'cantidad' => $item->cantidad,
+                'importe' => $item->importe,
+                'adicional' => json_decode($item->accesorios, true), // Convertir JSONB a array
+                'id_contable' => $item->id_contable,
+                'des_contable' => $item->des_contable,
+                'id_presupuesto' => $item->id_presupuesto,
+                'des_presupuesto' => $item->des_presupuesto,
+                'estado' => $item->estado,
+            ];
+        });*/
+        return $data;
+    }
+
+    //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function GetBudgetItem($year)
+    {
+        //partida presupuestaria
+        $query = "select * from act.f_b_partida('" . $year . "')";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function RemoveDataAssignmentDetails($id)
+    {
+        $query = "delete from actx.asignaciones_detallada a where a.id_asignacion = " . $id . "";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function StoreDataAssignmentDetails($id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $usuario)
+    {
+        $query = "select * from actx.ff_registrar_asignacion_detallada(" . $id_documento . "," . $indice . ",'" . $medida . "'," . $cantidad . "," . $importe
+            . ",'" . $fecha_adquisicion . "'," . $id_contable . ",'" . $des_contable . "'," . $id_presupuesto . ",'" . $des_presupuesto . "','" . $estado
+            . "','" . $adicional . "','" . $descripcion . "','" . $usuario . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF15. Verificar un documento       
+    public static function VerifyDataAssignmentDetails($id_documento, $usuario, $gestion)
+    {
+        $query = "select * from actx.ff_verificar_asignacion(" . $id_documento . ",'" . $usuario . "','" . $gestion . "')";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
 
     //
     public static function getFixedAssetsbyDocument($document)
@@ -71,32 +176,6 @@ class FixedAsset extends Model
         } else {
             $query = "select cat_des as des_prg, cod_prg from public.sis_cat_pro a where a.cat_pro in ('00', '01', '02', '03', '10', '51', '61') and a.cat_sis = 'ACTIVIDAD' and a.cat_ano = " . $year . "";
         }
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-
-    //$dataMeasurement = FixedAsset::GetMeasurement($gestion);
-    public static function GetMeasurement($year)
-    {
-        //unidad de medida
-        $query = "SELECT * from com.f_unidad_medida()";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-
-    public static function GetAccountingItem($year)
-    {
-        //partida contable
-        $query = "SELECT * FROM act.f_b_contable()";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-
-    //$dataBudgetItem= FixedAsset::GetBudgetItem($gestion);
-    public static function GetBudgetItem($year)
-    {
-        //partida presupuestaria
-        $query = "select * from act.f_b_partida('" . $year . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -134,15 +213,6 @@ class FixedAsset extends Model
     }
 
     //  *  AC4. Obtiene la lista de asignaciones detallado
-    public static function GetAssignmentsById($id, $typea, $year)
-    {
-        $query = "select * from actx.ff_datos_asignacion_id('" . $id . "'," . $typea . ",'" . $year . "')";
-        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-
-    //  *  AC4. Obtiene la lista de asignaciones detallado
     public static function GetSearchFixedAssets($description, $year)
     {
         $query = "select * from actx.ff_datos_recopilatorio('" . $description . "','" . $year . "')";
@@ -171,21 +241,12 @@ class FixedAsset extends Model
     public static function GetFixedAssetsById($id, $year)
     {
         $query = "select * from actx.ff_datos_activo(" . $id . ", '" . $year . "')";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
     public static function GetAditionalFixedAssetsById($id)
     {
         $query = "select * from actx.activos_adicional b where b.id_activo =" . $id . "";
-        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
-        $data = collect(DB::select(DB::raw($query)));
-        return $data;
-    }
-
-    //  * AC3. Guardar la nueva asignacion
-    public static function StoreAssignments($tipo, $fecha, $cod_prg, $des_prg, $ci_resp, $ci_elab, $user, $gestion)
-    {
-        $query = "select * from actx.ff_registrar_asignacion(" . $tipo . ",'" . $fecha . "','" . $cod_prg . "','" . $des_prg . "','" . $ci_resp . "','" . $ci_elab . "','" . $user . "'," . $gestion . ")";
         //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
