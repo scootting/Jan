@@ -214,6 +214,16 @@ class FixedAssetController extends Controller
         return $report;
     }
 
+    //  *  AF18. imprimir reporte de un documento de compra       
+    public function printPurchaseAssignment(Request $request)
+    {
+        $id   = $request->get('id');
+        $nreport = $request->get('reporte');
+
+        $controls = ['p_id' => $id];
+        $report   = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
 
 
     //  * Obtener una lista de documentos de entrega de el recurso utilizado.

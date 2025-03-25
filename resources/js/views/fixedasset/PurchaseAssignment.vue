@@ -124,6 +124,10 @@
                         :disabled="verifyVisible == false">verificar
                         documento
                     </el-button>
+                    <el-button @click="initPrintPurchaseAssignment" type="info" size="small"
+                        :disabled="verifyVisible == false">imprimir
+                        documento
+                    </el-button>
                 </div>
             </el-col>
         </el-card>
@@ -328,7 +332,7 @@ export default {
             this.fixedAsset = variable;
         },
 
-        initVerifyDataAssignmentDetails(){
+        initVerifyDataAssignmentDetails() {
             var app = this;
             try {
                 let response = axios
@@ -347,6 +351,28 @@ export default {
                 });
             };
         },
+        //  *  AF18. imprimir reporte de un documento de compra       
+        initPrintPurchaseAssignment() {
+            let app = this;
+            axios({
+                url: "/api/printPurchaseAssignment/",
+                params: {
+                    id: app.dataAssignment.id,
+                    reporte: "AssignmentPurchase",
+                },
+                method: "GET",
+                responseType: "arraybuffer",
+            }).then((response) => {
+                let blob = new Blob([response.data], {
+                    type: "application/pdf",
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                let url = window.URL.createObjectURL(blob);
+                window.open(url);
+            });
+        },
+
     },
 };
 </script>

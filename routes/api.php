@@ -225,6 +225,8 @@ Route::group([
     Route::post('getDataFixedAsssetDetails/', 'FixedAssetController@getDataFixedAsssetDetails');
     //  *  AF17. imprimir los activos registrados dentro de un documento       
     Route::get('printDataAssignmentDetails/', 'FixedAssetController@printDataAssignmentDetails');
+    //  *  AF18. imprimir reporte de un documento de compra       
+    Route::get('printPurchaseAssignment/', 'FixedAssetController@printPurchaseAssignment');
 
     //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
