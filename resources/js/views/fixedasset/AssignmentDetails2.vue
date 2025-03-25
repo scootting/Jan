@@ -42,8 +42,6 @@
                             <template slot-scope="scope">
                                 <el-button @click="initEditDataFixed(scope.$index, scope.row)" type="primary"
                                     size="mini">Editar</el-button>
-                                <el-button @click="initRemoveDataFixed(scope.$index, scope.row)" type="primary"
-                                    size="mini">Quitar</el-button>
                             </template>
                         </el-table-column>
                     </el-table>
