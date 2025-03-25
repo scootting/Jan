@@ -157,7 +157,20 @@ class FixedAsset extends Model
         return $data;
     }
 
+    //  *  AF16. Obtiene los activos registrados dentro de un documento       
+    public static function GetDataFixedAsssetDetails($id)
+    {
 
+        $query = "select id_asignacion, codigo, codigo_anterior, idx, fecha_adquisicion,des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, ".
+        "id_contable, des_contable, id_presupuesto, des_presupuesto, estado, ci_resp from actx.activosx where id_asignacion = '" . $id . "' order by idx desc";
+        $data = collect(DB::select(DB::raw($query)));
+
+        $data->transform(function ($item) {
+            $item->adicional = json_decode($item->adicional, true); // Convertir JSONB a array
+            return $item;
+        });        
+        return $data;
+    }
 
     //
     public static function getFixedAssetsbyDocument($document)

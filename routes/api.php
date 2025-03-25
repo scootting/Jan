@@ -165,7 +165,7 @@ Route::group([
     Route::post('storeDayForSale2', 'TreasureController@storeDayForSale2');
     //  * TA3. Revisa el Kardex
     Route::post('getVerifyKardex', 'TreasureController@getVerifyKardex');
-    
+
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Ventas en Linea de la Division de Tesoro
@@ -221,7 +221,10 @@ Route::group([
     Route::post('storeDataAssignmentDetails/', 'FixedAssetController@storeDataAssignmentDetails');
     //  *  AF15. Verificar un documento       
     Route::post('verifyDataAssignmentDetails/', 'FixedAssetController@verifyDataAssignmentDetails');
-
+    //  *  AF16. Obtiene los activos registrados dentro de un documento       
+    Route::post('getDataFixedAsssetDetails/', 'FixedAssetController@getDataFixedAsssetDetails');
+    //  *  AF17. imprimir los activos registrados dentro de un documento       
+    Route::get('printDataAssignmentDetails/', 'FixedAssetController@printDataAssignmentDetails');
 
     //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
@@ -469,5 +472,4 @@ Route::group([
     Route::post('getProgramCategoryDescriptionWithPagination', 'GeneralController@getProgramCategoryDescriptionWithPagination');
     //  * COM3. Obtiene una lista de valores universitarios que coinciden con la descripcion.
     Route::post('getUniversityValuesDescriptionWithPagination', 'GeneralController@getUniversityValuesDescriptionWithPagination');
-
 });

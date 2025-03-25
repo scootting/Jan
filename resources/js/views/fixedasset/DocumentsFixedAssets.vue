@@ -5,12 +5,7 @@
         <span>DOCUMENTOS DE ENTREGA</span>
       </div>
       <div>
-        <el-table
-          v-loading="loading"
-          :data="fixedAssetsDocument"
-          style="width: 100%"
-          border
-        >
+        <el-table v-loading="loading" :data="fixedAssetsDocument" style="width: 100%" border>
           <el-table-column prop="nro_doc" label="numero" :min-width="20">
             <template slot-scope="scope">
               <el-tag size="medium" type="danger">{{
@@ -18,39 +13,21 @@
               }}</el-tag>
             </template>
           </el-table-column>
-          <el-table-column
-            prop="fecha"
-            label="fecha"
-            :min-width="20"
-          ></el-table-column>
-          <el-table-column
-            prop="responsable"
-            label="responsable"
-            :min-width="40"
-          ></el-table-column>
+          <el-table-column prop="fecha" label="fecha" :min-width="20"></el-table-column>
+          <el-table-column prop="responsable" label="responsable" :min-width="40"></el-table-column>
           <!--
           -->
           <el-table-column align="right" :min-width="20">
             <template slot-scope="scope">
-              <el-button
-                @click="
-                  initSelectedFixedAssetsByDocument(scope.$index, scope.row)
-                "
-                type="success"
-                plain
-                size="mini"
-                >ver detalles</el-button
-              >
+              <el-button @click="
+                initSelectedFixedAssetsByDocument(scope.$index, scope.row)
+                " type="success" plain size="mini">ver detalles</el-button>
             </template>
           </el-table-column>
         </el-table>
-        <el-pagination
-          :page-size="pagination.per_page"
-          layout="prev, pager, next"
-          :current-page="pagination.current_page"
-          :total="pagination.total"
-          @current-change="getDataPageSelected"
-        ></el-pagination>
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
+          :current-page="pagination.current_page" :total="pagination.total"
+          @current-change="getDataPageSelected"></el-pagination>
       </div>
     </el-card>
   </div>

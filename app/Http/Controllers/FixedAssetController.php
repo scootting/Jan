@@ -168,14 +168,14 @@ class FixedAssetController extends Controller
         $usuario   = $request->get('user');
         $marcador  = $request->get('marker');
         $id_documento    = $documento['id'];
-        $ci_elab     = $usuario['nodip'];
-        $des_usuario = $usuario['usuario'];
-        $gestion     = $usuario['gestion'];
+        $ci_resp     = $documento['ci_resp'];
+        $gestion     = $documento['gestion'];
 
+        \Log::info($id_documento);
         $marcador     = $request->get('marker');
         switch ($marcador) {
             case 'verificar':
-                $id           = FixedAsset::VerifyDataAssignmentDetails($id_documento, $usuario, $gestion);
+                $id           = FixedAsset::VerifyDataAssignmentDetails($id_documento, $ci_resp, $gestion);
                 $id_documento = $id[0]->{'ff_verificar_asignacion'};
                 return json_encode($id_documento);
                 break;
@@ -187,6 +187,33 @@ class FixedAssetController extends Controller
         }
         return json_encode($id_documento);
     }
+
+    //  *  AF16. Obtiene los activos registrados dentro de un documento       
+    public function getDataFixedAsssetDetails(Request $request)
+    {
+        $id                     = $request->get('id');
+        $gestion                = $request->get('year');
+        $dataAssignment         = FixedAsset::GetDataAssignmentsById($id, $gestion);
+        $dataBudgetItem         = FixedAsset::GetBudgetItem($gestion);
+        $dataAccountingItem     = FixedAsset::GetAccountingItem($gestion);
+        $dataMeasurement        = FixedAsset::GetMeasurement($gestion);
+        $dataAssignmentsDetails = FixedAsset::GetDataFixedAsssetDetails($id);
+        //$dataAditional      = FixedAsset::GetAditionalFixedAssetsAssignment($id);
+        return json_encode(['dataAssignment' => $dataAssignment, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem, 'dataMeasurement' => $dataMeasurement, 'dataAssignmentsDetails' => $dataAssignmentsDetails]);
+    }
+
+    //  *  AF17. imprimir los activos registrados dentro de un documento       
+    public function printDataAssignmentDetails(Request $request)
+    {
+        $lista   = $request->get('lista');
+        $nreport = $request->get('reporte');
+
+        $lista    = implode(',', $lista);
+        $controls = ['p_lista' => $lista];
+        $report   = JSRClient::GetReportWithParameters($nreport, $controls);
+        return $report;
+    }
+
 
 
     //  * Obtener una lista de documentos de entrega de el recurso utilizado.
