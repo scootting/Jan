@@ -34,6 +34,9 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-pagination :page-size="pagination.per_page" layout="prev, pager, next"
+          :current-page="pagination.current_page" :total="pagination.total"
+          @current-change="getFarmSaleDays"></el-pagination>
       </div>
     </el-card>
   </div>
