@@ -65,7 +65,7 @@ export default {
       try {
         let response = await axios.post("/api/getStudentSalesDay", {
           description: app.writtenTextParameter,
-          user: app.user.usuario,
+          user: 'nottingham',
           year: app.user.gestion,
           page: page,
         });
@@ -87,7 +87,7 @@ export default {
       let app = this;
       try {
         let response = await axios.post("/api/storeDayForSale2", {
-          user: app.user.usuario,
+          user: 'nottingham',
           year: app.user.gestion,
         });
         console.log(response);

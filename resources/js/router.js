@@ -19,7 +19,9 @@ import AddAssetProgram from './views/resources/AddAssetProgram.vue'
 //  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
 //  |--------------------------------------------------------------------------
 import StudentSalesDay from './views/treasure/StudentSalesDay.vue'
+import StudentManualSalesDay from './views/treasure/StudentManualSalesDay.vue'
 import StudentSaleDetails from './views/treasure/StudentSaleDetails.vue'
+import StudentManualSaleDetails from './views/treasure/StudentManualSaleDetails.vue'
 
 //Solvencias
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
@@ -54,7 +56,8 @@ import FarmDropDays from './views/farm/FarmDropDays.vue'
 import AddFarmDropDay from './views/farm/AddFarmDropDay.vue'
 import AddFarmRegularizeDay from './views/farm/AddFarmRegularizeDay.vue'
 import FarmRegularizeDays from './views/farm/FarmRegularizeDays.vue'
-import FarmResumeDays from './views/farm/FarmResumeDays.vue'
+import AddFarmSummaryDay from './views/farm/AddFarmSummaryDay.vue'
+import FarmSummaryDays from './views/farm/FarmSummaryDays.vue'
 import FarmKardexProduct from './views/farm/FarmKardexProduct.vue'
 
 
@@ -369,7 +372,9 @@ const router = new VueRouter({
                 //  * G11. Movimiento de ventas entre fechas
                 { path: 'farmkardexproduct', name: 'farmkardexproduct', component: FarmKardexProduct },
                 //  * G12. Movimiento de ingreso,ventas,bajas de productos
-                { path: 'farmresumedays', name: 'farmresumedays', component: FarmResumeDays },
+                { path: 'farmsummarydays', name: 'farmsummarydays', component: FarmSummaryDays },
+                //  * G13. Detalle del resumen de los dias de venta de productos de la granja
+                { path: 'farmdays/summary/:id', name: 'addfarmsummaryday', component: AddFarmSummaryDay },
 
 
                 //  |--------------------------------------------------------------------------
@@ -416,7 +421,9 @@ const router = new VueRouter({
                 //  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
                 //  |--------------------------------------------------------------------------
                 { path: 'StudentSalesDay', name: 'studentsalesday', component: StudentSalesDay },
+                { path: 'StudentManualSalesDay', name: 'studentmanualsalesday', component: StudentManualSalesDay },
                 { path: 'StudentSalesDay/sale/:id', name: 'studentsaledetails', component: StudentSaleDetails }, //alumnos nuevos
+                { path: 'StudentManualSalesDay/manual/:id', name: 'studentmanualsaledetails', component: StudentManualSaleDetails }, //alumnos nuevos
                 
             ],
             meta: {

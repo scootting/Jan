@@ -304,7 +304,15 @@ class Treasure extends Model
 
     public static function GetStudentSalesDay($description, $user, $year)
     {
-        $user  = 'nottingham';
+        //$user  = 'nottingham';
+        $query = "select * from val.diario d where d.usr_cre = '" . $user . "' and d.gestion = '" . $year . "' order by d.id_dia desc";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    public static function GetStudentManualSalesDay($description, $user, $year)
+    {
+        $user  = 'manually';
         $query = "select * from val.diario d where d.usr_cre = '" . $user . "' and d.gestion = '" . $year . "' order by d.id_dia desc";
         $data  = collect(DB::select(DB::raw($query)));
         return $data;

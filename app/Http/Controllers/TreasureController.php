@@ -598,7 +598,7 @@ class TreasureController extends Controller
     //  * TA2. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
     public function storeDayForSale2(Request $request)
     {
-        $usuario = 'nottingham';
+        $usuario = $request->get('user');
         $gestion = $request->get('year');
         $data    = Treasure::storeDayForSale($usuario, $gestion);
         $id_dia  = $data[0]->{'ff_registrar_dia_venta'};

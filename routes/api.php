@@ -159,7 +159,7 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
     //  |--------------------------------------------------------------------------
-    //  * TA1. Lista de dias para la venta de alumnos nuevos  Usuario: nottingham
+    //  * TA1. Lista de dias para la venta de alumnos nuevos  Usuario: nottingham, manually
     Route::post('getStudentSalesDay', 'TreasureController@getStudentSalesDay');
     //  * TA2. Agrega un nuevo dia para la venta de valores para estudiantes nuevos
     Route::post('storeDayForSale2', 'TreasureController@storeDayForSale2');
@@ -388,6 +388,8 @@ Route::group([
     Route::post('getKardexById', 'FarmController@getKardexById');
     //  * G24. Imprimir el reporte de regularizaciones del dia.
     Route::get('regularizeDetailDayReport/', 'FarmController@regularizeDetailDayReport');
+    //  * G25. Obtiene la lista de resumenes de los dias de venta de los productos de la granja
+    Route::post('getFarmSummaryDays', 'FarmController@getFarmSummaryDays');
 
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales

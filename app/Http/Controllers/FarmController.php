@@ -364,4 +364,24 @@ class FarmController extends Controller
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
+
+    //  * G25. Obtiene la lista de los resumenes de los dias de venta de los productos de la granja
+    //  * Route::post('getSaleSummaryDays', 'FarmController@getSaleSummaryDays');
+    public function getFarmSummaryDays(Request $request)
+    {
+        $type_transaction = $request->get('transaccion');
+        $year = strtoupper($request->get('gestion'));
+        $data = Farm::GetFarmSummaryDays($type_transaction, $year);
+        $page = ($request->get('page') ? $request->get('page') : 1);
+        $perPage = 10;
+        $paginate = new LengthAwarePaginator(
+            $data->forPage($page, $perPage),
+            $data->count(),
+            $perPage,
+            $page,
+            ['path' => url('api/getFarmSummaryDays')]
+        );
+        return json_encode($paginate);
+    }
+
 }

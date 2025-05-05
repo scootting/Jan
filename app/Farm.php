@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +12,7 @@ class Farm extends Model
     {
 
         switch ($tipo_transaccion) {
-            case 1: //venta al contado
+            case 1:  //venta al contado
             case 14: //venta al credito
                 $query = "select * from vgra.diario where gestion = '" . $gestion . "' and tip_tra in (1, 14) order by fec_tra, idx";
                 break;
@@ -39,7 +38,7 @@ class Farm extends Model
     public static function AddFarmSaleDays($gestion, $fecha, $tip_tra, $usr_cre)
     {
         $query = "select * from vgra.ff_nuevo_dia('" . $gestion . "'::smallint,'" . $fecha . "'::date," . $tip_tra . ",'" . $usr_cre . "')";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -66,7 +65,7 @@ class Farm extends Model
     public static function GetVoucherNumber($id_dia, $usr_cre)
     {
         $query = "select * from vgra.ff_nuevo_dia('" . $id_dia . "','" . $usr_cre . "')";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -74,7 +73,7 @@ class Farm extends Model
     public static function GetFarmSaleDayById($id)
     {
         $query = "select * from vgra.diario where id = '" . $id . "'";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -82,7 +81,7 @@ class Farm extends Model
     public static function GetProductForSale($id)
     {
         $query = "select * from vgra.producto where cod_prd = '" . $id . "'";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -90,7 +89,7 @@ class Farm extends Model
     public static function GetCurrentVoucherNumber($id_dia)
     {
         $query = "select * from vgra.ff_numero_com('" . $id_dia . "')";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -98,7 +97,7 @@ class Farm extends Model
     public static function GetFarmSaleDetailById($id)
     {
         $query = "select *, a.id as id_tran from vgra.dia_des a inner join vgra.producto b on a.cod_pro = b.cod_prd where id_dia = '" . $id . "' order by nro_com";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
     //  * G11. Cerrar el reporte de ventas del dia.
@@ -128,7 +127,7 @@ class Farm extends Model
     public static function GetCurrentProductsById($id)
     {
         $query = "select a.can_pro as can, b.cod_prd, b.des_prd as des_prd, b.id as id, a.uni_pro as pre_uni, b.tip_prd as tip_prd, b.uni_prd as uni_prd from vgra.dia_des a inner join vgra.producto b on a.cod_pro = b.cod_prd where id_dia = '" . $id . "' and a.tip_tra <> 9";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -152,7 +151,7 @@ class Farm extends Model
     public static function GetClientsForRegularize($descripcion)
     {
         $query = "select * from vgra.ff_datos_deudor('" . $descripcion . "') limit 1";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -160,7 +159,7 @@ class Farm extends Model
     public static function GetCurrentRegularizeClientById($id)
     {
         $query = "select * from vgra.ff_amortizaciones_dia('" . $id . "')";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -168,7 +167,7 @@ class Farm extends Model
     public static function GetTransactionsSaleByDays($inicial, $final)
     {
         $query = "select * from vgra.diario where fec_tra >= '" . $inicial . "' and fec_tra <='" . $final . "' and tip_tra in (1, 14)";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -176,7 +175,18 @@ class Farm extends Model
     public static function GetKardexById($id, $year, $inicial, $final)
     {
         $query = "select * from vgra.ff_kardex_fisico('" . $id . "','" . $year . "','" . $inicial . "','" . $final . "')";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //  * G25. Obtiene la lista de los resumenes de los dias de venta de los productos de la granja
+    //  * Route::post('getSaleSummaryDays', 'FarmController@getSaleSummaryDays');
+    public static function GetFarmSummaryDays($tipo_transaccion, $gestion)
+    {
+
+        $query = "select * from vgra.diario_resumen where gestion = '" . $gestion . "' order by idx";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
 }

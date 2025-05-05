@@ -28,7 +28,7 @@
               <el-button :disabled="dataSaleDays[scope.$index].estado == 'V'"
                 @click="initCustomerIncomeDetail(scope.$index, scope.row)" type="warning" size="small" plain>realizar
                 ingresos</el-button>                
-                <el-button @click="initCustomerIncomeDetail(scope.$index, scope.row)" type="primary" size="small"
+                <el-button @click="initIncomeDetailReport(scope.$index, scope.row)" type="primary" size="small"
                 :disabled="dataSaleDays[scope.$index].estado != 'V'"
                 plain>resumen ingreso de productos</el-button>
             </template>
