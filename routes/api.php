@@ -390,7 +390,9 @@ Route::group([
     Route::get('regularizeDetailDayReport/', 'FarmController@regularizeDetailDayReport');
     //  * G25. Obtiene la lista de resumenes de los dias de venta de los productos de la granja
     Route::post('getFarmSummaryDays', 'FarmController@getFarmSummaryDays');
-
+    //  * G26. Guarda una lista de resumenes de los dias de venta de los productos de la granja
+    Route::post('storeSummarySalesDay', 'FarmController@storeSummarySalesDay');
+    
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales
     //  |--------------------------------------------------------------------------

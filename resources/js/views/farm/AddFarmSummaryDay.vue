@@ -20,7 +20,9 @@
                             icon="el-icon-search" plain>Buscar movimientos</el-button>
                     </el-form-item>
                 </el-form>
-                <el-table v-loading="loading" :data="dataDays" height="450" style="width: 100%" fixed>
+                <el-table v-loading="loading" :data="dataDays" height="450" style="width: 100%"
+                    @selection-change="handleSelectionChange" fixed>
+                    <el-table-column type="selection"> </el-table-column>
                     <el-table-column prop="fec_tra" label="fecha" :min-width="100">
                         <template slot-scope="scope">
                             <el-tag type="info">{{ scope.row.fec_tra }}</el-tag>
@@ -44,6 +46,9 @@
                     </el-table-column>
                 </el-table>
                 <div style="margin-top: 15px">
+                    <el-button size="small" type="success" icon="el-icon-save"
+                        @click="initStoreSummmarySaleDays">
+                        guardar el resumen de movimientos diarios</el-button>
                     <el-button size="small" type="primary" icon="el-icon-printer"
                         @click="initCustomerResumeSaleDetailDaysReport" plain>
                         imprimir el resumen de movimientos diarios</el-button>
@@ -61,6 +66,7 @@ export default {
             user: this.$store.state.user,
             writtenTextParameter: '',
             dataSaleDay: {},
+            selectedSaleDays: [],
             range: { initial: '', final: '' },
             dataDays: [],
             loading: false,                                       //dia de venta
@@ -133,6 +139,27 @@ export default {
             });
         },
 
+        handleSelectionChange(val) {
+            this.selectedSaleDays = val;
+        },
+
+        async initStoreSummmarySaleDays(){
+            console.log(this.selectedSaleDays);
+            var app = this;
+            try {
+                let response = await axios.post("/api/storeSummarySalesDay", {
+                    rango: app.range,
+                    dias: app.selectedSaleDays,
+                    usuario: app.user,
+                });
+                alert("se ha realizada correctamente la operacion.");
+            } catch (error) {
+                this.error = error.response.data;
+                app.$alert(this.error.message, "Gestor de errores", {
+                    dangerouslyUseHTMLString: true,
+                });
+            }
+        },     
     }
 };
 </script>

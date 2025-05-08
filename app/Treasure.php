@@ -196,7 +196,7 @@ class Treasure extends Model
     //  * {year: gestion}
     public static function getSaleOfDayById($id, $user, $year)
     {
-        $user = 'nottingham';
+        //$user = 'nottingham';
         //select * from val.diario vd where vd.id_dia = '1234' and vd.usr_cre = 'rcallizaya' and vd.gestion = '2020'
         $query = "select * from val.diario vd where vd.id_dia = '" . $id . "' and vd.usr_cre = '" . $user . "' and vd.gestion = '" . $year . "'";
         $data  = collect(DB::select(DB::raw($query)));
@@ -305,7 +305,7 @@ class Treasure extends Model
     public static function GetStudentSalesDay($description, $user, $year)
     {
         //$user  = 'nottingham';
-        $query = "select * from val.diario d where d.usr_cre = '" . $user . "' and d.gestion = '" . $year . "' order by d.id_dia desc";
+        $query = "select * from val.diario d where trim(d.usr_cre) = '" . $user . "' and d.gestion = '" . $year . "' order by d.id_dia desc";
         $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }

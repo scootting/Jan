@@ -374,7 +374,7 @@ const router = new VueRouter({
                 //  * G12. Movimiento de ingreso,ventas,bajas de productos
                 { path: 'farmsummarydays', name: 'farmsummarydays', component: FarmSummaryDays },
                 //  * G13. Detalle del resumen de los dias de venta de productos de la granja
-                { path: 'farmdays/summary/:id', name: 'addfarmsummaryday', component: AddFarmSummaryDay },
+                { path: 'farmdays/summary', name: 'addfarmsummaryday', component: AddFarmSummaryDay },
 
 
                 //  |--------------------------------------------------------------------------

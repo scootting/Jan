@@ -148,7 +148,7 @@ export default {
     axios
       .post("/api/getSaleOfDayById", {
         id: app.day,
-        user: app.user.usuario,
+        user: 'manually',
         year: app.user.gestion,
       })
       .then(function (response) {

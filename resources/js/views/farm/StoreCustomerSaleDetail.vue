@@ -15,7 +15,7 @@
                                     <el-input v-model="dataSaleDay.id_dia" disabled></el-input>
                                 </el-form-item>
                                 <el-form-item label="comprobante" prop="voucher">
-                                    <el-input v-model="voucher"></el-input>
+                                    <el-input v-model="voucher" disabled></el-input>
                                 </el-form-item>
                                 <el-form-item label="fecha" prop="fec_tra">
                                     <el-input v-model="dataSaleDay.fec_tra" disabled></el-input>

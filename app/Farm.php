@@ -166,8 +166,9 @@ class Farm extends Model
     //  * G19. Obtiene los clientes registrados
     public static function GetTransactionsSaleByDays($inicial, $final)
     {
-        $query = "select * from vgra.diario where fec_tra >= '" . $inicial . "' and fec_tra <='" . $final . "' and tip_tra in (1, 14)";
-        $data  = collect(DB::select(DB::raw($query)));
+        $query = "select * from vgra.diario a WHERE a.id NOT IN ( SELECT (jsonb_array_elements(id_dias)->>'id')::int AS id_dia " .
+            "FROM vgra.diario_resumen) and a.fec_tra >= '" . $inicial . "' and a.fec_tra <='" . $final . "' and a.tip_tra in (1, 14)";
+        $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -189,4 +190,13 @@ class Farm extends Model
         return $data;
     }
 
+    //  * G26. Guarda una lista de resumenes de los dias de venta de los productos de la granja
+    //Route::post('storeSummarySalesDay', 'FarmController@storeSummarySalesDay');
+    public static function StoreSummarySalesDay($gestion, $tip_tra, $fecha_inicial, $fecha_final, $id_dias, $usuario)
+    {
+        $query = "select * from vgra.ff_nuevo_resumen(" . $gestion . "," . $tip_tra . ",'" . $fecha_inicial . "','" . $fecha_final . "','" . $id_dias
+            . "','" . $usuario . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 }
