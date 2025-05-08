@@ -255,7 +255,6 @@ class TreasureController extends Controller
         $dataUser               = $request->get('user');
         $kardex                 = $request->get('kardex');
 
-        \Log::info(dataDayTransactions);
         $id_dia  = $dataDayTransactions['id_dia'];
         $fec_tra = $dataDayTransactions['fec_tra'];
         $gestion = $dataDayTransactions['gestion'];
