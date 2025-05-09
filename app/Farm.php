@@ -192,10 +192,10 @@ class Farm extends Model
 
     //  * G26. Guarda una lista de resumenes de los dias de venta de los productos de la granja
     //Route::post('storeSummarySalesDay', 'FarmController@storeSummarySalesDay');
-    public static function StoreSummarySalesDay($gestion, $tip_tra, $fecha_inicial, $fecha_final, $id_dias, $usuario)
+    public static function StoreSummarySalesDay($gestion, $tip_tra, $fecha_inicial, $fecha_final, $id_dias, $usuario, $efectivo, $credito)
     {
         $query = "select * from vgra.ff_nuevo_resumen(" . $gestion . "," . $tip_tra . ",'" . $fecha_inicial . "','" . $fecha_final . "','" . $id_dias
-            . "','" . $usuario . "')";
+            . "','" . $usuario . "','" . $efectivo . "','" . $credito . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

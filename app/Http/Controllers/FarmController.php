@@ -308,9 +308,9 @@ class FarmController extends Controller
         $id_resumen = $request->get('id_resumen');
         \Log::info($id_resumen);
         //$id = $dataResumen['id'];
-        $nreport       = 'FarmResumeSaleDetailsDay_Letter';
+        $nreport  = 'FarmResumeSaleDetailsDay_Letter';
         $controls = [
-            'p_id'      => $id_resumen,
+            'p_id' => $id_resumen,
         ];
         $report = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
@@ -385,7 +385,7 @@ class FarmController extends Controller
     public function storeSummarySalesDay(Request $request)
     {
         $id_tran   = 0;
-        $id_dias  = json_encode($request->get('dias'));
+        $id_dias   = json_encode($request->get('dias'));
         $dataRange = $request->get('rango');
         $dataUser  = $request->get('usuario');
 
@@ -394,21 +394,27 @@ class FarmController extends Controller
         $usuario       = $dataUser['usuario'];
         $gestion       = $dataUser['gestion'];
         $tip_tra       = 6;
-        //Farm::RemoveCurrentClientById($id_dia);
-        $data = Farm::StoreSummarySalesDay($gestion, $tip_tra, $fecha_inicial, $fecha_final, $id_dias, $usuario);
-
-        /*
-        foreach ($dataClients as $item) {
+        $pap_efectivo  = '';
+        $pap_credito   = '';
+        \Log::info($id_dias);
+        foreach ($request->get('dias') as $item) {
             # code...
-            $ci_per = strtoupper($item['ci_per']);
-            $des_per = strtoupper($item['des_per']);
-            $cod_prd = '0000';
-            $can_prd = 1;
-            $pre_uni = $item['total_pago'];
-            $imp_total = $can_prd * $pre_uni;
-            $data = Farm::StoreCustomerSaleDetail($id_dia, $fec_tra, $gestion, $usr_cre, $ci_per, $des_per, $nro_com, $cod_prd, $can_prd, $pre_uni, $tip_tra, $imp_total);
+            switch ($item['tip_tra']) {
+                case 1:
+                    $pap_efectivo = $pap_efectivo . "[" . $item['com_ini'] . " - " . $item['com_fin'] . "] ";
+                    break;
+                case 14:
+                    $pap_credito = $pap_credito . "[" . $item['com_ini'] . " - " . $item['com_fin']. "] ";
+                    break;
+            }
         }
-            */
+        if ($pap_efectivo == '') {
+            $pap_efectivo = 'SIN MOVIMIENTO';
+        }
+        if ($pap_credito == '') {
+            $pap_credito = 'SIN MOVIMIENTO';
+        }
+        $data = Farm::StoreSummarySalesDay($gestion, $tip_tra, $fecha_inicial, $fecha_final, $id_dias, $usuario, $pap_efectivo, $pap_credito);
         return json_encode($id_tran);
     }
 }
