@@ -156,7 +156,8 @@ class TreasureController extends Controller
             case 13:  //TRASPASO
             case 101: //EXAMEN P.S.A. - R027/2022
                 if ($id_programa == 'TMF') {
-                    $description = 'LLICA';
+                    if($year == '2024')
+                        $description = 'LLICA';
                 } else {
                     $description = 'NUEVOS';
                 }
@@ -198,6 +199,11 @@ class TreasureController extends Controller
             case 7:  //ADMISION EXTRAORDINARIA DEPORTIVA
                 $description = 'EXCELENCIA';
                 break;
+            case 55: //INGRESO DIRECTO 
+                if ($id_programa == 'TMF') {
+                    if($year == '2025')
+                        $description = 'TMF_POTOSI';
+                }   
             default:
                 $description = 'SIN_TRAMITE';
         }
