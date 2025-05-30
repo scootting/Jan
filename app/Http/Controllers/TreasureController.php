@@ -183,8 +183,6 @@ class TreasureController extends Controller
                 }
 
                 break;
-
-                break;
             case 9:  //CAOB
             case 42: //ORIGINARIA 43
             case 41: // por convenio
@@ -204,6 +202,7 @@ class TreasureController extends Controller
                     if($year == '2025')
                         $description = 'TMF_POTOSI';
                 }   
+                break;
             default:
                 $description = 'SIN_TRAMITE';
         }
