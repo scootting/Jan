@@ -165,9 +165,14 @@ class TreasureController extends Controller
                         if ($year == '2025') {
                             $description = 'TECNICO';
                         }
-
                     } else {
-                        $description = 'NUEVOS';
+                        if ($id_programa == 'TSM' || $id_programa == 'TSA' || $id_programa == 'TSE') {
+                            if ($year == '2025') {
+                                $description = 'NUEVOS';
+                            } else {
+                                $description = 'NUEVOS';
+                            }
+                        }
                     }
                 }
 
@@ -290,13 +295,13 @@ class TreasureController extends Controller
 
         foreach ($dataValuesPostulations as $item) {
             # code...
-            $cod_val = $item['cod_val'];
-            $can_val = $item['can_val'];
-            $pre_uni = $item['pre_uni_val'];
-            $imp_val = $item['imp_val'];
+            $cod_val   = $item['cod_val'];
+            $can_val   = $item['can_val'];
+            $pre_uni   = $item['pre_uni_val'];
+            $imp_val   = $item['imp_val'];
             $numerable = $item['numerable'];
-            $desde = $item['desde'];
-            //$imp_val = $can_val * $pre_uni;
+            $desde     = $item['desde'];
+                                 //$imp_val = $can_val * $pre_uni;
             if ($imp_val == 1) { //imp_val es impresion en etiqueta Lio
                 $tip_tra = '10';
                 $marker  = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion, 0, 0);
@@ -306,8 +311,7 @@ class TreasureController extends Controller
                 if (trim($numerable) == 'S') {
                     $marker  = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion, $desde, $desde);
                     $id_tran = $marker[0]->{'id_tran'};
-                }
-                else{
+                } else {
                     $marker  = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion, 0, 0);
                     $id_tran = $marker[0]->{'id_tran'};
                 }
