@@ -156,10 +156,19 @@ class TreasureController extends Controller
             case 13:  //TRASPASO
             case 101: //EXAMEN P.S.A. - R027/2022
                 if ($id_programa == 'TMF') {
-                    if($year == '2024')
+                    if ($year == '2024') {
                         $description = 'LLICA';
+                    }
+
                 } else {
-                    $description = 'NUEVOS';
+                    if ($id_programa == 'TED' || $id_programa == 'TEA' || $id_programa == 'TMA' || $id_programa == 'TMG') {
+                        if ($year == '2025') {
+                            $description = 'TECNICO';
+                        }
+
+                    } else {
+                        $description = 'NUEVOS';
+                    }
                 }
 
                 break;
@@ -199,9 +208,10 @@ class TreasureController extends Controller
                 break;
             case 55: //INGRESO DIRECTO 
                 if ($id_programa == 'TMF') {
-                    if($year == '2025')
+                    if ($year == '2025') {
                         $description = 'TMF_POTOSI';
-                }   
+                    }
+                }
                 break;
             default:
                 $description = 'SIN_TRAMITE';
@@ -284,15 +294,21 @@ class TreasureController extends Controller
             $can_val = $item['can_val'];
             $pre_uni = $item['pre_uni_val'];
             $imp_val = $item['imp_val'];
+            $numerable = $item['numerable'];
+            $desde = $item['desde'];
             //$imp_val = $can_val * $pre_uni;
-            if ($imp_val == 1) {
+            if ($imp_val == 1) { //imp_val es impresion en etiqueta Lio
                 $tip_tra = '10';
                 $marker  = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion, 0, 0);
                 $id_tran = $marker[0]->{'id_tran'};
             } else {
-                if (trim($cod_val) == "1045") {
-                    $tip_tra = '0';
-                    $marker  = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion, $kardex, $kardex);
+                $tip_tra = '0';
+                if (trim($numerable) == 'S') {
+                    $marker  = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion, $desde, $desde);
+                    $id_tran = $marker[0]->{'id_tran'};
+                }
+                else{
+                    $marker  = Treasure::addTransactionsByStudents($id_dia, $cod_val, $can_val, $pre_uni, $fec_tra, $usr_cre, '-1', $ci_per, $des_per, $tip_tra, $gestion, 0, 0);
                     $id_tran = $marker[0]->{'id_tran'};
                 }
             }

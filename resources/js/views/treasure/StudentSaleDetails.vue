@@ -94,15 +94,21 @@
     </el-dialog>
 
 
-    <el-dialog title="Valores Fisicos" :visible.sync="visibleKardex">
-      <el-form :model="form">
-        <el-form-item label="Numero del folder amarillo">
-          <el-input v-model="form.kardex" autocomplete="off"></el-input>
+    <el-dialog title="Valores Numerables" :visible.sync="visibleKardex">
+      <el-form :model="form" size="small" ref="form" label-width="150px">
+        <el-form-item label="Codigo">
+          {{ form.cod_val }}
+        </el-form-item>
+        <el-form-item label="Descripcion">
+          {{ form.des_val }}
+        </el-form-item>
+        <el-form-item label="numeracion">
+          <el-input v-model="form.desde" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="visibleKardex = false">cancelar</el-button>
-        <el-button type="primary" @click="visibleKardex = false">confirmar</el-button>
+        <el-button @click="visibleKardex = false" size="small">cancelar</el-button>
+        <el-button type="primary" @click="initStoreNumeration" size="small">confirmar</el-button>
       </span>
     </el-dialog>
   </div>
@@ -125,9 +131,12 @@ export default {
       valuesPostulations: [],
       muchPostulations: [],
       visible: false,
+      index: 0,
       visibleKardex: false,
       form: {
-        kardex: 0,
+        cod_val: '',
+        des_val: '',
+        desde: '',
       },
       dataKardex: {},
       postulations: {
@@ -170,11 +179,58 @@ export default {
     handleClose(done) {
       this.visible = false;
     },
+
+    initStoreNumeration() {
+      this.visibleKardex = false;
+      this.valuesPostulations[this.index] = this.form;
+      console.log(this.valuesPostulations);
+    },
     //coloca la numeracion al kardex
     initAddNumeration(index, row) {
+      this.form = row;
+      console.log(this.form);
+      this.index = index;
       this.visibleKardex = true;
     },
 
+    async saveTransaction() {
+      var app = this;
+      var newDayTransactions = app.saleOfDay;
+      var newUser = app.user;
+      var newPostulations = app.postulations;
+      var newValuesPostulations = app.valuesPostulations;
+      let valido = app.valuesPostulations
+        .filter(item => item.numerable === 'S')     // Filtra solo los que son numerables 'S'
+        .every(item => item.desde !== '0');
+      console.log(valido);
+      try {
+        if (valido) {
+          let response2 = await axios.post("/api/storeTransactionsByStudents", {
+            dayTransactions: newDayTransactions,
+            postulations: newPostulations,
+            valuesPostulations: newValuesPostulations,
+            user: newUser,
+            marker: "registrar",
+          });
+          app.$alert("Se ha registrado correctamente al estudiante", 'Gestor de mensajes', {
+            dangerouslyUseHTMLString: true
+          });
+          app.DisabledStore = true;
+          app.DisabledPrint = false;
+
+        }
+        else {
+          alert("No puede guardar valores que son numerables con valor 0");
+        }
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true
+        });
+      }
+    },
+
+    /*
     async saveTransaction() {
       var app = this;
       var newDayTransactions = app.saleOfDay;
@@ -207,7 +263,7 @@ export default {
           app.DisabledPrint = false;
         } else {
           //el kardex se utilizo o no esta en el rango  
-          alert(app.dataKardex.mensaje);        
+          alert(app.dataKardex.mensaje);
           this.visibleKardex = true;
           this.form.kardex = 0;
         }
@@ -216,41 +272,6 @@ export default {
         app.$alert(this.error.message, "Gestor de errores", {
           dangerouslyUseHTMLString: true
         });
-      }
-    },
-    /*
-    saveTransaction() {
-      var app = this;
-      var newDayTransactions = app.saleOfDay;
-      var newUser = app.user;
-      var newPostulations = app.postulations;
-      var newValuesPostulations = app.valuesPostulations;
-      if ((app.form.kardex >= 87444 && app.form.kardex <= 87450) || (app.form.kardex >= 87452 && app.form.kardex <= 87460) || (app.form.kardex >= 87524 && app.form.kardex <= 87850) || (app.form.kardex >= 88651 && app.form.kardex <= 93650)) {
-        axios
-          .post("/api/storeTransactionsByStudents", {
-            dayTransactions: newDayTransactions,
-            postulations: newPostulations,
-            valuesPostulations: newValuesPostulations,
-            kardex: app.form.kardex,
-            user: newUser,
-            marker: "registrar",
-          })
-          .then(function (response) {
-            app.$alert("Se ha registrado correctamente a la persona", 'Gestor de mensajes', {
-              dangerouslyUseHTMLString: true
-            });
-          })
-          .catch(function (error) {
-            app.$alert("Se ha registrado correctamente a la persona sin errores", 'Gestor de mensajes', {
-              dangerouslyUseHTMLString: true
-            });
-          });
-        app.DisabledStore = true;
-        app.DisabledPrint = false;
-      }
-      else {
-        this.visibleKardex = true;
-        this.form.kardex = 0;
       }
     },
     */
@@ -292,6 +313,7 @@ export default {
           id_programa: app.postulations.id_programa,
         });
         app.valuesPostulations = response.data;
+        console.log(app.valuesPostulations);
         app.DisabledStore = false;
       } catch (error) {
         this.error = error.response.data;
