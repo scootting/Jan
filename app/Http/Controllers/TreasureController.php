@@ -162,16 +162,12 @@ class TreasureController extends Controller
 
                 } else {
                     if ($id_programa == 'TED' || $id_programa == 'TEA' || $id_programa == 'TMA' || $id_programa == 'TMG') {
-                        if ($year == '2025') {
-                            $description = 'TECNICO';
-                        }
+                        $description = 'TECNICO';
                     } else {
                         if ($id_programa == 'TSM' || $id_programa == 'TSA' || $id_programa == 'TSE') {
-                            if ($year == '2025') {
-                                $description = 'NUEVOS';
-                            } else {
-                                $description = 'NUEVOS';
-                            }
+                            $description = 'NUEVOS';
+                        } else {
+                            $description = 'NUEVOS';
                         }
                     }
                 }

@@ -14,6 +14,10 @@ import AddConsumeProgram from './views/resources/AddConsumeProgram.vue'
 import AddTutorProgram from './views/resources/AddTutorProgram.vue'
 import AddAssetProgram from './views/resources/AddAssetProgram.vue'
 
+//  |--------------------------------------------------------------------------
+//  | Rutas API para la firma digital
+//  |--------------------------------------------------------------------------
+import AddDigitalSignature from './views/document/AddDigitalSignature.vue'
 
 //  |--------------------------------------------------------------------------
 //  | Rutas API para el Sistema de Ventas de valores para Alumnos Admitidos
@@ -260,6 +264,11 @@ const router = new VueRouter({
 
                 { path: 'documentsfixedassets', name: 'documentsfixedassets', component: DocumentsFixedAssets }, //lista de documentos de entrega activos fijos
                 { path: 'documentsfixedassets/:id', name: 'selectedFixedAssetsByDocument', component: SelectedFixedAssetsByDocument }, // documentos de entrega activos fijos impresion
+
+                //  |--------------------------------------------------------------------------
+                //  | Rutas API para Firma Digital
+                //  |--------------------------------------------------------------------------    
+                { path: 'adddigitalsignature', name: 'adddigitalsignature', component: AddDigitalSignature }, //lista de documentos de entrega activos fijos
 
 
                 //  |--------------------------------------------------------------------------

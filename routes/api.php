@@ -166,7 +166,6 @@ Route::group([
     //  * TA3. Revisa el Kardex
     Route::post('getVerifyKardex', 'TreasureController@getVerifyKardex');
 
-
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Ventas en Linea de la Division de Tesoro
     //  |--------------------------------------------------------------------------
@@ -392,7 +391,7 @@ Route::group([
     Route::post('getFarmSummaryDays', 'FarmController@getFarmSummaryDays');
     //  * G26. Guarda una lista de resumenes de los dias de venta de los productos de la granja
     Route::post('storeSummarySalesDay', 'FarmController@storeSummarySalesDay');
-    
+
     //  |--------------------------------------------------------------------------
     //  | Rutas API para el Sistema de Memoriales
     //  |--------------------------------------------------------------------------
@@ -478,4 +477,7 @@ Route::group([
     Route::post('getProgramCategoryDescriptionWithPagination', 'GeneralController@getProgramCategoryDescriptionWithPagination');
     //  * COM3. Obtiene una lista de valores universitarios que coinciden con la descripcion.
     Route::post('getUniversityValuesDescriptionWithPagination', 'GeneralController@getUniversityValuesDescriptionWithPagination');
+
+    Route::get('estadoToken/', 'JacobitusController@estadoToken');    
+    Route::post('certificadosToken', 'JacobitusController@certificadosToken');    
 });
