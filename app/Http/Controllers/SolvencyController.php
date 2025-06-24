@@ -127,10 +127,6 @@ class SolvencyController extends Controller
         $fileExt = $request->file('file')->getClientOriginalExtension();
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            //$path = "documento";
-            //$file_name = 'documento-'. $year . '-' . strval($id_document).'.'. $fileExt;//
-            //$ruta = $path . "/" . $file_name;
-            //$file->storeAs($path, $file_name);
             //documento digital
             $descripcion = $file->getClientOriginalName();
             $data = file_get_contents($file);

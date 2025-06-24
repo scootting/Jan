@@ -155,6 +155,7 @@ class TreasureController extends Controller
             case 20:  //3ra PSA
             case 13:  //TRASPASO
             case 101: //EXAMEN P.S.A. - R027/2022
+            case 48:  //CONVENIO - SAN CRISTOBAL
                 if ($id_programa == 'TMF') {
                     if ($year == '2024') {
                         $description = 'LLICA';
@@ -171,7 +172,6 @@ class TreasureController extends Controller
                         }
                     }
                 }
-
                 break;
             case 39: //CODEMETROP
                 $description = 'CONVENIO_MEDICO';
