@@ -325,6 +325,7 @@ Route::group([
     //  |--------------------------------------------------------------------------
     //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
     Route::post('getDebtorsDocument', 'SolvencyController@getDebtorsDocument');
+    
     //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion y gestion
     Route::post('getDebtorsDocumentByYear', 'SolvencyController@getDebtorsDocumentByYear');
     //  * SO2. Agregar un nuevo documento de deudor
@@ -333,10 +334,19 @@ Route::group([
     Route::post('getDocumentDetails', 'SolvencyController@getDocumentDetails');
     // *  SO4. Guarda los documentos digitalizados de las deudas
     Route::post('storeDigitalDocumentSolvency', 'SolvencyController@storeDigitalDocument');
-    // * SO5. Obtiene los documentos digitalizados de las deudas
+    // *  SO5. Obtiene los documentos digitalizados de las deudas
     Route::get('getDigitalDocumentSolvency', 'SolvencyController@getDigitalDocument');
-
+    // *  SO7. Agregar un nuevo documento de regularizarion
+    Route::post('storeCreditorDocument', 'SolvencyController@storeCreditorDocument');
+    //  * SO8. Obtiene la lista de documentos de las personas regularizadas
+    Route::post('getCreditorsDocument', 'SolvencyController@getCreditorsDocument');
+    //  * SO9. Obtiene la lista de documentos de las personas regularizadas
+    Route::post('getDocumentRegDetails', 'SolvencyController@getDocumentRegDetails');
+    //  * EF4. Obtener documentos digitalizados
+    Route::get('getDigitalSolvencyDocument/', 'SolvencyController@getDigitalSolvencyDocument');
+    
     //  |--------------------------------------------------------------------------
+
     //  | Rutas API para el Sistema de Granjas
     //  |--------------------------------------------------------------------------
     //  * G1. Obtiene la lista de los dias de venta de los productos de la granja

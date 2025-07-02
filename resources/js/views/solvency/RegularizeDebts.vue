@@ -9,7 +9,7 @@
         <el-row :gutter="20">
           <el-col :span="12">
             <div class="grid-content bg-purple">
-              <p>datos del documento de deuda</p>
+              <p>datos del documento  de regularizacion<</p>
               <el-form ref="form" :model="debtorDocument" label-width="120px" size="small">
                 <el-form-item label="numero" prop="idc">
                   {{ debtorDocument.idc }}
@@ -168,15 +168,13 @@ export default {
         let response = await axios.post("/api/storeCreditorDocument", {
           usuario: app.user,
           documento: app.debtorDocument,
-          deudores: app.debtors,
           responsable: app.manager,
+          deudores: app.debtors,
           acredores: app.creditors,
           documento2: app.creditorDocument,
-          programa: app.prg,
           marker: "registrar",
         });
         app.numero = response.data;
-        console.log(response);
         this.$confirm('Cuenta con la documentacion para liberar la deuda?', 'Proceso de Verificacion', {
           confirmButtonText: 'Continuar',
           cancelButtonText: 'Cancelar',
@@ -184,7 +182,7 @@ export default {
         }).then(() => {
           /*pasa directamente al editar*/
           this.$router.push({
-            name: "editcredits",
+            name: "editregularize",
             params: {
               id: response.data,
             },
@@ -192,7 +190,7 @@ export default {
 
         }).catch(() => {
           /*pasa directamente a la lista de deudas*/
-          this.$router.push({ name: "creditsDocument" });
+          this.$router.push({ name: "creditors" });
         });
 
       } catch (error) {

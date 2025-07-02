@@ -36,8 +36,6 @@
                   <el-button @click="storeDebtorDocument" type="primary" size="small">Guardar cambios
                   </el-button>
                 </el-form-item>
-                <!--
-                -->
               </el-form>
             </div>
             <p></p>
@@ -59,17 +57,17 @@
               <el-button @click="initSearchDebtor" type="primary" size="small">agregar deudor
               </el-button>
               <p>documentacion</p>
-              <el-table :data="digital" style="width: 100%" size="small">
-                <el-table-column prop="des_per" label="referencia" width="220"></el-table-column>
+              <el-table :data="digitales" style="width: 100%" size="small">
+                <el-table-column prop="referencia" label="referencia" width="220"></el-table-column>
                 <el-table-column align="right">
                   <template slot-scope="scope">
-                    <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain
-                      size="small">Eliminar</el-button>
+                    <el-button @click="initRemoveDebtors(scope.$index, scope.row)" type="primary" plain size="small">ver
+                      documento</el-button>
                   </template>
                 </el-table-column>
               </el-table>
               <p></p>
-              <el-button @click="initSearchDebtor" type="primary" size="small">Agregar documento digitalizado
+              <el-button @click="initEditDocumentOfArchive" type="primary" size="small">Agregar documento digitalizado
               </el-button>
             </div>
           </el-col>
@@ -80,6 +78,40 @@
       </el-button>
       -->
       <information :visible="isVisible" :tag='tag' @update-visible="updateIsVisible"></information>
+
+      <!-- Form Add Document to Archive-->
+      <el-dialog title="detalle del documento" :visible.sync="dialogFormVisible2">
+        <el-form :model="digital" label-width="220px" size="small" enable='true' :rules="rules" ref="documentForm">
+          <el-form-item label="Numero del documento">
+            <el-date-picker type="date" placeholder="seleccione una fecha" v-model="digital.fecha" format="yyyy-MM-DD"
+              style="width: 100%"></el-date-picker>
+          </el-form-item>
+          <el-form-item label="glosa o descripcion">
+            <el-input type="textarea" v-model="digital.referencia" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-upload ref="upload" action="/api/storeDigitalDocumentSolvency" :auto-upload="false"
+              :file-list="digitalDocument" :multiple="false" :limit="1" :data="digital" accept=".pdf"
+              :headers="requestHeaders" :on-success="handleSuccessBoucher" :on-remove="test">
+              <!---->
+              <p></p>
+              <el-button slot="trigger" size="small" type="primary">subir archivo digitalizado</el-button>
+              <div slot="tip" class="el-upload__tip">
+                Solo puede subir archivos pdf
+              </div>
+            </el-upload>
+          </el-form-item>
+
+          <!--
+        -->
+        </el-form>
+        <span slot="footer" class="dialog-footer">
+          <el-button type="success" size="small" @click="storeDigitalDocumentSolvency('documentForm')">guardar archivo
+            digitalizado</el-button>
+          <el-button type="danger" size="small" @click="dialogFormVisible2 = false">Cerrar</el-button>
+        </span>
+      </el-dialog>
+
     </el-card>
   </div>
 </template>
@@ -93,13 +125,29 @@ export default {
   },
   data() {
     return {
+      requestHeaders: {
+        "X-CSRF-TOKEN": window.axios.defaults.headers.common["X-CSRF-TOKEN"],
+        Authorization: "Bearer " + this.$store.state.token,
+      },
+
       user: this.$store.state.user,
       id: this.$route.params.id,
       isVisible: false,           //componente campo visible
       tag: '',                    //componente que informacion desea traer
       flag: '',                   //deudor, responsable, categoria programatica
       dialogFormVisible: false,   //hace visible el formulario de cosas adeudadas
-      digital: [],                //deudores
+      dialogFormVisible2: false,   //hace visible el formulario de cosas adeudadas
+
+
+
+      digitales: [],                //deudores
+      digitalDocument: [],
+      digital: {
+        id: '',
+        fecha: '',
+        referencia: '',
+      },
+
       debtors: [],                //deudores
       debt: {},                   //un solo deudor
       debtorDocument: {},         //documento de deuda
@@ -107,6 +155,17 @@ export default {
       manager: {},                //responsable (director de carrera, jefe de division)
       prg: {},                    //categoria programatica
       numero: 0,
+      rules: {
+        id: [
+          { required: true, message: 'Debe agregar un numero', trigger: 'blur' },
+          { type: 'number', message: 'Lo agregado no es numero', trigger: 'blur' }
+        ],
+        referencia: [
+          { required: true, message: 'Debe agregar texto', trigger: 'blur' },
+          { min: 5, max: 100, message: 'El texto debe contener minimo 5 letras', trigger: 'blur' }
+        ]
+      },
+
     };
   },
   mounted() {
@@ -126,8 +185,10 @@ export default {
         app.debtorDocument = response.data.document[0];   //documento
         app.debtors = response.data.documentDetails;      //detalle del documento
         app.debt = response.data.documentDetails[0];      //la primera fila del deudor
-        app.digital = response.data.documentDigital;
-        console.log(app.debtorDocument);
+        app.digitales = response.data.documentDigital;
+        app.digital.id = app.debtorDocument.id_documento;
+        console.log("Hola");
+        console.log(response);
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {
@@ -139,12 +200,6 @@ export default {
     //  * S2. Guardar la informacion de un nuevo documento de deuda.
     async storeDebtorDocument() {
       var app = this;
-      console.log(app.debtorDocument);
-      console.log("Deudores");
-      console.log(app.debtors);
-      console.log(app.debt);
-      console.log(app.manager);
-      console.log(app.prg);
       try {
         let response = await axios.post("/api/storeDebtorDocument", {
           usuario: app.user,
@@ -205,9 +260,59 @@ export default {
       }
     },
 
+
+    //  * Inicia la edicion de un documento
+    initEditDocumentOfArchive(idx, row) {
+      this.document = row;
+      console.log("editar:  ");
+      console.log(this.document);
+      this.stateStore = "añadir";
+      this.dialogFormVisible2 = true;
+    },
+
+    handleSuccessBoucher(response, file, fileList) {
+      this.$alert('Gracias, acaba de subir el documento digital ' + file.name + ' satifactoriamente.', 'confirmacion', {
+        confirmButtonText: 'bueno',
+      });
+      this.digitalDocument = [];
+      console.log(response, file, fileList);
+      this.fileList = fileList;
+    },
+
+    //  * EF3. Guarda los documentos digitalizados
+    storeDigitalDocumentSolvency(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var app = this;
+          this.$refs.upload.submit();
+          app.dialogFormVisible2 = false;
+          app.getDocumentDetails();
+          app.resetForm(formName);
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+
     /* remueve de la lista de deudores */
-    initRemoveDebtors(index, row) {
-      this.debtors.splice(index, 1);
+    initRemoveDebtors(idx, row) {
+      let app = this;
+      console.log(row);
+      axios({
+        url: "/api/getDigitalSolvencyDocument/",
+        params: {
+          id: row.id,
+        },
+        method: "GET",
+        responseType: "blob",
+      }).then((response) => {
+        let pdfData = response.data;
+        console.log(response);
+        let blob = new Blob([pdfData], { type: 'application/pdf' });
+        let url = URL.createObjectURL(blob);
+        window.open(url);
+      });
     },
 
   },

@@ -34,8 +34,9 @@ import Debts from './views/solvency/Debts.vue'
 import AddDebts from './views/solvency/AddDebts.vue'
 import EditDebts from './views/solvency/EditDebts.vue'
 import ShowDebts from './views/solvency/ShowDebts.vue'
+import EditRegularize from './views/solvency/EditRegularize.vue'
+import CreditorsDocument from './views/solvency/CreditorsDocument.vue'
 import RegularizeDebts from './views/solvency/RegularizeDebts.vue'
-import AddRegularizeDebts from './views/solvency/AddRegularizeDebts.vue'
 
 //Estados Financieros
 
@@ -170,6 +171,7 @@ import AddSingleBudget from './views/singlebudget/AddSingleBudget'
 import addNotification from './views/certificates/addNotification'
 import AddSolvency from './views/certificates/AddSolvency'
 import editTransactionDocuments from './views/certificates/editTransactionDocuments'
+//import CreditorsDocument from './views/solvency/CreditorsDocument.vue'
 
 // Routes
 const router = new VueRouter({
@@ -398,9 +400,11 @@ const router = new VueRouter({
                 { path: 'debts/:id', name: 'editdebts', component: EditDebts },
                 { path: 'debts/show/:id', name: 'showdebts', component: ShowDebts },
                 //  * SO3. Regularizar Deudas
-                { path: 'regularizedocument', name: 'regularizedocument', component: RegularizeDocument },
-                { path: 'debts/regularize/:id', name: 'regularizedebts', component: RegularizeDebts },
-                { path: 'regularize/add', name: 'addregularizedebts', component: AddRegularizeDebts },
+
+                { path: 'regularizedocument', name: 'regularizedocument', component: RegularizeDocument }, //iniciar regularizacion
+                { path: 'debts/regularize/:id', name: 'regularizedebts', component: RegularizeDebts }, //agregar regularizacion
+                { path: 'creditors/:id', name: 'editregularize', component: EditRegularize }, //editar la regularizacion
+                { path: 'creditors', name: 'creditors', component: CreditorsDocument },// documentos ya regularizados en la gestion
 
                 //  |--------------------------------------------------------------------------
                 //  | Rutas API para el Modulo de Presupuestos Individuales

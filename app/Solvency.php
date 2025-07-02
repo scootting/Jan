@@ -22,6 +22,22 @@ class Solvency extends Model
         return $data;
     }
 
+    //
+    //  * SO1. Obtiene la lista de documentos de las personas deudoras a traves de su descripcion
+    //  * Route::post('getDebtorsDocument/', 'SolvencyController@getDebtorsDocument');
+    public static function getCreditorsDocument($description)
+    {
+        # code...
+        if ($description == '') {
+            $query = "select * from sol.ff_datos_creditos_gestion('', 2025)";
+        } else {
+            $query = "select * from sol.ff_datos_creditos_gestion('" . $description . "', 2025)";
+        }
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
     public static function GetDebtorsDocumentByYear($description, $year)
     {
         # code...
@@ -48,6 +64,14 @@ class Solvency extends Model
     {
         $query = "select * from sol.ff_registrar_deudor_documento(" . $id_documento . ",'" . $gestion . "','" . $fecha . "','" . $ci_per . "','" . $des_per . "','" . $des_per1 . "','" . $referencia .
             "','" . $cod_prg . "','" . $des_prg . "','" . $usr_cre . "','" . $tipo . "')";
+        $data = collect(DB::select(DB::raw($query)));
+    }
+    
+    //  * SO7. Guardar la informacion de un nuevo documento de regularizacion.
+    public static function AddCreditorDocument($id_documento, $gestion, $fecha, $ci_per, $des_per, $des_per1, $referencia, $cod_prg, $des_prg, $usr_cre, $tipo, $id_conceptos)
+    {
+        $query = "select * from sol.ff_registrar_regular_documento(" . $id_documento . ",'" . $gestion . "','" . $fecha . "','" . $ci_per . "','" . $des_per . "','" . $des_per1 . "','" . $referencia .
+            "','" . $cod_prg . "','" . $des_prg . "','" . $usr_cre . "','" . $tipo . "'," . $id_conceptos . ")";
         $data = collect(DB::select(DB::raw($query)));
     }
 
@@ -79,25 +103,32 @@ class Solvency extends Model
     // * SO3. Obtiene la informacion para editar el documento de deuda
     public static function GetDocumentDigital($id, $typed)
     {
-        $query = "select id, tipo, referencia, id_documento from sol.digitales d where d.id_documento = '" . $id . "' and d.tipo ='". $typed . "'";
+        $query = "select id, tipo, referencia, id_documento, fecha from sol.digitales d where d.id_documento = '" . $id . "'";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
-    // * SO4 Guarda los documentos digitalizados de las deudas
-    public static function StoreDigitalDocument($id, $des_doc, $escaped)
+    //  * EF3. Guarda los documentos digitalizados
+    public static function StoreDigitalDocument($id,$referencia, $fecha, $escaped)
     {
-        $query = "INSERT INTO sol.digitales(id_documentos, descripcion, digital) VALUES (". $id .",'". $des_doc. "', '{$escaped}') ";
+        $fecha = '01/01/2025';
+        $query = "INSERT INTO sol.digitales(id_documento, referencia, fecha, digitalizado) VALUES (" . $id . ",'" . $referencia . "','" . $fecha . "', '{$escaped}')";
+        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
-    // * SO5 Obtiene los documentos digitalizados de las deudas
-    public static function GetDigitalDocument($id){
-        $query = "SELECT digital as pdf_data FROM sol.digitales d WHERE d.id_documentos = ?";
+    //  * EF4. Obtener documentos digitalizados
+    public static function GetDigitalSolvencyDocument($id)
+    {
+        $query = "SELECT digitalizado as pdf_data FROM sol.digitales d WHERE d.id = ?";
+        \Log::info($id);        
+        \Log::info($query);        
         $data = DB::select($query, [$id]);
         return $data;
     }
+
+
 
     //  * SO6. Actualiza la informacion de un nuevo documento de deuda.
     public static function UpdateDebtorDocument($id_documento, $gestion, $fecha, $ci_per, $des_per, $des_per1, $referencia, $cod_prg, $des_prg, $usr_cre, $tipo, $id_persona)
@@ -108,5 +139,27 @@ class Solvency extends Model
     }
 
 
+    // * SO3. Obtiene la informacion para editar el documento de deuda
+    public static function GetDocumentReg($id, $typed)
+    {
+        $query = "select * from sol.ff_datos_documento('" . $id . "', '". $typed . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    // * SO3. Obtiene la informacion para editar el documento de deuda
+    public static function GetDocumentRegDetails($id, $typed)
+    {
+        $query = "select * from sol.ff_datos_documento_detalle_reg('" . $id . "', '". $typed . "')";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    // * SO3. Obtiene la informacion para editar el documento de deuda
+    public static function GetDocumentRegDigital($id, $typed)
+    {
+        $query = "select id, tipo, referencia, id_documento from sol.digitales d where d.id_documento = '" . $id . "' and d.tipo ='". $typed . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
 }
