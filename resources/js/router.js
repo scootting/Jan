@@ -29,6 +29,7 @@ import StudentManualSaleDetails from './views/treasure/StudentManualSaleDetails.
 
 //Solvencias
 import DebtorsDocument from './views/solvency/DebtorsDocument.vue'
+import RegularizeDocument from './views/solvency/RegularizeDocument.vue'
 import Debts from './views/solvency/Debts.vue'
 import AddDebts from './views/solvency/AddDebts.vue'
 import EditDebts from './views/solvency/EditDebts.vue'
@@ -397,7 +398,8 @@ const router = new VueRouter({
                 { path: 'debts/:id', name: 'editdebts', component: EditDebts },
                 { path: 'debts/show/:id', name: 'showdebts', component: ShowDebts },
                 //  * SO3. Regularizar Deudas
-                { path: 'regularize', name: 'regularizedebts', component: RegularizeDebts },
+                { path: 'regularizedocument', name: 'regularizedocument', component: RegularizeDocument },
+                { path: 'debts/regularize/:id', name: 'regularizedebts', component: RegularizeDebts },
                 { path: 'regularize/add', name: 'addregularizedebts', component: AddRegularizeDebts },
 
                 //  |--------------------------------------------------------------------------
