@@ -120,7 +120,7 @@ export default {
 
                 }).catch(() => {
                     /*pasa directamente a la lista de deudas*/
-                    this.$router.push({ name: "DebtorsDocument" });
+                    this.$router.push({ name: "debts" });
                 });
 
             } catch (error) {
