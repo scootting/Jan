@@ -227,6 +227,9 @@ Route::group([
     //  *  AF18. imprimir reporte de un documento de compra       
     Route::get('printPurchaseAssignment/', 'FixedAssetController@printPurchaseAssignment');
 
+    //  *  AF20. Obtiene un activo fijo de la lista de actualizaciones y depreciaciones
+    Route::post('getDataFixedAssetDetails/', 'FixedAssetController@getDataFixedAssetDetails');
+
     //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
     //  *  AC2. Obtiene la lista de asignaciones

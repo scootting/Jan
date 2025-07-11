@@ -2,7 +2,7 @@
     <div>
         <el-card class="box-card">
             <div slot="header" class="clearfix">
-                <span>documento de regularizacion de activos</span>
+                <span>documento de compra de activos</span>
                 <el-button style="float: right; padding: 3px 0" type="text">ayuda</el-button>
             </div>
             <div>

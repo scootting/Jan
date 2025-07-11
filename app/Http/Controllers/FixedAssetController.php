@@ -489,4 +489,15 @@ class FixedAssetController extends Controller
         );
         return json_encode($paginate);
     }
+
+    //  *  AF20. Obtiene un activo fijo de la lista de actualizaciones y depreciaciones
+    public function getDataFixedAssetDetails(Request $request)
+    {
+        $descripcion  = strtoupper($request->get('description'));
+        $gestion      = $request->get('year');
+        $gestion      = '2024';
+        $dataFixedAssetRevalued = FixedAsset::GetDataFixedAssetDetails($descripcion, $gestion);
+        return json_encode(['dataFixedAssetRevalued' => $dataFixedAssetRevalued]);
+    }
+
 }

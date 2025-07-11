@@ -53,7 +53,7 @@ class FixedAsset extends Model
     //  *  AF12. Obtiene la lista de documentos    
     public static function GetDataAssignments($gestion)
     {
-        $query = "select * from actx.asignaciones where gestion = '" . $gestion . "' order by gestion, idx desc";
+        $query = "select *, a.id as id_asignacion, b.id as id_tipo from actx.asignaciones a inner join actx.tipo b on a.cod_tipo = b.cod_tipo where gestion = '" . $gestion . "' order by gestion, idx desc";
         $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -62,6 +62,7 @@ class FixedAsset extends Model
     public static function GetDataAssignmentsById($id_asignacion, $gestion)
     {
         $query = "select * from actx.asignaciones where gestion ='" . $gestion . "' and id = " . $id_asignacion . "";
+        \Log::info($query);
         //$query = "select * from actx.ff_datos_asignacion_id('" . $id_asignacion . "'," . $cod_tipo . ",'" . $gestion . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
@@ -293,4 +294,14 @@ class FixedAsset extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //  *  AF20. Obtiene un activo fijo de la lista de actualizaciones y depreciaciones
+    public static function GetDataFixedAssetDetails($description, $year)
+    {
+        $query = "select * from actx.ff_datos_recopilatorio('" . $description . "','" . $year . "')";
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
 }

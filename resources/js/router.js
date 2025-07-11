@@ -114,6 +114,7 @@ import RequestDocumentDetails from './views/archive/RequestDetails'
 import ArchiveDigitalDetails from './views/archive/ArchiveDigitalDetails'
 import TransferContainerDetails from './views/archive/TransferContainerDetails'
 //bienes e inventarios
+
 import Inventory from './views/inventory/Inventory'
 import Inventory2 from './views/inventory/Inventory2'
 import EditInventory2 from './views/inventory/EditInventory2'
@@ -141,6 +142,8 @@ import AssignmentsDetails from './views/fixedasset/AssignmentsDetails'
 import AssignmentDetails2 from './views/fixedasset/AssignmentDetails2'
 import PurchaseAssignment from './views/fixedasset/PurchaseAssignment'
 import EditAssignmentsDetails from './views/fixedasset/EditAssignmentsDetails'
+//activos fijos: revaluo
+import RevaluedAssignments from './views/fixedasset/RevaluedAssignments'
 
 //tesoreria
 import ValueTransactions from './views/treasure/ValueTransactions'
@@ -275,7 +278,7 @@ const router = new VueRouter({
 
 
                 //  |--------------------------------------------------------------------------
-                //  | Rutas API para Activos Fijos
+                //  | Rutas API para Activos Fijos [esquema: actx]
                 //  |--------------------------------------------------------------------------    
 
                 { path: 'assignments', name: 'assignments', component: Assignments }, //lista de documentos de entrega activos fijos
@@ -284,6 +287,11 @@ const router = new VueRouter({
                 { path: 'assignment/add/:id', name: 'addassignment', component: AddAssignment }, // documentos de entrega activos fijos impresion
                 { path: 'assignments2/:id', name: 'assignmentdetails2', component: AssignmentDetails2 }, // documentos de entrega activos fijos impresion
                 { path: 'assignments/edit/:id', name: 'editassignmentsdetails', component: EditAssignmentsDetails }, // documentos de entrega activos fijos impresion
+
+                // actx: Edicion de documento de revaluo
+                { path: 'assignments/revalued/:id', name: 'revaluedassignments', component: RevaluedAssignments }, 
+
+
 
                 { path: 'historytransactions', name: 'historytransactions', component: HistoryTransactions }, // historial de transacciones por persona
                 //{ path: 'nuevaConvocatoria', name: 'nuevaConvocatoria', component: NuevaConvocatoria },//nueva convocatoria de documento
