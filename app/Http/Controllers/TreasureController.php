@@ -375,6 +375,9 @@ class TreasureController extends Controller
         if ($usuario == 'petrogrado') {
             $nreport = 'Treasure_OnlinePostulationDetails_Letter';
         }
+        if ($usuario == 'nairobi') {
+            $nreport = 'Treasure_OnlineStudentsManDetails_Letter';
+        }
 
         //$nreport = 'test_details_1';
         $controls = [

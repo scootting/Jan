@@ -137,8 +137,7 @@
                                     <p>informacion adicional del activo fijo</p>
                                     <el-table :data="fixedAsset.aditional" style="width: 100%" size="small">
                                         <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
-                                        <el-table-column prop="descripcion" label="descripcion"
-                                            width="220"></el-table-column>
+                                        <el-table-column prop="descripcion" label="descripcion" width="220"></el-table-column>
                                         <el-table-column align="right" width="120">
                                             <template slot-scope="scope">
                                                 <el-button

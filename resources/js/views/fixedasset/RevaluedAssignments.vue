@@ -256,6 +256,8 @@ export default {
       },
       dataAditional: {
         cantidad: 0,
+        modelo:'',
+        serie:'',
         descripcion: '',
       },
     };
@@ -291,6 +293,9 @@ export default {
       this.dataFixedAsset = row;
       this.fixedAsset.id_contable = row.id_contable;
       this.fixedAsset.des_contable = row.des_contable;
+      this.fixedAsset.id_presupuesto = row.id_presupuesto;
+      this.fixedAsset.des_presupuesto = row.des_presupuesto;
+      this.fixedAsset.medida = row.medida;
 
       console.log(this.dataFixedAsset);
       console.log(this.fixedAsset);

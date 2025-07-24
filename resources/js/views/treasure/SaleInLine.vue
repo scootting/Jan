@@ -21,26 +21,31 @@
             </template>
           </el-table-column>
           <el-table-column prop="glosa" label="glosa" :min-width="450"></el-table-column>
-          <el-table-column prop="usr_cre" label="tipo" :min-width="150">
+          <el-table-column prop="usr_cre" label="tipo" :min-width="200">
             <template slot-scope="scope">
-              <div v-if="scope.row.usr_cre === 'petrogrado     '">
+              <div v-if="scope.row.usr_cre.trim() === 'petrogrado'">
                 <el-tag size="medium" type="danger" effect="dark">{{
                   'POSTULACIONES'
                 }}</el-tag>
               </div>
-              <div v-if="scope.row.usr_cre === 'manhattan      '">
+              <div v-if="scope.row.usr_cre.trim() === 'manhattan'">
                 <el-tag size="medium" type="success" effect="dark">{{
                   'MATRICULAS PARA REGULARES'
                 }}</el-tag>
               </div>
-              <div v-if="scope.row.usr_cre === 'vancouver      '">
+              <div v-if="scope.row.usr_cre.trim() === 'vancouver'">
                 <el-tag size="medium" type="" effect="dark">{{
                   'VALORES UNIVERSITARIOS'
                 }}</el-tag>
               </div>
-              <div v-if="scope.row.usr_cre === 'nottingham     '">
+              <div v-if="scope.row.usr_cre.trim() === 'nottingham'">
                 <el-tag size="medium" type="warning" effect="dark">{{
                   'MATRICULAS PARA NUEVOS'
+                }}</el-tag>
+              </div>
+              <div v-if="scope.row.usr_cre.trim() === 'nairobi'">
+                <el-tag size="medium" type="info" effect="dark">{{
+                  'MANUAL - MATRICULAS PARA NUEVOS'
                 }}</el-tag>
               </div>
             </template>
@@ -85,7 +90,7 @@ export default {
       alert("bienvenido al modulo");
     },
 
-    //  * T30. Obtienes los dias de venta en linea para manhattan, nottingham, vancouber
+    //  * T30. Obtienes los dias de venta en linea para manhattan, nottingham, vancouber, nairobi
     async getOnlineSalesDays(page) {
       let app = this;
       try {
