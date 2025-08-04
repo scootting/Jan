@@ -502,7 +502,7 @@ class FixedAssetController extends Controller
     {
 
         $documento         = $request->get('assignment');
-        $assignmentDetails = $request->get('fixedAsset');
+        $item              = $request->get('fixedAsset');
         $usuario           = $request->get('user');
         $marcador          = $request->get('marker');
 
