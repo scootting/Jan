@@ -110,10 +110,10 @@ class FixedAssetController extends Controller
     public function storeDataAssignmentDetails(Request $request)
     {
 
-        $documento = $request->get('assignment');
+        $documento         = $request->get('assignment');
         $assignmentDetails = $request->get('assignmentDetails');
-        $usuario   = $request->get('user');
-        $marcador  = $request->get('marker');
+        $usuario           = $request->get('user');
+        $marcador          = $request->get('marker');
 
         \Log::info($documento['id']);
         $id_documento = $documento['id'];
@@ -126,7 +126,7 @@ class FixedAssetController extends Controller
         $gestion     = $usuario['gestion'];
 
         $id_eliminar = FixedAsset::RemoveDataAssignmentDetails($id_documento);
-        $marcador = $request->get('marker');
+        $marcador    = $request->get('marker');
         switch ($marcador) {
             case 'registrar':
                 $indice = 0;
@@ -141,12 +141,12 @@ class FixedAssetController extends Controller
                     $id_presupuesto    = $item['id_presupuesto'];
                     $des_presupuesto   = $item['des_presupuesto'];
                     $estado            = $item['estado'];
-                    $adicional         = json_encode($item['adicional']);//, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                    //$adicional = addslashes($adicional);
+                    $adicional         = json_encode($item['adicional']); //, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+                                                                          //$adicional = addslashes($adicional);
                     \Log::info($adicional);
-                    $indice            = $indice + 1;
-                    $id           = FixedAsset::StoreDataAssignmentDetails($id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
-                    $id = $id[0]->{'ff_registrar_asignacion_detallada'};    
+                    $indice = $indice + 1;
+                    $id     = FixedAsset::StoreDataAssignmentDetails($id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
+                    $id     = $id[0]->{'ff_registrar_asignacion_detallada'};
                 }
                 return json_encode($id);
                 break;
@@ -159,20 +159,18 @@ class FixedAssetController extends Controller
         return json_encode($id);
     }
 
-
-
     //  *  AF15. Verificar un documento       
     public function verifyDataAssignmentDetails(Request $request)
     {
-        $documento = $request->get('assignment');
-        $usuario   = $request->get('user');
-        $marcador  = $request->get('marker');
-        $id_documento    = $documento['id'];
-        $ci_resp     = $documento['ci_resp'];
-        $gestion     = $documento['gestion'];
+        $documento    = $request->get('assignment');
+        $usuario      = $request->get('user');
+        $marcador     = $request->get('marker');
+        $id_documento = $documento['id'];
+        $ci_resp      = $documento['ci_resp'];
+        $gestion      = $documento['gestion'];
 
         \Log::info($id_documento);
-        $marcador     = $request->get('marker');
+        $marcador = $request->get('marker');
         switch ($marcador) {
             case 'verificar':
                 $id           = FixedAsset::VerifyDataAssignmentDetails($id_documento, $ci_resp, $gestion);
@@ -217,14 +215,13 @@ class FixedAssetController extends Controller
     //  *  AF18. imprimir reporte de un documento de compra       
     public function printPurchaseAssignment(Request $request)
     {
-        $id   = $request->get('id');
+        $id      = $request->get('id');
         $nreport = $request->get('reporte');
 
         $controls = ['p_id' => $id];
         $report   = JSRClient::GetReportWithParameters($nreport, $controls);
         return $report;
     }
-
 
     //  * Obtener una lista de documentos de entrega de el recurso utilizado.
     //  * {year: año , type: tipo del documento}
@@ -493,11 +490,60 @@ class FixedAssetController extends Controller
     //  *  AF20. Obtiene un activo fijo de la lista de actualizaciones y depreciaciones
     public function getDataFixedAssetDetails(Request $request)
     {
-        $descripcion  = strtoupper($request->get('description'));
-        $gestion      = $request->get('year');
-        $gestion      = '2024';
+        $descripcion            = strtoupper($request->get('description'));
+        $gestion                = $request->get('year');
+        $gestion                = '2024';
         $dataFixedAssetRevalued = FixedAsset::GetDataFixedAssetDetails($descripcion, $gestion);
         return json_encode(['dataFixedAssetRevalued' => $dataFixedAssetRevalued]);
     }
 
+    //  *  AF21. Guarda la informacion necesaria para crear activos fijos dentro de un documento de revaluo          
+    public function storeDataRevaluedDetails(Request $request)
+    {
+
+        $documento         = $request->get('assignment');
+        $assignmentDetails = $request->get('fixedAsset');
+        $usuario           = $request->get('user');
+        $marcador          = $request->get('marker');
+
+        \Log::info($documento['id']);
+        $id_documento = $documento['id'];
+        $cod_tipo     = $documento['cod_tipo'];
+        $cod_prg      = strtoupper($documento['cod_prg']);
+        $ref_prg      = strtoupper($documento['ref_prg']);
+
+        $ci_elab     = $usuario['nodip'];
+        $des_usuario = $usuario['usuario'];
+        $gestion     = $usuario['gestion'];
+
+        $id_eliminar = FixedAsset::RemoveDataAssignmentDetails($id_documento);
+        $marcador    = $request->get('marker');
+        switch ($marcador) {
+            case 'registrar':
+                $indice            = 0;
+                $descripcion       = strtoupper($item['descripcion']);
+                $medida            = strtoupper($item['medida']);
+                $cantidad          = $item['cantidad'];
+                $importe           = $item['importe'];
+                $fecha_adquisicion = $item['fecha_adquisicion'];
+                $id_contable       = $item['id_contable'];
+                $des_contable      = $item['des_contable'];
+                $id_presupuesto    = $item['id_presupuesto'];
+                $des_presupuesto   = $item['des_presupuesto'];
+                $estado            = $item['estado'];
+                $adicional         = json_encode($item['adicional']); //, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+                $indice = $indice + 1;
+                $id     = FixedAsset::StoreDataAssignmentDetails($id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
+                $id     = $id[0]->{'ff_registrar_asignacion_detallada'};
+                return json_encode($id);
+                break;
+            case 'editar':
+                //$data = Solvency::UpdateDebtorDocument($id, $gestion, $fecha, $detalle, $cod_prg, $des_prg, $usr_cre, $ci_resp, $ci_elab, $id_ref);
+                break;
+            default:
+                break;
+        }
+        return json_encode($id);
+    }
 }

@@ -104,6 +104,7 @@
           </el-col>
         </el-row>
         <el-row :gutter="20">
+          <el-col :span="12">-</el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple">
               <p>informacion adicional del activo fijo</p>
@@ -126,10 +127,9 @@
           </el-col>
         </el-row>
         <br>
-        <el-button @click="initAddDataFixed" type="success" size="small">agregar a la lista de activos
+        <el-button @click="initStoreDataRevaluedDetails" type="primary" size="small">guardar activo fijo
         </el-button>
         <p></p>
-        <br>
       </div>
       <el-col :span="24">
         <div class="grid-content bg-purple">
@@ -149,8 +149,8 @@
               </template>
             </el-table-column>
           </el-table>
-          <p></p>
-          <el-button @click="initStoreDataAssignmentDetails" type="primary" size="small">guardar cambios
+          <!--
+          <el-button @click="initStoreDataRevaluedDetails" type="primary" size="small">guardar cambios
           </el-button>
           <el-button @click="initVerifyDataAssignmentDetails" type="info" size="small"
             :disabled="verifyVisible == false">verificar
@@ -160,6 +160,10 @@
             :disabled="verifyVisible == false">imprimir
             documento
           </el-button>
+          -->
+        </div>
+        <div>
+          <p></p>
         </div>
       </el-col>
     </el-card>
@@ -256,8 +260,8 @@ export default {
       },
       dataAditional: {
         cantidad: 0,
-        modelo:'',
-        serie:'',
+        modelo: '',
+        serie: '',
         descripcion: '',
       },
     };
@@ -353,15 +357,15 @@ export default {
       this.stateStore = "editar";
     },
 
-    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
-    async initStoreDataAssignmentDetails() {
+    //  *  AF21. Guarda la informacion necesaria para crear activos fijos dentro de un documento de revaluo       
+    async initStoreDataRevaluedDetails() {
       console.log(this.fixedAsset);
       var app = this;
       try {
         let response = axios
-          .post("/api/storeDataAssignmentDetails", {
+          .post("/api/storeDataRevaluedDetails", {
             assignment: app.dataAssignment,
-            assignmentDetails: app.dataAssignmentDetails,
+            fixedAsset: this.fixedAsset,
             user: app.user,
             marker: 'registrar',
           });
@@ -369,12 +373,31 @@ export default {
           dangerouslyUseHTMLString: true
         });
         this.getDataAssignmentDetails();
+        this.fixedAsset = {
+          idx: 0,
+          codigo: '',
+          codigo_anterior: '',
+          descripcion: '',
+          medida: '',
+          cantidad: 1,
+          importe: 0,
+          fecha_adquisicion: '',
+          id_contable: '',
+          des_contable: '',
+          id_presupuesto: '',
+          des_presupuesto: '',
+          estado: '',
+          cod_prg: '',
+          des_prg: '',
+          ci_resp: '',
+          id_asignaciones: '',
+          adicional: [],
+        };
       } catch (error) {
-        app.$alert("Se ha registrado correctamente la informacion", 'Gestor de mensajes', {
+        app.$alert(error, 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
         });
       };
-
     },
 
     initStoreAditionalDescription(idx) {
@@ -401,26 +424,6 @@ export default {
       let variable = this.fixedAsset;
       console.log(variable);
       this.dataAssignmentDetails.push(variable);
-      this.fixedAsset = {
-        idx: 0,
-        codigo: '',
-        codigo_anterior: '',
-        descripcion: '',
-        medida: '',
-        cantidad: 1,
-        importe: 0,
-        fecha_adquisicion: '',
-        id_contable: '',
-        des_contable: '',
-        id_presupuesto: '',
-        des_presupuesto: '',
-        estado: '',
-        cod_prg: '',
-        des_prg: '',
-        ci_resp: '',
-        id_asignaciones: '',
-        adicional: [],
-      };
     },
     initRemoveDataFixed(idx, row) {
       this.dataAssignmentDetails.splice(idx, 1);
@@ -429,48 +432,6 @@ export default {
       let variable = row;
       this.fixedAsset = variable;
     },
-
-    initVerifyDataAssignmentDetails() {
-      var app = this;
-      try {
-        let response = axios
-          .post("/api/verifyDataAssignmentDetails", {
-            assignment: app.dataAssignment,
-            user: app.user,
-            marker: 'verificar',
-          });
-        app.$alert("Se ha registrado correctamente los cambios al documento", 'Gestor de mensajes', {
-          dangerouslyUseHTMLString: true
-        });
-        this.getDataAssignmentDetails();
-      } catch (error) {
-        app.$alert("Se ha registrado correctamente la informacion", 'Gestor de mensajes', {
-          dangerouslyUseHTMLString: true
-        });
-      };
-    },
-    //  *  AF18. imprimir reporte de un documento de compra       
-    initPrintPurchaseAssignment() {
-      let app = this;
-      axios({
-        url: "/api/printPurchaseAssignment/",
-        params: {
-          id: app.dataAssignment.id,
-          reporte: "AssignmentPurchase",
-        },
-        method: "GET",
-        responseType: "arraybuffer",
-      }).then((response) => {
-        let blob = new Blob([response.data], {
-          type: "application/pdf",
-        });
-        let link = document.createElement("a");
-        link.href = window.URL.createObjectURL(blob);
-        let url = window.URL.createObjectURL(blob);
-        window.open(url);
-      });
-    },
-
   },
 };
 </script>
