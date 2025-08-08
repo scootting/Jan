@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\FixedAsset;
@@ -142,7 +143,7 @@ class FixedAssetController extends Controller
                     $des_presupuesto   = $item['des_presupuesto'];
                     $estado            = $item['estado'];
                     $adicional         = json_encode($item['adicional']); //, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-                                                                          //$adicional = addslashes($adicional);
+                    //$adicional = addslashes($adicional);
                     \Log::info($adicional);
                     $indice = $indice + 1;
                     $id     = FixedAsset::StoreDataAssignmentDetails($id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
@@ -151,6 +152,7 @@ class FixedAssetController extends Controller
                 return json_encode($id);
                 break;
             case 'editar':
+                $id     = FixedAsset::UpdateDataAssignmentDetails($id_asset, $id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
                 //$data = Solvency::UpdateDebtorDocument($id, $gestion, $fecha, $detalle, $cod_prg, $des_prg, $usr_cre, $ci_resp, $ci_elab, $id_ref);
                 break;
             default:
@@ -516,30 +518,31 @@ class FixedAssetController extends Controller
         $des_usuario = $usuario['usuario'];
         $gestion     = $usuario['gestion'];
 
-        $id_eliminar = FixedAsset::RemoveDataAssignmentDetails($id_documento);
+        $indice            = 0;
+        $descripcion       = strtoupper($item['descripcion']);
+        $medida            = strtoupper($item['medida']);
+        $cantidad          = $item['cantidad'];
+        $importe           = $item['importe'];
+        $fecha_adquisicion = $item['fecha_adquisicion'];
+        $id_contable       = $item['id_contable'];
+        $des_contable      = $item['des_contable'];
+        $id_presupuesto    = $item['id_presupuesto'];
+        $des_presupuesto   = $item['des_presupuesto'];
+        $estado            = $item['estado'];
+        $adicional         = json_encode($item['adicional']); //, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $indice = $indice + 1;
+        //$id_eliminar = FixedAsset::RemoveDataAssignmentDetails($id_documento);
         $marcador    = $request->get('marker');
         switch ($marcador) {
             case 'registrar':
-                $indice            = 0;
-                $descripcion       = strtoupper($item['descripcion']);
-                $medida            = strtoupper($item['medida']);
-                $cantidad          = $item['cantidad'];
-                $importe           = $item['importe'];
-                $fecha_adquisicion = $item['fecha_adquisicion'];
-                $id_contable       = $item['id_contable'];
-                $des_contable      = $item['des_contable'];
-                $id_presupuesto    = $item['id_presupuesto'];
-                $des_presupuesto   = $item['des_presupuesto'];
-                $estado            = $item['estado'];
-                $adicional         = json_encode($item['adicional']); //, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-
-                $indice = $indice + 1;
                 $id     = FixedAsset::StoreDataAssignmentDetails($id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
                 $id     = $id[0]->{'ff_registrar_asignacion_detallada'};
                 return json_encode($id);
                 break;
             case 'editar':
-                //$data = Solvency::UpdateDebtorDocument($id, $gestion, $fecha, $detalle, $cod_prg, $des_prg, $usr_cre, $ci_resp, $ci_elab, $id_ref);
+                $id_activo  = $item['id'];
+                $id     = FixedAsset::UpdateDataAssignmentDetails($id_activo, $id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
+                $id     = $id[0]->{'ff_actualizar_asignacion_detallada'};
                 break;
             default:
                 break;

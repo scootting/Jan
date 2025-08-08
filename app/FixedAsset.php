@@ -1,4 +1,5 @@
 <?php
+
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -90,15 +91,15 @@ class FixedAsset extends Model
     public static function GetDataAssignmentsDetails($id)
     {
 
-        $query = "select idx, fecha_adquisicion,des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, ".
-        "id_contable, des_contable, id_presupuesto, des_presupuesto, estado from actx.asignaciones_detallada where id_asignacion = '" . $id . "' order by idx desc";
+        $query = "select id, idx, fecha_adquisicion,des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, " .
+            "id_contable, des_contable, id_presupuesto, des_presupuesto, estado from actx.asignaciones_detallada where id_asignacion = '" . $id . "' order by idx desc";
         $data = collect(DB::select(DB::raw($query)));
 
 
         $data->transform(function ($item) {
             $item->adicional = json_decode($item->adicional, true); // Convertir JSONB a array
             return $item;
-        });        
+        });
         // Convertimos el campo JSONB en array asociativo para cada fila
         /*
         $data = $data->map(function ($item) {
@@ -145,6 +146,19 @@ class FixedAsset extends Model
         $query = "select * from actx.ff_registrar_asignacion_detallada(" . $id_documento . "," . $indice . ",'" . $medida . "'," . $cantidad . "," . $importe
             . ",'" . $fecha_adquisicion . "'," . $id_contable . ",'" . $des_contable . "'," . $id_presupuesto . ",'" . $des_presupuesto . "','" . $estado
             . "','" . $adicional . "','" . $descripcion . "','" . $usuario . "')";
+        \Log::info("Eres un cochino");
+        
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function UpdateDataAssignmentDetails($id_asset, $id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $usuario)
+    {
+        $query = "select * from actx.ff_actualizar_asignacion_detallada(" . $id_asset . "," . $id_documento . "," . $indice . ",'" . $medida . "'," . $cantidad . "," . $importe
+            . ",'" . $fecha_adquisicion . "'," . $id_contable . ",'" . $des_contable . "'," . $id_presupuesto . ",'" . $des_presupuesto . "','" . $estado
+            . "','" . $adicional . "','" . $descripcion . "','" . $usuario . "')";
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -162,14 +176,14 @@ class FixedAsset extends Model
     public static function GetDataFixedAsssetDetails($id)
     {
 
-        $query = "select id_asignacion, codigo, codigo_anterior, idx, fecha_adquisicion,des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, ".
-        "id_contable, des_contable, id_presupuesto, des_presupuesto, estado, ci_resp from actx.activosx where id_asignacion = '" . $id . "' order by idx desc";
+        $query = "select id_asignacion, codigo, codigo_anterior, idx, fecha_adquisicion,des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, " .
+            "id_contable, des_contable, id_presupuesto, des_presupuesto, estado, ci_resp from actx.activosx where id_asignacion = '" . $id . "' order by idx desc";
         $data = collect(DB::select(DB::raw($query)));
 
         $data->transform(function ($item) {
             $item->adicional = json_decode($item->adicional, true); // Convertir JSONB a array
             return $item;
-        });        
+        });
         return $data;
     }
 
@@ -303,5 +317,4 @@ class FixedAsset extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
-
 }

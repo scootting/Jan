@@ -241,6 +241,7 @@ export default {
 
       dataAssignmentDetails: [],
       fixedAsset: {
+        id: 0,
         idx: 0,
         descripcion: '',
         medida: '',
@@ -303,6 +304,7 @@ export default {
 
       console.log(this.dataFixedAsset);
       console.log(this.fixedAsset);
+      this.marker = 'registrar';
       this.dataFixedAssetRevalued = [];
     },
     //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
@@ -367,13 +369,14 @@ export default {
             assignment: app.dataAssignment,
             fixedAsset: this.fixedAsset,
             user: app.user,
-            marker: 'registrar',
+            marker: app.marker,
           });
         app.$alert("Se ha registrado correctamente los cambios al documento", 'Gestor de mensajes', {
           dangerouslyUseHTMLString: true
         });
         this.getDataAssignmentDetails();
         this.fixedAsset = {
+          id:0,
           idx: 0,
           codigo: '',
           codigo_anterior: '',
@@ -431,6 +434,9 @@ export default {
     initEditDataFixed(idx, row) {
       let variable = row;
       this.fixedAsset = variable;
+      console.log(this.fixedAsset);
+      this.marker = 'editar';
+      
     },
   },
 };
