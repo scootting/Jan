@@ -139,13 +139,15 @@
             <el-table-column prop="descripcion" label="descripcion" width="220"></el-table-column>
             <el-table-column prop="des_contable" label="partida" width="220"></el-table-column>
             <el-table-column prop="cantidad" label="cantidad" width="220"></el-table-column>
-            <el-table-column prop="importe" label="importe" width="220"></el-table-column>
-            <el-table-column align="right" width="200">
+            <el-table-column prop="importe" label="importe" width="120"></el-table-column>
+            <el-table-column align="right" width="450">
               <template slot-scope="scope">
                 <el-button @click="initEditDataFixed(scope.$index, scope.row)" type="primary"
                   size="mini">Editar</el-button>
                 <el-button @click="initRemoveDataFixed(scope.$index, scope.row)" type="primary"
                   size="mini">Quitar</el-button>
+                <el-button @click="initRevaluedDataFixed(scope.$index, scope.row)" type="primary"
+                  size="mini">revaluar</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -376,7 +378,7 @@ export default {
         });
         this.getDataAssignmentDetails();
         this.fixedAsset = {
-          id:0,
+          id: 0,
           idx: 0,
           codigo: '',
           codigo_anterior: '',
@@ -436,7 +438,17 @@ export default {
       this.fixedAsset = variable;
       console.log(this.fixedAsset);
       this.marker = 'editar';
-      
+
+    },
+    initRevaluedDataFixed(idx, row) {
+      let variable = row;
+      this.$router.push({
+        name: "revaluedassignmentsdetails",
+        params: {
+          id: variable.id,
+        },
+      });
+
     },
   },
 };

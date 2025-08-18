@@ -142,8 +142,9 @@ import AssignmentsDetails from './views/fixedasset/AssignmentsDetails'
 import AssignmentDetails2 from './views/fixedasset/AssignmentDetails2'
 import PurchaseAssignment from './views/fixedasset/PurchaseAssignment'
 import EditAssignmentsDetails from './views/fixedasset/EditAssignmentsDetails'
-//activos fijos: revaluo
+//plantillas de activos fijos: revaluo
 import RevaluedAssignments from './views/fixedasset/RevaluedAssignments'
+import RevaluedAssignmentsDetails from './views/fixedasset/RevaluedAssignmentsDetails'
 
 //tesoreria
 import ValueTransactions from './views/treasure/ValueTransactions'
@@ -290,6 +291,7 @@ const router = new VueRouter({
 
                 // actx: Edicion de documento de revaluo
                 { path: 'assignments/revalued/:id', name: 'revaluedassignments', component: RevaluedAssignments }, 
+                { path: 'assignments/revalued/details/:id', name: 'revaluedassignmentsdetails', component: RevaluedAssignmentsDetails }, 
 
 
 
