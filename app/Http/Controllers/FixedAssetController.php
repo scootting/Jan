@@ -548,4 +548,77 @@ class FixedAssetController extends Controller
         }
         return json_encode($id);
     }
+    public function getDataRevaluedDetails(Request $request)
+    {
+
+        $id             = $request->get('id');
+        $gestion        = $request->get('year');
+        $dataFixedAsset = FixedAsset::GetFixedAssetsAssignmentDetails2($id);
+        $dataRevalued   = FixedAsset::GetFixedAssetsRevalued($id);
+        return json_encode(['dataFixedAsset' => $dataFixedAsset, 'dataRevalued' => $dataRevalued]);
+    }
+
+    //  *  AF24. Guarda la informacion necesaria para los datos de revaluo del activos fijos dentro de un documento de revaluo       
+    public function storeDataThecnicalRevaluedDetails(Request $request)
+    {
+        \Log::info($request);
+
+        $item         = $request->get('dataFixedAsset');
+        $tecnico      = $request->get('dataTechnicals');
+        $resultados   = $request->get('dataResult');
+        $cotizaciones = $request->get('dataQuotes');
+        $usuario      = $request->get('user');
+        $marcador     = $request->get('marker');
+
+        $ci_elab     = $usuario['nodip'];
+        $des_usuario = $usuario['usuario'];
+        $gestion     = $usuario['gestion'];
+
+        $indice            = $item['id'];
+        $descripcion       = strtoupper($item['descripcion']);
+        $medida            = strtoupper($item['medida']);
+        $cantidad          = $item['cantidad'];
+        $importe           = $item['importe'];
+        $fecha_adquisicion = $item['fecha_adquisicion'];
+        $id_contable       = $item['id_contable'];
+        $des_contable      = $item['des_contable'];
+        $id_presupuesto    = $item['id_presupuesto'];
+        $des_presupuesto   = $item['des_presupuesto'];
+        $estado            = $item['estado'];
+        $accesorios        = json_encode($item['accesorios']); //, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        $perdida       = $tecnico['perdida'];
+        $funcionalidad = $tecnico['funcionalidad'];
+        $obsolescencia = $tecnico['obsolescencia'];
+        $conservacion  = $tecnico['conservacion'];
+        $uso           = $tecnico['uso'];
+        $mantenimiento = $tecnico['mantenimiento'];
+        $resultado     = $tecnico['resultado'];
+
+        $estado         = $resultados['estado'];
+        $vida           = $resultados['vida'];
+        $valor_residual = $resultados['valor_residual'];
+        $valor_revaluo  = $resultados['valor_revaluo'];
+        $valor_saldo    = $resultados['valor_saldo'];
+
+        $cotizaciones = json_encode($cotizaciones); //, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        $marcador = $request->get('marker');
+        switch ($marcador) {
+            case 'registrar':
+                $id = FixedAsset::StoreDataRevaluedDetails($indice, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $des_usuario);
+                $id = $id[0]->{'ff_registrar_revaluo_detallado'};
+                return json_encode($id);
+                break;
+            case 'editar':
+                $id_activo = $item['id'];
+                $id        = FixedAsset::UpdateRevaluedDetails($indice, $perdida, $funcionalidad, $conservacion, $uso, $mantenimiento, $resultado, $estado, $vida, $valor_residual, $valor_revaluo, $valor_saldo, $des_usuario);
+                $id        = $id[0]->{'ff_actualizar_revaluo_detallado'};
+                break;
+            default:
+                break;
+        }
+        return json_encode($id);
+    }
+
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
@@ -95,7 +94,6 @@ class FixedAsset extends Model
             "id_contable, des_contable, id_presupuesto, des_presupuesto, estado from actx.asignaciones_detallada where id_asignacion = '" . $id . "' order by idx desc";
         $data = collect(DB::select(DB::raw($query)));
 
-
         $data->transform(function ($item) {
             $item->adicional = json_decode($item->adicional, true); // Convertir JSONB a array
             return $item;
@@ -147,7 +145,7 @@ class FixedAsset extends Model
             . ",'" . $fecha_adquisicion . "'," . $id_contable . ",'" . $des_contable . "'," . $id_presupuesto . ",'" . $des_presupuesto . "','" . $estado
             . "','" . $adicional . "','" . $descripcion . "','" . $usuario . "')";
         \Log::info("Eres un cochino");
-        
+
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
@@ -187,13 +185,12 @@ class FixedAsset extends Model
         return $data;
     }
 
-
     public static function GetDocumentFixedAssetByYear($year, $type)
     {
         //$year = 2020;
         //$query = "select * from act.asignaciones aa where aa.tip_doc = '".$type."' and aa.gestion = '".$year."' and aa.estado = 'Verificado' order by aa.fec_cre desc";
         $query = "select * from act.asignaciones aa where aa.tip_doc in (1) and aa.gestion = '" . $year . "' and aa.estado = 'Verificado' order by aa.fec_cre desc";
-        $data = collect(DB::select(DB::raw($query)));
+        $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -267,6 +264,7 @@ class FixedAsset extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
     public static function GetAditionalFixedAssetsAssignment($id)
     {
         $query = "select * from actx.activos_adicional b where b.id_activo in (select id from actx.activos a where a.id_asignaciones = " . $id . ")";
@@ -317,4 +315,45 @@ class FixedAsset extends Model
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
+
+    //  *  A23. Obtiene la lista de un id de asignaciones detallado
+    public static function GetFixedAssetsAssignmentDetails($id)
+    {
+        $query = "select * from actx.asignaciones_detallada a where a.id = " . $id . "";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+    //  *  A23. Obtiene la lista de un id de asignaciones detallado
+    public static function GetFixedAssetsAssignmentDetails2($id)
+    {
+        $query = "select * from actx.asignaciones_detallada a where a.id = " . $id . "";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    public static function GetFixedAssetsRevalued($id)
+    {
+        $query = "select * from actx.asignaciones_revaluo a where a.id_activo = " . $id . "";
+        $data  = collect(DB::select(DB::raw($query)));
+        $data->transform(function ($item) {
+            $item->cotizaciones = json_decode($item->cotizaciones, true); // Convertir JSONB a array
+            return $item;
+        });
+
+        return $data;
+    }
+
+    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function StoreDataRevaluedDetails($indice, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $usuario)
+    {
+        $query = "select * from actx.ff_registrar_revaluo_detallado(" . $indice . "," . $id_contable . "," . $perdida . "," . $funcionalidad . "," . $obsolescencia .
+                 "," . $conservacion . "," . $uso . "," . $mantenimiento . ",'" . $cotizaciones . "','" . $usuario . "')";
+
+        \Log::info("Eres un cochino2");
+
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
 }

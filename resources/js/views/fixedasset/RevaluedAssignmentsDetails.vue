@@ -202,6 +202,71 @@ export default {
 
   methods: {
 
+    //  *  AF23. Obtiene un activo fijo de la lista del documento de revaluo
+    async getDataRevaluedDetails() {
+      var app = this;
+      try {
+        let response = await axios.post("/api/getDataRevaluedDetails", {
+          id: app.id,
+          year: app.user.gestion,
+        });
+        console.log(response.data);
+        app.dataFixedAsset = response.data.dataFixedAsset[0];
+        if (response.data.dataRevalued.length > 0) {
+          app.dataRevalued = response.data.dataRevalued[0];
+
+          app.dataTechnicals.perdida = app.dataRevalued.perdida;
+          app.dataTechnicals.funcionalidad = app.dataRevalued.funcionalidad;
+          app.dataTechnicals.obsolescencia = app.dataRevalued.obsolescencia;
+          app.dataTechnicals.conservacion = app.dataRevalued.conservacion;
+          app.dataTechnicals.uso = app.dataRevalued.uso;
+          app.dataTechnicals.mantenimiento = app.dataRevalued.mantenimiento;
+          app.dataTechnicals.resultado = app.dataRevalued.resultado;
+          app.dataResult.estado = app.dataRevalued.estado;
+          app.dataResult.vida = app.dataRevalued.vida;
+          app.dataResult.valor_residual = app.dataRevalued.valor_residual;
+          app.dataResult.valor_revaluo = app.dataRevalued.valor_revaluo;
+          app.dataResult.valor_saldo = app.dataRevalued.valor_saldo;
+          app.dataQuotes = app.dataRevalued.cotizaciones;
+          app.marker = 'editar';
+        }
+        else{
+          app.marker = 'registrar';
+        }
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
+    },
+
+    //  *  AF24. Guarda la informacion necesaria para los datos de revaluo del activos fijos dentro de un documento de revaluo       
+    async initStoreDataRevaluedDetails() {
+      console.log(this.fixedAsset);
+      var app = this;
+      try {
+        let response = axios
+          .post("/api/storeDataThecnicalRevaluedDetails", {
+            dataFixedAsset: this.dataFixedAsset,
+            dataTechnicals: this.dataTechnicals,
+            dataResult: this.dataResult,
+            dataQuotes: this.dataQuotes,
+            user: app.user,
+            marker: app.marker,
+          });
+        app.$alert("Se ha registrado correctamente los cambios al revaluo", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+        this.getDataRevaluedDetails();
+      } catch (error) {
+        app.$alert(error, 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      };
+    },
+
+
 
     /* cotizaciones */
     initAddDataQuote() {
@@ -245,9 +310,6 @@ export default {
       this.dialogFormVisible = true;
     },
 
-    initStoreDataRevaluedDetails() {
-
-    },
   },
 };
 </script>

@@ -231,6 +231,10 @@ Route::group([
     Route::post('getDataFixedAssetDetails/', 'FixedAssetController@getDataFixedAssetDetails');
     //  *  AF21. Guarda la informacion necesaria para crear activos fijos dentro de un documento de revaluo         
     Route::post('storeDataRevaluedDetails/', 'FixedAssetController@storeDataRevaluedDetails');
+    //  *  AF23. Obtiene un activo fijo de la lista del documento de revaluo
+    Route::post('getDataRevaluedDetails/', 'FixedAssetController@getDataRevaluedDetails');
+    //  *  AF24. Guarda la informacion necesaria para los datos de revaluo del activos fijos dentro de un documento de revaluo       
+    Route::post('storeDataThecnicalRevaluedDetails/', 'FixedAssetController@storeDataThecnicalRevaluedDetails');
 
     //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
