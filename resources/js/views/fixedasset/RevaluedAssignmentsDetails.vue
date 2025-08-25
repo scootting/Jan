@@ -29,7 +29,6 @@
               </el-form>
             </div>
           </el-col>
-
           <el-col :span="12">
             <div class="grid-content bg-purple">
               <el-form ref="form" :model="dataTechnicals" label-width="350px" size="small">
@@ -87,11 +86,6 @@
             </div>
           </el-col>
           <el-col :span="12">
-            estado: '',
-            vida: 0,
-            valor_residual: 0,
-            valor_revaluo: 0,
-            valor_saldo: 0,
             <div class="grid-content bg-purple">
               <el-form ref="form" :model="dataResult" label-width="350px" size="small">
                 <p>determinacion segun revaluo</p>
@@ -153,6 +147,7 @@ export default {
       id: this.$route.params.id,
       dialogFormVisible: false,
       dataQuotes: [],
+      id_revalued: 0,
       dataTechnicals: {
         perdida: 0,
         funcionalidad: 0,
@@ -214,7 +209,7 @@ export default {
         app.dataFixedAsset = response.data.dataFixedAsset[0];
         if (response.data.dataRevalued.length > 0) {
           app.dataRevalued = response.data.dataRevalued[0];
-
+          app.id_revalued = response.data.dataRevalued[0];
           app.dataTechnicals.perdida = app.dataRevalued.perdida;
           app.dataTechnicals.funcionalidad = app.dataRevalued.funcionalidad;
           app.dataTechnicals.obsolescencia = app.dataRevalued.obsolescencia;
@@ -249,6 +244,7 @@ export default {
         let response = axios
           .post("/api/storeDataThecnicalRevaluedDetails", {
             dataFixedAsset: this.dataFixedAsset,
+            id_revalued: this.id_revalued,
             dataTechnicals: this.dataTechnicals,
             dataResult: this.dataResult,
             dataQuotes: this.dataQuotes,
