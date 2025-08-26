@@ -611,9 +611,9 @@ class FixedAssetController extends Controller
                 return json_encode($id);
                 break;
             case 'editar':
-                $id_activo = $item['id'];
-                $id        = FixedAsset::UpdateRevaluedDetails($indice, $perdida, $funcionalidad, $conservacion, $uso, $mantenimiento, $resultado, $estado, $vida, $valor_residual, $valor_revaluo, $valor_saldo, $des_usuario);
-                $id        = $id[0]->{'ff_actualizar_revaluo_detallado'};
+                $id_revalued = $request->get('id_revalued');
+                $id = FixedAsset::UpdateDataRevaluedDetails($id_revalued, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $des_usuario);
+                $id = $id[0]->{'ff_actualizar_revaluo_detallado'};
                 break;
             default:
                 break;

@@ -191,8 +191,8 @@ export default {
     };
   },
   mounted() {
-    console.log(this.user);
     this.getDataRevaluedDetails();
+    console.log(this.dataFixedAsset);
   },
 
   methods: {
@@ -209,7 +209,9 @@ export default {
         app.dataFixedAsset = response.data.dataFixedAsset[0];
         if (response.data.dataRevalued.length > 0) {
           app.dataRevalued = response.data.dataRevalued[0];
-          app.id_revalued = response.data.dataRevalued[0];
+          console.log("datos revaluo");
+          console.log(app.dataRevalued);
+          app.id_revalued = app.dataRevalued.id;
           app.dataTechnicals.perdida = app.dataRevalued.perdida;
           app.dataTechnicals.funcionalidad = app.dataRevalued.funcionalidad;
           app.dataTechnicals.obsolescencia = app.dataRevalued.obsolescencia;
@@ -238,13 +240,14 @@ export default {
 
     //  *  AF24. Guarda la informacion necesaria para los datos de revaluo del activos fijos dentro de un documento de revaluo       
     async initStoreDataRevaluedDetails() {
-      console.log(this.fixedAsset);
+      console.log(this.dataFixedAsset);
+      console.log(this.id_revalued);
       var app = this;
       try {
         let response = axios
           .post("/api/storeDataThecnicalRevaluedDetails", {
-            dataFixedAsset: this.dataFixedAsset,
             id_revalued: this.id_revalued,
+            dataFixedAsset: this.dataFixedAsset,
             dataTechnicals: this.dataTechnicals,
             dataResult: this.dataResult,
             dataQuotes: this.dataQuotes,
