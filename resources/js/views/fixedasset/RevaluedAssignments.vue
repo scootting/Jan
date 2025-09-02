@@ -37,21 +37,23 @@
                   <el-button @click="dialogFormVisibleActive = true" type="info" size="small">buscar activo fijo
                   </el-button>
                 </el-form-item>
-                <el-form-item label="fecha de adquisicion" prop="fecha">
+                <el-form-item label="tipo de adquisicion" prop="tip_adq">
+                  {{ dataFixedAsset.tipo_adq }}
+                </el-form-item>
+                <el-form-item label="fecha de adquisicion" prop="fec_adq">
                   {{ dataFixedAsset.fecha_adquisicion }}
                 </el-form-item>
                 <el-form-item label="codigo" prop="fecha">
                   {{ dataFixedAsset.codigo }}
                 </el-form-item>
-                <el-form-item label="descripcion" prop="fecha">
+                <el-form-item label="descripcion" prop="descripcion">
                   {{ dataFixedAsset.descripcion }}
                 </el-form-item>
+                <!--
                 <el-form-item label="valor neto">
                   {{ dataFixedAsset.valor_neto }}
                 </el-form-item>
-                <el-form-item label="tipo de adquisicion">
-                  {{ dataFixedAsset.tipo_adq }}
-                </el-form-item>
+                -->
               </el-form>
             </div>
           </el-col>
@@ -88,11 +90,11 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="cantidad">
-                  <el-input v-model="fixedAsset.cantidad" autocomplete="off"></el-input>
+                <el-form-item label="marca">
+                  <el-input v-model="fixedAsset.des_marca" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="importe">
-                  <el-input v-model="fixedAsset.importe" autocomplete="off"></el-input>
+                <el-form-item label="modelo">
+                  <el-input v-model="fixedAsset.des_modelo" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="descripcion general">
                   <el-input type="textarea" placeholder="Ingrese una descripcion general"
@@ -135,34 +137,20 @@
         <div class="grid-content bg-purple">
           <p>lista de activos</p>
           <el-table :data="dataAssignmentDetails" style="width: 100%" size="small">
-            <el-table-column prop="fecha_adquisicion" label="fecha" width="90"></el-table-column>
-            <el-table-column prop="descripcion" label="descripcion" width="220"></el-table-column>
+            <el-table-column prop="codigo" label="codigo" width="190"></el-table-column>
+            <el-table-column prop="descripcion" label="descripcion" width="420"></el-table-column>
             <el-table-column prop="des_contable" label="partida" width="220"></el-table-column>
-            <el-table-column prop="cantidad" label="cantidad" width="220"></el-table-column>
-            <el-table-column prop="importe" label="importe" width="120"></el-table-column>
             <el-table-column align="right" width="450">
               <template slot-scope="scope">
+                <el-button @click="initRevaluedDataFixed(scope.$index, scope.row)" type="primary"
+                  size="mini">revaluar</el-button>
                 <el-button @click="initEditDataFixed(scope.$index, scope.row)" type="primary"
                   size="mini">Editar</el-button>
                 <el-button @click="initRemoveDataFixed(scope.$index, scope.row)" type="primary"
                   size="mini">Quitar</el-button>
-                <el-button @click="initRevaluedDataFixed(scope.$index, scope.row)" type="primary"
-                  size="mini">revaluar</el-button>
               </template>
             </el-table-column>
           </el-table>
-          <!--
-          <el-button @click="initStoreDataRevaluedDetails" type="primary" size="small">guardar cambios
-          </el-button>
-          <el-button @click="initVerifyDataAssignmentDetails" type="info" size="small"
-            :disabled="verifyVisible == false">verificar
-            documento
-          </el-button>
-          <el-button @click="initPrintPurchaseAssignment" type="info" size="small"
-            :disabled="verifyVisible == false">imprimir
-            documento
-          </el-button>
-          -->
         </div>
         <div>
           <p></p>
@@ -245,6 +233,9 @@ export default {
       fixedAsset: {
         id: 0,
         idx: 0,
+        codigo: '',
+        marca: '',
+        modelo: '',
         descripcion: '',
         medida: '',
         cantidad: 1,
@@ -285,6 +276,7 @@ export default {
           year: app.user.gestion,
         });
         app.dataFixedAssetRevalued = response.data.dataFixedAssetRevalued;
+        console.log("activo fijo encontrado");
         console.log(app.dataFixedAssetRevalued);
       } catch (error) {
         this.error = error.response.data;
@@ -298,14 +290,14 @@ export default {
       this.dialogFormVisibleActive = false;
       this.description = '';
       this.dataFixedAsset = row;
+      this.fixedAsset.id = row.id;
+      this.fixedAsset.codigo = row.codigo;
       this.fixedAsset.id_contable = row.id_contable;
       this.fixedAsset.des_contable = row.des_contable;
       this.fixedAsset.id_presupuesto = row.id_presupuesto;
       this.fixedAsset.des_presupuesto = row.des_presupuesto;
       this.fixedAsset.medida = row.medida;
 
-      console.log(this.dataFixedAsset);
-      console.log(this.fixedAsset);
       this.marker = 'registrar';
       this.dataFixedAssetRevalued = [];
     },
@@ -324,6 +316,7 @@ export default {
         app.dataMeasurement = response.data.dataMeasurement; // tipo de activo
         app.data = response.data.dataAssignmentDetails;
         app.dataAssignmentDetails = response.data.dataAssignmentsDetails;
+        console.log(app.dataAssignmentDetails);
         if (app.dataAssignmentDetails.length != 0) {
           app.verifyVisible = "true"
         }
@@ -363,6 +356,7 @@ export default {
 
     //  *  AF21. Guarda la informacion necesaria para crear activos fijos dentro de un documento de revaluo       
     async initStoreDataRevaluedDetails() {
+      console.log("vaya para alla");
       console.log(this.fixedAsset);
       var app = this;
       try {
@@ -435,7 +429,10 @@ export default {
     },
     initEditDataFixed(idx, row) {
       let variable = row;
+      console.log("variable");
+      console.log(variable);
       this.fixedAsset = variable;
+      
       console.log(this.fixedAsset);
       this.marker = 'editar';
 

@@ -517,7 +517,10 @@ class FixedAssetController extends Controller
         $des_usuario = $usuario['usuario'];
         $gestion     = $usuario['gestion'];
 
-        $indice            = 0;
+        $indice            = $item['id'];
+        $codigo            = strtoupper($item['codigo']);
+        $marca             = strtoupper($item['des_marca']);
+        $modelo            = strtoupper($item['des_modelo']);
         $descripcion       = strtoupper($item['descripcion']);
         $medida            = strtoupper($item['medida']);
         $cantidad          = $item['cantidad'];
@@ -529,18 +532,18 @@ class FixedAssetController extends Controller
         $des_presupuesto   = $item['des_presupuesto'];
         $estado            = $item['estado'];
         $adicional         = json_encode($item['adicional']); //, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        $indice            = $indice + 1;
+
         //$id_eliminar = FixedAsset::RemoveDataAssignmentDetails($id_documento);
         $marcador = $request->get('marker');
         switch ($marcador) {
             case 'registrar':
-                $id = FixedAsset::StoreDataAssignmentDetails($id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
+                $id = FixedAsset::StoreDataAssignmentDetails($id_documento, $indice, $codigo, $marca, $modelo, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
                 $id = $id[0]->{'ff_registrar_asignacion_detallada'};
                 return json_encode($id);
                 break;
             case 'editar':
                 $id_activo = $item['id'];
-                $id        = FixedAsset::UpdateDataAssignmentDetails($id_activo, $id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
+                $id        = FixedAsset::UpdateDataAssignmentDetails($id_activo, $id_documento, $indice, $codigo, $marca, $modelo, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $des_usuario);
                 $id        = $id[0]->{'ff_actualizar_asignacion_detallada'};
                 break;
             default:
@@ -612,8 +615,8 @@ class FixedAssetController extends Controller
                 break;
             case 'editar':
                 $id_revalued = $request->get('id_revalued');
-                $id = FixedAsset::UpdateDataRevaluedDetails($id_revalued, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $des_usuario);
-                $id = $id[0]->{'ff_actualizar_revaluo_detallado'};
+                $id          = FixedAsset::UpdateDataRevaluedDetails($id_revalued, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $des_usuario);
+                $id          = $id[0]->{'ff_actualizar_revaluo_detallado'};
                 break;
             default:
                 break;

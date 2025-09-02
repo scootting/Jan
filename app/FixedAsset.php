@@ -81,7 +81,7 @@ class FixedAsset extends Model
     public static function GetAccountingItem($year)
     {
         //partida contable
-        $query = "SELECT * FROM act.f_b_contable()";
+        $query = "SELECT con_cod as id_contable, con_des as des_contable FROM act.f_b_contable()";
         $data  = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -90,7 +90,7 @@ class FixedAsset extends Model
     public static function GetDataAssignmentsDetails($id)
     {
 
-        $query = "select id, idx, fecha_adquisicion,des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, " .
+        $query = "select id, idx, fecha_adquisicion,id_activo, codigo, des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, " .
             "id_contable, des_contable, id_presupuesto, des_presupuesto, estado from actx.asignaciones_detallada where id_asignacion = '" . $id . "' order by idx desc";
         $data = collect(DB::select(DB::raw($query)));
 
@@ -139,9 +139,9 @@ class FixedAsset extends Model
     }
 
     //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
-    public static function StoreDataAssignmentDetails($id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $usuario)
+    public static function StoreDataAssignmentDetails($id_documento, $indice, $codigo, $marca, $modelo, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $usuario)
     {
-        $query = "select * from actx.ff_registrar_asignacion_detallada(" . $id_documento . "," . $indice . ",'" . $medida . "'," . $cantidad . "," . $importe
+        $query = "select * from actx.ff_registrar_asignacion_detallada(" . $id_documento . "," . $indice . ",'" . $codigo . "','" . $marca . "','" . $modelo . "','" . $medida . "'," . $cantidad . "," . $importe
             . ",'" . $fecha_adquisicion . "'," . $id_contable . ",'" . $des_contable . "'," . $id_presupuesto . ",'" . $des_presupuesto . "','" . $estado
             . "','" . $adicional . "','" . $descripcion . "','" . $usuario . "')";
         \Log::info("Eres un cochino");
@@ -151,10 +151,10 @@ class FixedAsset extends Model
         return $data;
     }
 
-    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
-    public static function UpdateDataAssignmentDetails($id_asset, $id_documento, $indice, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $usuario)
+    //  *  AF14. Actualizar la informacion necesaria para crear activos fijos dentro de un documento       
+    public static function UpdateDataAssignmentDetails($id_activo, $id_documento, $indice, $codigo, $marca, $modelo, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $usuario)
     {
-        $query = "select * from actx.ff_actualizar_asignacion_detallada(" . $id_asset . "," . $id_documento . "," . $indice . ",'" . $medida . "'," . $cantidad . "," . $importe
+        $query = "select * from actx.ff_actualizar_asignacion_detallada(" . $id_activo . "," . $id_documento . "," . $indice . ",'" . $codigo . "','" . $marca . "','" . $modelo . "','" . $medida . "'," . $cantidad . "," . $importe
             . ",'" . $fecha_adquisicion . "'," . $id_contable . ",'" . $des_contable . "'," . $id_presupuesto . ",'" . $des_presupuesto . "','" . $estado
             . "','" . $adicional . "','" . $descripcion . "','" . $usuario . "')";
         $data = collect(DB::select(DB::raw($query)));
@@ -347,7 +347,7 @@ class FixedAsset extends Model
     public static function StoreDataRevaluedDetails($indice, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $usuario)
     {
         $query = "select * from actx.ff_registrar_revaluo_detallado(" . $indice . "," . $id_contable . "," . $perdida . "," . $funcionalidad . "," . $obsolescencia .
-                 "," . $conservacion . "," . $uso . "," . $mantenimiento . ",'" . $cotizaciones . "','" . $usuario . "')";
+            "," . $conservacion . "," . $uso . "," . $mantenimiento . ",'" . $cotizaciones . "','" . $usuario . "')";
 
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
@@ -358,7 +358,7 @@ class FixedAsset extends Model
     public static function UpdateDataRevaluedDetails($indice, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $usuario)
     {
         $query = "select * from actx.ff_actualizar_revaluo_detallado(" . $indice . "," . $id_contable . "," . $perdida . "," . $funcionalidad . "," . $obsolescencia .
-                 "," . $conservacion . "," . $uso . "," . $mantenimiento . ",'" . $cotizaciones . "','" . $usuario . "')";
+            "," . $conservacion . "," . $uso . "," . $mantenimiento . ",'" . $cotizaciones . "','" . $usuario . "')";
 
         \Log::info("Eres un cochino4");
         \Log::info($query);
