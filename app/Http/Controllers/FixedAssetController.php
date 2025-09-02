@@ -551,6 +551,29 @@ class FixedAssetController extends Controller
         }
         return json_encode($id);
     }
+
+    //  *  AF25. Quita un activo fijo de la revaluacion     
+    //Route::post('setRemoveDataAssignmentDetails/', 'FixedAssetController@setRemoveDataAssignmentDetails');
+    public function setRemoveDataAssignmentDetails(Request $request)
+    {
+        $id = $request->get('id');
+        $id = FixedAsset::SetRemoveDataAssignmentDetails($id);
+        return json_encode(['id' => $id]);
+    }
+
+    //  *  AF26. Obtiene un activo fijo de la lista de actualizaciones y depreciaciones por su id
+    //Route::post('getDataFixedAssetDetailsById/', 'FixedAssetController@getDataFixedAssetDetailsById');
+    public function getDataFixedAssetDetailsById(Request $request)
+    {
+        \Log::info("actualizacion de activos");
+
+        $id                     = $request->get('id');
+        $gestion                = $request->get('year');
+        $gestion                = '2024';
+        $dataFixedAssetRevalued = FixedAsset::GetDataFixedAssetDetailsById($id, $gestion);
+        return json_encode(['dataFixedAssetRevalued' => $dataFixedAssetRevalued]);
+    }
+
     public function getDataRevaluedDetails(Request $request)
     {
 

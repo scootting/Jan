@@ -138,15 +138,22 @@ class FixedAsset extends Model
         return $data;
     }
 
+    //  *  AF25. Quita un activo fijo de la revaluacion     
+    //Route::post('setRemoveDataAssignmentDetails/', 'FixedAssetController@setRemoveDataAssignmentDetails');
+    public static function SetRemoveDataAssignmentDetails($id)
+    {
+        $query = "delete from actx.asignaciones_detallada a where a.id = " . $id . "";
+        \Log::info($query);
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
     //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
     public static function StoreDataAssignmentDetails($id_documento, $indice, $codigo, $marca, $modelo, $descripcion, $medida, $cantidad, $importe, $fecha_adquisicion, $id_contable, $des_contable, $id_presupuesto, $des_presupuesto, $estado, $adicional, $usuario)
     {
         $query = "select * from actx.ff_registrar_asignacion_detallada(" . $id_documento . "," . $indice . ",'" . $codigo . "','" . $marca . "','" . $modelo . "','" . $medida . "'," . $cantidad . "," . $importe
             . ",'" . $fecha_adquisicion . "'," . $id_contable . ",'" . $des_contable . "'," . $id_presupuesto . ",'" . $des_presupuesto . "','" . $estado
             . "','" . $adicional . "','" . $descripcion . "','" . $usuario . "')";
-        \Log::info("Eres un cochino");
-
-        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
@@ -331,6 +338,18 @@ class FixedAsset extends Model
         return $data;
     }
 
+    //  *  AF26. Obtiene un activo fijo de la lista de actualizaciones y depreciaciones por su id
+    //Route::post('getDataFixedAssetDetailsById/', 'FixedAssetController@getDataFixedAssetDetailsById');
+    public static function GetDataFixedAssetDetailsById($id, $year)
+    {
+        $query = "select * from actx.ff_datos_recopilatorio_por_id(" . $id . ",'" . $year . "')";
+        //$query = "select *, id_programa as cod_prg, programa as cat_des, programa as value from bdoc.adicional d where d.gestion = '" . $year . "'";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+
     public static function GetFixedAssetsRevalued($id)
     {
         $query = "select * from actx.asignaciones_revaluo a where a.id_activo = " . $id . "";
@@ -349,7 +368,6 @@ class FixedAsset extends Model
         $query = "select * from actx.ff_registrar_revaluo_detallado(" . $indice . "," . $id_contable . "," . $perdida . "," . $funcionalidad . "," . $obsolescencia .
             "," . $conservacion . "," . $uso . "," . $mantenimiento . ",'" . $cotizaciones . "','" . $usuario . "')";
 
-        \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }

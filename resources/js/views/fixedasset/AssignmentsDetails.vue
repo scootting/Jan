@@ -82,8 +82,8 @@
                                             <el-select v-model="fixedAsset.id_contable" value-key="id_contable"
                                                 size="small" placeholder="seleccione la partida contable"
                                                 @change="OnchangeContable">
-                                                <el-option v-for="item in dataAccountingItem" :key="item.id_contable"
-                                                    :label="item.des_contable" :value="item.id_contable">
+                                                <el-option v-for="item in dataAccountingItem" :key="item.con_cod"
+                                                    :label="item.con_des" :value="item.con_cod">
                                                 </el-option>
                                             </el-select>
                                         </el-form-item>
@@ -213,9 +213,9 @@ export default {
                 importe: 0,
                 fecha_adquisicion: '',
                 id_contable: '',
-                des_contable: '',
+                con_des: '',
                 id_presupuesto: '',
-                des_presupuesto: '',
+                par_des: '',
                 estado: '',
                 cod_prg: '',
                 des_prg: '',
@@ -357,8 +357,8 @@ export default {
         },
 
         OnchangeContable(idx) {
-            let resultado = this.dataAccountingItem.find(tipo => tipo.id_contable == idx);
-            this.fixedAsset.id_contable = resultado.id_contable;
+            let resultado = this.dataAccountingItem.find(tipo => tipo.con_cod == idx);
+            this.fixedAsset.id_contable = resultado.con_cod;
         },
         OnchangePresupuesto(idx) {
             let resultado = this.dataBudgetItem.find(tipo => tipo.act_par_cod == idx);

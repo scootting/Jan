@@ -67,15 +67,15 @@
                     style="width: 100%"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="partida contable">
-                  <el-select v-model="fixedAsset.id_contable" value-key="id_contable" size="small"
+                  <el-select v-model="fixedAsset.des_contable" value-key="id_contable" size="small"
                     placeholder="seleccione la partida contable" @change="OnchangeContable">
-                    <el-option v-for="item in dataAccountingItem" :key="item.con_cod" :label="item.con_des"
-                      :value="item.con_cod">
+                    <el-option v-for="item in dataAccountingItem" :key="item.id_contable" :label="item.des_contable"
+                      :value="item.id_contable">
                     </el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="partida presupuestaria">
-                  <el-select v-model="fixedAsset.id_presupuesto" value-key="id_presupuesto" size="small"
+                  <el-select v-model="fixedAsset.des_presupuesto" value-key="id_presupuesto" size="small"
                     placeholder="seleccione la partida presupuestaria" @change="OnchangePresupuesto">
                     <el-option v-for="item in dataBudgetItem" :key="item.act_par_cod" :label="item.par_des"
                       :value="item.act_par_cod">
@@ -329,9 +329,9 @@ export default {
     },
 
     OnchangeContable(idx) {
-      let resultado = this.dataAccountingItem.find(tipo => tipo.con_cod == idx);
-      this.fixedAsset.id_contable = resultado.con_cod;
-      this.fixedAsset.des_contable = resultado.con_des;
+      let resultado = this.dataAccountingItem.find(tipo => tipo.id_contable == idx);
+      this.fixedAsset.id_contable = resultado.id_contable;
+      this.fixedAsset.des_contable = resultado.des_contable;
     },
     OnchangePresupuesto(idx) {
       let resultado = this.dataBudgetItem.find(tipo => tipo.act_par_cod == idx);
@@ -424,19 +424,46 @@ export default {
       console.log(variable);
       this.dataAssignmentDetails.push(variable);
     },
-    initRemoveDataFixed(idx, row) {
-      this.dataAssignmentDetails.splice(idx, 1);
-    },
-    initEditDataFixed(idx, row) {
-      let variable = row;
-      console.log("variable");
-      console.log(variable);
-      this.fixedAsset = variable;
-      
-      console.log(this.fixedAsset);
-      this.marker = 'editar';
 
+    async initRemoveDataFixed(idx, row) {
+      this.dataAssignmentDetails.splice(idx, 1);
+      let variable = row;
+      console.log(variable);
+      try {
+        let response = await axios.post("/api/setRemoveDataAssignmentDetails", {
+          id: variable.id,
+        });
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
     },
+
+    async initEditDataFixed(idx, row) {
+      let app = this;
+      let variable = row;
+      console.log(row);
+      try {
+        let response = await axios.post("/api/getDataFixedAssetDetailsById", {
+          id: variable.id_activo,
+          year: app.user.gestion,
+        });
+        alert(row);
+        app.dataFixedAssetRevalued = response.data.dataFixedAssetRevalued;
+        this.fixedAsset = variable;
+        this.marker = 'editar';
+        console.log(app.dataFixedAssetRevalued);
+        console.log(this.fixedAsset);
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
+    },
+
     initRevaluedDataFixed(idx, row) {
       let variable = row;
       this.$router.push({
