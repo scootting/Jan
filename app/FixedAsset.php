@@ -144,7 +144,7 @@ class FixedAsset extends Model
     {
         $query = "delete from actx.asignaciones_detallada a where a.id = " . $id . "";
         \Log::info($query);
-        $data  = collect(DB::select(DB::raw($query)));
+        $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
@@ -349,6 +349,31 @@ class FixedAsset extends Model
         return $data;
     }
 
+    //  * AF30. Selecciona las imagenes cargadas del activo
+    public function getImagenByRevaluedAssignment($id, $year)
+    {
+        $query = "SELECT id, id_activo, descripcion FROM actx.revaluo_imagen d WHERE d.id_estado ='" . $id . "' order by idx desc";
+        $data  = collect(DB::select(DB::raw($query)));
+        return $data;
+
+    }
+    //  * AF29. Guarda las imagenes digitalizadas
+    public static function StoreDigitalDocument($id, $description, $escaped)
+    {
+        $query = "INSERT INTO actx.revaluo_imagen(id_activo, descripcion, digitalizado) VALUES (" . $id . ",'" . $description . ", '{$escaped}')";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    //  *  AF30. Guardar los analisis del auditor despues de su evaluacion.
+    public static function StoreDataAuditorDetails($id, $actualizacion, $seguridad, $proteccion, $capacitacion)
+    {
+        $query = "select * from actx.ff_registrar_detalle_auditor(" . $id . ",'" . $actualizacion . "','". $seguridad . "','". $proteccion . "','". $capacitacion . "')";
+        \Log::info($query);
+        $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
 
     public static function GetFixedAssetsRevalued($id)
     {
@@ -362,7 +387,7 @@ class FixedAsset extends Model
         return $data;
     }
 
-    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
+    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento
     public static function StoreDataRevaluedDetails($indice, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $usuario)
     {
         $query = "select * from actx.ff_registrar_revaluo_detallado(" . $indice . "," . $id_contable . "," . $perdida . "," . $funcionalidad . "," . $obsolescencia .
@@ -372,13 +397,11 @@ class FixedAsset extends Model
         return $data;
     }
 
-    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento       
+    //  *  AF14. Guarda la informacion necesaria para crear activos fijos dentro de un documento
     public static function UpdateDataRevaluedDetails($indice, $id_contable, $perdida, $funcionalidad, $obsolescencia, $conservacion, $uso, $mantenimiento, $cotizaciones, $usuario)
     {
         $query = "select * from actx.ff_actualizar_revaluo_detallado(" . $indice . "," . $id_contable . "," . $perdida . "," . $funcionalidad . "," . $obsolescencia .
             "," . $conservacion . "," . $uso . "," . $mantenimiento . ",'" . $cotizaciones . "','" . $usuario . "')";
-
-        \Log::info("Eres un cochino4");
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;

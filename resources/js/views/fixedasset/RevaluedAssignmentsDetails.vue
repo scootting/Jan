@@ -91,19 +91,19 @@
                 <p>determinacion segun revaluo</p>
                 <p>resultados</p>
                 <el-form-item label="estado tecnico">
-                  <el-input placeholder="Please input" v-model="dataResult.estado"></el-input>
+                  <el-input placeholder="" v-model="dataResult.estado"></el-input>
                 </el-form-item>
                 <el-form-item label="años de vida util">
-                  <el-input placeholder="Please input" v-model="dataResult.vida"></el-input>
+                  <el-input placeholder="" v-model="dataResult.vida"></el-input>
                 </el-form-item>
                 <el-form-item label="valor residual">
-                  <el-input placeholder="Please input" v-model="dataResult.valor_residual"></el-input>
+                  <el-input placeholder="" v-model="dataResult.valor_residual"></el-input>
                 </el-form-item>
                 <el-form-item label="valor segun revaluo">
-                  <el-input placeholder="Please input" v-model="dataResult.valor_revaluo"></el-input>
+                  <el-input placeholder="" v-model="dataResult.valor_revaluo"></el-input>
                 </el-form-item>
                 <el-form-item label="saldo por revalorizar">
-                  <el-input placeholder="Please input" v-model="dataResult.valor_saldo"></el-input>
+                  <el-input placeholder="" v-model="dataResult.valor_saldo"></el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -113,6 +113,56 @@
         <el-button @click="initStoreDataRevaluedDetails" type="primary" size="small">calcular datos del revaluo
         </el-button>
         <p></p>
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <div class="grid-content bg-purple">
+              <el-form ref="form" :model="dataAuditor" label-width="350px" size="small">
+                <p>evaluacion del auditor</p>
+                <el-form-item label="actualizacion">
+                  <el-input type="textarea" placeholder="ingrese aca su informacion"
+                    v-model="dataAuditor.actualizacion"></el-input>
+                </el-form-item>
+                <el-form-item label="seguridad">
+                  <el-input type="textarea" placeholder="ingrese aca su informacion"
+                    v-model="dataAuditor.seguridad"></el-input>
+                </el-form-item>
+                <el-form-item label="proteccion patrimonial">
+                  <el-input type="textarea" placeholder="ingrese aca su informacion"
+                    v-model="dataAuditor.proteccion"></el-input>
+                </el-form-item>
+                <el-form-item label="capacitacion">
+                  <el-input type="textarea" placeholder="ingrese aca su informacion"
+                    v-model="dataAuditor.capacitacion"></el-input>
+                </el-form-item>
+                <p></p>
+                <el-button @click="initAddDataAuditor" type="primary" size="small">guardar evaluacion
+                </el-button>
+              </el-form>
+            </div>
+          </el-col>
+          <el-col :span="12">
+            <div class="grid-content bg-purple">
+              <p>imagenes actuales del activo</p>
+              <el-table :data="imageDocuments" border style="width: 100%" size="small">
+                <el-table-column prop="descripcion" label="descripcion" width="250">
+                </el-table-column>
+                <el-table-column align="right-center" label="operaciones" width="250" fixed="right">
+                  <template slot-scope="scope">
+                    <el-button :disabled="scope.row.guardado === true" type="primary" size="mini"
+                      @click="getDigitalDocumentById(scope.$index, scope.row)">ver
+                      documento</el-button>
+                    <el-button :disabled="scope.row.guardado === true" type="danger" size="mini"
+                      @click="DeleteDocumentById(scope.$index, scope.row)">quitar</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+              <p></p>
+              <div>
+                <el-button type="success" @click="initAddDocument" size="small">agregar imagen</el-button>
+              </div>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </el-card>
 
@@ -130,6 +180,34 @@
     </el-dialog>
     <!-- Form Add Document to Archive-->
 
+    <!-- Form Add Document to Archive Imagen-->
+    <el-dialog title="detalle de la imagen" :visible.sync="dialogImageVisible">
+      <el-form :model="document" label-width="220px" size="small" ref="documentForm">
+        <el-form-item label="descripcion" prop="descripcion">
+          <el-input type="textarea" v-model="document.descripcion" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-upload ref="upload" action="/api/storeDigitalDocument" :auto-upload="false" :file-list="imageDocuments"
+            :multiple="false" :limit="1" :data="document" accept=".jpeg" :headers="requestHeaders"
+            :on-success="handleSuccessBoucher" :on-remove="test">
+            <!---->
+            <p></p>
+            <el-button slot="trigger" size="small" type="primary">subir archivo digitalizado</el-button>
+            <div slot="tip" class="el-upload__tip">
+              Solo puede subir imagenes
+            </div>
+          </el-upload>
+        </el-form-item>
+        <!--
+          -->
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" size="mini" @click="storeDigitalDocument('documentForm')">Confirmar</el-button>
+        <el-button type="danger" size="mini" plain @click="dialogFormVisible = false">Cancelar</el-button>
+      </span>
+    </el-dialog>
+    <!-- Form Add Document to Archive-->
+
   </div>
 </template>
 
@@ -143,8 +221,17 @@ export default {
   },
   data() {
     return {
+
+      requestHeaders: {
+        "X-CSRF-TOKEN": window.axios.defaults.headers.common["X-CSRF-TOKEN"],
+        Authorization: "Bearer " + this.$store.state.token,
+      },
+      imageDocument: [],
+      document: { id:0, descripcion: '' },
+      imageDocuments: [],
       user: this.$store.state.user,
       id: this.$route.params.id,
+      dialogImageVisible: false,
       dialogFormVisible: false,
       dataQuotes: [],
       id_revalued: 0,
@@ -188,6 +275,12 @@ export default {
         id: 0,
         cantidad: 0,
       },
+      dataAuditor: {
+        actualizacion: '',
+        seguridad: '',
+        proteccion: '',
+        capacitacion: '',
+      }
     };
   },
   mounted() {
@@ -197,6 +290,84 @@ export default {
 
   methods: {
 
+    test() { },
+
+    initAddDataAuditor() {
+      console.log(this.dataAuditor);
+      console.log(this.id_revalued);
+      var app = this;
+      try {
+        let response = axios
+          .post("/api/storeDataAuditorDetails", {
+            id: this.id_revalued,
+            dataAuditor: this.dataAuditor,
+            user: app.user,
+            marker: 'registrar',
+          });
+        app.$alert("Se ha registrado correctamente los cambios del auditor", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+        this.getDataRevaluedDetails();
+      } catch (error) {
+        app.$alert(error, 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      };
+    },
+
+    handleSuccessBoucher(response, file, fileList) {
+      this.$alert('Gracias, acaba de subir la imagen ' + file.name + ' satifactoriamente.', 'confirmacion', {
+        confirmButtonText: 'bueno',
+      });
+      this.imageDocument = [];
+      console.log(response, file, fileList);
+      this.fileList = fileList;
+    },
+
+    //  * AF27. Obtiene la lista de imagenes que pertenecen a un activo
+    async getImagenByRevaluedAssignment() {
+      let app = this;
+      
+      try {
+        let response = await axios.post("/api/getImagenByRevaluedAssignment", {
+          id: app.id,
+          year: app.user.gestion,
+        });
+        app.documents = response.data;
+      } catch (error) {
+        this.error = error.response.data;
+        app.$alert(this.error.message, "Gestor de errores", {
+          dangerouslyUseHTMLString: true,
+        });
+      }
+    },
+
+
+    //  * EF3. Guarda los documentos digitalizados
+    storeDigitalDocument(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          var app = this;
+          app.document.id = app.id;
+          this.$refs.upload.submit();
+          app.dialogFormVisible = false;
+          /*
+          app.getImagenByRevaluedAssignment();*/
+          app.resetForm(formName);
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
+    },
+
+
+
+    getDigitalDocumentById() { },
+    DeleteDocumentById() { },
+    initAddDocument() {
+      this.dialogImageVisible = true;
+    },
     //  *  AF23. Obtiene un activo fijo de la lista del documento de revaluo
     async getDataRevaluedDetails() {
       var app = this;
@@ -225,9 +396,13 @@ export default {
           app.dataResult.valor_revaluo = app.dataRevalued.valor_revaluo;
           app.dataResult.valor_saldo = app.dataRevalued.valor_saldo;
           app.dataQuotes = app.dataRevalued.cotizaciones;
+          app.dataAuditor.actualizacion = app.dataRevalued.actualizacion;
+          app.dataAuditor.seguridad = app.dataRevalued.seguridad;
+          app.dataAuditor.proteccion = app.dataRevalued.proteccion;
+          app.dataAuditor.capacitacion = app.dataRevalued.capacitacion;
           app.marker = 'editar';
         }
-        else{
+        else {
           app.marker = 'registrar';
         }
       } catch (error) {

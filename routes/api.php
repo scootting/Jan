@@ -240,6 +240,13 @@ Route::group([
     //  *  AF26. Obtiene un activo fijo de la lista de actualizaciones y depreciaciones por su id
     Route::post('getDataFixedAssetDetailsById/', 'FixedAssetController@getDataFixedAssetDetailsById');
 
+    //  * A20. Guarda las imagenes digitalizadas de cada activo fijo
+    Route::post('storeDigitalDocument', 'FixedAssetController@storeDigitalDocument');
+
+    //  *  AF30. Guardar los analisis del auditor despues de su evaluacion.
+    Route::post('storeDataAuditorDetails', 'FixedAssetController@storeDataAuditorDetails');
+
+    
     //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');
     //  *  AC2. Obtiene la lista de asignaciones
@@ -359,7 +366,6 @@ Route::group([
     Route::get('getDigitalSolvencyDocument/', 'SolvencyController@getDigitalSolvencyDocument');
     
     //  |--------------------------------------------------------------------------
-
     //  | Rutas API para el Sistema de Granjas
     //  |--------------------------------------------------------------------------
     //  * G1. Obtiene la lista de los dias de venta de los productos de la granja

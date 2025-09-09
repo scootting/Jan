@@ -497,6 +497,64 @@ class FixedAssetController extends Controller
         $dataFixedAssetRevalued = FixedAsset::GetDataFixedAssetDetails($descripcion, $gestion);
         return json_encode(['dataFixedAssetRevalued' => $dataFixedAssetRevalued]);
     }
+    //  * AF27. Obtiene la lista de imagenes que pertenecen a un activo
+    public function getImagenByRevaluedAssignment(Request $request)
+    {
+        $id      = $request->get('id');
+        $gestion = $request->get('gestion');
+        return json_encode($id);
+    }
+
+    //  * EF3. Guarda los documentos digitalizados
+    public function storeDigitalDocument(Request $request)
+    {
+        $description = $request->get('descripcion');
+        $fileExt = $request->file('file')->getClientOriginalExtension();
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $data = file_get_contents($file);
+            $escaped = pg_escape_bytea($data);
+            $data = Document::StoreDigitalDocument($id, $description, $escaped);
+        } else {
+            return response()->json(['error' => 'File not exist!']);
+        }
+        return response()->json(['success' => 'Uploaded Successfully.']);
+    }
+
+
+
+    //  *  AF30. Guardar los analisis del auditor despues de su evaluacion.
+    //Route::post('storeDataAuditorDetails/', 'FixedAssetController@storeDataAuditorDetails');
+    public function storeDataAuditorDetails(Request $request)
+    {
+
+        \Log::info($request);
+        $dataAuditor = $request->get('dataAuditor');
+        $id          = $request->get('id');
+        $usuario     = $request->get('user');
+        $marcador    = $request->get('marker');
+
+        $actualizacion = $dataAuditor['actualizacion'];
+        $seguridad     = $dataAuditor['seguridad'];
+        $proteccion    = $dataAuditor['proteccion'];
+        $capacitacion  = $dataAuditor['capacitacion'];
+
+        $ci_elab     = $usuario['nodip'];
+        $des_usuario = $usuario['usuario'];
+        $gestion     = $usuario['gestion'];
+
+        $marcador = $request->get('marker');
+        switch ($marcador) {
+            case 'registrar':
+                $id = FixedAsset::StoreDataAuditorDetails($id, $actualizacion, $seguridad, $proteccion, $capacitacion);
+                $id = $id[0]->{'ff_registrar_detalle_auditor'};
+                break;
+            case 'editar':
+            default:
+                break;
+        }
+        return json_encode($id);
+    }
 
     //  *  AF21. Guarda la informacion necesaria para crear activos fijos dentro de un documento de revaluo          
     public function storeDataRevaluedDetails(Request $request)
