@@ -149,8 +149,7 @@
                 <el-table-column align="right-center" label="operaciones" width="250" fixed="right">
                   <template slot-scope="scope">
                     <el-button :disabled="scope.row.guardado === true" type="primary" size="mini"
-                      @click="getDigitalDocumentById(scope.$index, scope.row)">ver
-                      documento</el-button>
+                      @click="getDigitalDocumentById(scope.$index, scope.row)">visualizar</el-button>
                     <el-button :disabled="scope.row.guardado === true" type="danger" size="mini"
                       @click="DeleteDocumentById(scope.$index, scope.row)">quitar</el-button>
                   </template>
@@ -187,7 +186,7 @@
           <el-input type="textarea" v-model="document.descripcion" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-upload ref="upload" action="/api/storeDigitalDocument" :auto-upload="false" :file-list="imageDocuments"
+          <el-upload ref="upload" action="/api/storeDigitalAsset" :auto-upload="false" :file-list="imageDocuments"
             :multiple="false" :limit="1" :data="document" accept=".jpeg" :headers="requestHeaders"
             :on-success="handleSuccessBoucher" :on-remove="test">
             <!---->
@@ -227,7 +226,7 @@ export default {
         Authorization: "Bearer " + this.$store.state.token,
       },
       imageDocument: [],
-      document: { id:0, descripcion: '' },
+      document: { id: 0, descripcion: '' },
       imageDocuments: [],
       user: this.$store.state.user,
       id: this.$route.params.id,
@@ -327,7 +326,7 @@ export default {
     //  * AF27. Obtiene la lista de imagenes que pertenecen a un activo
     async getImagenByRevaluedAssignment() {
       let app = this;
-      
+
       try {
         let response = await axios.post("/api/getImagenByRevaluedAssignment", {
           id: app.id,
@@ -345,9 +344,9 @@ export default {
 
     //  * EF3. Guarda los documentos digitalizados
     storeDigitalDocument(formName) {
+      var app = this;
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          var app = this;
           app.document.id = app.id;
           this.$refs.upload.submit();
           app.dialogFormVisible = false;
@@ -361,10 +360,26 @@ export default {
       });
     },
 
-
-
-    getDigitalDocumentById() { },
-    DeleteDocumentById() { },
+    //  * EF4. Obtener documentos digitalizados
+    getDigitalDocumentById(idx, row) {
+      let app = this;
+      console.log(row);
+      axios({
+        url: "/api/getDigitalAssetById/",
+        params: {
+          id: row.id,
+        },
+        method: "GET",
+        responseType: "blob",
+      }).then((response) => {
+        let pdfData = response.data;
+        console.log(response);
+        let blob = new Blob([pdfData], { type: 'image/jpeg' });
+        let url = URL.createObjectURL(blob);
+        window.open(url);
+      });
+    },
+    deleteDigitalDocumentById() { },
     initAddDocument() {
       this.dialogImageVisible = true;
     },
@@ -378,6 +393,7 @@ export default {
         });
         console.log(response.data);
         app.dataFixedAsset = response.data.dataFixedAsset[0];
+        app.imageDocuments = response.data.imageDocuments;
         if (response.data.dataRevalued.length > 0) {
           app.dataRevalued = response.data.dataRevalued[0];
           console.log("datos revaluo");
@@ -405,6 +421,7 @@ export default {
         else {
           app.marker = 'registrar';
         }
+        console.log(response);
       } catch (error) {
         this.error = error.response.data;
         app.$alert(this.error.message, "Gestor de errores", {

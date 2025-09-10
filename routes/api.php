@@ -241,11 +241,14 @@ Route::group([
     Route::post('getDataFixedAssetDetailsById/', 'FixedAssetController@getDataFixedAssetDetailsById');
 
     //  * A20. Guarda las imagenes digitalizadas de cada activo fijo
-    Route::post('storeDigitalDocument', 'FixedAssetController@storeDigitalDocument');
+    Route::post('storeDigitalAsset', 'FixedAssetController@storeDigitalDocument');
+
+
 
     //  *  AF30. Guardar los analisis del auditor despues de su evaluacion.
     Route::post('storeDataAuditorDetails', 'FixedAssetController@storeDataAuditorDetails');
-
+    //  *  AF31. Guardar los analisis del auditor despues de su evaluacion.
+    Route::get('getDigitalAssetById', 'FixedAssetController@getDigitalAssetById');
     
     //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');

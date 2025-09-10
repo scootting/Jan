@@ -350,9 +350,10 @@ class FixedAsset extends Model
     }
 
     //  * AF30. Selecciona las imagenes cargadas del activo
-    public function getImagenByRevaluedAssignment($id, $year)
+    public static function getImagenByRevaluedAssignment($id)
     {
-        $query = "SELECT id, id_activo, descripcion FROM actx.revaluo_imagen d WHERE d.id_estado ='" . $id . "' order by idx desc";
+        $query = "SELECT id, id_activo, descripcion FROM actx.revaluo_imagen d WHERE d.id_activo ='" . $id . "' order by id desc";
+        \Log::info($query);
         $data  = collect(DB::select(DB::raw($query)));
         return $data;
 
@@ -360,9 +361,15 @@ class FixedAsset extends Model
     //  * AF29. Guarda las imagenes digitalizadas
     public static function StoreDigitalDocument($id, $description, $escaped)
     {
-        $query = "INSERT INTO actx.revaluo_imagen(id_activo, descripcion, digitalizado) VALUES (" . $id . ",'" . $description . ", '{$escaped}')";
-        \Log::info($query);
+        $query = "INSERT INTO actx.revaluo_imagen(id_activo, descripcion, imagen) VALUES (" . $id . ",'" . $description . "', '{$escaped}')";
+        //\Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
+        return $data;
+    }
+
+    public static function GetDigitalAssetById($id){
+        $query = "SELECT imagen as pdf_data FROM actx.revaluo_imagen d WHERE d.id = ?";
+        $data = DB::select($query, [$id]);
         return $data;
     }
 

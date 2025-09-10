@@ -508,17 +508,35 @@ class FixedAssetController extends Controller
     //  * EF3. Guarda los documentos digitalizados
     public function storeDigitalDocument(Request $request)
     {
+        \Log::info($request);
+        $id          = $request->get('id');
         $description = $request->get('descripcion');
-        $fileExt = $request->file('file')->getClientOriginalExtension();
+        $fileExt     = $request->file('file')->getClientOriginalExtension();
         if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $data = file_get_contents($file);
+            $file    = $request->file('file');
+            $data    = file_get_contents($file);
             $escaped = pg_escape_bytea($data);
-            $data = Document::StoreDigitalDocument($id, $description, $escaped);
+            $data    = FixedAsset::StoreDigitalDocument($id, $description, $escaped);
         } else {
             return response()->json(['error' => 'File not exist!']);
         }
         return response()->json(['success' => 'Uploaded Successfully.']);
+    }
+
+
+    //  * AF31. Obtiene el documento digital seleccionado
+    public function getDigitalAssetById(Request $request)
+    {
+        $id = $request->get('id');
+        $result = FixedAsset::GetDigitalAssetById($id);
+        if (!empty($result[0]->pdf_data)) {
+            $my_bytea = stream_get_contents($result[0]->pdf_data);
+            return $my_bytea;
+        } else {
+            return response()->json([
+                'error' => 'No se encontró ningún registro con el ID proporcionado.',
+            ]);
+        }
     }
 
 
@@ -527,7 +545,6 @@ class FixedAssetController extends Controller
     //Route::post('storeDataAuditorDetails/', 'FixedAssetController@storeDataAuditorDetails');
     public function storeDataAuditorDetails(Request $request)
     {
-
         \Log::info($request);
         $dataAuditor = $request->get('dataAuditor');
         $id          = $request->get('id');
@@ -623,8 +640,6 @@ class FixedAssetController extends Controller
     //Route::post('getDataFixedAssetDetailsById/', 'FixedAssetController@getDataFixedAssetDetailsById');
     public function getDataFixedAssetDetailsById(Request $request)
     {
-        \Log::info("actualizacion de activos");
-
         $id                     = $request->get('id');
         $gestion                = $request->get('year');
         $gestion                = '2024';
@@ -639,14 +654,13 @@ class FixedAssetController extends Controller
         $gestion        = $request->get('year');
         $dataFixedAsset = FixedAsset::GetFixedAssetsAssignmentDetails2($id);
         $dataRevalued   = FixedAsset::GetFixedAssetsRevalued($id);
-        return json_encode(['dataFixedAsset' => $dataFixedAsset, 'dataRevalued' => $dataRevalued]);
+        $imageDocuments   = FixedAsset::GetImagenByRevaluedAssignment($id);
+        return json_encode(['dataFixedAsset' => $dataFixedAsset, 'dataRevalued' => $dataRevalued, 'imageDocuments' => $imageDocuments]);
     }
 
     //  *  AF24. Guarda la informacion necesaria para los datos de revaluo del activos fijos dentro de un documento de revaluo       
     public function storeDataThecnicalRevaluedDetails(Request $request)
     {
-        \Log::info($request);
-
         $item         = $request->get('dataFixedAsset');
         $tecnico      = $request->get('dataTechnicals');
         $resultados   = $request->get('dataResult');
