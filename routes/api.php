@@ -249,6 +249,8 @@ Route::group([
     Route::post('storeDataAuditorDetails', 'FixedAssetController@storeDataAuditorDetails');
     //  *  AF31. Guardar los analisis del auditor despues de su evaluacion.
     Route::get('getDigitalAssetById', 'FixedAssetController@getDigitalAssetById');
+    //  *  AF32. Eliminar la imagen subida del activo fijo.
+    Route::post('deleteDigitalAssetById', 'FixedAssetController@deleteDigitalAssetById');
     
     //  *  Tipos de categorias programaticas de la universidad 
     Route::post('getDataPrograms/', 'FixedAssetController@getDataPrograms');

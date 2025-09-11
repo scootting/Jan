@@ -35,8 +35,6 @@ class Document extends Model
     public static function getDigitalFinancialDocument($id, $year)
     {
         $query = "SELECT digitalizado as pdf_data FROM efe.estado_detalle d WHERE d.id = ?";
-        \Log::info($id);        
-        \Log::info($query);        
         $data = DB::select($query, [$id]);
         return $data;
     }
@@ -45,8 +43,6 @@ class Document extends Model
     public static function SetDeleteDigitalDocument($id, $year)
     {
         $query = "DELETE FROM efe.estado_detalle d WHERE d.id = ?";
-        \Log::info($id);        
-        \Log::info($query);        
         $data = DB::select($query, [$id]);
         return $data;
     }

@@ -508,7 +508,6 @@ class FixedAssetController extends Controller
     //  * EF3. Guarda los documentos digitalizados
     public function storeDigitalDocument(Request $request)
     {
-        \Log::info($request);
         $id          = $request->get('id');
         $description = $request->get('descripcion');
         $fileExt     = $request->file('file')->getClientOriginalExtension();
@@ -523,6 +522,12 @@ class FixedAssetController extends Controller
         return response()->json(['success' => 'Uploaded Successfully.']);
     }
 
+    //  *  AF32. Eliminar la imagen subida del activo fijo.
+    public function deleteDigitalAssetById(Request $request){
+        $id = $request->get('id');
+        $data  = FixedAsset::DeleteDigitalAssetById($id);
+        return json_encode($data);
+    }
 
     //  * AF31. Obtiene el documento digital seleccionado
     public function getDigitalAssetById(Request $request)
@@ -647,9 +652,9 @@ class FixedAssetController extends Controller
         return json_encode(['dataFixedAssetRevalued' => $dataFixedAssetRevalued]);
     }
 
+    
     public function getDataRevaluedDetails(Request $request)
     {
-
         $id             = $request->get('id');
         $gestion        = $request->get('year');
         $dataFixedAsset = FixedAsset::GetFixedAssetsAssignmentDetails2($id);

@@ -57,7 +57,7 @@
                     :max="1"></el-input-number>
                 </el-form-item>
                 <el-form-item label="coeficiente conforme a factores aplicados">
-                  <el-input placeholder="Please input" v-model="dataTechnicals.resultado"></el-input>
+                  <strong>{{ dataTechnicals.resultado }}</strong>
                 </el-form-item>
               </el-form>
             </div>
@@ -91,19 +91,19 @@
                 <p>determinacion segun revaluo</p>
                 <p>resultados</p>
                 <el-form-item label="estado tecnico">
-                  <el-input placeholder="" v-model="dataResult.estado"></el-input>
+                  <strong>{{ dataResult.estado }}</strong>
                 </el-form-item>
                 <el-form-item label="años de vida util">
-                  <el-input placeholder="" v-model="dataResult.vida"></el-input>
+                  <strong>{{ dataResult.vida }}</strong>
                 </el-form-item>
                 <el-form-item label="valor residual">
-                  <el-input placeholder="" v-model="dataResult.valor_residual"></el-input>
+                  <strong>{{ dataResult.valor_residual }}</strong>
                 </el-form-item>
                 <el-form-item label="valor segun revaluo">
-                  <el-input placeholder="" v-model="dataResult.valor_revaluo"></el-input>
+                  <strong>{{ dataResult.valor_revaluo }}</strong>
                 </el-form-item>
                 <el-form-item label="saldo por revalorizar">
-                  <el-input placeholder="" v-model="dataResult.valor_saldo"></el-input>
+                  <strong>{{ dataResult.valor_saldo }}</strong>
                 </el-form-item>
               </el-form>
             </div>
@@ -113,7 +113,8 @@
         <el-button @click="initStoreDataRevaluedDetails" type="primary" size="small">calcular datos del revaluo
         </el-button>
         <p></p>
-        <el-row :gutter="20">
+
+        <el-row v-show="editable" :gutter="20">
           <el-col :span="12">
             <div class="grid-content bg-purple">
               <el-form ref="form" :model="dataAuditor" label-width="350px" size="small">
@@ -144,14 +145,14 @@
             <div class="grid-content bg-purple">
               <p>imagenes actuales del activo</p>
               <el-table :data="imageDocuments" border style="width: 100%" size="small">
-                <el-table-column prop="descripcion" label="descripcion" width="250">
+                <el-table-column prop="descripcion" label="descripcion" width="150">
                 </el-table-column>
-                <el-table-column align="right-center" label="operaciones" width="250" fixed="right">
+                <el-table-column align="right" width="200" fixed="right">
                   <template slot-scope="scope">
                     <el-button :disabled="scope.row.guardado === true" type="primary" size="mini"
                       @click="getDigitalDocumentById(scope.$index, scope.row)">visualizar</el-button>
                     <el-button :disabled="scope.row.guardado === true" type="danger" size="mini"
-                      @click="DeleteDocumentById(scope.$index, scope.row)">quitar</el-button>
+                      @click="deleteDigitalAssetById(scope.$index, scope.row)">quitar</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -164,6 +165,7 @@
         </el-row>
       </div>
     </el-card>
+
 
     <!-- Form Add Document to Archive-->
     <el-dialog title="cotizaciones" :visible.sync="dialogFormVisible">
@@ -178,7 +180,6 @@
       </span>
     </el-dialog>
     <!-- Form Add Document to Archive-->
-
     <!-- Form Add Document to Archive Imagen-->
     <el-dialog title="detalle de la imagen" :visible.sync="dialogImageVisible">
       <el-form :model="document" label-width="220px" size="small" ref="documentForm">
@@ -186,10 +187,9 @@
           <el-input type="textarea" v-model="document.descripcion" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-upload ref="upload" action="/api/storeDigitalAsset" :auto-upload="false" :file-list="imageDocuments"
-            :multiple="false" :limit="1" :data="document" accept=".jpeg" :headers="requestHeaders"
+          <el-upload ref="upload" action="/api/storeDigitalAsset" :auto-upload="false" :file-list="imageDocument"
+            :multiple="false" :limit="1" :data="document" accept=".jpg,.png,.gif" :headers="requestHeaders"
             :on-success="handleSuccessBoucher" :on-remove="test">
-            <!---->
             <p></p>
             <el-button slot="trigger" size="small" type="primary">subir archivo digitalizado</el-button>
             <div slot="tip" class="el-upload__tip">
@@ -197,12 +197,10 @@
             </div>
           </el-upload>
         </el-form-item>
-        <!--
-          -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" size="mini" @click="storeDigitalDocument('documentForm')">Confirmar</el-button>
-        <el-button type="danger" size="mini" plain @click="dialogFormVisible = false">Cancelar</el-button>
+        <el-button type="danger" size="mini" plain @click="dialogImageVisible = false">Cancelar</el-button>
       </span>
     </el-dialog>
     <!-- Form Add Document to Archive-->
@@ -220,11 +218,11 @@ export default {
   },
   data() {
     return {
-
       requestHeaders: {
         "X-CSRF-TOKEN": window.axios.defaults.headers.common["X-CSRF-TOKEN"],
         Authorization: "Bearer " + this.$store.state.token,
       },
+      editable: false,
       imageDocument: [],
       document: { id: 0, descripcion: '' },
       imageDocuments: [],
@@ -321,6 +319,7 @@ export default {
       this.imageDocument = [];
       console.log(response, file, fileList);
       this.fileList = fileList;
+      this.getDataRevaluedDetails();
     },
 
     //  * AF27. Obtiene la lista de imagenes que pertenecen a un activo
@@ -359,6 +358,9 @@ export default {
         }
       });
     },
+    resetForm: function resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
 
     //  * EF4. Obtener documentos digitalizados
     getDigitalDocumentById(idx, row) {
@@ -379,9 +381,24 @@ export default {
         window.open(url);
       });
     },
-    deleteDigitalDocumentById() { },
+    async deleteDigitalAssetById(idex, row) {
+      var app = this;
+      try {
+        let response = axios
+          .post("/api/deleteDigitalAssetById", {
+            id: row.id,
+          });
+        this.getDataRevaluedDetails();
+      } catch (error) {
+        app.$alert(error, 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      };
+    },
     initAddDocument() {
-      this.dialogImageVisible = true;
+      this.imageDocument = [],
+        this.document = { id: 0, descripcion: '' },
+        this.dialogImageVisible = true;
     },
     //  *  AF23. Obtiene un activo fijo de la lista del documento de revaluo
     async getDataRevaluedDetails() {
@@ -417,6 +434,7 @@ export default {
           app.dataAuditor.proteccion = app.dataRevalued.proteccion;
           app.dataAuditor.capacitacion = app.dataRevalued.capacitacion;
           app.marker = 'editar';
+          app.editable = true;
         }
         else {
           app.marker = 'registrar';
@@ -432,8 +450,6 @@ export default {
 
     //  *  AF24. Guarda la informacion necesaria para los datos de revaluo del activos fijos dentro de un documento de revaluo       
     async initStoreDataRevaluedDetails() {
-      console.log(this.dataFixedAsset);
-      console.log(this.id_revalued);
       var app = this;
       try {
         let response = axios

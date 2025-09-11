@@ -382,6 +382,13 @@ class FixedAsset extends Model
         return $data;
     }
 
+    //  *  AF32. Eliminar la imagen subida del activo fijo.
+    public static function deleteDigitalAssetById($id){
+        $query = "DELETE FROM actx.revaluo_imagen d WHERE d.id = ?";
+        $data = DB::select($query, [$id]);
+        return $data;
+    }
+
     public static function GetFixedAssetsRevalued($id)
     {
         $query = "select * from actx.asignaciones_revaluo a where a.id_activo = " . $id . "";
