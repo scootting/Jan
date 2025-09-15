@@ -335,6 +335,10 @@ class FixedAsset extends Model
     {
         $query = "select * from actx.asignaciones_detallada a where a.id = " . $id . "";
         $data  = collect(DB::select(DB::raw($query)));
+        $data->transform(function ($item) {
+            $item->accesorios = json_decode($item->accesorios, true); // Convertir JSONB a array
+            return $item;
+        });
         return $data;
     }
 

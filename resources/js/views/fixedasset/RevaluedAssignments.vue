@@ -49,10 +49,10 @@
                 <el-form-item label="descripcion" prop="descripcion">
                   {{ dataFixedAsset.descripcion }}
                 </el-form-item>
-                <!--
-                <el-form-item label="valor neto">
-                  {{ dataFixedAsset.valor_neto }}
+                <el-form-item label="detalle adicional">
+                  {{ dataFixedAsset.des_detallada }}
                 </el-form-item>
+                <!--
                 -->
               </el-form>
             </div>
@@ -450,8 +450,8 @@ export default {
           id: variable.id_activo,
           year: app.user.gestion,
         });
-        alert(row);
-        app.dataFixedAssetRevalued = response.data.dataFixedAssetRevalued;
+        app.dataFixedAsset = response.data.dataFixedAssetRevalued[0];
+        //app.dataFixedAssetRevalued = response.data.dataFixedAssetRevalued;
         this.fixedAsset = variable;
         this.marker = 'editar';
         console.log(app.dataFixedAssetRevalued);

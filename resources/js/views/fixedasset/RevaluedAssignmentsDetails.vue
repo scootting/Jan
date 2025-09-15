@@ -14,18 +14,21 @@
                 <el-form-item label="fecha de adquisicion" prop="fecha">
                   {{ dataFixedAsset.fecha_adquisicion }}
                 </el-form-item>
+                <el-form-item label="cuenta contable" prop="fecha">
+                  {{ dataFixedAsset.des_contable }}
+                </el-form-item>
                 <el-form-item label="codigo" prop="fecha">
                   {{ dataFixedAsset.codigo }}
                 </el-form-item>
                 <el-form-item label="descripcion" prop="fecha">
                   {{ dataFixedAsset.descripcion }}
                 </el-form-item>
-                <el-form-item label="tipo de adquisicion">
-                  {{ dataFixedAsset.tipo_adq }}
+                <el-form-item label="detalle" prop="adicional">
                 </el-form-item>
-                <el-form-item label="valor neto">
-                  {{ dataFixedAsset.valor_neto }}
-                </el-form-item>
+                  <el-table :data="dataFixedAsset.accesorios" style="width: 100%" size="small">
+                    <el-table-column prop="cantidad" label="cantidad" width="90"></el-table-column>
+                    <el-table-column prop="descripcion" label="descripcion" width="220"></el-table-column>
+                  </el-table>
               </el-form>
             </div>
           </el-col>
@@ -265,7 +268,7 @@ export default {
         des_prg: '',
         ci_resp: '',
         id_asignaciones: '',
-        adicional: [],
+        accesorios: [],
       },
       dataQuoteState: 'registrar',
       dataQuote: {
@@ -339,8 +342,6 @@ export default {
         });
       }
     },
-
-
     //  * EF3. Guarda los documentos digitalizados
     storeDigitalDocument(formName) {
       var app = this;
