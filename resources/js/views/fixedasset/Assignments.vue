@@ -5,19 +5,7 @@
         <span>Documentos</span>
         <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
           @click="initAddAssignment"> nuevo documento</el-button>
-        <!--
-        <el-button style="text-align: right; float: right" size="small" type="primary" icon="el-icon-plus"
-          @click="initAddAssignment2">no funcionara asi</el-button>
-          -->
       </div>
-      <!--
-      <div style="margin-top: 15px">
-        <el-input placeholder="ingrese una descripcion" v-model="writtenTextParameter" class="input-with-select"
-          @keyup.enter.native="getAssignments">
-          <el-button slot="append" icon="el-icon-search" @click="getAssignments(1)"></el-button>
-        </el-input>
-      </div>
-      -->
       <br />
       <div>
         <el-table v-loading="loading" :data="dataAssignment" size="medium" style="width: 100%">
@@ -42,8 +30,8 @@
             <template slot-scope="scope">
               <el-button @click="initAddFixedAssets(scope.$index, scope.row)" type="info"
                 size="small">Editar</el-button>
-              <el-button @click="initEditFixedAssets(scope.$index, scope.row)" type="danger" size="small">
-                detalle de activos fijos </el-button>
+              <el-button @click="initEditFixedAssets(scope.$index, scope.row)" type="info" size="small">
+                imprimir</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -132,7 +120,7 @@ export default {
       this.$router.push({
         name: "assignmentdetails2",
         params: {
-          id: row.id,
+          id: row.id_asignacion,
         },
       });
     },

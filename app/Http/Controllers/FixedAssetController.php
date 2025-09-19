@@ -80,20 +80,6 @@ class FixedAssetController extends Controller
         return json_encode($paginate);
     }
 
-    //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
-    public function getDataAssignmentDetails(Request $request)
-    {
-        $id                     = $request->get('id');
-        $gestion                = $request->get('year');
-        $dataAssignment         = FixedAsset::GetDataAssignmentsById($id, $gestion);
-        $dataBudgetItem         = FixedAsset::GetBudgetItem($gestion);
-        $dataAccountingItem     = FixedAsset::GetAccountingItem($gestion);
-        $dataMeasurement        = FixedAsset::GetMeasurement($gestion);
-        $dataAssignmentsDetails = FixedAsset::GetDataAssignmentsDetails($id);
-        //$dataAditional      = FixedAsset::GetAditionalFixedAssetsAssignment($id);
-        return json_encode(['dataAssignment' => $dataAssignment, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem, 'dataMeasurement' => $dataMeasurement, 'dataAssignmentsDetails' => $dataAssignmentsDetails]);
-    }
-
     //  *  AF13. Obtiene la informacion necesaria de un documento    
     public static function GetAssignmentsById(Request $request)
     {
@@ -167,6 +153,7 @@ class FixedAssetController extends Controller
         $usuario      = $request->get('user');
         $marcador     = $request->get('marker');
         $id_documento = $documento['id'];
+        $tipo_documento = $documento['cod_tipo'];
         $ci_resp      = $documento['ci_resp'];
         $gestion      = $documento['gestion'];
 
@@ -174,7 +161,7 @@ class FixedAssetController extends Controller
         $marcador = $request->get('marker');
         switch ($marcador) {
             case 'verificar':
-                $id           = FixedAsset::VerifyDataAssignmentDetails($id_documento, $ci_resp, $gestion);
+                $id           = FixedAsset::VerifyDataAssignmentDetails($id_documento, $tipo_documento, $ci_resp, $gestion);
                 $id_documento = $id[0]->{'ff_verificar_asignacion'};
                 return json_encode($id_documento);
                 break;
@@ -185,6 +172,20 @@ class FixedAssetController extends Controller
                 break;
         }
         return json_encode($id_documento);
+    }
+
+    //  *  AF13. Obtiene la informacion necesaria para crear activos fijos dentro de un documento       
+    public function getDataAssignmentDetails(Request $request)
+    {
+        $id                     = $request->get('id');
+        $gestion                = $request->get('year');
+        $dataAssignment         = FixedAsset::GetDataAssignmentsById($id, $gestion);
+        $dataBudgetItem         = FixedAsset::GetBudgetItem($gestion);
+        $dataAccountingItem     = FixedAsset::GetAccountingItem($gestion);
+        $dataMeasurement        = FixedAsset::GetMeasurement($gestion);
+        $dataAssignmentsDetails = FixedAsset::GetDataAssignmentsDetails($id);
+        //$dataAditional      = FixedAsset::GetAditionalFixedAssetsAssignment($id);
+        return json_encode(['dataAssignment' => $dataAssignment, 'dataBudgetItem' => $dataBudgetItem, 'dataAccountingItem' => $dataAccountingItem, 'dataMeasurement' => $dataMeasurement, 'dataAssignmentsDetails' => $dataAssignmentsDetails]);
     }
 
     //  *  AF16. Obtiene los activos registrados dentro de un documento       

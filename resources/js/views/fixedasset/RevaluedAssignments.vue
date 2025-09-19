@@ -3,7 +3,8 @@
     <el-card class="box-card">
       <div slot="header" class="clearfix">
         <span><strong>documento de revaluo de activos fijos no. {{ dataAssignment.idc }}</strong></span>
-        <el-button style="float: right; padding: 3px 0" type="text">ayuda</el-button>
+        <el-button style="float: right; margin: -8px 5px" size="small" type="info"
+          @click="initVerifyDataAssignmentDetails()">verificar documento</el-button>
       </div>
       <div>
         <el-row :gutter="20">
@@ -90,10 +91,10 @@
                     </el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="marca">
+                <el-form-item label="marca y modelo">
                   <el-input v-model="fixedAsset.des_marca" autocomplete="off"></el-input>
                 </el-form-item>
-                <el-form-item label="modelo">
+                <el-form-item label="numero de serie">
                   <el-input v-model="fixedAsset.des_modelo" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="descripcion general">
@@ -472,7 +473,26 @@ export default {
           id: variable.id,
         },
       });
+    },
 
+    initVerifyDataAssignmentDetails() {
+      var app = this;
+      try {
+        let response = axios
+          .post("/api/verifyDataAssignmentDetails", {
+            assignment: app.dataAssignment,
+            user: app.user,
+            marker: 'verificar',
+          });
+        app.$alert("Se ha registrado correctamente los cambios al documento", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+        this.getDataAssignmentDetails();
+      } catch (error) {
+        app.$alert("Se ha registrado correctamente la informacion", 'Gestor de mensajes', {
+          dangerouslyUseHTMLString: true
+        });
+      };
     },
   },
 };

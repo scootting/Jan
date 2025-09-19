@@ -169,9 +169,9 @@ class FixedAsset extends Model
     }
 
     //  *  AF15. Verificar un documento       
-    public static function VerifyDataAssignmentDetails($id_documento, $usuario, $gestion)
+    public static function VerifyDataAssignmentDetails($id_documento, $tipo_documento, $usuario, $gestion)
     {
-        $query = "select * from actx.ff_verificar_asignacion(" . $id_documento . ",'" . $usuario . "','" . $gestion . "')";
+        $query = "select * from actx.ff_verificar_asignacion(" . $id_documento . ",'" . $tipo_documento . "','" . $usuario . "','" . $gestion . "')";
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
@@ -182,7 +182,7 @@ class FixedAsset extends Model
     {
 
         $query = "select id_asignacion, codigo, codigo_anterior, idx, fecha_adquisicion,des_marca,des_modelo,descripcion, medida, cantidad, importe, accesorios as adicional, " .
-            "id_contable, des_contable, id_presupuesto, des_presupuesto, estado, ci_resp from actx.activosx where id_asignacion = '" . $id . "' order by idx desc";
+            "id_contable, des_contable, id_presupuesto, des_presupuesto, estado, ci_resp from actx.activosx where id_asignacion in (select id from actx.asignaciones_detallada where id_asignacion = '" . $id . "') order by idx desc";
         $data = collect(DB::select(DB::raw($query)));
 
         $data->transform(function ($item) {
@@ -358,7 +358,7 @@ class FixedAsset extends Model
     {
         $query = "SELECT id, id_activo, descripcion FROM actx.revaluo_imagen d WHERE d.id_activo ='" . $id . "' order by id desc";
         \Log::info($query);
-        $data  = collect(DB::select(DB::raw($query)));
+        $data = collect(DB::select(DB::raw($query)));
         return $data;
 
     }
@@ -371,25 +371,27 @@ class FixedAsset extends Model
         return $data;
     }
 
-    public static function GetDigitalAssetById($id){
+    public static function GetDigitalAssetById($id)
+    {
         $query = "SELECT imagen as pdf_data FROM actx.revaluo_imagen d WHERE d.id = ?";
-        $data = DB::select($query, [$id]);
+        $data  = DB::select($query, [$id]);
         return $data;
     }
 
     //  *  AF30. Guardar los analisis del auditor despues de su evaluacion.
     public static function StoreDataAuditorDetails($id, $actualizacion, $seguridad, $proteccion, $capacitacion)
     {
-        $query = "select * from actx.ff_registrar_detalle_auditor(" . $id . ",'" . $actualizacion . "','". $seguridad . "','". $proteccion . "','". $capacitacion . "')";
+        $query = "select * from actx.ff_registrar_detalle_auditor(" . $id . ",'" . $actualizacion . "','" . $seguridad . "','" . $proteccion . "','" . $capacitacion . "')";
         \Log::info($query);
         $data = collect(DB::select(DB::raw($query)));
         return $data;
     }
 
     //  *  AF32. Eliminar la imagen subida del activo fijo.
-    public static function deleteDigitalAssetById($id){
+    public static function deleteDigitalAssetById($id)
+    {
         $query = "DELETE FROM actx.revaluo_imagen d WHERE d.id = ?";
-        $data = DB::select($query, [$id]);
+        $data  = DB::select($query, [$id]);
         return $data;
     }
 
